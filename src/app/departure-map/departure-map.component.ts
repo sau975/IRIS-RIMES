@@ -34,6 +34,7 @@ export class DepartureMapComponent implements OnInit {
   fetchedData4: any;
   fetchedData5: any;
   fetchedData6: any;
+  fetchedMasterData: any;
   currentDateNormaly: string;
   formatteddate: any;
   dd: any;
@@ -66,69 +67,62 @@ export class DepartureMapComponent implements OnInit {
     this.fetchDataFromBackend();
   }
   fetchDataFromBackend(): void {
-    this.dataService.fetchData().subscribe(
-      (data) => {
-        this.fetchedData = data;
-        this.processFetchedData();
+    this.dataService.fetchData().subscribe({
+      next: value => {
+        this.fetchedData = value;
+        this.processFetchedData(); 
       },
-      (error) => {
-        console.error('Error fetching data:', error);
-      }
-    );
-    this.dataService.fetchData1().subscribe(
-      (data) => {
-        this.fetchedData1 = data;
+      error: err => console.error('Error fetching data:', err)
+    });
+    this.dataService.fetchData1().subscribe({
+      next: value => {
+        this.fetchedData1 = value;
         this.processFetchedDatastatedaily();
       },
-      (error) => {
-        console.error('Error fetching data:', error);
-      }
-    );
-    this.dataService.fetchData2().subscribe(
-      (data) => {
-        this.fetchedData2 = data;
+      error: err => console.error('Error fetching data:', err)
+    });
+    this.dataService.fetchData2().subscribe({
+      next: value => {
+        this.fetchedData2 = value;
         this.processFetchedDatasubdivdaily();
       },
-      (error) => {
-        console.error('Error fetching data:', error);
-      }
-    );
-    this.dataService.fetchData3().subscribe(
-      (data) => {
-        this.fetchedData3 = data;
+      error: err => console.error('Error fetching data:', err)
+    });
+    this.dataService.fetchData3().subscribe({
+      next: value => {
+        this.fetchedData3 = value;
         this.processFetchedDataregiondaily();
       },
-      (error) => {
-        console.error('Error fetching data:', error);
-      }
-    );
-    this.dataService.fetchData4().subscribe(
-      (data) => {
-        this.fetchedData4 = data;
+      error: err => console.error('Error fetching data:', err)
+    });
+    this.dataService.fetchData4().subscribe({
+      next: value => {
+        this.fetchedData4 = value;
         this.processFetchedDatastatenormal();
       },
-      (error) => {
-        console.error('Error fetching data:', error);
-      }
-    );
-    this.dataService.fetchData5().subscribe(
-      (data) => {
-        this.fetchedData5 = data;
+      error: err => console.error('Error fetching data:', err)
+    });
+    this.dataService.fetchData5().subscribe({
+      next: value => {
+        this.fetchedData5 = value;
         this.processFetchedDatasubdivnormal();
       },
-      (error) => {
-        console.error('Error fetching data:', error);
-      }
-    );
-    this.dataService.fetchData6().subscribe(
-      (data) => {
-        this.fetchedData6 = data;
+      error: err => console.error('Error fetching data:', err)
+    });
+    this.dataService.fetchData6().subscribe({
+      next: value => {
+        this.fetchedData6 = value;
         this.processFetchedDataregionnormal();
       },
-      (error) => {
-        console.error('Error fetching data:', error);
-      }
-    );
+      error: err => console.error('Error fetching data:', err)
+    });
+    this.dataService.fetchMasterFile().subscribe({
+      next: value => {
+        this.fetchedMasterData = value;
+        console.log(value, "master data")
+      },
+      error: err => console.error('Error fetching data:', err)
+    });
   }
   findMatchingData(id: string): any | null {
     const matchedData = this.processedData.find((data: any) => data.districtID === id);

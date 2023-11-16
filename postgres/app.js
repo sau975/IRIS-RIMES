@@ -99,6 +99,18 @@ app.get("/regionnormal", (req, res) => {
   );
 });
 
+app.get("/masterFile", (req, res) => {
+  client.query(
+    "SELECT * FROM masterfile",
+    (err, result) => {
+      if (err) {
+        res.send(err);
+      }
+      res.send(result.rows);
+    }
+  );
+});
+
 app.listen(3000, () => {
   console.log("Server has been ready");
 });

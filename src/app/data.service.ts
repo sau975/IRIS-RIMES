@@ -43,5 +43,9 @@ export class DataService {
     const url = `${this.baseUrl}`+'/regionnormal'; // Replace with your actual API endpoint
     return this.http.get(url);
   }
+  fetchMasterFile(): Observable<any> {
+    const url = `${this.baseUrl}`+'/masterFile'; // Replace with your actual API endpoint
+    return this.http.get(url);
+  }
 }
 
