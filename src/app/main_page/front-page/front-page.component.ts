@@ -22,13 +22,13 @@ export class FrontPageComponent {
   ngOnInit(): void {
   }
   getNormalMap(){
-    this.router.navigate(['/normal']);
+    this.router.navigate(['front-page/normal']);
   }
   getDailyMap(){
-    this.router.navigate(['/daily']);
+    this.router.navigate(['front-page/daily']);
   }
 
   getDepartureMap(){
-    this.router.navigate(['/departure']);
+    this.router.navigate(['front-page/departure']);
   }
 }
