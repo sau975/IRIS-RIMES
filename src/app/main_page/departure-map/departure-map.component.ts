@@ -3,11 +3,12 @@ import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import html2canvas from 'html2canvas';
 import * as L from 'leaflet';
 import 'leaflet.fullscreen';
-import { DataService } from '../data.service';
+import { DataService } from '../../data.service';
 import { jsPDF } from 'jspdf';
 import 'jspdf-autotable';
 import * as htmlToImage from 'html-to-image';
 import { Router } from '@angular/router';
+import { distinct } from 'rxjs';
 
 @Component({
   selector: 'app-departure-map',
@@ -70,10 +71,11 @@ export class DepartureMapComponent implements OnInit {
     this.dataService.fetchData().subscribe({
       next: value => {
         this.fetchedData = value;
-        this.processFetchedData(); 
+        this.processFetchedData();
       },
       error: err => console.error('Error fetching data:', err)
     });
+
     this.dataService.fetchData1().subscribe({
       next: value => {
         this.fetchedData1 = value;
@@ -119,10 +121,12 @@ export class DepartureMapComponent implements OnInit {
     this.dataService.fetchMasterFile().subscribe({
       next: value => {
         this.fetchedMasterData = value;
-        console.log(value, "master data")
+        this.stationtodistrict();
+        console.log("value",value)
       },
       error: err => console.error('Error fetching data:', err)
     });
+
   }
   findMatchingData(id: string): any | null {
     const matchedData = this.processedData.find((data: any) => data.districtID === id);
@@ -145,6 +149,7 @@ export class DepartureMapComponent implements OnInit {
     return matchedData || null;
   }
   processedData: any[] = [];
+  stationtodistrictdata: any[] = [];
   processedDatacum: any[] = [];
   statefetchedDatadaily: any[] = [];
   statefetchedDatanormal: any[] = [];
@@ -162,6 +167,31 @@ export class DepartureMapComponent implements OnInit {
   regionfetchedDatadepcum: any[] = [];
   countryfetcheddata: any[] = [];
   public countrydaily = 0
+
+  stationtodistrict(){
+    this.stationtodistrictdata = [];
+    let previousdistrictid = null;
+    let previousdistrictname = "";
+    let districtrainfallsum = 0;
+    let numberofdistricts = 0;
+    for (const item of this.fetchedMasterData) {
+      if(item.districtid == previousdistrictid || previousdistrictid == null){
+         districtrainfallsum = districtrainfallsum + item.currentDateDaily
+         numberofdistricts = numberofdistricts + 1;
+      }
+      else{
+        this.stationtodistrictdata.push({
+          districtid: previousdistrictid,
+          districtname: previousdistrictname,
+          districtrainfall: districtrainfallsum/numberofdistricts,
+          });
+      }
+       previousdistrictid = item.districtid
+       previousdistrictname = item.district_code
+    }
+  }
+
+
   processFetchedDataregiondaily(): void {
     let product = 1;
     let sum = 0;
@@ -1589,7 +1619,7 @@ export class DepartureMapComponent implements OnInit {
       previousStateId1 = item['stateid'];
 
     }
-    //console.log(this.statefetchedDatacum)
+
 
     let product = 0;
     let sum = 0;
@@ -2129,7 +2159,7 @@ export class DepartureMapComponent implements OnInit {
           this.statefetchedDatadep.push({ statedepid: matchedData.statedailyid, statename: matchedData.statedailyname, regionid: matchedData.RegionId, regionname: matchedData.RegionName, dailyrainfall: matchedData.statedailyrainfall, normalrainfall: normal1, statedeprainfall: (((den - normal1) / normal1) * 100), cummnormal: cumnormalpostmon, cummdaily: matchedData1.statedailycumrainfall, cumdeparture: cumdep });
         }
       }
-      console.log(this.statefetchedDatadep)
+
     }
   }
   processFetchedData(): void {
@@ -2759,7 +2789,7 @@ public regions:any[]=[];
   async pushRegion(item:any, name:string){
     if(item.regionname == name){
       this.regions.push(item);
-    }    
+    }
   }
 
   async pushSubDivision(item:any, name:string){
@@ -3021,7 +3051,7 @@ public regions:any[]=[];
             statecumdepindist = item1.cumdeparture;
           }
         });
-        //console.log(statedailyindist)
+
         const statedailyindistFormatted = statedailyindist !== null && statedailyindist !== undefined && !Number.isNaN(statedailyindist) ? statedailyindist.toFixed(1) : 'NA';
         const statenormalindistFormatted = statenormalindist !== null && statenormalindist !== undefined && !Number.isNaN(statenormalindist) ? statenormalindist.toFixed(1) : 'NA';
         const statedepindistFormatted = Math.floor(statedepindist);

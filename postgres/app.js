@@ -14,6 +14,18 @@ app.use((req, res, next) => {
   next();
 });
 
+app.get("/masterFile", (req, res) => {
+  client.query(
+    "SELECT * FROM masterfile JOIN dailystationdata ON masterfile.crisid = dailystationdata.cris_id ORDER BY districtid",
+    (err, result) => {
+      if (err) {
+        res.send(err);
+      }
+      res.send(result.rows);
+    }
+  );
+});
+
 app.get("/districtdep", (req, res) => {
   client.query(
     "SELECT * FROM ndistrict JOIN del1 ON ndistrict.districtid = del1.districtid ORDER BY del1.subdivid1, del1.stateid",
@@ -25,8 +37,6 @@ app.get("/districtdep", (req, res) => {
     }
   );
 });
-
-
 app.get("/statedaily", (req, res) => {
   client.query(
     "SELECT * FROM del1 ORDER BY regionid, stateid ASC",
@@ -38,7 +48,6 @@ app.get("/statedaily", (req, res) => {
     }
   );
 });
-
 app.get("/statenormal", (req, res) => {
   client.query(
     "SELECT * FROM nstate",
@@ -99,17 +108,7 @@ app.get("/regionnormal", (req, res) => {
   );
 });
 
-app.get("/masterFile", (req, res) => {
-  client.query(
-    "SELECT * FROM masterfile",
-    (err, result) => {
-      if (err) {
-        res.send(err);
-      }
-      res.send(result.rows);
-    }
-  );
-});
+
 
 app.listen(3000, () => {
   console.log("Server has been ready");

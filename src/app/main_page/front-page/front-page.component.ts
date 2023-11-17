@@ -3,7 +3,7 @@ import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import html2canvas from 'html2canvas';
 import * as L from 'leaflet';
 import 'leaflet.fullscreen';
-import { DataService } from '../data.service';
+import { DataService } from '../../data.service';
 import { jsPDF } from 'jspdf';
 import 'jspdf-autotable';
 import * as htmlToImage from 'html-to-image';
