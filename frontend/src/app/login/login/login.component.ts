@@ -13,7 +13,7 @@ export class LoginComponent {
 
   users = [
     {id: 101, username: "rimes@int", password: "123"},
-    {id: 102, username: "pawan@int", password: "123"},
+    {id: 102, username: "pavan@int", password: "123"},
     {id: 103, username: "saurav@int", password: "123"}
   ];
 
