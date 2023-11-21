@@ -5,7 +5,7 @@ img{
 }
 
 .background-image{
-  background-image: url(../../../assets/images/natsuki-4DsowKunk84-unsplash.jpg);
+  background-image: url(../../../assets/images/latest_back.jpg);
   background-repeat: no-repeat;
   background-size: cover;
 }
@@ -62,7 +62,7 @@ img{
   border-radius: 20px;
 }
 #month{
-  background-color: #002467;
+  background-color: #00493b;
   padding: 10px;
   margin: 6px;
   width: 150px;
@@ -72,13 +72,13 @@ img{
   color: white;
 }
 #month_label{
-  color: #002467;
+  color: #00493b;
   font-size: 18px;
   font-weight: 600;
   margin-left: 15px;
 }
 #date{
-  background-color: #002467;
+  background-color:#00493b;
   padding: 10px 10px 10px 22px;
   margin: 6px;
   width: 120px;
@@ -88,11 +88,11 @@ img{
   color: white;
 }
 #date_label{
-  color: #002467;
+  color: #00493b;
   font-size: 18px;
   font-weight: 600;
 }
-@import "~@fortawesome/fontawesome-free/css/all.min.css";
+
 
 img{
   width: 60px;

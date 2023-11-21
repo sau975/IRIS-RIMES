@@ -1,14 +1,124 @@
 <div class="background-effect">
-  <div style="text-align: center; padding-top: 15%;">
-    <h2>Login</h2>
-    <form (ngSubmit)="login()">
-      <label for="username">Username:</label>
-      <input type="text" id="username" name="username" [(ngModel)]="username" required>
-      <br>
-      <label for="password">Password:</label>
-      <input type="password" id="password" name="password" [(ngModel)]="password" required>
-      <br>
-      <button type="submit">Login</button>
-    </form>  
+  <table style="width: 100%">
+    <tbody>
+      <tr>
+        <td style="width: 8%; padding-left: 25px" align="left">
+          <img class="logo" src="/assets/images/IMDlogo_Ipart.png" alt="" />
+        </td>
+        <td style="text-align: center; padding-left: 20px; width: 80%">
+          <table style="width: 100%">
+            <tbody>
+              <tr>
+                <td>
+                  <label
+                    style="
+                      color: black;
+                      vertical-align: middle;
+                      font-family: Arial;
+                      font-weight: bolder;
+                      font-size: 20px;
+                    "
+                  >
+                    IMD Rainfall Information System (IRIS)</label
+                  >
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <label
+                    style="
+                      color: black;
+                      vertical-align: middle;
+                      font-family: Arial;
+                      font-weight: bolder;
+                      font-size: 18px;
+                    "
+                  >
+                    Hydromet Division</label
+                  >
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <label
+                    style="
+                      color: black;
+                      vertical-align: middle;
+                      font-family: Arial;
+                      font-weight: bolder;
+                      font-size: 14px;
+                    "
+                  >
+                    India Meteorological Department</label
+                  >
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <label
+                    style="
+                      color: black;
+                      vertical-align: middle;
+                      font-family: Arial;
+                      font-weight: bolder;
+                      font-size: 14px;
+                    "
+                  >
+                    Ministry Of Earth Sciences</label
+                  >
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <label
+                    style="
+                      color: black;
+                      vertical-align: middle;
+                      font-family: Arial;
+                      font-weight: bolder;
+                      font-size: 14px;
+                    "
+                  >
+                    New Delhi-110 003</label
+                  >
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </td>
+        <td>
+          <div class="button">
+            <button class="Back" href="http://www.imd.gov.in">Back</button>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+    <div style="text-align: center; padding-top: 15%">
+      <div class="auth">
+      <h2>LOGIN</h2>
+      <form (ngSubmit)="login()">
+        <label for="username">Username :</label>
+        <input
+          type="text"
+          id="username"
+          name="username"
+          [(ngModel)]="username"
+          required
+        />
+        <br />
+        <label for="password">Password :</label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          [(ngModel)]="password"
+          required
+        />
+        <br />
+        <button type="submit" class="login">Login</button>
+      </form>
+    </div>
   </div>
 </div>

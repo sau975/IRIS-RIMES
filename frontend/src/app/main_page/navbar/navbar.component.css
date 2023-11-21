@@ -45,6 +45,7 @@ nav ul {
 .nav > li:hover > a {
   border-bottom-color: #fffdd0;
 }
+
 .nav li:hover > a {
   color: #fffdd0;
 }
