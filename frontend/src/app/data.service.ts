@@ -10,11 +10,6 @@ export class DataService {
   private baseUrl = 'http://localhost:3000'; // Replace with your actual backend API URL
 
   constructor(private http: HttpClient) {}
-
-  // addData(data: any): Observable<any> {
-  //   const url = `${this.baseUrl}`+'/statecum';
-  //   return this.http.post(url, { data });
-  // }
   fetchData(): Observable<any> {
     const url = `${this.baseUrl}`+'/districtdep'; // Replace with your actual API endpoint
     return this.http.get(url);
