@@ -7,9 +7,10 @@ import { RouterModule, Routes } from "@angular/router";
 import { FormsModule } from "@angular/forms";
 import { HeaderComponent } from "./header/header.component";
 import { NavbarComponent } from "./navbar/navbar.component";
+import { AuthGuard } from "../auth-guard";
 
 const routes: Routes = [
-    { path: '', component: FrontPageComponent, children: [
+    { path: '', component: FrontPageComponent, canActivate: [AuthGuard], children: [
         { path: 'departure', component: DepartureMapComponent },
         { path: 'normal', component: NormalMapComponent },
         { path: 'daily', component: DailyMapComponent },

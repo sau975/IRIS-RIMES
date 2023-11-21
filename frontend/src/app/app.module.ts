@@ -11,6 +11,7 @@ import 'leaflet-fullscreen';
 import { HttpClientModule } from '@angular/common/http';
 import { LoginComponent } from './login/login/login.component';
 import { MainPageModule } from './main_page/main-page.module';
+import { AuthGuard } from './auth-guard';
 
 
 
@@ -28,7 +29,7 @@ import { MainPageModule } from './main_page/main-page.module';
     AppRoutingModule,
     MainPageModule
   ],
-  providers: [],
+  providers: [AuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
