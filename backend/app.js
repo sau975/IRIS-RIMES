@@ -1,6 +1,13 @@
 const client = require("./connection");
 const express = require("express");
 const app = express();
+const jwt = require('jsonwebtoken');
+const crypto = require('crypto');
+const bodyParser = require('body-parser');
+
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
   res.header(
@@ -109,6 +116,34 @@ app.get("/regionnormal", (req, res) => {
 });
 
 
+const generateSecretKey = () => {
+  const secretKey = crypto.randomBytes(32).toString('hex');
+  return secretKey;
+};
+
+const secretKey = generateSecretKey();
+app.post("/login", (req, res) => {
+  client.query(
+    `SELECT * FROM login WHERE username = '${req.body.username}' AND password = '${req.body.password}';`,
+    (err, result) => {
+      if (err) {
+        res.send(err);
+      }else{
+        if(result.rows){
+          const user = {
+            userName:  req.body.username,
+            password:  req.body.password
+          }
+          jwt.sign({ user }, secretKey, { expiresIn: '300s' }, (err, token) => {
+            res.json({
+              token
+            })
+          })
+        }
+      }
+    }
+  );
+});
 
 app.listen(3000, () => {
   console.log("Server has been ready");

@@ -47,5 +47,19 @@ export class DataService {
     const url = `${this.baseUrl}`+'/masterFile'; // Replace with your actual API endpoint
     return this.http.get(url);
   }
+
+  userLogin(data:any): Observable<any> {
+    return this.http.post<any>(this.baseUrl + "/login", data);
+  }
+
+  getAuthStatus(){
+    var token = localStorage.getItem('isAuthorised');
+    if(token){
+      return true
+    }else{
+      return false
+    }
+  }
+
 }
 
