@@ -59,7 +59,8 @@ export class DepartureMapComponent implements OnInit {
 
     this.currentDateNormal = `${currmonth}${this.dd}`;
     this.currentDateNormaly = `${currmonthy}${ddy}`;
-    this.currentDateDaily = `${this.dd.padStart(2, '0')}_${currmonth}`;
+    this.currentDateDaily = `${this.dd.padStart(2, '0')}-${currmonth}`;
+    console.log(this.currentDateDaily)
 
   }
   ngOnInit(): void {
@@ -122,7 +123,7 @@ export class DepartureMapComponent implements OnInit {
       next: value => {
         this.fetchedMasterData = value;
         this.stationtodistrict();
-        console.log("value",value)
+        // console.log("value",value)
       },
       error: err => console.error('Error fetching data:', err)
     });
@@ -172,23 +173,46 @@ export class DepartureMapComponent implements OnInit {
     this.stationtodistrictdata = [];
     let previousdistrictid = null;
     let previousdistrictname = "";
-    let districtrainfallsum = 0;
+    let stationrainfallsum = 0;
     let numberofdistricts = 0;
+    let previousstateid = null;
+    let previousstatename = "";
+    let previoussubdivid = null;
+    let previoussubdivname = "";
+    let previousregionid = null;
+    let previousregionname = "";
     for (const item of this.fetchedMasterData) {
       if(item.districtid == previousdistrictid || previousdistrictid == null){
-         districtrainfallsum = districtrainfallsum + item.currentDateDaily
+        stationrainfallsum = stationrainfallsum + item[this.currentDateDaily];
          numberofdistricts = numberofdistricts + 1;
       }
       else{
         this.stationtodistrictdata.push({
           districtid: previousdistrictid,
           districtname: previousdistrictname,
-          districtrainfall: districtrainfallsum/numberofdistricts,
+          numberofdistricts : numberofdistricts,
+          stationrainfallsum : stationrainfallsum,
+          districtrainfall: stationrainfallsum/numberofdistricts,
+          stateid : previousstateid,
+          statename : previousstatename,
+          subdivid : previoussubdivid,
+          subdivname : previoussubdivname,
+          regionid : previousregionid,
+          regionname :previousregionname,
           });
+          numberofdistricts = 0;
+          stationrainfallsum = 0;
       }
        previousdistrictid = item.districtid
        previousdistrictname = item.district_code
+       previousstateid = item.stateid;
+       previousstatename = item.state_code;
+       previoussubdivid = item.subdivid;
+       previoussubdivname = item.subdivision_code;
+       previousregionid = item.regionid;
+       previousregionname = item.region_code;
     }
+    console.log(this.stationtodistrictdata)
   }
 
 
