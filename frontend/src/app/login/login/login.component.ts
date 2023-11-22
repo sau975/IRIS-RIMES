@@ -25,11 +25,11 @@ export class LoginComponent {
     }
     this.dataService.userLogin(loginData).subscribe(res => {
       console.log(res, "jjjjjj")
-      if(res){
+      if(res && res.message == "Login successful"){
         localStorage.setItem("isAuthorised", JSON.stringify(res));
         this.router.navigate(['/front-page']);
       }else{
-        alert("Username and Passwrod are Invalid")
+        alert(res.message);
       }  
     })
   }
