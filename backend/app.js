@@ -21,6 +21,20 @@ app.use((req, res, next) => {
   next();
 });
 
+
+app.post('/api/addData', (req, res) => {
+  const data = req.body.data; 
+  client.query('INSERT INTO dataentry(station, state) VALUES($1, $2)', [data.field1, data.field2])
+    .then(() => {
+      res.status(200).json({ message: 'Data inserted successfully' });
+    })
+    .catch(error => {
+      console.error('Error inserting data:', error);
+      res.status(500).json({ error: 'Internal server error' });
+    });
+});
+
+
 app.get("/masterFile", (req, res) => {
   client.query(
     "SELECT * FROM masterfile JOIN dailystationdata ON masterfile.crisid = dailystationdata.cris_id ORDER BY districtid",

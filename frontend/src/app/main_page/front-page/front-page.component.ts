@@ -31,4 +31,5 @@ export class FrontPageComponent {
   getDepartureMap(){
     this.router.navigate(['front-page/departure']);
   }
+
 }

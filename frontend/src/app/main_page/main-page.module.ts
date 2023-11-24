@@ -8,6 +8,8 @@ import { FormsModule } from "@angular/forms";
 import { HeaderComponent } from "./header/header.component";
 import { NavbarComponent } from "./navbar/navbar.component";
 import { AuthGuard } from "../auth-guard";
+import { CommonModule } from '@angular/common';
+import { DataentryComponent } from './dataentry/dataentry.component';
 
 const routes: Routes = [
     { path: '', component: FrontPageComponent, canActivate: [AuthGuard], children: [
@@ -25,10 +27,12 @@ const routes: Routes = [
         NormalMapComponent,
         DailyMapComponent,
         HeaderComponent,
-        NavbarComponent    
+        NavbarComponent,
+        DataentryComponent
     ],
-    imports: [    
+    imports: [
         FormsModule,
+        CommonModule,
         RouterModule.forChild(routes)
     ],
     exports: [RouterModule]

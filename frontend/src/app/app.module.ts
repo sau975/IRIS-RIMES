@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
-
+import { CommonModule } from '@angular/common';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
@@ -27,7 +27,9 @@ import { AuthGuard } from './auth-guard';
     BrowserModule,
     FormsModule,
     AppRoutingModule,
-    MainPageModule
+    MainPageModule,
+    CommonModule,
+    FormsModule
   ],
   providers: [AuthGuard],
   bootstrap: [AppComponent]
