@@ -12,6 +12,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { LoginComponent } from './login/login/login.component';
 import { MainPageModule } from './main_page/main-page.module';
 import { AuthGuard } from './auth-guard';
+import { DataentryComponent } from './main_page/dataentry/dataentry.component';
 
 
 
@@ -19,7 +20,8 @@ import { AuthGuard } from './auth-guard';
   declarations: [
     AppComponent,
     MapContainerComponent,
-    LoginComponent
+    LoginComponent,
+    DataentryComponent
   ],
   imports: [
     HttpClientModule,
