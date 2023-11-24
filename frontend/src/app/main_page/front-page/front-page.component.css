@@ -20,7 +20,7 @@ img{
  font-weight: 600;
  font-size: 10px;
 }
-#load{
+.load{
   background-color: white;
   padding: 10px;
   margin: 6px;
@@ -31,7 +31,7 @@ img{
   border-radius: 20px;
   color: #002467
 }
-#load:hover{
+.load:hover{
   background-color: #002467;
   color: white;
   border-style: solid;

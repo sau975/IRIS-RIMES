@@ -1,6 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
-import html2canvas from 'html2canvas';
+import { Component, OnInit } from '@angular/core';
 import * as L from 'leaflet';
 import 'leaflet.fullscreen';
 import { DataService } from '../../data.service';
@@ -8,7 +7,6 @@ import { jsPDF } from 'jspdf';
 import 'jspdf-autotable';
 import * as htmlToImage from 'html-to-image';
 import { Router } from '@angular/router';
-import { distinct } from 'rxjs';
 
 @Component({
   selector: 'app-departure-map',
@@ -16,16 +14,14 @@ import { distinct } from 'rxjs';
   styleUrls: ['./departure-map.component.css']
 })
 export class DepartureMapComponent implements OnInit {
-  inputValue: string = '';
-  inputValue1: string = '';
   private initialZoom = 4;
   private map: L.Map = {} as L.Map;
   private map1: L.Map = {} as L.Map;
   private map2: L.Map = {} as L.Map;
   private map3: L.Map = {} as L.Map;
   private map4: L.Map = {} as L.Map;
-  currentDateNormal: string;
-  currentDateDaily: string;
+  currentDateNormal: string = '';
+  currentDateDaily: string = '';
   // inputDateNormal: string;
   // inputDateDaily: string;
   fetchedData: any;
@@ -36,23 +32,47 @@ export class DepartureMapComponent implements OnInit {
   fetchedData5: any;
   fetchedData6: any;
   fetchedMasterData: any;
-  currentDateNormaly: string;
+  currentDateNormaly: string = '';
   formatteddate: any;
   dd: any;
-  constructor(private http: HttpClient, private dataService: DataService, private router: Router) {
-    const today = new Date();
-    const yesterday = new Date(today);
-    yesterday.setDate(today.getDate() - 1);
+  today = new Date();
+
+  constructor(
+    private http: HttpClient, 
+    private dataService: DataService, 
+    private router: Router
+    ) {
+    this.dateCalculation();
+    this.dataService.value$.subscribe((value) => {
+      if(value){
+        let selecteddateAndMonth = JSON.parse(value);
+        this.today.setDate(selecteddateAndMonth.date)
+        this.today.setMonth(selecteddateAndMonth.month-1)
+        console.log(this.today, "iiiiiii")
+        this.dateCalculation();
+        this.fetchDataFromBackend();    
+      }
+    });
+  }
+  ngOnInit(): void {
+    this.initMap();
+    this.loadGeoJSON();
+    this.fetchDataFromBackend();
+  }
+
+  dateCalculation(){
+    const yesterday = new Date(this.today);
+    yesterday.setDate(this.today.getDate() - 1);
     const months = [
       'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
       'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
     ];
-    this.dd = String(today.getDate());
+    this.dd = String(this.today.getDate());
 
-    const mon = String(today.getMonth() + 1)
-    const year = today.getFullYear();
+    const mon = String(this.today.getMonth() + 1)
+    const year = this.today.getFullYear();
     this.formatteddate = `${this.dd.padStart(2, '0')}-${mon.padStart(2, '0')}-${year}`
-    const currmonth = months[today.getMonth()];
+    const currmonth = months[this.today.getMonth()];
     const enddate = `${currmonth}${this.dd}`
     const ddy = String(yesterday.getDate());
     const currmonthy = months[yesterday.getMonth()];
@@ -61,12 +81,6 @@ export class DepartureMapComponent implements OnInit {
     this.currentDateNormaly = `${currmonthy}${ddy}`;
     this.currentDateDaily = `${this.dd.padStart(2, '0')}-${currmonth}`;
     console.log(this.currentDateDaily)
-
-  }
-  ngOnInit(): void {
-    this.initMap();
-    this.loadGeoJSON();
-    this.fetchDataFromBackend();
   }
   fetchDataFromBackend(): void {
     this.dataService.fetchData().subscribe({
@@ -2792,11 +2806,11 @@ export class DepartureMapComponent implements OnInit {
     "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
   ];
 
-  public today = new Date();
+  // public today = new Date();
   public month = this.months[this.today.getMonth()];
   public day = String(this.today.getDate()).padStart(2, '0');
   public sortedDataArray: any[]=[];
-public regions:any[]=[];
+  public regions:any[]=[];
   public sortedSubDivisions:any[]=[];
   async pushDistrict(item:any, name:string){
     if(item.statename == name){
