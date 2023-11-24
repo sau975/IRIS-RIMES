@@ -94,21 +94,64 @@
       </tr>
     </tbody>
   </table>
+  <div style="text-align: center; padding-top: 20px">
+    <select name="region" id="region">
+      <option value="region1">region1</option>
+      <option value="region2">region2</option>
+      <option value="region3">region3</option>
+      <option value="region4">region4</option>
+    </select>
+    <select name="mcs" id="mcs">
+      <option value="mc1">mc1</option>
+      <option value="mc2">mc2</option>
+      <option value="mc3">mc3</option>
+      <option value="mc4">mc4</option>
+    </select>
+    <select name="state" id="state">
+      <option value="state1">state1</option>
+      <option value="state2">state2</option>
+      <option value="state3">state3</option>
+      <option value="state4">state4</option>
+    </select>
+    <select name="district" id="district">
+      <option value="district1">district1</option>
+      <option value="district2">district2</option>
+      <option value="district3">district3</option>
+      <option value="district4">district4</option>
+    </select>
+  </div>
 
-    <div style="text-align: center; padding-top: 15%">
+    <div style="text-align: center; padding-top: 40px">
+
       <div class="dataentry">
-      <h2>DATA ENTRY</h2>
+      <h3>ENTER STATION DATA</h3>
+      <br>
       <form (submit)="addData()">
+        <table style="margin: auto;">
+          <thead>
+            <tr>
+              <th>S.NO</th>
+              <th>DATE</th>
+              <th>STATION NAME</th>
+              <th>STATION ID</th>
+              <th>RAINFALL</th>
+              <th>TIME</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let station of stations; let i = index">
+              <td>{{ i + 1 }}</td>
+              <td><input type="date" id="field1" name="field1" [(ngModel)]="data.field1" required></td>
+              <td><input type="text" id="field2" name="field2" [(ngModel)]="data.field2" required></td>
+              <td><input type="number" id="field3" name="field3" [(ngModel)]="data.field3" required></td>
+              <td><input type="number" id="field4" name="field4" [(ngModel)]="data.field4" required></td>
+              <td><input type="time" id="field5" name="field5" [(ngModel)]="data.field5" required></td>
+            </tr>
+          </tbody>
+        </table>
+        <button class="enter"  (click)="addStation()">Add Station</button>
+        <button type="submit" class="enter" (click)="addData()">Submit</button>
 
-        <label for="field1">STATION DATA :</label>
-        <input type="number" id="field1" name="field1" [(ngModel)]="data.field1" required>
-        <br/>
-
-        <label for="field2">STATE DATA :</label>
-        <input type="text" id="field2" name="field2" [(ngModel)]="data.field2" required>
-        <br/>
-
-        <button type="submit" class="enter">Add Data</button>
       </form>
 
       <div *ngIf="message">

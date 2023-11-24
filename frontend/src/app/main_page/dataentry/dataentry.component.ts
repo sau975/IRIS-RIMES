@@ -8,18 +8,25 @@ import { response } from 'express';
   styleUrls: ['./dataentry.component.css']
 })
 export class DataentryComponent {
-
+  stations: any[] = [{}];
   data = {
     field1: '',
     field2: '',
+    field3: '',
+    field4: '',
+    field5: '',
   };
   message: string | null = null;
 
   constructor(private dataService: DataService,) {}
 
-  addData() {
 
-    this.dataService.addData(this.data).subscribe({
+  addStation() {
+    this.stations.push({});
+  }
+
+  addData() {
+    this.dataService.addData(this.stations).subscribe({
       next: response => {
         this.message = response.message;
       },

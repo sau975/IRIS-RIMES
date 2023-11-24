@@ -1,5 +1,5 @@
 .background-effect {
-  background-image: url(../../../assets/images/dataentrybackground.jpg);
+  background-image: url(../../../assets/images/back.jpeg);
   background-repeat: no-repeat;
   background-size: cover;
   height: 100vh;
@@ -8,9 +8,21 @@
 body{
   display: flex;
 }
+#region, #mcs, #state, #district{
+  background-color: #002467;
+  color: white;
+  padding: 10px;
+  margin: 10px;
+  border-radius: 10px;
+}
+#region:hover, #mcs:hover, #state:hover, #district:hover{
+  color: #002467;
+  background-color: white;
+}
+
 
 .Back{
-  background-color: #007a9d;
+  background-color: #002467;
   padding: 10px;
   margin: 6px;
   width: 120px;
@@ -22,7 +34,7 @@ body{
 }
 .Back:hover{
   background-color: white;
-  color: #007a9d;
+  color: #002467;
   border-style: solid;
   border-width: 2px;
   border-color: white;
@@ -34,8 +46,8 @@ h2 {
     margin-top: 0;
 }
 .enter{
-  background-color: #905ac3;
-  color: black;
+  color: white;
+  background-color: #002467;
   margin: 10px;
   padding: 6px 12px 6px 12px;
   border-color: black;
@@ -43,13 +55,17 @@ h2 {
 }
 .enter:hover{
   background-color: white;
-  color: rgb(169, 213, 225);
+  color: #002467;
 }
 .dataentry {
-  background-color: rgb(169, 213, 225);
-  margin: -70px 500px;
+  text-align: center;
+  background-color: white;
+  margin: 20px;
   border-color: black;
   border-width: 2px;
   border-style: solid;
   padding: 20px 0px;
+}
+th {
+  padding: 10px;
 }

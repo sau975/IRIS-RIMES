@@ -24,7 +24,7 @@ app.use((req, res, next) => {
 
 app.post('/api/addData', (req, res) => {
   const data = req.body.data; 
-  client.query('INSERT INTO dataentry(station, state) VALUES($1, $2)', [data.field1, data.field2])
+  client.query('INSERT INTO dataentry(serialnumber, date, stationname, stationid, rainfall, time) VALUES($1, $2, $3, $4, $5)', [data.field1, data.field2, data.field3, data.field4, data.field5])
     .then(() => {
       res.status(200).json({ message: 'Data inserted successfully' });
     })
