@@ -5,9 +5,9 @@
   <div style="margin-bottom: 20px">
     <div class="values">
       <label for="date" id="date_label">Enter Date : </label>
-      <input id="date" type="text" [(ngModel)]="inputValue" />
+      <input id="date" type="text" (keyup)="setDateMonth()" [(ngModel)]="date" />
       <label for="month" id="month_label"> Enter Month : </label>
-      <select id="month" type="text" [(ngModel)]="inputValue1" default="Enter a value">
+      <select id="month" type="text" [(ngModel)]="month" (ngModelChange)="setDateMonth()">
         <option value="01">January</option>
         <option value="02">February</option>
         <option value="03">March</option>
@@ -21,9 +21,9 @@
         <option value="11">November</option>
         <option value="12">December</option>
       </select>
-      <button id="load" (click)="getDepartureMap()">Get Departure Map</button>
-      <button id="load" (click)="getNormalMap()">Get Normal Map</button>
-      <button id="load" (click)="getDailyMap()">Get Daily Map</button>
+      <button type="button" class="load" (click)="getDepartureMap()">Get Departure Map</button>
+      <button type="button" class="load" (click)="getNormalMap()">Get Normal Map</button>
+      <button type="button" class="load" (click)="getDailyMap()">Get Daily Map</button>
       <!-- <button id="load" (click)="onSelect('Normal')">Get Normal Map</button>
       <button id="load" (click)="onSelect('Daily')">Get Daily Map</button> -->
     </div>
