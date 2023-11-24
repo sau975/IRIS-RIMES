@@ -137,14 +137,14 @@ export class DepartureMapComponent implements OnInit {
       next: value => {
         this.fetchedMasterData = value;
         this.stationtodistrict();
-        // console.log("value",value)
+
       },
       error: err => console.error('Error fetching data:', err)
     });
 
   }
   findMatchingData(id: string): any | null {
-    const matchedData = this.processedData.find((data: any) => data.districtID === id);
+    const matchedData = this.stationtodistrictdata.find((data: any) => data.districtid=== id);
     return matchedData || null;
   }
   findMatchingDatastate(id: string): any | null {
@@ -206,7 +206,7 @@ export class DepartureMapComponent implements OnInit {
           districtname: previousdistrictname,
           numberofdistricts : numberofdistricts,
           stationrainfallsum : stationrainfallsum,
-          districtrainfall: stationrainfallsum/numberofdistricts,
+          dailyrainfall: stationrainfallsum/numberofdistricts,
           stateid : previousstateid,
           statename : previousstatename,
           subdivid : previoussubdivid,
@@ -226,7 +226,6 @@ export class DepartureMapComponent implements OnInit {
        previousregionid = item.regionid;
        previousregionname = item.region_code;
     }
-    console.log(this.stationtodistrictdata)
   }
 
 
