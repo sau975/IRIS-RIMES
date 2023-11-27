@@ -1,0 +1,80 @@
+<div class="card">
+    <div style="background-color: aqua; border-radius: 5px; font-weight: bold;">
+        <legend class="text-center">Realtime RainFall Data</legend>
+    </div>
+    <p-table #dt1 [value]="data" selectionMode="single" [(selection)]="selected" dataKey="id" [tableStyle]="{'min-width': '50rem'}"
+    [rows]="10" [paginator]="true" stateStorage="session" stateKey="statedemo-session">
+        <ng-template pTemplate="header">
+            <tr>
+                <th pSortableColumn="sno">SNo <p-sortIcon field="sno"></p-sortIcon></th>
+                <!-- <th pSortableColumn="id">ID <p-sortIcon field="country.name"></p-sortIcon></th> -->
+                <th pSortableColumn="station">Station <p-sortIcon field="representative.name"></p-sortIcon></th>
+                <th pSortableColumn="district">District <p-sortIcon field="district"></p-sortIcon></th>
+                <!-- <th pSortableColumn="subdivision">Subdivision <p-sortIcon field="subdivision"></p-sortIcon></th>
+                <th pSortableColumn="state">State <p-sortIcon field="state"></p-sortIcon></th>
+                <th pSortableColumn="region">Region <p-sortIcon field="region"></p-sortIcon></th> -->
+                <th pSortableColumn="railfall">Railfall <p-sortIcon field="railfall"></p-sortIcon></th>
+                <th pSortableColumn="updateddate">Updated Date <p-sortIcon field="updateddate"></p-sortIcon></th>
+            </tr>
+            <tr>
+                <th style="width: 5px;">
+                    <input pInputText type="text" class="w-full">
+                </th>
+                <!-- <th>
+                    <input pInputText type="text" placeholder="Search by Country" class="w-full">
+                </th> -->
+                <th>
+                    <input pInputText type="text" class="w-full">
+                </th>
+                <th>
+                    <input pInputText type="text" class="w-full">
+                </th>
+                <th>
+                    <input pInputText type="text" class="w-full">
+                </th>
+                <th>
+                    <input pInputText type="text" class="w-full">
+                </th>
+                <!-- <th>
+                    <input pInputText type="text" placeholder="Search by Representative" class="w-full">
+                </th>
+                <th>
+                    <input pInputText type="text" placeholder="Search by Status" class="w-full">
+                </th>
+                <th>
+                    <input pInputText type="text" placeholder="Search by Status" class="w-full">
+                </th> -->
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-customer>
+            <tr [pSelectableRow]="customer">
+                <td>
+                    <span class="p-column-title">Sno</span>
+                    {{customer.Sno}}
+                </td>
+                <td>
+                    <span class="p-column-title">Station</span>
+                    {{customer.station}}
+                </td>
+                <td>
+                    <span class="p-column-title">District</span>
+                    <span>{{customer.district}}</span>
+                </td>
+                <td>
+                    <span class="p-column-title">RailFall</span>
+                    <span>{{customer.railFall}}</span>
+                </td>
+                <td>
+                    <span class="p-column-title">Updated Date</span>
+                    <span>{{customer.updatedDate}}</span>
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+            <tr>
+                <td colspan="4">No customers found.</td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>
+

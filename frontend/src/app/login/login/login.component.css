@@ -5,10 +5,10 @@
   height: 100vh;
   width: 100%;
 }
-body{
+ /* body{
   display: flex;
-}
-
+} */
+/*
 .Back{
   background-color: #007a9d;
   padding: 10px;
@@ -41,11 +41,59 @@ h2 {
   border-color: black;
   border-radius: 10px;
 }
-.auth[_ngcontent-ng-c728087787] {
+*/
+/* .auth[_ngcontent-ng-c728087787] {
   background-color: white;
   margin: -70px 500px;
   border-color: black;
   border-width: 2px;
   border-style: solid;
   padding: 20px 0px;
+}  */
+
+
+/* html,
+body {
+  height: 100%;
+}
+body {
+  background: #efefef !important;
+} */
+.login.card {
+  width: 100%;
+  max-width: 480px;
+  margin: 0 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+.container {
+  height: 65%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+
+.card-body {
+  padding: 50px;
+}
+
+.register.card {
+  max-width: 480px;
+  margin: 0 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+.card .card-img-top {
+  width: 100px;
+  margin: 16px auto 0;
+}
+.alert {
+  margin-top: 10px;
+}
+
+.hide {
+  display: none;
+}
+
+.card {
+  background-color: transparent !important;
 }

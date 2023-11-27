@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import * as L from 'leaflet';
 import 'leaflet.fullscreen';
 import { DataService } from '../../data.service';
@@ -13,7 +13,7 @@ import { Router } from '@angular/router';
   templateUrl: './departure-map.component.html',
   styleUrls: ['./departure-map.component.css']
 })
-export class DepartureMapComponent implements OnInit {
+export class DepartureMapComponent implements OnInit, AfterViewInit {
   private initialZoom = 4;
   private map: L.Map = {} as L.Map;
   private map1: L.Map = {} as L.Map;
@@ -54,8 +54,10 @@ export class DepartureMapComponent implements OnInit {
       }
     });
   }
-  ngOnInit(): void {
+  ngAfterViewInit(): void {
     this.initMap();
+  }
+  ngOnInit(): void {
     this.loadGeoJSON();
     this.fetchDataFromBackend();
   }
@@ -3957,7 +3959,8 @@ const groupedData = this.subdivisionfetchedDatadep.reduce((acc, current) => {
           const matchedData = this.findMatchingData(id2);
           const rainfall = matchedData && matchedData.Rainfall !== null && matchedData.Rainfall !== undefined && !Number.isNaN(matchedData.Rainfall) ? matchedData.Rainfall.toFixed(2) : 'NA';
           const dailyrainfall = matchedData && matchedData.dailyrainfall !== null && matchedData.dailyrainfall != undefined && !Number.isNaN(matchedData.dailyrainfall) ? matchedData.dailyrainfall.toFixed(2) : 'NA';
-          const normalrainfall = matchedData && !Number.isNaN(matchedData.normalrainfall) ? matchedData.normalrainfall.toFixed(2) : 'NA';
+          // const normalrainfall = matchedData && !Number.isNaN(matchedData.normalrainfall) ? matchedData.normalrainfall.toFixed(2) : 'NA';
+          const normalrainfall = 55
           const popupContent = `
             <div style="background-color: white; padding: 5px; font-family: Arial, sans-serif;">
               <div style="color: #002467; font-weight: bold; font-size: 10px;">DISTRICT: ${id1}</div>

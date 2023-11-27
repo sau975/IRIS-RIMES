@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { DataService } from 'src/app/data.service';
 
@@ -9,21 +10,20 @@ import { DataService } from 'src/app/data.service';
 })
 export class LoginComponent {
 
-  username: string | undefined;
-  password: string | undefined;
-
   constructor(
     private router: Router,
-    private dataService: DataService
+    private dataService: DataService,
+    private formBuilder: FormBuilder
   ) {
    }
 
+  loginForm:FormGroup = this.formBuilder.group({
+    username: ['', Validators.required],
+    password: ['', Validators.required]
+  })
+
   login() {
-    let loginData = {
-      username: this.username,
-      password: this.password
-    }
-    this.dataService.userLogin(loginData).subscribe(res => {
+    this.dataService.userLogin(this.loginForm.value).subscribe(res => {
       if(res && res.message == "Login successful"){
         localStorage.setItem("isAuthorised", JSON.stringify(res));
         this.router.navigate(['/front-page']);
