@@ -1,8 +1,8 @@
 <div class="background-effect">
-  <table style="width: 100%">
+  <table style="width: 100%; background: linear-gradient(-225deg, #22E1FF 0%, #1D8FE1 48%, #625EB1 100%);">
     <tbody>
       <tr>
-        <td style="width: 8%; padding-left: 25px" align="left">
+        <td style="width: 8%; padding: 10px 0px 17px 25px;" align="left">
           <img class="logo" src="/assets/images/IMDlogo_Ipart.png" alt="" />
         </td>
         <td style="text-align: center; padding-left: 20px; width: 80%">
@@ -12,7 +12,7 @@
                 <td>
                   <label
                     style="
-                      color: white;
+                      color: black;
                       vertical-align: middle;
                       font-family: Arial;
                       font-weight: bolder;
@@ -27,7 +27,7 @@
                 <td>
                   <label
                     style="
-                    color: white;
+                      color: black;
                       vertical-align: middle;
                       font-family: Arial;
                       font-weight: bolder;
@@ -42,7 +42,7 @@
                 <td>
                   <label
                     style="
-                          color: white;
+                      color: black;
                       vertical-align: middle;
                       font-family: Arial;
                       font-weight: bolder;
@@ -57,7 +57,7 @@
                 <td>
                   <label
                     style="
-                         color: white;
+                      color: black;
                       vertical-align: middle;
                       font-family: Arial;
                       font-weight: bolder;
@@ -72,7 +72,7 @@
                 <td>
                   <label
                     style="
-                         color: white;
+                      color: black;
                       vertical-align: middle;
                       font-family: Arial;
                       font-weight: bolder;
@@ -88,31 +88,35 @@
         </td>
         <td>
           <div class="button">
-            <button class="Back" href="http://www.imd.gov.in">Back</button>
+            <button class="Back" (click)="goBack()">Back</button>
           </div>
         </td>
       </tr>
     </tbody>
   </table>
-  <div style="text-align: center; padding-top: 20px">
+  <div class = "navbar">
+    <label for="region" class="date_label">Select Region :</label>
     <select name="region" id="region">
       <option value="region1">region1</option>
       <option value="region2">region2</option>
       <option value="region3">region3</option>
       <option value="region4">region4</option>
     </select>
+    <label for="mcs" class="date_label">Select MC :</label>
     <select name="mcs" id="mcs">
       <option value="mc1">mc1</option>
       <option value="mc2">mc2</option>
       <option value="mc3">mc3</option>
       <option value="mc4">mc4</option>
     </select>
+    <label for="state" class="date_label">Select State :</label>
     <select name="state" id="state">
       <option value="state1">state1</option>
       <option value="state2">state2</option>
       <option value="state3">state3</option>
       <option value="state4">state4</option>
     </select>
+    <label for="district" class="date_label">Select District :</label>
     <select name="district" id="district">
       <option value="district1">district1</option>
       <option value="district2">district2</option>
@@ -121,47 +125,130 @@
     </select>
   </div>
 
-    <div style="text-align: center; padding-top: 40px">
-
-      <div class="dataentry">
-      <h3>ENTER STATION DATA</h3>
-      <br>
-      <form (submit)="addData()">
-        <table style="margin: auto;">
+  <div style="text-align: center; padding-top: 40px">
+    <div class="dataentry">
+      <h3>STATIONS DATA</h3>
+      <br />
+      <!-- <form (submit)="addData()">
+        <table style="margin: auto; border-collapse: collapse; width: 80%; border: 1px solid black;">
           <thead>
             <tr>
-              <th>S.NO</th>
-              <th>DATE</th>
-              <th>STATION NAME</th>
-              <th>STATION ID</th>
-              <th>RAINFALL</th>
-              <th>TIME</th>
+              <th style="border: 1px solid black;">S.NO</th>
+              <th style="border: 1px solid black;">DATE</th>
+              <th style="border: 1px solid black;">STATION NAME</th>
+              <th style="border: 1px solid black;">STATION ID</th>
+              <th style="border: 1px solid black;">RAINFALL</th>
+              <th style="border: 1px solid black;">TIME</th>
+              <th style="border: 1px solid black;">ACTION</th>
             </tr>
           </thead>
           <tbody>
             <tr *ngFor="let station of stations; let i = index">
-              <td>{{ i + 1 }}</td>
-              <td><input type="date" id="field1" name="field1" [(ngModel)]="data.field1" required></td>
-              <td><input type="text" id="field2" name="field2" [(ngModel)]="data.field2" required></td>
-              <td><input type="number" id="field3" name="field3" [(ngModel)]="data.field3" required></td>
-              <td><input type="number" id="field4" name="field4" [(ngModel)]="data.field4" required></td>
-              <td><input type="time" id="field5" name="field5" [(ngModel)]="data.field5" required></td>
+              <td style="border: 1px solid black;">{{ i + 1 }}</td>
+              <td style="border: 1px solid black;"><input type="date" id="field1" name="field1" [(ngModel)]="station.field1" required style="border: none;"></td>
+              <td style="border: 1px solid black;"><input type="text" id="field2" name="field2" [(ngModel)]="station.field2" required style="border: none;"></td>
+              <td style="border: 1px solid black;"><input type="number" id="field3" name="field3" [(ngModel)]="station.field3" required style="border: none;"></td>
+              <td style="border: 1px solid black;"><input type="number" id="field4" name="field4" [(ngModel)]="station.field4" required style="border: none;"></td>
+              <td style="border: 1px solid black;"><input type="time" id="field5" name="field5" [(ngModel)]="station.field5" required style="border: none;"></td>
+              <td style="border: 1px solid black;">
+                <button class="edit" (click)="editStation(i)">Edit</button>
+                <button class="delete" (click)="deleteStation(i)">Delete</button>
+              </td>
             </tr>
           </tbody>
         </table>
-        <button class="enter"  (click)="addStation()">Add Station</button>
+        <button class="enter" (click)="openNewWindow()">Add Station</button>
         <button type="submit" class="enter" (click)="addData()">Submit</button>
-
+      </form> -->
+      <form>
+        <table
+          style="
+            margin: auto;
+            border-collapse: collapse;
+            width: 80%;
+            border: 1px solid black;
+          "
+        >
+          <thead>
+            <tr>
+              <th style="border: 1px solid black">S.NO</th>
+              <th style="border: 1px solid black">STATION NAME</th>
+              <th style="border: 1px solid black">STATION ID</th>
+              <th style="border: 1px solid black">RAINFALL</th>
+              <th style="border: 1px solid black">DATE</th>
+              <th style="border: 1px solid black">TIME</th>
+              <th style="border: 1px solid black">ACTION</th>
+            </tr>
+          </thead>
+          <tbody *ngIf="existingstationdata && existingstationdata.length > 0">
+            <tr *ngFor="let station of existingstationdata; let i = index">
+              <td style="border: 1px solid black">{{ i + 1 }}</td>
+              <td style="border: 1px solid black">{{ station.stationname }}</td>
+              <td style="border: 1px solid black">{{ station.stationid }}</td>
+              <td style="border: 1px solid black"><input type="number" id="rainfall" name="rainfall" required style="border: none;"></td>
+              <td style="border: 1px solid black"><input type="date" id="date" name="date" required style="border: none;"></td>
+              <td style="border: 1px solid black"><input type="time" id="time" name="time" required style="border: none;"></td>
+              <td style="border: 1px solid black">
+                <button class="edit" (click)="editStation(i)">Edit</button>
+                <button class="delete" (click)="deleteStation(i)">Delete</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <button class="enter" (click)="Addstation()">Add Station</button>
+        <button type="submit" class="enter">Submit</button>
       </form>
 
       <div *ngIf="message">
         <p>{{ message }}</p>
       </div>
-
-
-
-
-
     </div>
+  </div>
+  <div *ngIf="showPopup" class="popup" >
+    <button class="close-btn" (click)="cancelAddStation()">X</button>
+    <h2>Add New Station Data</h2>
+    <form (submit)="addData()">
+      <table
+        style="
+          margin: auto;
+          border-collapse: collapse;
+          width: 80%;
+          border: 1px solid black;
+          background-color: white;
+        "
+      >
+        <thead>
+          <tr>
+            <th style="border: 1px solid black">S.NO</th>
+            <th style="border: 1px solid black">STATION NAME</th>
+            <th style="border: 1px solid black">STATION ID</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr >
+            <td style="border: 1px solid black"></td>
+            <td style="border: 1px solid black"><input id="field1" name="field1" [(ngModel)]="data.field1" required style="border: none;"></td>
+            <td style="border: 1px solid black"><input id="field2" name="field2" [(ngModel)]="data.field2" required style="border: none;"></td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="addonemorestation">
+      <button>Add one more station</button>
+    </div>
+        <button class="enter" (click)="addData()">Add Station</button>
+    </form>
+  </div>
+  <div *ngIf="showEditPopup" class="edit-popup">
+    <button class="close-btn" (click)="cancelEdit()">X</button>
+    <h2>Edit Station</h2>
+    <label for="stationname">STATION NAME</label>
+    <input type="name" id="stationname" name="stationname" [(ngModel)]="editData.stationname" required>
+
+    <label for="stationid">STATION ID</label>
+    <input type="number" id="stationid" name="stationid" [(ngModel)]="editData.stationid" required> -->
+
+
+
+    <button (click)="updateData()">Update</button>
   </div>
 </div>

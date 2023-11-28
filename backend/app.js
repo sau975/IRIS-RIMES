@@ -21,17 +21,50 @@ app.use((req, res, next) => {
   next();
 });
 
-// app.post('/api/addData', (req, res) => {
-//   const data = req.body.data; 
-//   client.query('INSERT INTO dataentry(serialnumber, date, stationname, stationid, rainfall, time) VALUES($1, $2, $3, $4, $5)', [data.field1, data.field2, data.field3, data.field4, data.field5])
-//     .then(() => {
-//       res.status(200).json({ message: 'Data inserted successfully' });
-//     })
-//     .catch(error => {
-//       console.error('Error inserting data:', error);
-//       res.status(500).json({ error: 'Internal server error' });
-//     });
-// });
+app.post('/api/addData', (req, res) => {
+  const data = req.body.data; 
+  client.query('INSERT INTO dataentry(stationname, stationid) VALUES($1, $2)', [data.field1, data.field2])
+    .then(() => {
+      res.status(200).json({ message: 'Data inserted successfully' });
+    })
+    .catch(error => {
+      console.error('Error inserting data:', error);
+      res.status(500).json({ error: 'Internal server error' });
+    });
+});
+app.delete("/existingstationdata", (req, res) => {
+  const data = req.body.data; 
+  client.query('DELETE FROM existingstationdata WHERE stationid = $1',[data.stationid])
+  .then(() => {
+    res.status(200).json({ message: `Row with ID ${id} deleted successfully` });
+  })
+  .catch(error => {
+    console.error('Error deleting data:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  });
+});
+app.post("/existingstationdata", (req, res) => {
+  const data = req.body.data; 
+  client.query('INSERT INTO existingstationdata(stationname, stationid) VALUES($1, $2)', [data.stationname, data.stationid])
+    .then(() => {
+      res.status(200).json({ message: 'Data inserted successfully' });
+    })
+    .catch(error => {
+      console.error('Error inserting data:', error);
+      res.status(500).json({ error: 'Internal server error' });
+    });
+});
+app.get("/existingstationdata", (req, res) => {
+  client.query(
+    "(SELECT * FROM existingstationdata)UNION(SELECT * FROM dataentry)ORDER BY stationid",
+    (err, result) => {
+      if (err) {
+        res.send(err);
+      }
+      res.send(result.rows);
+    }
+  );
+});
 
 app.get("/masterFile", (req, res) => {
   client.query(

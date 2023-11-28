@@ -1,9 +1,25 @@
 .background-effect {
-  background-image: url(../../../assets/images/latest_back.jpg);
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
   background-repeat: no-repeat;
   background-size: cover;
-  height: 100vh;
   width: 100%;
+}
+.date_label{
+  color: black;
+  font-size: 18px;
+  font-weight: 600;
+}
+h3{
+  color: black;
+  font-size: 20px;
+  font-weight: 600;
+}
+.navbar{
+  margin: 20px 90px 0px 90px;
+  background-color: white;
+  text-align: center;
+  padding: 8px 120px 8px 120px;
+  border-radius: 20px;
 }
 body{
   display: flex;
@@ -12,12 +28,17 @@ body{
   background-color: #002467;
   color: white;
   padding: 10px;
-  margin: 10px;
+  margin: 10px 20px 10px 10px;
   border-radius: 10px;
+  box-shadow: 5px 5px 10px 2px rgba(0,0,0,.8);
 }
 #region:hover, #mcs:hover, #state:hover, #district:hover{
   color: #002467;
+  font-weight: 600;
   background-color: white;
+  border-color: #002467;
+  border-width: 2px;
+  box-shadow: none;
 }
 
 
@@ -31,13 +52,15 @@ body{
   border-radius: 20px;
   color: white;
   top: 2px;
+  box-shadow: 5px 5px 10px 2px rgba(0,0,0,.8);
 }
 .Back:hover{
-  background-color: white;
   color: #002467;
-  border-style: solid;
+  font-weight: 600;
+  background-color: white;
+  border-color: #002467;
   border-width: 2px;
-  border-color: white;
+  box-shadow: none;
 }
 .button{
   text-align: center;
@@ -52,20 +75,84 @@ h2 {
   padding: 6px 12px 6px 12px;
   border-color: black;
   border-radius: 10px;
+  box-shadow: 5px 5px 10px 2px rgba(0,0,0,.8);
 }
 .enter:hover{
-  background-color: white;
   color: #002467;
+  font-weight: 600;
+  background-color: white;
+  border-color: #002467;
+  border-width: 2px;
+  box-shadow: none;
 }
 .dataentry {
   text-align: center;
   background-color: white;
-  margin: 20px;
+  margin: 10px 90px;
   border-color: black;
   border-width: 2px;
   border-style: solid;
   padding: 20px 0px;
 }
+.edit{
+  background-color: #007ccd;
+  margin: 3px;
+  color: black;
+  font-weight: 400;
+}
+.delete{
+  background-color: red;
+  margin: 3px;
+  color: black;
+  font-weight: 400;
+}
 th {
   padding: 10px;
 }
+.popup {
+  text-align: center;
+  position: fixed;
+  width: 70%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 20px;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  border: 1px solid black;
+  box-shadow: 5px 5px 10px 2px rgba(0,0,0,.8);
+  z-index: 1000;
+}
+.edit-popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fff;
+  padding: 20px;
+  border: 1px solid #ccc;
+  z-index: 1000;
+}
+
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 1;
+  border: none;
+  background: transparent;
+}
+
+.popup-buttons {
+  margin-top: 20px;
+  text-align: right;
+}
+.addonemorestation{
+  margin-top: 20px;
+  text-align: right;
+}
+
+
+/* Add more styles as needed */
+

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 
+
 @Injectable({
   providedIn: 'root'
 })
@@ -14,6 +15,17 @@ export class DataService {
   constructor(private http: HttpClient) {}
   addData(data: any): Observable<any> {
     return this.http.post<any>(this.apiUrl, { data });
+  }
+  deleteData(data: any): Observable<any> {
+    const url = `${this.baseUrl+'/existingstationdata'}/${data}`;
+    return this.http.delete(url);
+  }
+  updateData(data: any): Observable<any> {
+    return this.http.post<any>(this.baseUrl+'/existingstationdata', { data });
+  }
+  existingstationdata(): Observable<any> {
+    const url = `${this.baseUrl}`+'/existingstationdata';
+    return this.http.get(url);
   }
 
   fetchData(): Observable<any> {
