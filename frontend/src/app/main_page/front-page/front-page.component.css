@@ -5,7 +5,6 @@ img{
 }
 
 .background-image{
-  background-image: url(../../../assets/images/latest_back.jpg);
   background-repeat: no-repeat;
   background-size: cover;
 }
