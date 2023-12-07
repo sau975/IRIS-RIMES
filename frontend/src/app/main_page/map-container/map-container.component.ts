@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import * as L from 'leaflet';
-import 'leaflet-fullscreen';
 import * as html2canvas from 'html2canvas';
 import { HttpClient } from '@angular/common/http';
 import { DataService } from '../../data.service';

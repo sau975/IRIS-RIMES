@@ -22,7 +22,7 @@ export class LoginComponent {
     password: ['', Validators.required]
   })
 
-  login() {
+  onLoginSubmit() {
     this.dataService.userLogin(this.loginForm.value).subscribe(res => {
       if(res && res.message == "Login successful"){
         localStorage.setItem("isAuthorised", JSON.stringify(res));
