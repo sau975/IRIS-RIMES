@@ -134,7 +134,7 @@
 			<div class="ms-4">
 				<span class
 					style="
-                      font-size: 1.2rem;
+                      font-size: 2.2rem;
                       background-color: rgba(0, 0, 0, 0.85);
                       color: white;
                       padding: 0.75rem;
@@ -330,11 +330,18 @@
 			(ngSubmit)="onLoginSubmit()"
 			autocomplete="off">
 
-			<div class="w-100 text-center h2">
-				<img height="50px"
+			<div class="w-100 text-center h5">
+				<img height="95px"
 					src="/assets/images/IMDlogo_Ipart-iris.png">
 				<br>
-				IRIS
+				IMD Rainfall Information System (IRIS)
+        Hydromet Division <br>
+			</div>
+
+      <div class="w-100 text-center h6">
+        India Meteorological Department <br>
+        Ministry Of Earth Sciences <br>
+        New Delhi-110 003
 			</div>
 
 			<div class="mt-5 ">
@@ -352,7 +359,7 @@
 			<div class="mt-3 ">
 				<mat-form-field class="w-100"
 					appearance="outline">
-					<mat-icon matSuffix>password</mat-icon>
+					<mat-icon matSuffix>vpn_key</mat-icon>
 					<mat-label>Password</mat-label>
 					<input [formControlName]="'password'"
 						matInput
@@ -379,7 +386,7 @@
 				mat-raised-button
 				color="primary"
 				class="w-100 mt-4 mb-4">
-				<mat-icon>login</mat-icon>
+				<mat-icon>input</mat-icon>
 				Login
 			</button>
 
