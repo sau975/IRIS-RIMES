@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import 'leaflet.fullscreen';
 import 'jspdf-autotable';
 import { Router } from '@angular/router';
 import { DataService } from 'src/app/data.service';

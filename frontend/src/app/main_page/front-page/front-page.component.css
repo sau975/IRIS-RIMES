@@ -5,6 +5,7 @@ img{
 }
 
 .background-image{
+  background-color: #a2c5b6;
   background-repeat: no-repeat;
   background-size: cover;
 }
@@ -28,7 +29,8 @@ img{
   font-size: 15px;
   font-weight: 600;
   border-radius: 20px;
-  color: #002467
+  color: #002467;
+  box-shadow: 5px 5px 5px 2px rgba(0,0,0,0.8);
 }
 .load:hover{
   background-color: #002467;
@@ -36,6 +38,7 @@ img{
   border-style: solid;
   border-width: 2px;
   border-color: white;
+  box-shadow: none;
 }
 .download{
   background-color: #002467;
@@ -61,7 +64,7 @@ img{
   border-radius: 20px;
 }
 #month{
-  background-color: #00493b;
+  background-color: #002467;
   padding: 10px;
   margin: 6px;
   width: 150px;
@@ -69,15 +72,16 @@ img{
   font-weight: 600;
   border-radius: 20px;
   color: white;
+  box-shadow: 5px 5px 5px 2px rgba(0,0,0,0.8);
 }
 #month_label{
-  color: #00493b;
+  color: #002467;
   font-size: 18px;
   font-weight: 600;
   margin-left: 15px;
 }
 #date{
-  background-color:#00493b;
+  background-color: #002467;
   padding: 10px 10px 10px 22px;
   margin: 6px;
   width: 120px;
@@ -85,9 +89,10 @@ img{
   font-weight: 600;
   border-radius: 20px;
   color: white;
+  box-shadow: 5px 5px 5px 2px rgba(0,0,0,0.8);
 }
 #date_label{
-  color: #00493b;
+  color: #002467;
   font-size: 18px;
   font-weight: 600;
 }

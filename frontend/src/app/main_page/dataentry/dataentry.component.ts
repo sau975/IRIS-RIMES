@@ -8,11 +8,20 @@ import { response } from 'express';
   styleUrls: ['./dataentry.component.css']
 })
 export class DataentryComponent {
+  todayDate: string;
   showEditPopup: boolean = false;
-  editIndex: number | null = null;
-  editData = {
+  showdeletePopup: boolean = false;
+  previousstationid: any;
+  editData:any = {
     stationname: '',
     stationid: '',
+    editIndex : null,
+    previousstationid: null
+  };
+  deleteData:any = {
+    stationname: '',
+    stationid: '',
+    editIndex : null,
   };
 
 
@@ -24,12 +33,20 @@ export class DataentryComponent {
     field2: '',
   };
 
+
   ngOnInit(): void {
     this.fetchDataFromBackend();
   }
   constructor(
     private dataService: DataService,
-    ) {}
+    ) {
+      const today = new Date();
+    const dd = String(today.getDate()).padStart(2, '0');
+    const mm = String(today.getMonth() + 1).padStart(2, '0');
+    const yyyy = today.getFullYear();
+
+    this.todayDate = yyyy + '-' + mm + '-' + dd;
+    }
 
     goBack() {
       window.history.back();
@@ -39,37 +56,34 @@ export class DataentryComponent {
     this.dataService.existingstationdata().subscribe({
       next: value => {
         this.existingstationdata = value;
-        console.log(this.existingstationdata[0])
       },
       error: err => console.error('Error fetching data:', err)
     });
   }
-
-
   editStation(index: number) {
     this.showEditPopup = true;
-    this.editIndex = index;
     this.editData = { ...this.existingstationdata[index] };
+    this.editData.editIndex = index;
+    this.editData.previousstationid = this.editData.stationid
+    console.log(this.editData, "jjjj")
+  }
+  deleteStationdata(index: number): void {
+    this.showdeletePopup = true;
+    this.deleteData = { ...this.existingstationdata[index] };
   }
 
-
-
   updateData() {
-    this.dataService.deleteData(this.existingstationdata[0].stationid).subscribe({
-      next: response => {
-        console.log('Data deleted successfully:', response);
-      },
-      error: err => console.error('Error deleting data. Please check the console for details.', err)
-    });
     this.editData = {
       stationname: this.editData.stationname,
       stationid: this.editData.stationid,
+      editIndex : this.editData.editIndex,
+      previousstationid : this.editData.previousstationid
     };
-    if (this.editIndex !== null && this.editIndex >= 0) {
-      this.existingstationdata[this.editIndex] = { ...this.editData };
-      console.log(this.existingstationdata[this.editIndex])
+    if (this.editData.editIndex !== null && this.editData.editIndex >= 0) {
+      this.existingstationdata[this.editData.editIndex] = { ...this.editData };
+      console.log(this.existingstationdata[this.editData.editIndex])
 
-      this.dataService.updateData(this.existingstationdata[this.editIndex]).subscribe({
+      this.dataService.updateData(this.editData).subscribe({
         next: response => {
           console.log('Data updated successfully:', response);
         },
@@ -78,19 +92,33 @@ export class DataentryComponent {
       this.showEditPopup = false;
     }
   }
-
-
+  deletestation(){
+    this.deleteData = {
+      stationname: this.deleteData.stationname,
+      stationid: this.deleteData.stationid,
+      editIndex : this.deleteData.editIndex,
+    };
+      this.dataService.deletestation(this.deleteData.stationid).subscribe({
+        next: response => {
+          console.log('Data deleted successfully:', response);
+        },
+        error: err => console.error('Error deleted data. Please check the console for details.', err)
+      });
+      this.showdeletePopup = false;
+      window.location.reload();
+  }
 
   cancelEdit() {
     this.editData = {
       stationname: this.editData.stationname,
       stationid: this.editData.stationid,
+      editIndex : this.editData.editIndex,
+      previousstationid : this.editData.previousstationid
     };
     this.showEditPopup = false;
   }
-
-  deleteStation(index: number) {
-    console.log('Deleting station at index:', index);
+  canceldelete(){
+    this.showdeletePopup = false;
   }
   Addstation() {
     this.showPopup = true;
@@ -98,23 +126,16 @@ export class DataentryComponent {
   cancelAddStation() {
     this.showPopup = false;
   }
-  addData() {
+  addData(){
     this.dataService.addData(this.data).subscribe({
       next: response => {
         this.message = response.message;
       },
       error: err => console.error('Error adding data. Please check the console for details.', err)
-
   });
   window.location.reload();
   this.showPopup = false;
   }
-
-
-
-
-
-
 
 
 

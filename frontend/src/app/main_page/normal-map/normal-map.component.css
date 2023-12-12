@@ -3,6 +3,9 @@ img{
   width: 60px;
 
 }
+.logo {
+  margin: 6px 0 0 51px;
+}
 .map_data{
   text-align: center;
  margin: 2%;

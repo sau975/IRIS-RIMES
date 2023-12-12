@@ -21,10 +21,10 @@
                 <table style="width: 100%">
                   <tbody>
                     <tr>
-                      <td style="width: 15%; text-align: center">
+                      <td style="width: 15%; text-align: center; margin-left: 20px ">
                         <img
                           class="logo"
-                          src="/assets/images/IMDlogo_Ipart.png"
+                          src="/assets/images/IMDlogo_Ipart-iris.png"
                           alt=""
                         />
                       </td>
@@ -42,7 +42,7 @@
                                     font-size: 15px;
                                   "
                                 >
-                                 DISTRICT NORMAL MAP (mm)</label
+                                  DISTRICT NORMAL MAP (mm)</label
                                 >
                               </td>
                             </tr>
@@ -56,7 +56,7 @@
                                     font-weight: bolder;
                                     font-size: 14px;
                                   "
-                                  >Date : {{ inputValue1 }}{{ inputValue }}
+                                  >Date : {{ formatteddate }}
                                 </label>
                               </td>
                             </tr>
@@ -99,52 +99,94 @@
                     </tr>
                   </tbody>
                 </table>
-                <div id="mainmap" style="height: 80vh; width: 80%;"></div>
+                <div id="mainmap" style="height: 80vh; width: 80%"></div>
                 <div class="leaflet-bottom leaflet-right">
                   <table
                     class="info_legend leaflet-control"
                     style="width: 98%; height: 30px"
                   >
-                  <tbody>
-                    <tr align="center">
-                      <td width="5px"></td>
-                      <td style="background-color: #0096ff; width: 10px"></td>
-                      <td style="font-size: 10px; color: black; font-weight: 800">
-                        Large Excess [60% or more]
-                      </td>
-                      <td width="5px"></td>
-                      <td style="background-color: #32c0f8; width: 10px"></td>
-                      <td style="font-size: 10px; color: black; font-weight: 800">
-                        Excess [20% to 59%]
-                      </td>
-                      <td width="5px"></td>
-                      <td style="background-color: #00cd5b; width: 10px"></td>
-                      <td style="font-size: 10px; color: black; font-weight: 800">
-                        Normal [-19% to 19%]
-                      </td>
+                    <tbody>
+                      <tr align="center">
+                        <td width="5px"></td>
+                        <td style="background-color: #ffffff; width: 10px"></td>
+                        <td
+                          style="
+                            font-size: 10px;
+                            color: black;
+                            font-weight: 800;
+                          "
+                        >
+                          1 mm
+                        </td>
+                        <td width="5px"></td>
+                        <td style="background-color: #f3ffdd; width: 10px"></td>
+                        <td
+                          style="
+                            font-size: 10px;
+                            color: black;
+                            font-weight: 800;
+                          "
+                        >
+                          1-5 mm
+                        </td>
+                        <td width="5px"></td>
+                        <td style="background-color: #fff57c; width: 10px"></td>
+                        <td
+                          style="
+                            font-size: 10px;
+                            color: black;
+                            font-weight: 800;
+                          "
+                        >
+                          5-10 mm
+                        </td>
 
-                      <td width="5px"></td>
-                      <td style="background-color: #ff2700; width: 10px"></td>
-                      <td style="font-size: 10px; color: black; font-weight: 800">
-                        Deficient [-59% to -20%]
-                      </td>
+                        <td width="5px"></td>
+                        <td style="background-color: #ffa600; width: 10px"></td>
+                        <td
+                          style="
+                            font-size: 10px;
+                            color: black;
+                            font-weight: 800;
+                          "
+                        >
+                          10-20 mm
+                        </td>
 
-                      <td width="5px"></td>
-                      <td style="background-color: #ffff20; width: 10px"></td>
-                      <td style="font-size: 10px; color: black; font-weight: 800">
-                        Large Deficient [-99% to -60%]
-                      </td>
-                      <td width="5px"></td>
-                      <td style="background-color: #ffffff; width: 10px"></td>
-                      <td style="font-size: 10px; color: black; font-weight: 800">
-                        No Rain [-100%]
-                      </td>
-                      <td style="background-color: #c0c0c0; width: 10px"></td>
-                      <td style="font-size: 10px; color: black; font-weight: 800">
-                        No Data
-                      </td>
-                    </tr>
-                  </tbody>
+                        <td width="5px"></td>
+                        <td style="background-color: #00fb3b; width: 10px"></td>
+                        <td
+                          style="
+                            font-size: 10px;
+                            color: black;
+                            font-weight: 800;
+                          "
+                        >
+                          20-35 mm
+                        </td>
+                        <td width="5px"></td>
+                        <td style="background-color: #006b13; width: 10px"></td>
+                        <td
+                          style="
+                            font-size: 10px;
+                            color: black;
+                            font-weight: 800;
+                          "
+                        >
+                          35-50 mm
+                        </td>
+                        <td style="background-color: #001ca1; width: 10px"></td>
+                        <td
+                          style="
+                            font-size: 10px;
+                            color: black;
+                            font-weight: 800;
+                          "
+                        >
+                          => 50 mm
+                        </td>
+                      </tr>
+                    </tbody>
                   </table>
                 </div>
               </div>
@@ -168,10 +210,10 @@
                 <table style="width: 100%">
                   <tbody>
                     <tr>
-                      <td style="width: 15%; text-align: center">
+                      <td style="width: 15%; text-align: center; margin-left: 20px ">
                         <img
                           class="logo"
-                          src="/assets/images/IMDlogo_Ipart.png"
+                          src="/assets/images/IMDlogo_Ipart-iris.png"
                           alt=""
                         />
                       </td>
@@ -204,7 +246,7 @@
                                     font-size: 14px;
                                   "
                                 >
-                                Date : {{ inputValue }}{{ inputValue1 }}</label
+                                  Date : {{ formatteddate }}</label
                                 >
                               </td>
                             </tr>
@@ -238,7 +280,7 @@
                             text-align: center;
                           "
                         >
-                         IMD, NEW DELHI</label
+                          IMD, NEW DELHI</label
                         >
                         <button class="download" (click)="downloadMapImage1()">
                           Download
@@ -252,46 +294,88 @@
                     class="info_legend leaflet-control"
                     style="width: 98%; height: 30px"
                   >
-                  <tbody>
-                    <tr align="center">
-                      <td width="5px"></td>
-                      <td style="background-color: #0096ff; width: 10px"></td>
-                      <td style="font-size: 10px; color: black; font-weight: 800">
-                        Large Excess [60% or more]
-                      </td>
-                      <td width="5px"></td>
-                      <td style="background-color: #32c0f8; width: 10px"></td>
-                      <td style="font-size: 10px; color: black; font-weight: 800">
-                        Excess [20% to 59%]
-                      </td>
-                      <td width="5px"></td>
-                      <td style="background-color: #00cd5b; width: 10px"></td>
-                      <td style="font-size: 10px; color: black; font-weight: 800">
-                        Normal [-19% to 19%]
-                      </td>
+                    <tbody>
+                      <tr align="center">
+                        <td width="5px"></td>
+                        <td style="background-color: #ffffff; width: 10px"></td>
+                        <td
+                          style="
+                            font-size: 10px;
+                            color: black;
+                            font-weight: 800;
+                          "
+                        >
+                          1 mm
+                        </td>
+                        <td width="5px"></td>
+                        <td style="background-color: #f3ffdd; width: 10px"></td>
+                        <td
+                          style="
+                            font-size: 10px;
+                            color: black;
+                            font-weight: 800;
+                          "
+                        >
+                          1-5 mm
+                        </td>
+                        <td width="5px"></td>
+                        <td style="background-color: #fff57c; width: 10px"></td>
+                        <td
+                          style="
+                            font-size: 10px;
+                            color: black;
+                            font-weight: 800;
+                          "
+                        >
+                          5-10 mm
+                        </td>
 
-                      <td width="5px"></td>
-                      <td style="background-color: #ff2700; width: 10px"></td>
-                      <td style="font-size: 10px; color: black; font-weight: 800">
-                        Deficient [-59% to -20%]
-                      </td>
+                        <td width="5px"></td>
+                        <td style="background-color: #ffa600; width: 10px"></td>
+                        <td
+                          style="
+                            font-size: 10px;
+                            color: black;
+                            font-weight: 800;
+                          "
+                        >
+                          10-20 mm
+                        </td>
 
-                      <td width="5px"></td>
-                      <td style="background-color: #ffff20; width: 10px"></td>
-                      <td style="font-size: 10px; color: black; font-weight: 800">
-                        Large Deficient [-99% to -60%]
-                      </td>
-                      <td width="5px"></td>
-                      <td style="background-color: #ffffff; width: 10px"></td>
-                      <td style="font-size: 10px; color: black; font-weight: 800">
-                        No Rain [-100%]
-                      </td>
-                      <td style="background-color: #c0c0c0; width: 10px"></td>
-                      <td style="font-size: 10px; color: black; font-weight: 800">
-                        No Data
-                      </td>
-                    </tr>
-                  </tbody>
+                        <td width="5px"></td>
+                        <td style="background-color: #00fb3b; width: 10px"></td>
+                        <td
+                          style="
+                            font-size: 10px;
+                            color: black;
+                            font-weight: 800;
+                          "
+                        >
+                          20-35 mm
+                        </td>
+                        <td width="5px"></td>
+                        <td style="background-color: #006b13; width: 10px"></td>
+                        <td
+                          style="
+                            font-size: 10px;
+                            color: black;
+                            font-weight: 800;
+                          "
+                        >
+                          35-50 mm
+                        </td>
+                        <td style="background-color: #001ca1; width: 10px"></td>
+                        <td
+                          style="
+                            font-size: 10px;
+                            color: black;
+                            font-weight: 800;
+                          "
+                        >
+                          => 50 mm
+                        </td>
+                      </tr>
+                    </tbody>
                   </table>
                 </div>
               </div>
@@ -306,7 +390,7 @@
               <div
                 id="map2"
                 style="
-                 width: 94%;
+                  width: 94%;
                   height: 87vh;
                   position: sticky;
                   border-style: solid;
@@ -318,10 +402,10 @@
                 <table style="width: 100%">
                   <tbody>
                     <tr>
-                      <td style="width: 15%; text-align: center">
+                      <td style="width: 15%; text-align: center; margin-left: 20px ">
                         <img
                           class="logo"
-                          src="/assets/images/IMDlogo_Ipart.png"
+                          src="/assets/images/IMDlogo_Ipart-iris.png"
                           alt=""
                         />
                       </td>
@@ -339,7 +423,7 @@
                                     font-size: 15px;
                                   "
                                 >
-                            SUB-DIVISION NORMAL MAP (mm)</label
+                                  SUB-DIVISION NORMAL MAP (mm)</label
                                 >
                               </td>
                             </tr>
@@ -354,7 +438,7 @@
                                     font-size: 14px;
                                   "
                                 >
-                                Date : {{ inputValue1 }}{{ inputValue }}</label
+                                  Date : {{ formatteddate }}</label
                                 >
                               </td>
                             </tr>
@@ -402,46 +486,88 @@
                     class="info_legend leaflet-control"
                     style="width: 98%; height: 30px"
                   >
-                  <tbody>
-                    <tr align="center">
-                      <td width="5px"></td>
-                      <td style="background-color: #0096ff; width: 10px"></td>
-                      <td style="font-size: 10px; color: black; font-weight: 800">
-                        Large Excess [60% or more]
-                      </td>
-                      <td width="5px"></td>
-                      <td style="background-color: #32c0f8; width: 10px"></td>
-                      <td style="font-size: 10px; color: black; font-weight: 800">
-                        Excess [20% to 59%]
-                      </td>
-                      <td width="5px"></td>
-                      <td style="background-color: #00cd5b; width: 10px"></td>
-                      <td style="font-size: 10px; color: black; font-weight: 800">
-                        Normal [-19% to 19%]
-                      </td>
+                    <tbody>
+                      <tr align="center">
+                        <td width="5px"></td>
+                        <td style="background-color: #ffffff; width: 10px"></td>
+                        <td
+                          style="
+                            font-size: 10px;
+                            color: black;
+                            font-weight: 800;
+                          "
+                        >
+                          1 mm
+                        </td>
+                        <td width="5px"></td>
+                        <td style="background-color: #f3ffdd; width: 10px"></td>
+                        <td
+                          style="
+                            font-size: 10px;
+                            color: black;
+                            font-weight: 800;
+                          "
+                        >
+                          1-5 mm
+                        </td>
+                        <td width="5px"></td>
+                        <td style="background-color: #fff57c; width: 10px"></td>
+                        <td
+                          style="
+                            font-size: 10px;
+                            color: black;
+                            font-weight: 800;
+                          "
+                        >
+                          5-10 mm
+                        </td>
 
-                      <td width="5px"></td>
-                      <td style="background-color: #ff2700; width: 10px"></td>
-                      <td style="font-size: 10px; color: black; font-weight: 800">
-                        Deficient [-59% to -20%]
-                      </td>
+                        <td width="5px"></td>
+                        <td style="background-color: #ffa600; width: 10px"></td>
+                        <td
+                          style="
+                            font-size: 10px;
+                            color: black;
+                            font-weight: 800;
+                          "
+                        >
+                          10-20 mm
+                        </td>
 
-                      <td width="5px"></td>
-                      <td style="background-color: #ffff20; width: 10px"></td>
-                      <td style="font-size: 10px; color: black; font-weight: 800">
-                        Large Deficient [-99% to -60%]
-                      </td>
-                      <td width="5px"></td>
-                      <td style="background-color: #ffffff; width: 10px"></td>
-                      <td style="font-size: 10px; color: black; font-weight: 800">
-                        No Rain [-100%]
-                      </td>
-                      <td style="background-color: #c0c0c0; width: 10px"></td>
-                      <td style="font-size: 10px; color: black; font-weight: 800">
-                        No Data
-                      </td>
-                    </tr>
-                  </tbody>
+                        <td width="5px"></td>
+                        <td style="background-color: #00fb3b; width: 10px"></td>
+                        <td
+                          style="
+                            font-size: 10px;
+                            color: black;
+                            font-weight: 800;
+                          "
+                        >
+                          20-35 mm
+                        </td>
+                        <td width="5px"></td>
+                        <td style="background-color: #006b13; width: 10px"></td>
+                        <td
+                          style="
+                            font-size: 10px;
+                            color: black;
+                            font-weight: 800;
+                          "
+                        >
+                          35-50 mm
+                        </td>
+                        <td style="background-color: #001ca1; width: 10px"></td>
+                        <td
+                          style="
+                            font-size: 10px;
+                            color: black;
+                            font-weight: 800;
+                          "
+                        >
+                          => 50 mm
+                        </td>
+                      </tr>
+                    </tbody>
                   </table>
                 </div>
               </div>
@@ -454,21 +580,20 @@
               <div
                 id="map3"
                 style="
-                 width: 94%;
+                  width: 94%;
                   height: 87vh;
                   position: sticky;
                   border-style: solid;
                   border-color: black;
-                  border-width: 2px;
-                "
-              >
+                  border-width: 2px;">
+
                 <table style="width: 100%">
                   <tbody>
                     <tr>
-                      <td style="width: 15%; text-align: center">
+                      <td style="width: 15%; text-align: center; margin-left: 20px ">
                         <img
                           class="logo"
-                          src="/assets/images/IMDlogo_Ipart.png"
+                          src="/assets/images/IMDlogo_Ipart-iris.png"
                           alt=""
                         />
                       </td>
@@ -486,7 +611,7 @@
                                     font-size: 15px;
                                   "
                                 >
-                                REGION NORMAL MAP (mm)</label
+                              HOMOGENOUS REGION NORMAL MAP (mm)</label
                                 >
                               </td>
                             </tr>
@@ -501,11 +626,10 @@
                                     font-size: 14px;
                                   "
                                 >
-                                Date : {{ inputValue1 }}{{ inputValue }}</label
+                                  Date : {{ formatteddate }}</label
                                 >
                               </td>
                             </tr>
-
 
                             <tr>
                               <td>
@@ -536,7 +660,7 @@
                             text-align: center;
                           "
                         >
-                        IMD, NEW DELHI</label
+                          IMD, NEW DELHI</label
                         >
                         <button class="download" (click)="downloadMapImage3()">
                           Download
@@ -550,46 +674,88 @@
                     class="info_legend leaflet-control"
                     style="width: 98%; height: 30px"
                   >
-                  <tbody>
-                    <tr align="center">
-                      <td width="5px"></td>
-                      <td style="background-color: #0096ff; width: 10px"></td>
-                      <td style="font-size: 10px; color: black; font-weight: 800">
-                        Large Excess [60% or more]
-                      </td>
-                      <td width="5px"></td>
-                      <td style="background-color: #32c0f8; width: 10px"></td>
-                      <td style="font-size: 10px; color: black; font-weight: 800">
-                        Excess [20% to 59%]
-                      </td>
-                      <td width="5px"></td>
-                      <td style="background-color: #00cd5b; width: 10px"></td>
-                      <td style="font-size: 10px; color: black; font-weight: 800">
-                        Normal [-19% to 19%]
-                      </td>
+                    <tbody>
+                      <tr align="center">
+                        <td width="5px"></td>
+                        <td style="background-color: #ffffff; width: 10px"></td>
+                        <td
+                          style="
+                            font-size: 10px;
+                            color: black;
+                            font-weight: 800;
+                          "
+                        >
+                          1 mm
+                        </td>
+                        <td width="5px"></td>
+                        <td style="background-color: #f3ffdd; width: 10px"></td>
+                        <td
+                          style="
+                            font-size: 10px;
+                            color: black;
+                            font-weight: 800;
+                          "
+                        >
+                          1-5 mm
+                        </td>
+                        <td width="5px"></td>
+                        <td style="background-color: #fff57c; width: 10px"></td>
+                        <td
+                          style="
+                            font-size: 10px;
+                            color: black;
+                            font-weight: 800;
+                          "
+                        >
+                          5-10 mm
+                        </td>
 
-                      <td width="5px"></td>
-                      <td style="background-color: #ff2700; width: 10px"></td>
-                      <td style="font-size: 10px; color: black; font-weight: 800">
-                        Deficient [-59% to -20%]
-                      </td>
+                        <td width="5px"></td>
+                        <td style="background-color: #ffa600; width: 10px"></td>
+                        <td
+                          style="
+                            font-size: 10px;
+                            color: black;
+                            font-weight: 800;
+                          "
+                        >
+                          10-20 mm
+                        </td>
 
-                      <td width="5px"></td>
-                      <td style="background-color: #ffff20; width: 10px"></td>
-                      <td style="font-size: 10px; color: black; font-weight: 800">
-                        Large Deficient [-99% to -60%]
-                      </td>
-                      <td width="5px"></td>
-                      <td style="background-color: #ffffff; width: 10px"></td>
-                      <td style="font-size: 10px; color: black; font-weight: 800">
-                        No Rain [-100%]
-                      </td>
-                      <td style="background-color: #c0c0c0; width: 10px"></td>
-                      <td style="font-size: 10px; color: black; font-weight: 800">
-                        No Data
-                      </td>
-                    </tr>
-                  </tbody>
+                        <td width="5px"></td>
+                        <td style="background-color: #00fb3b; width: 10px"></td>
+                        <td
+                          style="
+                            font-size: 10px;
+                            color: black;
+                            font-weight: 800;
+                          "
+                        >
+                          20-35 mm
+                        </td>
+                        <td width="5px"></td>
+                        <td style="background-color: #006b13; width: 10px"></td>
+                        <td
+                          style="
+                            font-size: 10px;
+                            color: black;
+                            font-weight: 800;
+                          "
+                        >
+                          35-50 mm
+                        </td>
+                        <td style="background-color: #001ca1; width: 10px"></td>
+                        <td
+                          style="
+                            font-size: 10px;
+                            color: black;
+                            font-weight: 800;
+                          "
+                        >
+                          => 50 mm
+                        </td>
+                      </tr>
+                    </tbody>
                   </table>
                 </div>
               </div>

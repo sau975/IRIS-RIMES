@@ -1,5 +1,5 @@
 .background-effect {
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  background-color: #a2c5b6;
   background-repeat: no-repeat;
   background-size: cover;
   width: 100%;
@@ -88,11 +88,12 @@ h2 {
 .dataentry {
   text-align: center;
   background-color: white;
-  margin: 10px 90px;
+  margin: 10px 15px;
   border-color: black;
   border-width: 2px;
   border-style: solid;
   padding: 20px 0px;
+  border-radius: 20px;
 }
 .edit{
   background-color: #007ccd;
@@ -123,16 +124,31 @@ th {
   z-index: 1000;
 }
 .edit-popup {
+  text-align: center;
   position: fixed;
+  width: 70%;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: #fff;
   padding: 20px;
-  border: 1px solid #ccc;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  border: 1px solid black;
+  box-shadow: 5px 5px 10px 2px rgba(0,0,0,.8);
   z-index: 1000;
 }
-
+.delete-popup {
+  text-align: center;
+  position: fixed;
+  width: 70%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 20px;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  border: 1px solid black;
+  box-shadow: 5px 5px 10px 2px rgba(0,0,0,.8);
+  z-index: 1000;
+}
 .close-btn {
   position: absolute;
   top: 10px;

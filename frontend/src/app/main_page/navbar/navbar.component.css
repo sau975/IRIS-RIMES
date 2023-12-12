@@ -1,5 +1,8 @@
 .top{
+  background-color: white;
+  border-radius: 20px;
   margin: 20px;
+  box-shadow: 10px 15px 10px 2px rgba(0,0,0,.8);
 }
 
 nav {
@@ -7,6 +10,7 @@ nav {
   text-align: left;
   font-family: "Playfair Display", serif;
   font-family: "Roboto Condensed", sans-serif;
+  padding: 10px 0px 10px 20px;
 }
 nav ul {
   margin: 0;

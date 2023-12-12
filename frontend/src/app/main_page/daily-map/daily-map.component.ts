@@ -4,6 +4,7 @@ import html2canvas from 'html2canvas';
 import * as L from 'leaflet';
 import 'leaflet.fullscreen';
 import { DataService } from '../../data.service';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-daily-map',
   templateUrl: './daily-map.component.html',
@@ -18,43 +19,66 @@ export class DailyMapComponent {
   private map2: L.Map = {} as L.Map;
   private map3: L.Map = {} as L.Map;
   fetchedData: any;
-  currentDateNormal: string;
-  currentDateDaily: string;
-  inputDateNormal: string;
-  inputDateDaily: string;
+  currentDateNormal: string = '';
+  currentDateDaily: string = '';
+  currentDateNormaly: string = '';
   fetchedData1: any;
   fetchedData2: any;
   fetchedData3: any;
   fetchedData4: any;
   fetchedData5: any;
   fetchedData6: any;
+  fetchedMasterData: any;
 
-  constructor(private http: HttpClient, private dataService: DataService) {
-    // this.placeholderText = this.formatDate(this.inputValue,  this.inputValue1);
-    const today = new Date();
-    const months = [
-      'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-      'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
-    ];
+  formatteddate: any;
+  dd: any;
+  today = new Date();
+  inputDateDaily: string = '';
+  inputDateNormal: string = '';
 
-    const dd = String(today.getDate());
-    const currmonth = months[today.getMonth()];
-    const year = String(today.getFullYear());
-    // console.log(year);
-
-    this.currentDateNormal = `${currmonth}${dd}`;
-
-    this.currentDateDaily = `${dd.padStart(2, '0')}_${currmonth}`;
-
-    this.inputDateNormal = `${this.inputValue1}${this.inputValue}`;
-    this.inputDateDaily = `${this.inputValue.padStart(2, '0')}_${this.inputValue1}`;
-
+  constructor(
+    private http: HttpClient,
+    private dataService: DataService,
+    private router: Router
+    ) {
+    this.dateCalculation();
+    this.dataService.value$.subscribe((value) => {
+      if(value){
+        let selecteddateAndMonth = JSON.parse(value);
+        this.today.setDate(selecteddateAndMonth.date)
+        this.today.setMonth(selecteddateAndMonth.month-1)
+        this.dateCalculation();
+        this.fetchDataFromBackend();
+      }
+    });
   }
   ngOnInit(): void {
     this.initMap();
     this.loadGeoJSON();
     this.loadGeoJSON1();
     this.fetchDataFromBackend();
+  }
+  dateCalculation(){
+    const yesterday = new Date(this.today);
+    yesterday.setDate(this.today.getDate() - 1);
+    const months = [
+      'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+      'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+    ];
+    this.dd = String(this.today.getDate());
+
+    const mon = String(this.today.getMonth() + 1)
+    const year = this.today.getFullYear();
+    this.formatteddate = `${this.dd.padStart(2, '0')}-${mon.padStart(2, '0')}-${year}`
+    const currmonth = months[this.today.getMonth()];
+    const enddate = `${currmonth}${this.dd}`
+    const ddy = String(yesterday.getDate());
+    const currmonthy = months[yesterday.getMonth()];
+
+    this.currentDateNormal = `${currmonth}${this.dd}`;
+    this.currentDateNormaly = `${currmonthy}${ddy}`;
+    this.currentDateDaily = `${this.dd.padStart(2, '0')}-${currmonth}`;
+    console.log(this.currentDateDaily)
   }
   fetchDataFromBackend(): void {
     this.dataService.fetchData().subscribe(
@@ -93,9 +117,17 @@ export class DailyMapComponent {
         console.error('Error fetching data:', error);
       }
     );
+    this.dataService.fetchMasterFile().subscribe({
+      next: value => {
+        this.fetchedMasterData = value;
+        this.stationtodistrict();
+      },
+      error: err => console.error('Error fetching data:', err)
+    });
   }
   findMatchingData(id: string): any | null {
-    const matchedData = this.processedData.find((data: any) => data.districtdailyID === id);
+    const matchedData = this.stationtodistrictdata.find((data: any) => data.districtid == id);
+    console.log(matchedData)
     return matchedData || null;
   }
   findMatchingDatastate(id: string): any | null {
@@ -116,6 +148,7 @@ export class DailyMapComponent {
   subdivisionfetchedDatadaily: any[] = [];
 
   regionfetchedDatadaily: any[] = [];
+  stationtodistrictdata: any[] = [];
 
   processFetchedDataregiondaily(): void {
     let product = 1;
@@ -180,6 +213,57 @@ export class DailyMapComponent {
         sum = item['imdarea_squarekm'];
       previousStateId = item['stateid'];
     }
+  }
+  stationtodistrict(){
+    this.stationtodistrictdata = [];
+    let previousdistrictid = null;
+    let previousdistrictname = "";
+    let districtarea = null;
+    let stationrainfallsum = 0;
+    let numberofstations = 0;
+    let previousstateid = null;
+    let previousstatename = "";
+    let previoussubdivid = null;
+    let previoussubdivname = "";
+    let subdivweights = null;
+    let previousregionid = null;
+    let previousregionname = "";
+    for (const item of this.fetchedMasterData) {
+      if(item.district_code == previousdistrictid || previousdistrictid == null){
+        stationrainfallsum = stationrainfallsum + item[this.currentDateDaily];
+        numberofstations =  numberofstations + 1;
+      }
+      else{
+        this.stationtodistrictdata.push({
+          districtid: previousdistrictid,
+          districtname: previousdistrictname,
+          districtarea : districtarea,
+          subdivweights : subdivweights,
+          numberofstations : numberofstations,
+          stationrainfallsum : stationrainfallsum,
+          dailyrainfall: stationrainfallsum/numberofstations,
+          stateid : previousstateid,
+          statename : previousstatename,
+          subdivid : previoussubdivid,
+          subdivname : previoussubdivname,
+          regionid : previousregionid,
+          regionname :previousregionname,
+          });
+          numberofstations = 0;
+          stationrainfallsum = 0;
+      }
+       previousdistrictid = item.district_code;
+       previousdistrictname = item.district_name;
+       districtarea = item.district_area
+       previousstateid = item.state_code;
+       previousstatename = item.state_name;
+       previoussubdivid = item.subdiv_code;
+       previoussubdivname = item.subdiv_name;
+       subdivweights = item.subdiv_weights
+       previousregionid = item.region_code;
+       previousregionname = item.region_name;
+    }
+
   }
 
   processFetchedData(): void {
@@ -284,7 +368,7 @@ export class DailyMapComponent {
     "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
   ];
 
-  public today = new Date();
+
   public month = this.months[this.today.getMonth()];
   public day = String(this.today.getDate()).padStart(2, '0');
 
@@ -293,45 +377,12 @@ export class DailyMapComponent {
 
 
   private loadGeoJSON(): void {
-    const propertyName = this.month;
-    const propertyName1 = this.day;
-
-    // this.http.get('assets/geojson/INDIA_DISTRICT.json').subscribe((res: any) => {
-    //   L.geoJSON(res, {
-    //     style: (feature: any) => this.geoJSONStyle(feature, propertyName, propertyName1),
-    //     onEachFeature: (feature: any, layer: any) => {
-    //       const id = feature.properties[name];
-    //       const id1 = feature.properties[propertyName + propertyName1];
-    //       const id2 = feature.properties['object_id'];
-    //       const matchedData = this.findMatchingData(id2);
-    //       if (matchedData) {
-    //         feature.properties[propertyName1 + '-'+ propertyName] = matchedData.jan1;
-    //       }
-          // const popupContent = `
-          //   <div style="background-color: white; border: 1px solid #ccc; padding: 10px; font-family: Arial, sans-serif;">
-          //     <div style="color: #002467; font-weight: bold; margin-bottom: 5px; font-size: 10px;">NAME: ${id}</div>
-          //     <div style="color: #002467; font-weight: bold; font-size: 10px;">DISTRICTID: ${id2}</div>
-          //     <div style="color: #002467; font-weight: bold; font-size: 10px;">NORMAL: ${id1}</div>
-          //   </div>
-          // `;
-          // layer.bindPopup(popupContent);
-    //       layer.on('mouseover', () => {
-    //         layer.openPopup();
-    //       });
-    //       layer.on('mouseout', () => {
-    //         layer.closePopup();
-    //       });
-    //     },
-    //   }).addTo(this.map);
-
-    //     });
-    const name = 'name';
     this.http.get('assets/geojson/INDIA_DISTRICT.json').subscribe((res: any) => {
       L.geoJSON(res, {
         style: (feature: any) => {
-          const id2 = feature.properties['OBJECTID'];
+          const id2 = feature.properties['district_c'];
           const matchedData = this.findMatchingData(id2);
-          const rainfall = matchedData ? matchedData.districtdailyRainfall : 0;
+          const rainfall = matchedData ? matchedData.dailyrainfall : 0;
           const color = this.getColorForRainfall(rainfall);
           return {
             fillColor: color,
@@ -342,10 +393,10 @@ export class DailyMapComponent {
           };
         },
         onEachFeature: (feature: any, layer: any) => {
-          const id1 = feature.properties['name'];
-          const id2 = feature.properties['OBJECTID'];
+          const id1 = feature.properties['district'];
+          const id2 = feature.properties['district_c'];
           const matchedData = this.findMatchingData(id2);
-          const rainfall = matchedData ? matchedData.districtdailyRainfall.toFixed(2) : '0.00';;
+          const rainfall = matchedData ? matchedData.dailyrainfall.toFixed(2) : '0.00';;
           const popupContent = `
             <div style="background-color: white; padding: 5px; font-family: Arial, sans-serif;">
               <div style="color: #002467; font-weight: bold; font-size: 10px;">DISTRICT: ${id1}</div>

@@ -4,6 +4,7 @@ import html2canvas from 'html2canvas';
 import * as L from 'leaflet';
 import 'leaflet.fullscreen';
 import { DataService } from '../../data.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-normal-map',
@@ -20,35 +21,33 @@ export class NormalMapComponent {
   private map3: L.Map = {} as L.Map;
   // public placeholderText: string;
   fetchedData: any;
-  currentDateNormal: string;
-  currentDateDaily: string;
   // inputDateNormal: string;
   // inputDateDaily: string;
   fetchedData4: any;
   fetchedData5: any;
   fetchedData6: any;
-  currentDateNormaly: string;
+  formatteddate: any;
+  dd: any;
+  today = new Date();
+  currentDateNormal: string = '';
+  currentDateDaily: string = '';
+  currentDateNormaly: string = '';;
 
-  constructor(private http: HttpClient, private dataService: DataService) {
-    // this.placeholderText = this.formatDate(this.inputValue,  this.inputValue1);
-    const today = new Date();
-    const yesterday = new Date(today);
-    yesterday.setDate(today.getDate() - 1);
-
-    const months = [
-      'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-      'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
-    ];
-
-    const dd = String(today.getDate());
-    const currmonth = months[today.getMonth()];
-    const ddy = String(yesterday.getDate());
-    const currmonthy = months[yesterday.getMonth()];
-    const year = String(today.getFullYear());
-    this.currentDateNormal = `${currmonth}${dd}`;
-    this.currentDateNormaly = `${currmonthy}${ddy}`;
-    console.log(this.currentDateNormal)
-    this.currentDateDaily = `${dd.padStart(2, '0')}_${currmonth}`;
+  constructor(private http: HttpClient,
+    private dataService: DataService,
+    private router: Router
+    ) {
+      this.dateCalculation();
+      this.dataService.value$.subscribe((value) => {
+        if(value){
+          let selecteddateAndMonth = JSON.parse(value);
+          this.today.setDate(selecteddateAndMonth.date)
+          this.today.setMonth(selecteddateAndMonth.month-1)
+          console.log(this.today, "iiiiiii")
+          this.dateCalculation();
+          this.fetchDataFromBackend();
+        }
+      });
 
   }
   ngOnInit(): void {
@@ -57,6 +56,30 @@ export class NormalMapComponent {
     // this.loadGeoJSON1();
     this.fetchDataFromBackend();
   }
+
+  dateCalculation(){
+    const yesterday = new Date(this.today);
+    yesterday.setDate(this.today.getDate() - 1);
+    const months = [
+      'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+      'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+    ];
+    this.dd = String(this.today.getDate());
+
+    const mon = String(this.today.getMonth() + 1)
+    const year = this.today.getFullYear();
+    this.formatteddate = `${this.dd.padStart(2, '0')}-${mon.padStart(2, '0')}-${year}`
+    const currmonth = months[this.today.getMonth()];
+    const enddate = `${currmonth}${this.dd}`
+    const ddy = String(yesterday.getDate());
+    const currmonthy = months[yesterday.getMonth()];
+
+    this.currentDateNormal = `${currmonth}${this.dd}`;
+    this.currentDateNormaly = `${currmonthy}${ddy}`;
+    this.currentDateDaily = `${this.dd.padStart(2, '0')}-${currmonth}`;
+    console.log(this.currentDateDaily)
+  }
+
   fetchDataFromBackend(): void {
     this.dataService.fetchData().subscribe(
       (data) => {
@@ -272,7 +295,7 @@ export class NormalMapComponent {
     "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
   ];
 
-  public today = new Date();
+
   public month = this.months[this.today.getMonth()];
   public day = String(this.today.getDate()).padStart(2, '0');
 

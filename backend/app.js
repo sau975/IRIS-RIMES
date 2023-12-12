@@ -4,7 +4,9 @@ const app = express();
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 
+app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
@@ -21,42 +23,50 @@ app.use((req, res, next) => {
   next();
 });
 
-app.post('/api/addData', (req, res) => {
+app.post('/addData', (req, res) => {
   const data = req.body.data; 
-  client.query('INSERT INTO dataentry(stationname, stationid) VALUES($1, $2)', [data.field1, data.field2])
+  client.query('INSERT INTO existingstationdata(stationname, stationid) VALUES($1, $2)', [data.field1, data.field2])
     .then(() => {
       res.status(200).json({ message: 'Data inserted successfully' });
     })
     .catch(error => {
       console.error('Error inserting data:', error);
+      res.status(500).json({ error: 'Internal server error' });
+    });
+});
+
+
+app.put("/existingstationdata", (req, res) => {
+  const data = req.body.data;
+  client.query('UPDATE existingstationdata SET stationname = $1, stationid = $2 WHERE stationid = $3', [
+      data.stationname,
+      data.stationid,
+      data.previousstationid,
+    ])
+    .then(() => {
+      res.status(200).json({ message: `Row with ID ${data.previousstationid} updated successfully` });
+    })
+    .catch((error) => {
+      console.error('Error updating data:', error);
       res.status(500).json({ error: 'Internal server error' });
     });
 });
 app.delete("/existingstationdata", (req, res) => {
   const data = req.body.data; 
-  client.query('DELETE FROM existingstationdata WHERE stationid = $1',[data.stationid])
-  .then(() => {
-    res.status(200).json({ message: `Row with ID ${id} deleted successfully` });
-  })
-  .catch(error => {
-    console.error('Error deleting data:', error);
-    res.status(500).json({ error: 'Internal server error' });
-  });
-});
-app.post("/existingstationdata", (req, res) => {
-  const data = req.body.data; 
-  client.query('INSERT INTO existingstationdata(stationname, stationid) VALUES($1, $2)', [data.stationname, data.stationid])
+  client
+    .query('DELETE FROM existingstationdata WHERE stationid = $1', [data])
     .then(() => {
-      res.status(200).json({ message: 'Data inserted successfully' });
+      res.status(200).json({ message: `Row with stationid ${data} deleted successfully` });
     })
-    .catch(error => {
-      console.error('Error inserting data:', error);
+    .catch((error) => {
+      console.error('Error deleting data:', error);
       res.status(500).json({ error: 'Internal server error' });
     });
 });
+
 app.get("/existingstationdata", (req, res) => {
   client.query(
-    "(SELECT * FROM existingstationdata)UNION(SELECT * FROM dataentry)ORDER BY stationid",
+    "SELECT * FROM existingstationdata ORDER BY stationid",
     (err, result) => {
       if (err) {
         res.send(err);
@@ -68,19 +78,21 @@ app.get("/existingstationdata", (req, res) => {
 
 app.get("/masterFile", (req, res) => {
   client.query(
-    "SELECT * FROM masterfile JOIN dailystationdata ON masterfile.crisid = dailystationdata.cris_id ORDER BY districtid",
+    "SELECT * FROM masterfile JOIN stationdatadaily ON masterfile.station_code = stationdatadaily.station_id ORDER BY station_id",
     (err, result) => {
       if (err) {
         res.send(err);
       }
       res.send(result.rows);
     }
+  
   );
+ 
 });
 
 app.get("/districtdep", (req, res) => {
   client.query(
-    "SELECT * FROM ndistrict JOIN del1 ON ndistrict.districtid = del1.districtid ORDER BY del1.subdivid1, del1.stateid",
+    "SELECT * FROM ndistrict ORDER BY district_code ASC",
     (err, result) => {
       if (err) {
         res.send(err);

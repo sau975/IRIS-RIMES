@@ -10,24 +10,22 @@ export class DataService {
 
   private baseUrl = 'http://localhost:3000';
 
-  apiUrl: string = 'http://localhost:3000/api/addData';
-
   constructor(private http: HttpClient) {}
   addData(data: any): Observable<any> {
-    return this.http.post<any>(this.apiUrl, { data });
+    return this.http.post<any>(this.baseUrl+'/addData', {data});
   }
-  deleteData(data: any): Observable<any> {
-    const url = `${this.baseUrl+'/existingstationdata'}/${data}`;
-    return this.http.delete(url);
-  }
+
   updateData(data: any): Observable<any> {
-    return this.http.post<any>(this.baseUrl+'/existingstationdata', { data });
+    return this.http.put<any>(this.baseUrl+'/existingstationdata', {data});
+  }
+  deletestation(stationId: string): Observable<any> {
+    const url = `${this.baseUrl}/existingstationdata`;
+    return this.http.delete<any>(url, { body: { data: stationId } });
   }
   existingstationdata(): Observable<any> {
     const url = `${this.baseUrl}`+'/existingstationdata';
     return this.http.get(url);
   }
-
   fetchData(): Observable<any> {
     const url = `${this.baseUrl}`+'/districtdep';
     return this.http.get(url);
@@ -60,11 +58,9 @@ export class DataService {
     const url = `${this.baseUrl}`+'/masterFile';
     return this.http.get(url);
   }
-
   userLogin(data:any): Observable<any> {
     return this.http.post<any>(this.baseUrl + "/login", data);
   }
-
   getAuthStatus(){
     var token = localStorage.getItem('isAuthorised');
     if(token){
@@ -73,13 +69,10 @@ export class DataService {
       return false
     }
   }
-
   private valueSubject = new BehaviorSubject<string>('');
   public value$ = this.valueSubject.asObservable();
-
   setValue(newValue: string) {
     this.valueSubject.next(newValue);
   }
-
 }
 
