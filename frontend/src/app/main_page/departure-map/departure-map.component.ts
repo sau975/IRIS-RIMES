@@ -39,13 +39,13 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     private http: HttpClient,
     private dataService: DataService,
     private router: Router
-    ) {
+  ) {
     this.dateCalculation();
     this.dataService.value$.subscribe((value) => {
-      if(value){
+      if (value) {
         let selecteddateAndMonth = JSON.parse(value);
         this.today.setDate(selecteddateAndMonth.date)
-        this.today.setMonth(selecteddateAndMonth.month-1)
+        this.today.setMonth(selecteddateAndMonth.month - 1)
         this.dateCalculation();
         this.fetchDataFromBackend();
       }
@@ -59,7 +59,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     this.fetchDataFromBackend();
   }
 
-  dateCalculation(){
+  dateCalculation() {
     const yesterday = new Date(this.today);
     yesterday.setDate(this.today.getDate() - 1);
     const months = [
@@ -144,15 +144,14 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
   }
 
   findMatchingData(id: string): any | null {
-    const matchedData = this.processedData.find((data: any) => data.districtID == id);
+    const matchedData = this.stationtodistrictdatacum.find((data: any) => data.districtID == id);
+    // console.log(matchedData)
     return matchedData || null;
   }
-  MatchingDataofdistrictdailyandnormal(id: string): any | null {
-        const matchedData = this.stationtodistrictdata.find((data: any) => data.districtid == id);
-        return matchedData || null;
-
-      }
-
+  // MatchingDataofdistrictdailyandnormal(id: string): any | null {
+  //   const matchedData = this.stationtodistrictdata.find((data: any) => data.districtid == id);
+  //   return matchedData || null;
+  // }
   findMatchingDatastate(id: string): any | null {
     const matchedData = this.statefetchedDatadep.find((data: any) => data.statedepid === id);
     return matchedData || null;
@@ -171,6 +170,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
   }
   processedData: any[] = [];
   stationtodistrictdata: any[] = [];
+  stationtodistrictdatacum: any[] = [];
   processedDatacum: any[] = [];
   statefetchedDatadaily: any[] = [];
   statefetchedDatanormal: any[] = [];
@@ -189,7 +189,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
   countryfetcheddata: any[] = [];
   public countrydaily = 0
 
-  stationtodistrict(){
+  stationtodistrict() {
     this.stationtodistrictdata = [];
     let previousdistrictid = null;
     let previousdistrictname = "";
@@ -203,55 +203,654 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     let subdivweights = null;
     let previousregionid = null;
     let previousregionname = "";
+    let cumdailypostmon = 0
+    let prevcumdailypostmon = 0;
+    // console.log(this.fetchedMasterData)
 
     for (const item of this.fetchedMasterData) {
-      if (this.currentDateDaily.startsWith('Jan') || this.currentDateNormal.startsWith('Feb')) {}
+      if (item.district_code == previousdistrictid || previousdistrictid == null) {
 
-      if(item.district_code == previousdistrictid || previousdistrictid == null){
-        if(item[this.currentDateDaily] != -999.9){
+        if (this.currentDateDaily.endsWith('Oct') || this.currentDateDaily.endsWith('Nov') || this.currentDateDaily.endsWith('Dec')) {
+          if (this.currentDateDaily.endsWith('Oct')) {
+            let cumdailypostmon = 0;
+            let startMonth = "Oct";
+            let startDay = 1;
+            let endDay = 31;
+            for (let day = startDay; day <= endDay; day++) {
+              const currentDateStrdaily = `${day.toString().padStart(2, '0')}_${startMonth}`;
+              let daily: number
+              if (item[currentDateStrdaily] != -999.9) {
+                daily = item[currentDateStrdaily]
+              }
+              else {
+                daily = 0
+              }
+              cumdailypostmon += daily
+            }
+          }
+          if (this.currentDateDaily.endsWith('Nov')) {
+            let cumdailypostmon = 0;
+            let startMonth = "Oct";
+            let startDay = 1;
+            let endDay = 31;
+            for (let day = startDay; day <= endDay; day++) {
+              const currentDateStrdaily = `${day.toString().padStart(2, '0')}_${startMonth}`;
+              let daily: number
+              if (item[currentDateStrdaily] != -999.9) {
+                daily = item[currentDateStrdaily]
+              }
+              else {
+                daily = 0
+              }
+              cumdailypostmon += daily
+            }
+            startMonth = "Nov";
+            startDay = 1;
+            endDay = 30;
+            for (let day = startDay; day <= endDay; day++) {
+              const currentDateStrdaily = `${day.toString().padStart(2, '0')}_${startMonth}`;
+              let daily: number
+              if (item[currentDateStrdaily] != -999.9) {
+                daily = item[currentDateStrdaily]
+              }
+              else {
+                daily = 0
+              }
+              cumdailypostmon += daily
+            }
+          }
+          if (this.currentDateDaily.endsWith('Dec')) {
+
+            let cumdailypostmon = 0;
+            let startMonth = "Oct";
+            let startDay = 1;
+            let endDay = 31;
+            for (let day = startDay; day <= endDay; day++) {
+              const currentDateStrdaily = `${day.toString().padStart(2, '0')}_${startMonth}`;
+              let daily: number
+              if (item[currentDateStrdaily] != -999.9) {
+                daily = item[currentDateStrdaily]
+              }
+              else {
+                daily = 0
+              }
+              cumdailypostmon += daily
+            }
+            startMonth = "Nov";
+            startDay = 1;
+            endDay = 30;
+            for (let day = startDay; day <= endDay; day++) {
+              const currentDateStrdaily = `${day.toString().padStart(2, '0')}_${startMonth}`;
+              let daily: number
+              if (item[currentDateStrdaily] != -999.9) {
+                daily = item[currentDateStrdaily]
+              }
+              else {
+                daily = 0
+              }
+              cumdailypostmon += daily
+            }
+            startMonth = "Dec";
+            startDay = 1;
+            endDay = 31;
+            for (let day = startDay; day <= endDay; day++) {
+              const currentDateStrdaily = `${day.toString().padStart(2, '0')}_${startMonth}`;
+              let daily: number
+              if (item[currentDateStrdaily] != -999.9) {
+                daily = item[currentDateStrdaily]
+              }
+              else {
+                daily = 0
+              }
+              cumdailypostmon += daily
+            }
+            // console.log(cumdailypostmon)
+          }
+        }
+
+        cumdailypostmon = cumdailypostmon + prevcumdailypostmon
+        if (item[this.currentDateDaily] != -999.9) {
           stationrainfallsum = stationrainfallsum + item[this.currentDateDaily];
-          numberofstations =  numberofstations + 1;
+          numberofstations = numberofstations + 1;
         }
       }
-      else{
+      else {
         this.stationtodistrictdata.push({
           districtid: previousdistrictid,
           districtname: previousdistrictname,
-          districtarea : districtarea,
-          subdivweights : subdivweights,
-          numberofstations : numberofstations,
-          stationrainfallsum : stationrainfallsum,
-          dailyrainfall: stationrainfallsum/numberofstations,
-          stateid : previousstateid,
-          statename : previousstatename,
-          subdivid : previoussubdivid,
-          subdivname : previoussubdivname,
-          regionid : previousregionid,
-          regionname :previousregionname,
-          });
-          console.log(previousdistrictname, numberofstations,stationrainfallsum/numberofstations )
-          if(item[this.currentDateDaily] != -999.9){
-            stationrainfallsum = item[this.currentDateDaily];
-            numberofstations = 1;
-          }
-          else{
-            stationrainfallsum = 0;
-            numberofstations = 0;
-          }
+          districtarea: districtarea,
+          subdivweights: subdivweights,
+          numberofstations: numberofstations,
+          stationrainfallsum: stationrainfallsum,
+          dailyrainfall: stationrainfallsum / numberofstations,
+          stateid: previousstateid,
+          statename: previousstatename,
+          subdivid: previoussubdivid,
+          subdivname: previoussubdivname,
+          regionid: previousregionid,
+          regionname: previousregionname,
+          stationrainfallsumcum : cumdailypostmon,
+          dailyrainfallcum : cumdailypostmon/ numberofstations,
+        });
 
+      // console.log(cumdailypostmon/ numberofstations)
+        if (item[this.currentDateDaily] != -999.9) {
+          stationrainfallsum = item[this.currentDateDaily];
+          numberofstations = 1;
+        }
+        else {
+          stationrainfallsum = 0;
+          numberofstations = 0;
+        }
+        prevcumdailypostmon = 0;
       }
-       previousdistrictid = item.district_code;
-       previousdistrictname = item.district_name;
-       districtarea = item.district_area
-       previousstateid = item.state_code;
-       previousstatename = item.state_name;
-       previoussubdivid = item.subdiv_code;
-       previoussubdivname = item.subdiv_name;
-       subdivweights = item.subdiv_weights
-       previousregionid = item.region_code;
-       previousregionname = item.region_name;
+      previousdistrictid = item.district_code;
+      previousdistrictname = item.district_name;
+      districtarea = item.district_area
+      previousstateid = item.state_code;
+      previousstatename = item.state_name;
+      previoussubdivid = item.subdiv_code;
+      previoussubdivname = item.subdiv_name;
+      subdivweights = item.subdiv_weights
+      previousregionid = item.region_code;
+      previousregionname = item.region_name;
+      prevcumdailypostmon = cumdailypostmon
     }
   }
+  processFetchedData(): void {
+    this.processedData = [];
+    for (const item of this.fetchedData) {
+      let normal1: number
+      if (this.currentDateNormal === 'Jan1' || this.currentDateNormal === 'Mar1' || this.currentDateNormal === 'Jun1' || this.currentDateNormal === 'Oct1') {
+        normal1 = item[this.currentDateNormal]
+      }
+      else {
+        normal1 = (item[this.currentDateNormal] - item[this.currentDateNormaly])
+      }
+      if (this.currentDateNormal.startsWith('Jan') || this.currentDateNormal.startsWith('Feb')) {
+        let cumnormalwinter = 0;
+        let startdate = 'Jan1';
+        const today = new Date();
+        const months = [
+          'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+          'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+        ];
+        const dd = String(today.getDate());
+        const currmonth = months[today.getMonth()];
+        let enddate = `${currmonth}${dd}`
+        let startMonth = startdate.slice(0, 3);
+        let startDay = parseInt(startdate.slice(3));
+        let endDay = parseInt(enddate.slice(3));
+        let normal: number
+        for (let day = startDay; day <= endDay; day++) {
+          const currentDateStr = `${startMonth}${day.toString()}`;
+          if (currentDateStr === 'Jan1') {
+            normal = item[currentDateStr]
+            if (Number.isNaN(normal)) {
+              normal = 0;
+            }
+          }
+          else {
+            const yesterday = day - 1;
+            const yesterdayStr = `${startMonth}${yesterday.toString()}`;
+            const yesterdayStrdaily = `${yesterday.toString()}_${startMonth}`;
+            normal = (item[currentDateStr] - item[yesterdayStr])
+
+            if (Number.isNaN(normal)) {
+              normal = 0;
+            }
+
+          }
+          cumnormalwinter += normal
+
+        }
+        if (enddate.slice(0, 3) === 'Feb') {
+          startdate = 'Feb1';
+          enddate = 'Feb29';
+          startMonth = startdate.slice(0, 3);
+          startDay = parseInt(startdate.slice(3));
+          endDay = parseInt(enddate.slice(3));
+          for (let day = startDay; day <= endDay; day++) {
+            const currentDateStr = `${startMonth}${day.toString()}`;
+            const currentDateStrdaily = `${day.toString().padStart(2, '0')}_${startMonth}`;
+            let normal: number
+            let daily: number
+            let yesterday: number;
+            let yesterdayStr: string;
+            let yesterdayStrdaily: string;
+            if (currentDateStr === 'Feb1') {
+              yesterdayStr = 'Jan31'
+              yesterdayStrdaily = '31_Jan'
+            }
+            else {
+              yesterday = day - 1;
+              yesterdayStr = `${startMonth}${yesterday.toString()}`;
+              yesterdayStrdaily = `${day.toString().padStart(2, '0')}_${startMonth}`;
+            }
+            normal = (item[currentDateStr] - item[yesterdayStr])
+            daily = item[currentDateStrdaily]
+            if (Number.isNaN(normal)) {
+              normal = 0;
+            }
+            if (Number.isNaN(daily)) {
+              daily = 0;
+            }
+            cumnormalwinter += normal
+          }
+        }
+        // const cumdep = ((cumdailywinter - cumnormalwinter) / cumnormalwinter)
+        // this.processedData.push({ districtID: item.districtid, districtname: item.DISTRICT, statename: item.state_code, subdivisionname: item.subdivision_code, dailyrainfall: item[this.currentDateDaily], normalrainfall: normal1, Rainfall: (((item[this.currentDateDaily] - normal1) / normal1) * 100), cummnormal: cumnormalwinter, cummdaily: cumdailywinter, cumdeparture: cumdep });
+      }
+      else if (this.currentDateNormal.startsWith('Mar') || this.currentDateNormal.startsWith('Apr') || this.currentDateNormal.startsWith('May')) {
+        let cumnormalpremon = 0;
+        let cumdailypremon = 0;
+        let startdate = 'Mar1';
+        const today = new Date();
+        const months = [
+          'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+          'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+        ];
+        const dd = String(today.getDate());
+        const currmonth = months[today.getMonth()];
+        let enddate = `${currmonth}${dd}`
+        let startMonth = startdate.slice(0, 3);
+        let endMonth = enddate.slice(0, 3);
+        let startDay = parseInt(startdate.slice(3));
+        let endDay = parseInt(enddate.slice(3));
+        let normal: number;
+        let daily: number;
+        for (let day = startDay; day <= endDay; day++) {
+          const currentDateStr = `${startMonth}${day.toString()}`;
+          const currentDateStrdaily = `${day.toString().padStart(2, '0')}_${startMonth}`;
+          if (currentDateStr === 'Mar1') {
+            normal = item[currentDateStr]
+            daily = item[currentDateStrdaily]
+            if (Number.isNaN(normal)) {
+              normal = 0;
+            }
+            if (Number.isNaN(daily)) {
+              daily = 0;
+            }
+          }
+          else {
+            const yesterday = day - 1;
+            const yesterdayStr = `${startMonth}${yesterday.toString()}`;
+            const yesterdayStrdaily = `${day.toString().padStart(2, '0')}_${startMonth}`;
+            normal = (item[currentDateStr] - item[yesterdayStr])
+            daily = item[currentDateStrdaily]
+            if (Number.isNaN(normal)) {
+              normal = 0;
+            }
+            if (Number.isNaN(daily)) {
+              daily = 0;
+            }
+          }
+          cumnormalpremon += normal
+          cumdailypremon += daily
+        }
+        if (enddate.slice(0, 3) === 'Apr' || enddate.slice(0, 3) === 'May') {
+          startdate = 'Apr1';
+          startMonth = startdate.slice(0, 3);
+          endMonth = enddate.slice(0, 3);
+          startDay = parseInt(startdate.slice(3));
+          endDay = parseInt(enddate.slice(3));
+          for (let day = startDay; day <= endDay; day++) {
+            const currentDateStr = `${startMonth}${day.toString()}`;
+            const currentDateStrdaily = `${day.toString().padStart(2, '0')}_${startMonth}`;
+            let normal: number
+            let daily: number
+            let yesterday: number;
+            let yesterdayStr: string;
+            let yesterdayStrdaily: string;
+            if (currentDateStr === 'Apr1') {
+              yesterdayStr = 'Mar31'
+              yesterdayStrdaily = '31_Mar'
+            }
+            else {
+              yesterday = day - 1;
+              yesterdayStr = `${startMonth}${yesterday.toString()}`;
+              yesterdayStrdaily = `${day.toString().padStart(2, '0')}_${startMonth}`;
+            }
+            normal = (item[currentDateStr] - item[yesterdayStr])
+            daily = item[currentDateStrdaily]
+            if (Number.isNaN(normal)) {
+              normal = 0;
+            }
+            if (Number.isNaN(daily)) {
+              daily = 0;
+            }
+            cumnormalpremon += normal
+            cumdailypremon += daily
+          }
+        }
+        if (enddate.slice(0, 3) === 'May') {
+          startdate = 'May1';
+          startMonth = startdate.slice(0, 3);
+          startDay = parseInt(startdate.slice(3));
+          endDay = parseInt(enddate.slice(3));
+          for (let day = startDay; day <= endDay; day++) {
+            const currentDateStr = `${startMonth}${day.toString()}`;
+            const currentDateStrdaily = `${day.toString().padStart(2, '0')}_${startMonth}`;
+            let normal: number
+            let daily: number
+            let yesterday: number;
+            let yesterdayStr: string;
+            let yesterdayStrdaily: string;
+            if (currentDateStr === 'May1') {
+              yesterdayStr = 'Apr30'
+              yesterdayStrdaily = '30_Apr'
+            }
+            else {
+              yesterday = day - 1;
+              yesterdayStr = `${startMonth}${yesterday.toString()}`;
+              yesterdayStrdaily = `${day.toString().padStart(2, '0')}_${startMonth}`;
+            }
+            normal = (item[currentDateStr] - item[yesterdayStr])
+            daily = item[currentDateStrdaily]
+            if (Number.isNaN(normal)) {
+              normal = 0;
+            }
+            if (Number.isNaN(daily)) {
+              daily = 0;
+            }
+            cumnormalpremon += normal
+            cumdailypremon += daily
+          }
+        }
+        const cumdep = ((cumdailypremon - cumnormalpremon) / cumnormalpremon)
+        this.processedData.push({ districtID: item.districtid, districtname: item.DISTRICT, statename: item.state_code, subdivisionname: item.subdivision_code, dailyrainfall: item[this.currentDateDaily], normalrainfall: normal1, Rainfall: (((item[this.currentDateDaily] - normal1) / normal1) * 100), cummnormal: cumnormalpremon, cummdaily: cumdailypremon, cumdeparture: cumdep });
+      }
+      else if (this.currentDateNormal.startsWith('Jun') || this.currentDateNormal.startsWith('Jul') || this.currentDateNormal.startsWith('Aug') || this.currentDateNormal.startsWith('Sep')) {
+        let cumnormalmon = 0;
+        let cumdailymon = 0;
+        let startdate = 'Jun1';
+        const today = new Date();
+        const months = [
+          'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+          'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+        ];
+        const dd = String(today.getDate());
+        const currmonth = months[today.getMonth()];
+        let enddate = `${currmonth}${dd}`
+        let startMonth = startdate.slice(0, 3);
+        let endMonth = enddate.slice(0, 3);
+        let startDay = parseInt(startdate.slice(3));
+        let endDay = parseInt(enddate.slice(3));
+        let normal: number
+        let daily: number
+        let cumdep: number
+        for (let day = startDay; day <= endDay; day++) {
+          const currentDateStr = `${startMonth}${day.toString()}`;
+          const currentDateStrdaily = `${day.toString().padStart(2, '0')}_${startMonth}`;
+          if (currentDateStr === 'Jun1') {
+            normal = item[currentDateStr]
+            daily = item[currentDateStrdaily]
+            if (Number.isNaN(normal)) {
+              normal = 0;
+            }
+            if (Number.isNaN(daily)) {
+              daily = 0;
+            }
+          }
+          else {
+            const yesterday = day - 1;
+            const yesterdayStr = `${startMonth}${yesterday.toString()}`;
+            const yesterdayStrdaily = `${day.toString().padStart(2, '0')}_${startMonth}`;
+            normal = (item[currentDateStr] - item[yesterdayStr])
+            daily = item[currentDateStrdaily]
+            if (Number.isNaN(normal)) {
+              normal = 0;
+            }
+            if (Number.isNaN(daily)) {
+              daily = 0;
+            }
+          }
+          cumnormalmon += normal
+          cumdailymon += daily
+        }
+        if (enddate.slice(0, 3) === 'Jul' || enddate.slice(0, 3) === 'Aug' || enddate.slice(0, 3) === 'Sep') {
+          startdate = 'Jul1';
+          startMonth = startdate.slice(0, 3);
+          endMonth = enddate.slice(0, 3);
+          startDay = parseInt(startdate.slice(3));
+          endDay = parseInt(enddate.slice(3));
+          for (let day = startDay; day <= endDay; day++) {
+            const currentDateStr = `${startMonth}${day.toString()}`;
+            const currentDateStrdaily = `${day.toString().padStart(2, '0')}_${startMonth}`;
+            let normal: number
+            let daily: number
+            let yesterday: number;
+            let yesterdayStr: string;
+            let yesterdayStrdaily: string;
+            if (currentDateStr === 'Jul1') {
+              yesterdayStr = 'Jun30'
+              yesterdayStrdaily = '30_Jun'
+            }
+            else {
+              yesterday = day - 1;
+              yesterdayStr = `${startMonth}${yesterday.toString()}`;
+              yesterdayStrdaily = `${day.toString().padStart(2, '0')}_${startMonth}`;
+            }
+            normal = (item[currentDateStr] - item[yesterdayStr])
+            daily = item[currentDateStrdaily]
+            if (Number.isNaN(normal)) {
+              normal = 0;
+            }
+            if (Number.isNaN(daily)) {
+              daily = 0;
+            }
+            cumnormalmon += normal
+            cumdailymon += daily
+          }
+        }
+        if (enddate.slice(0, 3) === 'Aug' || enddate.slice(0, 3) === 'Sep') {
+          startdate = 'Aug1';
+          enddate = 'Aug31';
+          startMonth = startdate.slice(0, 3);
+          endMonth = enddate.slice(0, 3);
+          startDay = parseInt(startdate.slice(3));
+          endDay = parseInt(enddate.slice(3));
+          for (let day = startDay; day <= endDay; day++) {
+            const currentDateStr = `${startMonth}${day.toString()}`;
+            const currentDateStrdaily = `${day.toString().padStart(2, '0')}_${startMonth}`;
+            let normal: number
+            let daily: number
+            let yesterday: number;
+            let yesterdayStr: string;
+            let yesterdayStrdaily: string;
+            if (currentDateStr === 'Aug1') {
+              yesterdayStr = 'Jul31'
+              yesterdayStrdaily = '31_Jul'
+            }
+            else {
+              yesterday = day - 1;
+              yesterdayStr = `${startMonth}${yesterday.toString()}`;
+              yesterdayStrdaily = `${day.toString().padStart(2, '0')}_${startMonth}`;
+            }
+            normal = (item[currentDateStr] - item[yesterdayStr])
+            daily = item[currentDateStrdaily]
+            if (Number.isNaN(normal)) {
+              normal = 0;
+            }
+            if (Number.isNaN(daily)) {
+              daily = 0;
+            }
+            cumnormalmon += normal
+            cumdailymon += daily
+          }
+        }
+        if (enddate.slice(0, 3) === 'Sep') {
+          startdate = 'Sep1';
+          enddate = 'Sep30';
+          startMonth = startdate.slice(0, 3);
+          startDay = parseInt(startdate.slice(3));
+          endDay = parseInt(enddate.slice(3));
+          for (let day = startDay; day <= endDay; day++) {
+            const currentDateStr = `${startMonth}${day.toString()}`;
+            const currentDateStrdaily = `${day.toString().padStart(2, '0')}_${startMonth}`;
+            let normal: number
+            let daily: number
+            let yesterday: number;
+            let yesterdayStr: string;
+            let yesterdayStrdaily: string;
+            if (currentDateStr === 'Sep1') {
+              yesterdayStr = 'Aug31'
+              yesterdayStrdaily = '31_Aug'
+            }
+            else {
+              yesterday = day - 1;
+              yesterdayStr = `${startMonth}${yesterday.toString()}`;
+              yesterdayStrdaily = `${day.toString().padStart(2, '0')}_${startMonth}`;
+            }
+            normal = (item[currentDateStr] - item[yesterdayStr])
+            daily = item[currentDateStrdaily]
+            if (Number.isNaN(normal)) {
+              normal = 0;
+            }
+            if (Number.isNaN(daily)) {
+              daily = 0;
+            }
+            cumnormalmon += normal
+            cumdailymon += daily
+          }
+        }
+        cumdep = ((cumdailymon - cumnormalmon) / cumnormalmon)
+        this.processedData.push({ districtID: item.districtid, districtname: item.DISTRICT, statename: item.state_code, subdivisionname: item.subdivision_code, dailyrainfall: item[this.currentDateDaily], normalrainfall: normal1, Rainfall: (((item[this.currentDateDaily] - normal1) / normal1) * 100), cummnormal: cumnormalmon, cummdaily: cumdailymon, cumdeparture: cumdep }) * 100;
+      }
+
+
+
+      else {
+        let cumnormalpostmon = 0;
+        let startdate = 'Oct1';
+        const today = new Date();
+        const months = [
+          'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+          'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+        ];
+        const dd = String(today.getDate());
+        const currmonth = months[today.getMonth()];
+        let enddate = `${currmonth}${dd}`
+        let startMonth = startdate.slice(0, 3);
+        let startDay = parseInt(startdate.slice(3));
+        let endDay = parseInt(enddate.slice(3));
+        for (let day = startDay; day <= endDay; day++) {
+          const currentDateStr = `${startMonth}${day.toString()}`;
+          let normal: number
+          let daily: number
+          if (currentDateStr === 'Oct1') {
+            normal = item[currentDateStr]
+            if (Number.isNaN(normal)) {
+              normal = 0;
+            }
+          }
+          else {
+            const yesterday = day - 1;
+            const yesterdayStr = `${startMonth}${yesterday.toString()}`;
+            const yesterdayStrdaily = `${yesterday.toString()}_${startMonth}`;
+            normal = (item[currentDateStr] - item[yesterdayStr])
+
+            if (Number.isNaN(normal)) {
+              normal = 0;
+            }
+
+          }
+          if (normal1 === 0) {
+            normal1 = 1
+          }
+          cumnormalpostmon += normal
+        }
+        if (enddate.slice(0, 3) === 'Nov' || enddate.slice(0, 3) === 'Dec') {
+          startdate = 'Nov1';
+          enddate = 'Nov30';
+          startMonth = startdate.slice(0, 3);
+          startDay = parseInt(startdate.slice(3));
+          endDay = parseInt(enddate.slice(3));
+          for (let day = startDay; day <= endDay; day++) {
+            const currentDateStr = `${startMonth}${day.toString()}`;
+            const currentDateStrdaily = `${day.toString().padStart(2, '0')}_${startMonth}`;
+            //const currentDateStrdaily = `${day.toString()}_${startMonth}`;
+            let normal: number
+            let daily: number
+            let yesterday: number;
+            let yesterdayStr: string;
+            let yesterdayStrdaily: string;
+            if (currentDateStr === 'Nov1') {
+              yesterdayStr = 'Oct31'
+              yesterdayStrdaily = '31_Oct'
+            }
+            else {
+              yesterday = day - 1;
+              yesterdayStr = `${startMonth}${yesterday.toString()}`;
+              yesterdayStrdaily = `${yesterday.toString()}_${startMonth}`;
+            }
+            normal = (item[currentDateStr] - item[yesterdayStr])
+            daily = item[currentDateStrdaily]
+            if (Number.isNaN(normal)) {
+              normal = 0;
+            }
+            if (Number.isNaN(daily)) {
+              daily = 0;
+            }
+            cumnormalpostmon += normal
+
+          }
+        }
+        if (enddate.slice(0, 3) === 'Dec') {
+          startdate = 'Dec1';
+          enddate = 'Dec31';
+          startMonth = startdate.slice(0, 3);
+          startDay = parseInt(startdate.slice(3));
+          endDay = parseInt(enddate.slice(3));
+          for (let day = startDay; day <= endDay; day++) {
+            const currentDateStr = `${startMonth}${day.toString()}`;
+            const currentDateStrdaily = `${day.toString().padStart(2, '0')}_${startMonth}`;
+            let normal: number
+            let daily: number
+            let yesterday: number;
+            let yesterdayStr: string;
+            let yesterdayStrdaily: string;
+            if (currentDateStr === 'Dec1') {
+              yesterdayStr = 'Nov30'
+              yesterdayStrdaily = '30_Nov'
+            }
+            else {
+              yesterday = day - 1;
+              yesterdayStr = `${startMonth}${yesterday.toString()}`;
+              yesterdayStrdaily = `${day.toString().padStart(2, '0')}_${startMonth}`;
+            }
+            normal = (item[currentDateStr] - item[yesterdayStr])
+            daily = item[currentDateStrdaily]
+            if (Number.isNaN(normal)) {
+              normal = 0;
+            }
+            if (Number.isNaN(daily)) {
+              daily = 0;
+            }
+            cumnormalpostmon += normal
+
+          }
+        }
+       this.processedData.push({ districtID: item.district_code, normalrainfall: normal1, cummnormal: cumnormalpostmon });
+      }
+    }
+    this.mergeArrays();
+  }
+  mergeArrays(): void {
+    this.processedData.forEach((item1) => {
+      const matchingItem = this.stationtodistrictdata.find((item2) => item1.districtID == item2.districtid);
+      const dailydeparturerainfall = ((matchingItem.dailyrainfall - item1.normalrainfall)/item1.normalrainfall)*100
+      console.log(dailydeparturerainfall);
+
+      if (matchingItem) {
+        this.stationtodistrictdatacum.push({ ...item1, ...matchingItem, dailydeparturerainfall });
+      } else {
+        console.log("data not found")
+      }
+    });
+
+  }
+
 
   processFetchedDataregiondaily(): void {
     let product = 1;
@@ -855,8 +1454,8 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
             }
           }
         }
-        if (this.currentDateDaily.endsWith('Jun') || this.currentDateDaily.endsWith('Jul') || this.currentDateDaily.endsWith('Aug')|| this.currentDateDaily.endsWith('Sep')) {
-          if (this.currentDateDaily.endsWith('Jun') || this.currentDateDaily.endsWith('Jul') || this.currentDateDaily.endsWith('Aug')|| this.currentDateDaily.endsWith('Sep')) {
+        if (this.currentDateDaily.endsWith('Jun') || this.currentDateDaily.endsWith('Jul') || this.currentDateDaily.endsWith('Aug') || this.currentDateDaily.endsWith('Sep')) {
+          if (this.currentDateDaily.endsWith('Jun') || this.currentDateDaily.endsWith('Jul') || this.currentDateDaily.endsWith('Aug') || this.currentDateDaily.endsWith('Sep')) {
             let startDay = 1;
             let endDay = 31;
             if (this.currentDateDaily.endsWith('Jun')) {
@@ -869,7 +1468,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
 
             }
           }
-          if (this.currentDateDaily.endsWith('Jul') || this.currentDateDaily.endsWith('Aug')|| this.currentDateDaily.endsWith('Sep')) {
+          if (this.currentDateDaily.endsWith('Jul') || this.currentDateDaily.endsWith('Aug') || this.currentDateDaily.endsWith('Sep')) {
             let startDay = 1;
             let endDay = 30;
             if (this.currentDateDaily.endsWith('Jul')) {
@@ -883,7 +1482,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
 
             }
           }
-          if (this.currentDateDaily.endsWith('Aug')|| this.currentDateDaily.endsWith('Sep')) {
+          if (this.currentDateDaily.endsWith('Aug') || this.currentDateDaily.endsWith('Sep')) {
             let startDay = 1;
             let endDay = 31;
             if (this.currentDateDaily.endsWith('Aug')) {
@@ -1480,7 +2079,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
             }
           }
           const cumdep = ((matchedData1.subdivcumrainfall - cumnormalpostmon) / cumnormalpostmon) * 100
-          this.subdivisionfetchedDatadep.push({ subdivdepid: matchedData.subdivdailyid , subdivname: matchedData.subdivdailyname , regionid: matchedData.RegionId, regionname: matchedData.RegionName, dailyrainfall: matchedData.subdivdailyrainfall, normalrainfall: normal1, subdivdeprainfall: (((matchedData.subdivdailyrainfall - normal1) / normal1) * 100), cummnormal: cumnormalpostmon, cummdaily: matchedData1.subdivcumrainfall, cumdeparture: cumdep });
+          this.subdivisionfetchedDatadep.push({ subdivdepid: matchedData.subdivdailyid, subdivname: matchedData.subdivdailyname, regionid: matchedData.RegionId, regionname: matchedData.RegionName, dailyrainfall: matchedData.subdivdailyrainfall, normalrainfall: normal1, subdivdeprainfall: (((matchedData.subdivdailyrainfall - normal1) / normal1) * 100), cummnormal: cumnormalpostmon, cummdaily: matchedData1.subdivcumrainfall, cumdeparture: cumdep });
         }
       }
     }
@@ -1563,8 +2162,8 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
             }
           }
         }
-        if (this.currentDateDaily.endsWith('Jun') || this.currentDateDaily.endsWith('Jul') || this.currentDateDaily.endsWith('Aug')|| this.currentDateDaily.endsWith('Sep')) {
-          if (this.currentDateDaily.endsWith('Jun') || this.currentDateDaily.endsWith('Jul') || this.currentDateDaily.endsWith('Aug')|| this.currentDateDaily.endsWith('Sep')) {
+        if (this.currentDateDaily.endsWith('Jun') || this.currentDateDaily.endsWith('Jul') || this.currentDateDaily.endsWith('Aug') || this.currentDateDaily.endsWith('Sep')) {
+          if (this.currentDateDaily.endsWith('Jun') || this.currentDateDaily.endsWith('Jul') || this.currentDateDaily.endsWith('Aug') || this.currentDateDaily.endsWith('Sep')) {
             let startDay = 1;
             let endDay = 31;
             if (this.currentDateDaily.endsWith('Jun')) {
@@ -1577,7 +2176,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
 
             }
           }
-          if (this.currentDateDaily.endsWith('Jul') || this.currentDateDaily.endsWith('Aug')|| this.currentDateDaily.endsWith('Sep')) {
+          if (this.currentDateDaily.endsWith('Jul') || this.currentDateDaily.endsWith('Aug') || this.currentDateDaily.endsWith('Sep')) {
             let startDay = 1;
             let endDay = 30;
             if (this.currentDateDaily.endsWith('Jul')) {
@@ -1591,7 +2190,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
 
             }
           }
-          if (this.currentDateDaily.endsWith('Aug')|| this.currentDateDaily.endsWith('Sep')) {
+          if (this.currentDateDaily.endsWith('Aug') || this.currentDateDaily.endsWith('Sep')) {
             let startDay = 1;
             let endDay = 31;
             if (this.currentDateDaily.endsWith('Aug')) {
@@ -1706,7 +2305,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
         if (previousStateId !== null) {
           this.statefetchedDatadaily.push({
             statedailyid: previousStateId,
-            statedailyname : previousStatename,
+            statedailyname: previousStatename,
             statedailyrainfall: product / sum,
             RegionId: previousregionid,
             RegionName: previousregionname
@@ -2225,508 +2824,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
 
     }
   }
-  processFetchedData(): void {
-    this.processedData = [];
-    for(const item of this.fetchedData){
-      let normal1: number
-      if(this.currentDateNormal === 'Jan1' || this.currentDateNormal === 'Mar1' || this.currentDateNormal === 'Jun1' || this.currentDateNormal === 'Oct1') {
-        normal1 = item[this.currentDateNormal]
-      }
-      else{
-        normal1 = (item[this.currentDateNormal] - item[this.currentDateNormaly])
-      }
-      if (this.currentDateNormal.startsWith('Jan') || this.currentDateNormal.startsWith('Feb')) {
-        let cumnormalwinter = 0;
-        let cumdailywinter = 0;
-        let startdate = 'Jan1';
-        const today = new Date();
-        const months = [
-          'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-          'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
-        ];
-        const dd = String(today.getDate());
-        const currmonth = months[today.getMonth()];
-        let enddate = `${currmonth}${dd}`
-        let startMonth = startdate.slice(0, 3);
-        let startDay = parseInt(startdate.slice(3));
-        let endDay = parseInt(enddate.slice(3));
-        let normal: number
-        let daily: number
-        for (let day = startDay; day <= endDay; day++) {
-          const currentDateStr = `${startMonth}${day.toString()}`;
-          const currentDateStrdaily = `${day.toString().padStart(2, '0')}_${startMonth}`;
-          if (currentDateStr === 'Jan1') {
-            normal = item[currentDateStr]
-            daily = item[currentDateStrdaily]
-            if (Number.isNaN(normal)) {
-              normal = 0;
-            }
-            if (Number.isNaN(daily)) {
-              daily = 0;
-            }
-          }
-          else {
-            const yesterday = day - 1;
-            const yesterdayStr = `${startMonth}${yesterday.toString()}`;
-            const yesterdayStrdaily = `${yesterday.toString()}_${startMonth}`;
-            normal = (item[currentDateStr] - item[yesterdayStr])
-            daily = (item[currentDateStrdaily] - item[yesterdayStrdaily])
-            if (Number.isNaN(normal)) {
-              normal = 0;
-            }
-            if (Number.isNaN(daily)) {
-              daily = 0;
-            }
-          }
-          cumnormalwinter += normal
-          cumdailywinter += daily
-        }
-        if (enddate.slice(0, 3) === 'Feb') {
-          startdate = 'Feb1';
-          enddate = 'Feb29';
-          startMonth = startdate.slice(0, 3);
-          startDay = parseInt(startdate.slice(3));
-          endDay = parseInt(enddate.slice(3));
-          for (let day = startDay; day <= endDay; day++) {
-            const currentDateStr = `${startMonth}${day.toString()}`;
-            const currentDateStrdaily = `${day.toString().padStart(2, '0')}_${startMonth}`;
-            let normal: number
-            let daily: number
-            let yesterday: number;
-            let yesterdayStr: string;
-            let yesterdayStrdaily: string;
-            if (currentDateStr === 'Feb1') {
-              yesterdayStr = 'Jan31'
-              yesterdayStrdaily = '31_Jan'
-            }
-            else {
-              yesterday = day - 1;
-              yesterdayStr = `${startMonth}${yesterday.toString()}`;
-              yesterdayStrdaily = `${day.toString().padStart(2, '0')}_${startMonth}`;
-            }
-            normal = (item[currentDateStr] - item[yesterdayStr])
-            daily = item[currentDateStrdaily]
-            if (Number.isNaN(normal)) {
-              normal = 0;
-            }
-            if (Number.isNaN(daily)) {
-              daily = 0;
-            }
-            cumnormalwinter += normal
-            cumdailywinter += daily
-          }
-        }
-        const cumdep = ((cumdailywinter - cumnormalwinter) / cumnormalwinter)
-        this.processedData.push({ districtID: item.districtid, districtname: item.DISTRICT, statename: item.state_code, subdivisionname: item.subdivision_code, dailyrainfall: item[this.currentDateDaily], normalrainfall: normal1, Rainfall: (((item[this.currentDateDaily] - normal1) / normal1) * 100), cummnormal: cumnormalwinter, cummdaily: cumdailywinter, cumdeparture: cumdep });
-      }
-      else if (this.currentDateNormal.startsWith('Mar') || this.currentDateNormal.startsWith('Apr') || this.currentDateNormal.startsWith('May')) {
-        let cumnormalpremon = 0;
-        let cumdailypremon = 0;
-        let startdate = 'Mar1';
-        const today = new Date();
-        const months = [
-          'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-          'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
-        ];
-        const dd = String(today.getDate());
-        const currmonth = months[today.getMonth()];
-        let enddate = `${currmonth}${dd}`
-        let startMonth = startdate.slice(0, 3);
-        let endMonth = enddate.slice(0, 3);
-        let startDay = parseInt(startdate.slice(3));
-        let endDay = parseInt(enddate.slice(3));
-        let normal: number;
-        let daily: number;
-        for (let day = startDay; day <= endDay; day++) {
-          const currentDateStr = `${startMonth}${day.toString()}`;
-          const currentDateStrdaily = `${day.toString().padStart(2, '0')}_${startMonth}`;
-          if (currentDateStr === 'Mar1') {
-            normal = item[currentDateStr]
-            daily = item[currentDateStrdaily]
-            if (Number.isNaN(normal)) {
-              normal = 0;
-            }
-            if (Number.isNaN(daily)) {
-              daily = 0;
-            }
-          }
-          else {
-            const yesterday = day - 1;
-            const yesterdayStr = `${startMonth}${yesterday.toString()}`;
-            const yesterdayStrdaily = `${day.toString().padStart(2, '0')}_${startMonth}`;
-            normal = (item[currentDateStr] - item[yesterdayStr])
-            daily = item[currentDateStrdaily]
-            if (Number.isNaN(normal)) {
-              normal = 0;
-            }
-            if (Number.isNaN(daily)) {
-              daily = 0;
-            }
-          }
-          cumnormalpremon += normal
-          cumdailypremon += daily
-        }
-        if (enddate.slice(0, 3) === 'Apr' || enddate.slice(0, 3) === 'May') {
-          startdate = 'Apr1';
-          startMonth = startdate.slice(0, 3);
-          endMonth = enddate.slice(0, 3);
-          startDay = parseInt(startdate.slice(3));
-          endDay = parseInt(enddate.slice(3));
-          for (let day = startDay; day <= endDay; day++) {
-            const currentDateStr = `${startMonth}${day.toString()}`;
-            const currentDateStrdaily = `${day.toString().padStart(2, '0')}_${startMonth}`;
-            let normal: number
-            let daily: number
-            let yesterday: number;
-            let yesterdayStr: string;
-            let yesterdayStrdaily: string;
-            if (currentDateStr === 'Apr1') {
-              yesterdayStr = 'Mar31'
-              yesterdayStrdaily = '31_Mar'
-            }
-            else {
-              yesterday = day - 1;
-              yesterdayStr = `${startMonth}${yesterday.toString()}`;
-              yesterdayStrdaily = `${day.toString().padStart(2, '0')}_${startMonth}`;
-            }
-            normal = (item[currentDateStr] - item[yesterdayStr])
-            daily = item[currentDateStrdaily]
-            if (Number.isNaN(normal)) {
-              normal = 0;
-            }
-            if (Number.isNaN(daily)) {
-              daily = 0;
-            }
-            cumnormalpremon += normal
-            cumdailypremon += daily
-          }
-        }
-        if (enddate.slice(0, 3) === 'May') {
-          startdate = 'May1';
-          startMonth = startdate.slice(0, 3);
-          startDay = parseInt(startdate.slice(3));
-          endDay = parseInt(enddate.slice(3));
-          for (let day = startDay; day <= endDay; day++) {
-            const currentDateStr = `${startMonth}${day.toString()}`;
-            const currentDateStrdaily = `${day.toString().padStart(2, '0')}_${startMonth}`;
-            let normal: number
-            let daily: number
-            let yesterday: number;
-            let yesterdayStr: string;
-            let yesterdayStrdaily: string;
-            if (currentDateStr === 'May1') {
-              yesterdayStr = 'Apr30'
-              yesterdayStrdaily = '30_Apr'
-            }
-            else {
-              yesterday = day - 1;
-              yesterdayStr = `${startMonth}${yesterday.toString()}`;
-              yesterdayStrdaily = `${day.toString().padStart(2, '0')}_${startMonth}`;
-            }
-            normal = (item[currentDateStr] - item[yesterdayStr])
-            daily = item[currentDateStrdaily]
-            if (Number.isNaN(normal)) {
-              normal = 0;
-            }
-            if (Number.isNaN(daily)) {
-              daily = 0;
-            }
-            cumnormalpremon += normal
-            cumdailypremon += daily
-          }
-        }
-        const cumdep = ((cumdailypremon - cumnormalpremon) / cumnormalpremon)
-        this.processedData.push({ districtID: item.districtid, districtname: item.DISTRICT, statename: item.state_code, subdivisionname: item.subdivision_code, dailyrainfall: item[this.currentDateDaily], normalrainfall: normal1, Rainfall: (((item[this.currentDateDaily] - normal1) / normal1) * 100), cummnormal: cumnormalpremon, cummdaily: cumdailypremon, cumdeparture: cumdep });
-      }
-      else if (this.currentDateNormal.startsWith('Jun') || this.currentDateNormal.startsWith('Jul') || this.currentDateNormal.startsWith('Aug') || this.currentDateNormal.startsWith('Sep')) {
-        let cumnormalmon = 0;
-        let cumdailymon = 0;
-        let startdate = 'Jun1';
-        const today = new Date();
-        const months = [
-          'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-          'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
-        ];
-        const dd = String(today.getDate());
-        const currmonth = months[today.getMonth()];
-        let enddate = `${currmonth}${dd}`
-        let startMonth = startdate.slice(0, 3);
-        let endMonth = enddate.slice(0, 3);
-        let startDay = parseInt(startdate.slice(3));
-        let endDay = parseInt(enddate.slice(3));
-        let normal: number
-        let daily: number
-        let cumdep: number
-        for (let day = startDay; day <= endDay; day++) {
-          const currentDateStr = `${startMonth}${day.toString()}`;
-          const currentDateStrdaily = `${day.toString().padStart(2, '0')}_${startMonth}`;
-          if (currentDateStr === 'Jun1') {
-            normal = item[currentDateStr]
-            daily = item[currentDateStrdaily]
-            if (Number.isNaN(normal)) {
-              normal = 0;
-            }
-            if (Number.isNaN(daily)) {
-              daily = 0;
-            }
-          }
-          else {
-            const yesterday = day - 1;
-            const yesterdayStr = `${startMonth}${yesterday.toString()}`;
-            const yesterdayStrdaily = `${day.toString().padStart(2, '0')}_${startMonth}`;
-            normal = (item[currentDateStr] - item[yesterdayStr])
-            daily = item[currentDateStrdaily]
-            if (Number.isNaN(normal)) {
-              normal = 0;
-            }
-            if (Number.isNaN(daily)) {
-              daily = 0;
-            }
-          }
-          cumnormalmon += normal
-          cumdailymon += daily
-        }
-        if (enddate.slice(0, 3) === 'Jul' || enddate.slice(0, 3) === 'Aug' || enddate.slice(0, 3) === 'Sep') {
-          startdate = 'Jul1';
-          startMonth = startdate.slice(0, 3);
-          endMonth = enddate.slice(0, 3);
-          startDay = parseInt(startdate.slice(3));
-          endDay = parseInt(enddate.slice(3));
-          for (let day = startDay; day <= endDay; day++) {
-            const currentDateStr = `${startMonth}${day.toString()}`;
-            const currentDateStrdaily = `${day.toString().padStart(2, '0')}_${startMonth}`;
-            let normal: number
-            let daily: number
-            let yesterday: number;
-            let yesterdayStr: string;
-            let yesterdayStrdaily: string;
-            if (currentDateStr === 'Jul1') {
-              yesterdayStr = 'Jun30'
-              yesterdayStrdaily = '30_Jun'
-            }
-            else {
-              yesterday = day - 1;
-              yesterdayStr = `${startMonth}${yesterday.toString()}`;
-              yesterdayStrdaily = `${day.toString().padStart(2, '0')}_${startMonth}`;
-            }
-            normal = (item[currentDateStr] - item[yesterdayStr])
-            daily = item[currentDateStrdaily]
-            if (Number.isNaN(normal)) {
-              normal = 0;
-            }
-            if (Number.isNaN(daily)) {
-              daily = 0;
-            }
-            cumnormalmon += normal
-            cumdailymon += daily
-          }
-        }
-        if (enddate.slice(0, 3) === 'Aug' || enddate.slice(0, 3) === 'Sep') {
-          startdate = 'Aug1';
-          enddate = 'Aug31';
-          startMonth = startdate.slice(0, 3);
-          endMonth = enddate.slice(0, 3);
-          startDay = parseInt(startdate.slice(3));
-          endDay = parseInt(enddate.slice(3));
-          for (let day = startDay; day <= endDay; day++) {
-            const currentDateStr = `${startMonth}${day.toString()}`;
-            const currentDateStrdaily = `${day.toString().padStart(2, '0')}_${startMonth}`;
-            let normal: number
-            let daily: number
-            let yesterday: number;
-            let yesterdayStr: string;
-            let yesterdayStrdaily: string;
-            if (currentDateStr === 'Aug1') {
-              yesterdayStr = 'Jul31'
-              yesterdayStrdaily = '31_Jul'
-            }
-            else {
-              yesterday = day - 1;
-              yesterdayStr = `${startMonth}${yesterday.toString()}`;
-              yesterdayStrdaily = `${day.toString().padStart(2, '0')}_${startMonth}`;
-            }
-            normal = (item[currentDateStr] - item[yesterdayStr])
-            daily = item[currentDateStrdaily]
-            if (Number.isNaN(normal)) {
-              normal = 0;
-            }
-            if (Number.isNaN(daily)) {
-              daily = 0;
-            }
-            cumnormalmon += normal
-            cumdailymon += daily
-          }
-        }
-        if (enddate.slice(0, 3) === 'Sep') {
-          startdate = 'Sep1';
-          enddate = 'Sep30';
-          startMonth = startdate.slice(0, 3);
-          startDay = parseInt(startdate.slice(3));
-          endDay = parseInt(enddate.slice(3));
-          for (let day = startDay; day <= endDay; day++) {
-            const currentDateStr = `${startMonth}${day.toString()}`;
-            const currentDateStrdaily = `${day.toString().padStart(2, '0')}_${startMonth}`;
-            let normal: number
-            let daily: number
-            let yesterday: number;
-            let yesterdayStr: string;
-            let yesterdayStrdaily: string;
-            if (currentDateStr === 'Sep1') {
-              yesterdayStr = 'Aug31'
-              yesterdayStrdaily = '31_Aug'
-            }
-            else {
-              yesterday = day - 1;
-              yesterdayStr = `${startMonth}${yesterday.toString()}`;
-              yesterdayStrdaily = `${day.toString().padStart(2, '0')}_${startMonth}`;
-            }
-            normal = (item[currentDateStr] - item[yesterdayStr])
-            daily = item[currentDateStrdaily]
-            if (Number.isNaN(normal)) {
-              normal = 0;
-            }
-            if (Number.isNaN(daily)) {
-              daily = 0;
-            }
-            cumnormalmon += normal
-            cumdailymon += daily
-          }
-        }
-        cumdep = ((cumdailymon - cumnormalmon) / cumnormalmon)
-        this.processedData.push({ districtID: item.districtid, districtname: item.DISTRICT, statename: item.state_code, subdivisionname: item.subdivision_code, dailyrainfall: item[this.currentDateDaily], normalrainfall: normal1, Rainfall: (((item[this.currentDateDaily] - normal1) / normal1) * 100), cummnormal: cumnormalmon, cummdaily: cumdailymon, cumdeparture: cumdep }) * 100;
-      }
 
-
-
-      else {
-        let cumnormalpostmon = 0;
-        let cumdailypostmon = 0;
-        let startdate = 'Oct1';
-        const today = new Date();
-        const months = [
-          'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-          'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
-        ];
-        const dd = String(today.getDate());
-        const currmonth = months[today.getMonth()];
-        let enddate = `${currmonth}${dd}`
-        let startMonth = startdate.slice(0, 3);
-        let startDay = parseInt(startdate.slice(3));
-        let endDay = parseInt(enddate.slice(3));
-        for (let day = startDay; day <= endDay; day++) {
-          const currentDateStr = `${startMonth}${day.toString()}`;
-          const currentDateStrdaily = `${day.toString().padStart(2, '0')}_${startMonth}`;
-          //const currentDateStrdaily = `${day.toString()}_${startMonth}`;
-          let normal: number
-          let daily: number
-          if (currentDateStr === 'Oct1') {
-            normal = item[currentDateStr]
-            daily = item[currentDateStrdaily]
-            if (Number.isNaN(normal)) {
-              normal = 0;
-            }
-            if (Number.isNaN(daily)) {
-              daily = 0;
-            }
-          }
-          else {
-            const yesterday = day - 1;
-            const yesterdayStr = `${startMonth}${yesterday.toString()}`;
-            const yesterdayStrdaily = `${yesterday.toString()}_${startMonth}`;
-            normal = (item[currentDateStr] - item[yesterdayStr])
-            daily = item[currentDateStrdaily]
-            if (Number.isNaN(normal)) {
-              normal = 0;
-            }
-            if (Number.isNaN(daily)) {
-              daily = 0;
-            }
-          }
-          if (normal1 === 0) {
-            normal1 = 1
-          }
-          cumnormalpostmon += normal
-          cumdailypostmon += daily
-        }
-        if (enddate.slice(0, 3) === 'Nov' || enddate.slice(0, 3) === 'Dec') {
-          startdate = 'Nov1';
-          enddate = 'Nov30';
-          startMonth = startdate.slice(0, 3);
-          startDay = parseInt(startdate.slice(3));
-          endDay = parseInt(enddate.slice(3));
-          for (let day = startDay; day <= endDay; day++) {
-            const currentDateStr = `${startMonth}${day.toString()}`;
-            const currentDateStrdaily = `${day.toString().padStart(2, '0')}_${startMonth}`;
-            //const currentDateStrdaily = `${day.toString()}_${startMonth}`;
-            let normal: number
-            let daily: number
-            let yesterday: number;
-            let yesterdayStr: string;
-            let yesterdayStrdaily: string;
-            if (currentDateStr === 'Nov1') {
-              yesterdayStr = 'Oct31'
-              yesterdayStrdaily = '31_Oct'
-            }
-            else {
-              yesterday = day - 1;
-              yesterdayStr = `${startMonth}${yesterday.toString()}`;
-              yesterdayStrdaily = `${yesterday.toString()}_${startMonth}`;
-            }
-            normal = (item[currentDateStr] - item[yesterdayStr])
-            daily = item[currentDateStrdaily]
-            if (Number.isNaN(normal)) {
-              normal = 0;
-            }
-            if (Number.isNaN(daily)) {
-              daily = 0;
-            }
-            cumnormalpostmon += normal
-            cumdailypostmon += daily
-          }
-        }
-        if (enddate.slice(0, 3) === 'Dec') {
-          startdate = 'Dec1';
-          enddate = 'Dec31';
-          startMonth = startdate.slice(0, 3);
-          startDay = parseInt(startdate.slice(3));
-          endDay = parseInt(enddate.slice(3));
-          for (let day = startDay; day <= endDay; day++) {
-            const currentDateStr = `${startMonth}${day.toString()}`;
-            const currentDateStrdaily = `${day.toString().padStart(2, '0')}_${startMonth}`;
-            let normal: number
-            let daily: number
-            let yesterday: number;
-            let yesterdayStr: string;
-            let yesterdayStrdaily: string;
-            if (currentDateStr === 'Dec1') {
-              yesterdayStr = 'Nov30'
-              yesterdayStrdaily = '30_Nov'
-            }
-            else {
-              yesterday = day - 1;
-              yesterdayStr = `${startMonth}${yesterday.toString()}`;
-              yesterdayStrdaily = `${day.toString().padStart(2, '0')}_${startMonth}`;
-            }
-            normal = (item[currentDateStr] - item[yesterdayStr])
-            daily = item[currentDateStrdaily]
-            if (Number.isNaN(normal)) {
-              normal = 0;
-            }
-            if (Number.isNaN(daily)) {
-              daily = 0;
-            }
-            cumnormalpostmon += normal
-            cumdailypostmon += daily
-          }
-        }
-      const matchedData = this.MatchingDataofdistrictdailyandnormal(item.district_code);
-      const cumdep = ((cumdailypostmon - cumnormalpostmon) / cumnormalpostmon) * 100
-      this.processedData.push({ districtID: item.district_code , districtname: item.district_name, statename: item.state_name, subdivisionname: item.subdiv_name, dailyrainfall: matchedData.dailyrainfall, normalrainfall: normal1, Rainfall: (((matchedData.dailyrainfall - normal1) / normal1) * 100), cummnormal: cumnormalpostmon});
-      }
-
-    }
-
-  }
 
 
 
@@ -3348,35 +3446,35 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
   // public today = new Date();
   public month = this.months[this.today.getMonth()];
   public day = String(this.today.getDate()).padStart(2, '0');
-  public sortedDataArray: any[]=[];
-  public regions:any[]=[];
-  public sortedSubDivisions:any[]=[];
-  async pushDistrict(item:any, name:string){
-    if(item.statename == name){
+  public sortedDataArray: any[] = [];
+  public regions: any[] = [];
+  public sortedSubDivisions: any[] = [];
+  async pushDistrict(item: any, name: string) {
+    if (item.statename == name) {
       this.sortedDataArray.push(item);
     }
   }
 
-  async pushDistrict1(item:any, name:string){
-    if(item.subdivisionname == name){
+  async pushDistrict1(item: any, name: string) {
+    if (item.subdivisionname == name) {
       this.sortedDataArray.push(item);
-}
+    }
   }
 
-  async pushRegion(item:any, name:string){
-    if(item.regionname == name){
+  async pushRegion(item: any, name: string) {
+    if (item.regionname == name) {
       this.regions.push(item);
     }
   }
 
-  async pushSubDivision(item:any, name:string){
-    if(item.subdivname == name){
+  async pushSubDivision(item: any, name: string) {
+    if (item.subdivname == name) {
       this.sortedSubDivisions.push(item);
     }
   }
 
   downloadMapData(): void {
-    const data = this.processedData;
+    const data = this.stationtodistrictdatacum;
     const data1 = this.subdivisionfetchedDatadep;
     const data2 = this.statefetchedDatadep;
     const doc = new jsPDF() as any;
@@ -3405,10 +3503,10 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
 
     // Group the data by "subdivisionname"
     const groupedData = data.reduce((acc, current) => {
-      const group = acc.find((group:any) => group.subdivisionname === current.subdivisionname);
+      const group = acc.find((group: any) => group.subdivisionname === current.subdivisionname);
       if (group) {
-        var dist = group.districts.find((i:any) => i.districtname == current.districtname);
-        if(!dist){
+        var dist = group.districts.find((i: any) => i.districtname == current.districtname);
+        if (!dist) {
           group.districts.push(current);
         }
       } else {
@@ -3418,141 +3516,141 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     }, []);
 
     // Sort each group by "districtname & statename"
-    groupedData.forEach((group:any) => {
-      group.districts.sort((a:any, b:any) => a.districtname.localeCompare(b.districtname));
-      group.districts.sort((a:any, b:any) => a.statename.localeCompare(b.statename));
+    groupedData.forEach((group: any) => {
+      group.districts.sort((a: any, b: any) => a.districtname.localeCompare(b.districtname));
+      group.districts.sort((a: any, b: any) => a.statename.localeCompare(b.statename));
     });
 
     // Flatten the groups back into a single array
-    const sortedData = groupedData.flatMap((group:any) => group.districts);
+    const sortedData = groupedData.flatMap((group: any) => group.districts);
 
-    sortedData.forEach(async (item:any) => {
+    sortedData.forEach(async (item: any) => {
       await this.pushDistrict(item, "ANDAMAN & NICOBAR (UT)");
     })
-    sortedData.forEach(async (item:any) => {
+    sortedData.forEach(async (item: any) => {
       await this.pushDistrict(item, "ARUNACHAL PRADESH");
     })
-    sortedData.forEach(async (item:any) => {
+    sortedData.forEach(async (item: any) => {
       await this.pushDistrict(item, "ASSAM");
     })
-    sortedData.forEach(async (item:any) => {
+    sortedData.forEach(async (item: any) => {
       await this.pushDistrict(item, "MEGHALAYA");
     })
-    sortedData.forEach(async (item:any) => {
+    sortedData.forEach(async (item: any) => {
       await this.pushDistrict(item, "NAGALAND");
     })
-    sortedData.forEach(async (item:any) => {
+    sortedData.forEach(async (item: any) => {
       await this.pushDistrict(item, "MANIPUR");
     })
-    sortedData.forEach(async (item:any) => {
+    sortedData.forEach(async (item: any) => {
       await this.pushDistrict(item, "MIZORAM");
     })
-    sortedData.forEach(async (item:any) => {
+    sortedData.forEach(async (item: any) => {
       await this.pushDistrict(item, "TRIPURA");
     })
-    sortedData.forEach(async (item:any) => {
+    sortedData.forEach(async (item: any) => {
       await this.pushDistrict(item, "SIKKIM");
     })
-    sortedData.forEach(async (item:any) => {
+    sortedData.forEach(async (item: any) => {
       await this.pushDistrict(item, "WEST BENGAL");
     })
-    sortedData.forEach(async (item:any) => {
+    sortedData.forEach(async (item: any) => {
       await this.pushDistrict(item, "ORISSA");
     })
-    sortedData.forEach(async (item:any) => {
+    sortedData.forEach(async (item: any) => {
       await this.pushDistrict(item, "JHARKHAND");
     })
-    sortedData.forEach(async (item:any) => {
+    sortedData.forEach(async (item: any) => {
       await this.pushDistrict(item, "BIHAR");
     })
-    sortedData.forEach(async (item:any) => {
+    sortedData.forEach(async (item: any) => {
       await this.pushDistrict(item, "UTTAR PRADESH");
     })
-    sortedData.forEach(async (item:any) => {
+    sortedData.forEach(async (item: any) => {
       await this.pushDistrict(item, "UTTARAKHAND");
     })
-    sortedData.forEach(async (item:any) => {
+    sortedData.forEach(async (item: any) => {
       await this.pushDistrict(item, "HARYANA");
     })
-    sortedData.forEach(async (item:any) => {
+    sortedData.forEach(async (item: any) => {
       await this.pushDistrict(item, "CHANDIGARH (UT)");
     })
-    sortedData.forEach(async (item:any) => {
+    sortedData.forEach(async (item: any) => {
       await this.pushDistrict(item, "DELHI (UT)");
     })
-    sortedData.forEach(async (item:any) => {
+    sortedData.forEach(async (item: any) => {
       await this.pushDistrict(item, "PUNJAB");
     })
-    sortedData.forEach(async (item:any) => {
+    sortedData.forEach(async (item: any) => {
       await this.pushDistrict(item, "HIMACHAL PRADESH");
     })
-    sortedData.forEach(async (item:any) => {
+    sortedData.forEach(async (item: any) => {
       await this.pushDistrict(item, "JAMMU & KASHMIR (UT)");
     })
-    sortedData.forEach(async (item:any) => {
+    sortedData.forEach(async (item: any) => {
       await this.pushDistrict(item, "LADAKH (UT)");
     })
-    sortedData.forEach(async (item:any) => {
+    sortedData.forEach(async (item: any) => {
       await this.pushDistrict(item, "RAJASTHAN");
     })
-    sortedData.forEach(async (item:any) => {
+    sortedData.forEach(async (item: any) => {
       await this.pushDistrict(item, "MADHYA PRADESH");
     })
-    sortedData.forEach(async (item:any) => {
-      if(item.subdivisionname !== "SAURASHTRA & KUTCH"){
+    sortedData.forEach(async (item: any) => {
+      if (item.subdivisionname !== "SAURASHTRA & KUTCH") {
         await this.pushDistrict(item, "GUJARAT");
       }
     })
-    sortedData.forEach(async (item:any) => {
+    sortedData.forEach(async (item: any) => {
       await this.pushDistrict(item, "DADRA & NAGAR HAVELI AND DAMAN & DIU (UT)");
     })
-    sortedData.forEach(async (item:any) => {
+    sortedData.forEach(async (item: any) => {
       await this.pushDistrict1(item, "SAURASHTRA & KUTCH");
     })
-    sortedData.forEach(async (item:any) => {
+    sortedData.forEach(async (item: any) => {
       await this.pushDistrict(item, "GOA");
     })
-    sortedData.forEach(async (item:any) => {
+    sortedData.forEach(async (item: any) => {
       await this.pushDistrict(item, "MAHARASHTRA");
     })
-    sortedData.forEach(async (item:any) => {
+    sortedData.forEach(async (item: any) => {
       await this.pushDistrict(item, "CHHATTISGARH");
     })
-    sortedData.forEach(async (item:any) => {
-      if(item.subdivisionname !== "TN PUDU and KARAIKAL"){
+    sortedData.forEach(async (item: any) => {
+      if (item.subdivisionname !== "TN PUDU and KARAIKAL") {
         await this.pushDistrict(item, "PUDUCHERRY (UT)");
       }
     })
-    sortedData.forEach(async (item:any) => {
-      if(item.subdivisionname !== "RAYALASEEMA"){
+    sortedData.forEach(async (item: any) => {
+      if (item.subdivisionname !== "RAYALASEEMA") {
         await this.pushDistrict(item, "ANDHRA PRADESH");
       }
     })
-    sortedData.forEach(async (item:any) => {
+    sortedData.forEach(async (item: any) => {
       await this.pushDistrict(item, "TELANGANA");
     })
-    sortedData.forEach(async (item:any) => {
+    sortedData.forEach(async (item: any) => {
       await this.pushDistrict1(item, "RAYALASEEMA");
     })
-    sortedData.forEach(async (item:any) => {
+    sortedData.forEach(async (item: any) => {
       await this.pushDistrict(item, "TAMIL NADU");
     })
-    sortedData.forEach(async (item:any) => {
-      if(item.subdivisionname == "TN PUDU and KARAIKAL"){
-      await this.pushDistrict(item, "PUDUCHERRY (UT)");
+    sortedData.forEach(async (item: any) => {
+      if (item.subdivisionname == "TN PUDU and KARAIKAL") {
+        await this.pushDistrict(item, "PUDUCHERRY (UT)");
       }
     })
-    sortedData.forEach(async (item:any) => {
+    sortedData.forEach(async (item: any) => {
       await this.pushDistrict(item, "KARNATAKA");
     })
-    sortedData.forEach(async (item:any) => {
+    sortedData.forEach(async (item: any) => {
       await this.pushDistrict(item, "KERALA");
     })
-    sortedData.forEach(async (item:any) => {
+    sortedData.forEach(async (item: any) => {
       await this.pushDistrict(item, "LAKSHADWEEP (UT)");
     })
 
-    this.sortedDataArray.forEach((item:any, index:number) => {
+    this.sortedDataArray.forEach((item: any, index: number) => {
       let currentsubdivname = item.subdivisionname;
 
       if (currentsubdivname !== previoussubdivName) {
@@ -3685,10 +3783,10 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
           item.districtname,
           item.dailyrainfall !== null && item.dailyrainfall !== undefined && !Number.isNaN(item.dailyrainfall) ? item.dailyrainfall.toFixed(1) : ' ',
           item.normalrainfall !== null && item.normalrainfall !== undefined && !Number.isNaN(item.normalrainfall) ? item.normalrainfall.toFixed(1) : 'NA',
-          (item.dailyrainfall !== null && item.dailyrainfall !== undefined && !Number.isNaN(item.dailyrainfall) ? item.dailyrainfall.toFixed(1) : ' ') == ' ' ? ' ' :  (item.Rainfall !== null && item.Rainfall !== undefined && !Number.isNaN(item.Rainfall) ? Math.round(item.Rainfall) + "%" : 'NA'),
+          (item.dailyrainfall !== null && item.dailyrainfall !== undefined && !Number.isNaN(item.dailyrainfall) ? item.dailyrainfall.toFixed(1) : ' ') == ' ' ? ' ' : (item.dailydeparturerainfall !== null && item.dailydeparturerainfall !== undefined && !Number.isNaN(item.dailydeparturerainfall) ? Math.round(item.dailydeparturerainfall) + "%" : 'NA'),
           {
-            content: this.getCatForRainfall(item.Rainfall, item.dailyrainfall !== null && item.dailyrainfall !== undefined && !Number.isNaN(item.dailyrainfall) ? item.dailyrainfall.toFixed(1) : ' '),
-            styles: { fillColor: this.getColorForRainfall(item.Rainfall, item.dailyrainfall !== null && item.dailyrainfall !== undefined && !Number.isNaN(item.dailyrainfall) ? item.dailyrainfall.toFixed(1) : ' ') }, // Background color
+            content: this.getCatForRainfall(item.dailydeparturerainfall, item.dailyrainfall !== null && item.dailyrainfall !== undefined && !Number.isNaN(item.dailyrainfall) ? item.dailyrainfall.toFixed(1) : ' '),
+            styles: { fillColor: this.getColorForRainfall(item.dailydeparturerainfall, item.dailyrainfall !== null && item.dailyrainfall !== undefined && !Number.isNaN(item.dailyrainfall) ? item.dailyrainfall.toFixed(1) : ' ') }, // Background color
           },
           item.cummdaily !== null && item.cummdaily !== undefined && !Number.isNaN(item.cummdaily) ? item.cummdaily.toFixed(1) : 'NA',
           item.cummnormal !== null && item.cummnormal !== undefined && !Number.isNaN(item.cummnormal) ? item.cummnormal.toFixed(1) : 'NA',
@@ -3701,15 +3799,15 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       }
       else {
         stateIndex++;
-          rows.push([
+        rows.push([
           stateIndex, // Serial number
           item.districtname,
           item.dailyrainfall !== null && item.dailyrainfall !== undefined && !Number.isNaN(item.dailyrainfall) ? item.dailyrainfall.toFixed(1) : ' ',
           item.normalrainfall !== null && item.normalrainfall !== undefined && !Number.isNaN(item.normalrainfall) ? item.normalrainfall.toFixed(1) : 'NA',
-          (item.dailyrainfall !== null && item.dailyrainfall !== undefined && !Number.isNaN(item.dailyrainfall) ? item.dailyrainfall.toFixed(1) : ' ') == ' ' ? ' ' :  (item.Rainfall !== null && item.Rainfall !== undefined && !Number.isNaN(item.Rainfall) ? Math.round(item.Rainfall) + "%" : 'NA'),
+          (item.dailyrainfall !== null && item.dailyrainfall !== undefined && !Number.isNaN(item.dailyrainfall) ? item.dailyrainfall.toFixed(1) : ' ') == ' ' ? ' ' : (item.dailydeparturerainfall !== null && item.dailydeparturerainfall !== undefined && !Number.isNaN(item.dailydeparturerainfall) ? Math.round(item.dailydeparturerainfall) + "%" : 'NA'),
           {
-            content: this.getCatForRainfall(item.Rainfall, item.dailyrainfall !== null && item.dailyrainfall !== undefined && !Number.isNaN(item.dailyrainfall) ? item.dailyrainfall.toFixed(1) : ' '),
-            styles: { fillColor: this.getColorForRainfall(item.Rainfall, item.dailyrainfall !== null && item.dailyrainfall !== undefined && !Number.isNaN(item.dailyrainfall) ? item.dailyrainfall.toFixed(1) : ' ') }, // Background color
+            content: this.getCatForRainfall(item.dailydeparturerainfall, item.dailyrainfall !== null && item.dailyrainfall !== undefined && !Number.isNaN(item.dailyrainfall) ? item.dailyrainfall.toFixed(1) : ' '),
+            styles: { fillColor: this.getColorForRainfall(item.dailydeparturerainfall, item.dailyrainfall !== null && item.dailyrainfall !== undefined && !Number.isNaN(item.dailyrainfall) ? item.dailyrainfall.toFixed(1) : ' ') }, // Background color
           },
           item.cummdaily !== null && item.cummdaily !== undefined && !Number.isNaN(item.cummdaily) ? item.cummdaily.toFixed(1) : 'NA',
           item.cummnormal !== null && item.cummnormal !== undefined && !Number.isNaN(item.cummnormal) ? item.cummnormal.toFixed(1) : 'NA',
@@ -3718,7 +3816,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
             content: this.getCatForRainfall(item.cumdeparture),
             styles: { fillColor: this.getColorForRainfall(item.cumdeparture) }, // Background color
           },
-                  ]);
+        ]);
       }
       previoussubdivName = currentsubdivname;
       previousstateName = currentstatename;
@@ -3758,7 +3856,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
         doc.rect(data.cell.x, data.cell.y, data.cell.width, data.cell.height);
         doc.setDrawColor(0);
       },
-      didParseCell: function(data:any) {
+      didParseCell: function (data: any) {
         data.cell.styles.fontStyle = 'bold';
       }
     });
@@ -3965,7 +4063,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
         doc.rect(data.cell.x, data.cell.y, data.cell.width, data.cell.height);
         doc.setDrawColor(0);
       },
-      didParseCell: function(data:any) {
+      didParseCell: function (data: any) {
         data.cell.styles.fontStyle = 'bold';
       }
     });
@@ -4012,11 +4110,11 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
   }
 
   downloadMapData2(): void {
-const groupedData = this.subdivisionfetchedDatadep.reduce((acc, current) => {
-      const group = acc.find((group:any) => group.regionname === current.regionname);
+    const groupedData = this.subdivisionfetchedDatadep.reduce((acc, current) => {
+      const group = acc.find((group: any) => group.regionname === current.regionname);
       if (group) {
-        var dist = group.subDivisions.find((i:any) => i.subdivname == current.subdivname);
-        if(!dist){
+        var dist = group.subDivisions.find((i: any) => i.subdivname == current.subdivname);
+        if (!dist) {
           group.subDivisions.push(current);
         }
       } else {
@@ -4025,125 +4123,125 @@ const groupedData = this.subdivisionfetchedDatadep.reduce((acc, current) => {
       return acc;
     }, []);
 
-    groupedData.forEach(async (item:any) => {
+    groupedData.forEach(async (item: any) => {
       await this.pushRegion(item, "EAST & NORTH EAST INDIA");
     })
-    groupedData.forEach(async (item:any) => {
+    groupedData.forEach(async (item: any) => {
       await this.pushRegion(item, "NORTH WEST INDIA");
     })
-    groupedData.forEach(async (item:any) => {
+    groupedData.forEach(async (item: any) => {
       await this.pushRegion(item, "CENTRAL INDIA");
     })
-    groupedData.forEach(async (item:any) => {
+    groupedData.forEach(async (item: any) => {
       await this.pushRegion(item, "SOUTH PENINSULA");
     })
-    const sortedData = this.regions.flatMap((group:any) => group.subDivisions);
-    sortedData.forEach(async (item:any) => {
+    const sortedData = this.regions.flatMap((group: any) => group.subDivisions);
+    sortedData.forEach(async (item: any) => {
       await this.pushSubDivision(item, "ARUNACHAL PRADESH");
     })
-    sortedData.forEach(async (item:any) => {
+    sortedData.forEach(async (item: any) => {
       await this.pushSubDivision(item, "ASSAM & MEGHALAYA");
     })
-    sortedData.forEach(async (item:any) => {
+    sortedData.forEach(async (item: any) => {
       await this.pushSubDivision(item, "N M M T");
     })
-    sortedData.forEach(async (item:any) => {
+    sortedData.forEach(async (item: any) => {
       await this.pushSubDivision(item, "SHWB & SIKKIM");
     })
-    sortedData.forEach(async (item:any) => {
+    sortedData.forEach(async (item: any) => {
       await this.pushSubDivision(item, "GANGETIC WEST BENGAL");
     })
-    sortedData.forEach(async (item:any) => {
+    sortedData.forEach(async (item: any) => {
       await this.pushSubDivision(item, "JHARKHAND");
     })
-    sortedData.forEach(async (item:any) => {
+    sortedData.forEach(async (item: any) => {
       await this.pushSubDivision(item, "BIHAR");
     })
-    sortedData.forEach(async (item:any) => {
+    sortedData.forEach(async (item: any) => {
       await this.pushSubDivision(item, "EAST UTTAR PRADESH");
     })
-    sortedData.forEach(async (item:any) => {
+    sortedData.forEach(async (item: any) => {
       await this.pushSubDivision(item, "WEST UTTAR PRADESH");
     })
-    sortedData.forEach(async (item:any) => {
+    sortedData.forEach(async (item: any) => {
       await this.pushSubDivision(item, "UTTARAKHAND");
     })
-    sortedData.forEach(async (item:any) => {
+    sortedData.forEach(async (item: any) => {
       await this.pushSubDivision(item, "HAR. CHD & DELHI");
     })
-    sortedData.forEach(async (item:any) => {
+    sortedData.forEach(async (item: any) => {
       await this.pushSubDivision(item, "PUNJAB");
     })
-    sortedData.forEach(async (item:any) => {
+    sortedData.forEach(async (item: any) => {
       await this.pushSubDivision(item, "HIMACHAL PRADESH");
     })
-    sortedData.forEach(async (item:any) => {
+    sortedData.forEach(async (item: any) => {
       await this.pushSubDivision(item, "JK AND LADAKH (UT)");
     })
-    sortedData.forEach(async (item:any) => {
+    sortedData.forEach(async (item: any) => {
       await this.pushSubDivision(item, "WEST RAJASTHAN");
     })
-    sortedData.forEach(async (item:any) => {
+    sortedData.forEach(async (item: any) => {
       await this.pushSubDivision(item, "EAST RAJASTHAN");
     })
-    sortedData.forEach(async (item:any) => {
+    sortedData.forEach(async (item: any) => {
       await this.pushSubDivision(item, "ORISSA");
     })
-    sortedData.forEach(async (item:any) => {
+    sortedData.forEach(async (item: any) => {
       await this.pushSubDivision(item, "WEST MADHYA PRADESH");
     })
-    sortedData.forEach(async (item:any) => {
+    sortedData.forEach(async (item: any) => {
       await this.pushSubDivision(item, "EAST MADHYA PRADESH");
     })
-    sortedData.forEach(async (item:any) => {
+    sortedData.forEach(async (item: any) => {
       await this.pushSubDivision(item, "GUJARAT REGION");
     })
-    sortedData.forEach(async (item:any) => {
+    sortedData.forEach(async (item: any) => {
       await this.pushSubDivision(item, "SAURASHTRA & KUTCH");
     })
-    sortedData.forEach(async (item:any) => {
+    sortedData.forEach(async (item: any) => {
       await this.pushSubDivision(item, "KONKAN & GOA");
     })
-    sortedData.forEach(async (item:any) => {
+    sortedData.forEach(async (item: any) => {
       await this.pushSubDivision(item, "MADHYA MAHARASHTRA");
     })
-    sortedData.forEach(async (item:any) => {
+    sortedData.forEach(async (item: any) => {
       await this.pushSubDivision(item, "MARATHWADA");
     })
-    sortedData.forEach(async (item:any) => {
+    sortedData.forEach(async (item: any) => {
       await this.pushSubDivision(item, "VIDARBHA");
     })
-    sortedData.forEach(async (item:any) => {
+    sortedData.forEach(async (item: any) => {
       await this.pushSubDivision(item, "CHHATTISGARH");
     })
-    sortedData.forEach(async (item:any) => {
+    sortedData.forEach(async (item: any) => {
       await this.pushSubDivision(item, "A & N ISLAND");
     })
-    sortedData.forEach(async (item:any) => {
+    sortedData.forEach(async (item: any) => {
       await this.pushSubDivision(item, "COASTAL A.P. & YANAM");
     })
-    sortedData.forEach(async (item:any) => {
+    sortedData.forEach(async (item: any) => {
       await this.pushSubDivision(item, "TELANGANA");
     })
-    sortedData.forEach(async (item:any) => {
+    sortedData.forEach(async (item: any) => {
       await this.pushSubDivision(item, "RAYALASEEMA");
     })
-    sortedData.forEach(async (item:any) => {
+    sortedData.forEach(async (item: any) => {
       await this.pushSubDivision(item, "TN PUDU and KARAIKAL");
     })
-    sortedData.forEach(async (item:any) => {
+    sortedData.forEach(async (item: any) => {
       await this.pushSubDivision(item, "COASTAL KARNATAKA");
     })
-    sortedData.forEach(async (item:any) => {
+    sortedData.forEach(async (item: any) => {
       await this.pushSubDivision(item, "N. I. KARNATAKA");
     })
-    sortedData.forEach(async (item:any) => {
+    sortedData.forEach(async (item: any) => {
       await this.pushSubDivision(item, "S. I. KARNATAKA");
     })
-    sortedData.forEach(async (item:any) => {
+    sortedData.forEach(async (item: any) => {
       await this.pushSubDivision(item, "KERALA & MAHE");
     })
-    sortedData.forEach(async (item:any) => {
+    sortedData.forEach(async (item: any) => {
       await this.pushSubDivision(item, "LAKSHADWEEP");
     })
 
@@ -4163,7 +4261,7 @@ const groupedData = this.subdivisionfetchedDatadep.reduce((acc, current) => {
     let regioncumnormalindist: number;
     let regioncumdepindist: number;
 
-    this.sortedSubDivisions.forEach((item:any, index:number) => {
+    this.sortedSubDivisions.forEach((item: any, index: number) => {
       let currentregionname = item.regionname;
       if (currentregionname != previousregionName) {
         data1.forEach((item1, index) => {
@@ -4476,7 +4574,7 @@ const groupedData = this.subdivisionfetchedDatadep.reduce((acc, current) => {
         style: (feature: any) => {
           const id2 = feature.properties['district_c'];
           const matchedData = this.findMatchingData(id2);
-          const rainfall = matchedData ? matchedData.Rainfall : -100;
+          const rainfall = matchedData ? matchedData.dailydeparturerainfall : -100;
           const actual = matchedData && matchedData.dailyrainfall == null ? ' ' : "notnull";
           const color = this.getColorForRainfall(rainfall, actual);
           return {
@@ -4492,7 +4590,7 @@ const groupedData = this.subdivisionfetchedDatadep.reduce((acc, current) => {
           const id1 = feature.properties['district'];
           const id2 = feature.properties['district_c'];
           const matchedData = this.findMatchingData(id2);
-          const rainfall = matchedData && matchedData.Rainfall !== null && matchedData.Rainfall !== undefined && !Number.isNaN(matchedData.Rainfall) ? matchedData.Rainfall.toFixed(2): 'NA';
+          const rainfall = matchedData && matchedData.Rainfall !== null && matchedData.Rainfall !== undefined && !Number.isNaN(matchedData.Rainfall) ? matchedData.Rainfall.toFixed(2) : 'NA';
           const dailyrainfall = matchedData && matchedData.dailyrainfall !== null && matchedData.dailyrainfall != undefined && !Number.isNaN(matchedData.dailyrainfall) ? matchedData.dailyrainfall.toFixed(2) : 'NA';
           const normalrainfall = matchedData && !Number.isNaN(matchedData.normalrainfall) ? matchedData.normalrainfall.toFixed(2) : 'NA';
           const popupContent = `
@@ -4715,7 +4813,7 @@ const groupedData = this.subdivisionfetchedDatadep.reduce((acc, current) => {
       cat = 'LD';
       return '#ffff20';
     }
-    if(actual == ' '){
+    if (actual == ' ') {
       return '#c0c0c0';
     }
     if (numericId == -100) {
@@ -4727,7 +4825,7 @@ const groupedData = this.subdivisionfetchedDatadep.reduce((acc, current) => {
       return '#c0c0c0';
     }
   }
-  getCatForRainfall(rainfall: number, actual?:string): string {
+  getCatForRainfall(rainfall: number, actual?: string): string {
     const numericId = rainfall;
     if (numericId > 60) {
       return 'LE';
@@ -4744,7 +4842,7 @@ const groupedData = this.subdivisionfetchedDatadep.reduce((acc, current) => {
     if (numericId >= -99 && numericId <= -60) {
       return 'LD';
     }
-    if(actual == ' '){
+    if (actual == ' ') {
       return 'ND';
     }
     if (numericId == -100) {
@@ -4761,49 +4859,52 @@ const groupedData = this.subdivisionfetchedDatadep.reduce((acc, current) => {
   }
 
   downloadMapImage(): void {
-    htmlToImage.toJpeg(document.getElementById('map') as HTMLElement, { quality: 0.95, filter: this.filter})
-    .then(function (dataUrl) {
-      var link = document.createElement('a');
-      link.download = 'District_dep.jpeg';
-      link.href = dataUrl;
-      link.click();
-    });
+    htmlToImage.toJpeg(document.getElementById('map') as HTMLElement, { quality: 0.95, filter: this.filter })
+      .then(function (dataUrl) {
+        var link = document.createElement('a');
+        link.download = 'District_dep.jpeg';
+        link.href = dataUrl;
+        link.click();
+      });
   }
   downloadMapImage1(): void {
-    htmlToImage.toJpeg(document.getElementById('map1') as HTMLElement, { quality: 0.95, filter: this.filter})
-    .then(function (dataUrl) {
-      var link = document.createElement('a');
-      link.download = 'state_dep.jpeg';
-      link.href = dataUrl;
-      link.click();
-    });
+    htmlToImage.toJpeg(document.getElementById('map1') as HTMLElement, { quality: 0.95, filter: this.filter })
+      .then(function (dataUrl) {
+        var link = document.createElement('a');
+        link.download = 'state_dep.jpeg';
+        link.href = dataUrl;
+        link.click();
+      });
   }
   downloadMapImage2(): void {
     htmlToImage.toJpeg(document.getElementById('map2') as HTMLElement, { quality: 0.95, filter: this.filter })
-    .then(function (dataUrl) {
-      var link = document.createElement('a');
-      link.download = 'sub-division_dep.jpeg';
-      link.href = dataUrl;
-      link.click();
-    });
+      .then(function (dataUrl) {
+        var link = document.createElement('a');
+        link.download = 'sub-division_dep.jpeg';
+        link.href = dataUrl;
+        link.click();
+      });
   }
   downloadMapImage3(): void {
     htmlToImage.toJpeg(document.getElementById('map3') as HTMLElement, { quality: 0.95, filter: this.filter })
-    .then(function (dataUrl) {
-      var link = document.createElement('a');
-      link.download = 'region_dep.jpeg';
-      link.href = dataUrl;
-      link.click();
-    });
+      .then(function (dataUrl) {
+        var link = document.createElement('a');
+        link.download = 'region_dep.jpeg';
+        link.href = dataUrl;
+        link.click();
+      });
   }
   downloadMapImage4(): void {
     htmlToImage.toJpeg(document.getElementById('map4') as HTMLElement, { quality: 0.95, filter: this.filter })
-    .then(function (dataUrl) {
-      var link = document.createElement('a');
-      link.download = 'country_dep.jpeg';
-      link.href = dataUrl;
-      link.click();
-    });
+      .then(function (dataUrl) {
+        var link = document.createElement('a');
+        link.download = 'country_dep.jpeg';
+        link.href = dataUrl;
+        link.click();
+      });
+
+
+
 
     // html2canvas(document.getElementById('map4') as HTMLElement).then(canvas => {
     //   const link = document.createElement('a');
@@ -4813,11 +4914,11 @@ const groupedData = this.subdivisionfetchedDatadep.reduce((acc, current) => {
     // });
   }
 
-  getNormalMap(){
+  getNormalMap() {
     this.router.navigate(['/normal']);
   }
 
-  getDepartureMap(){
+  getDepartureMap() {
     this.router.navigate(['/departure']);
   }
 }
