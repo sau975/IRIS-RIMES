@@ -199,17 +199,17 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
   //   }, 0);
   // }
 
-getColumnSum(currentDateStrdaily: string): number {
-  return this.fetchedMasterData.reduce((sum: any, row: { [x: string]: any; }) => {
-    const cellValue = row[currentDateStrdaily];
+// getColumnSum(currentDateStrdaily: string): number {
+//   return this.fetchedMasterData.reduce((sum: any, row: { [x: string]: any; }) => {
+//     const cellValue = row[currentDateStrdaily];
 
-    if (cellValue === -999.9) {
-      return sum + 0;
-    } else {
-      return sum + cellValue;
-    }
-  }, 0);
-}
+//     if (cellValue === -999.9) {
+//       return sum + 0;
+//     } else {
+//       return sum + cellValue;
+//     }
+//   }, 0);
+// }
 
 
 
@@ -233,65 +233,62 @@ getColumnSum(currentDateStrdaily: string): number {
     let previousregionname = "";
     let stationcumdata = 0
     let districtcumdata = 0
-
-
-
     // let sum = this.getColumnSum('Oct');
     // console.log(sum)
-    if (this.currentDateDaily.endsWith('Oct') || this.currentDateDaily.endsWith('Nov') || this.currentDateDaily.endsWith('Dec')) {
-      if (this.currentDateDaily.endsWith('Dec')) {
-        let startMonth = "Oct";
-        let startDay = 1;
-        let endDay = 31;
-        let dataavailabledates = 0;
-        for (let day = startDay; day <= endDay; day++) {
-          const currentDateStrdaily = `${day.toString().padStart(2, '0')}_${startMonth}`;
-          let sumofcolumn = this.getColumnSum(currentDateStrdaily);
-          console.log(currentDateStrdaily, sumofcolumn)
+//     if (this.currentDateDaily.endsWith('Oct') || this.currentDateDaily.endsWith('Nov') || this.currentDateDaily.endsWith('Dec')) {
+//       if (this.currentDateDaily.endsWith('Dec')) {
+//         let startMonth = "Oct";
+//         let startDay = 1;
+//         let endDay = 31;
+//         let dataavailabledates = 0;
+//         for (let day = startDay; day <= endDay; day++) {
+//           const currentDateStrdaily = `${day.toString().padStart(2, '0')}_${startMonth}`;
+//           let sumofcolumn = this.getColumnSum(currentDateStrdaily);
+//           console.log(currentDateStrdaily, sumofcolumn)
 
 
-          // let daily: number
-          // if (item[currentDateStrdaily] != -999.9) {
-          //   daily = item[currentDateStrdaily]
-          //   dataavailabledates = dataavailabledates + 1;
-          // }
-          // else {
-          //   daily = 0
-          // }
-          // stationcumdata += daily
-        }
-        startMonth = "Nov";
-        startDay = 1;
-        endDay = 30;
-        for (let day = startDay; day <= endDay; day++) {
-          const currentDateStrdaily = `${day.toString().padStart(2, '0')}_${startMonth}`;
-          let daily: number
-          // if (item[currentDateStrdaily] != -999.9) {
-          //   daily = item[currentDateStrdaily]
-          //   dataavailabledates = dataavailabledates + 1;
-          // }
-          // else {
-          //   daily = 0
-          // }
-          // stationcumdata += daily
-        }
-        startMonth = "Dec";
-        startDay = 1;
-        endDay = this.today.getDate();
-        for (let day = startDay; day <= endDay; day++) {
-          const currentDateStrdaily = `${day.toString().padStart(2, '0')}_${startMonth}`;
-          let daily: number
-          // if (item[currentDateStrdaily] != -999.9) {
-          //   daily = item[currentDateStrdaily]
-          //   dataavailabledates = dataavailabledates + 1;
-          // }
-          // else {
-          //   daily = 0
-          // }
-          // stationcumdata += daily
-        }
-      }
-}
+//           // let daily: number
+//           // if (item[currentDateStrdaily] != -999.9) {
+//           //   daily = item[currentDateStrdaily]
+//           //   dataavailabledates = dataavailabledates + 1;
+//           // }
+//           // else {
+//           //   daily = 0
+//           // }
+//           // stationcumdata += daily
+//         }
+//         startMonth = "Nov";
+//         startDay = 1;
+//         endDay = 30;
+//         for (let day = startDay; day <= endDay; day++) {
+//           const currentDateStrdaily = `${day.toString().padStart(2, '0')}_${startMonth}`;
+//           let daily: number
+//           // if (item[currentDateStrdaily] != -999.9) {
+//           //   daily = item[currentDateStrdaily]
+//           //   dataavailabledates = dataavailabledates + 1;
+//           // }
+//           // else {
+//           //   daily = 0
+//           // }
+//           // stationcumdata += daily
+//         }
+//         startMonth = "Dec";
+//         startDay = 1;
+//         endDay = this.today.getDate();
+//         for (let day = startDay; day <= endDay; day++) {
+//           const currentDateStrdaily = `${day.toString().padStart(2, '0')}_${startMonth}`;
+//           let daily: number
+//           // if (item[currentDateStrdaily] != -999.9) {
+//           //   daily = item[currentDateStrdaily]
+//           //   dataavailabledates = dataavailabledates + 1;
+//           // }
+//           // else {
+//           //   daily = 0
+//           // }
+//           // stationcumdata += daily
+//         }
+//       }
+// }
 
     for (const item of this.fetchedMasterData) {
       console.log(item)
