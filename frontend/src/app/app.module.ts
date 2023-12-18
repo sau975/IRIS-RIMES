@@ -10,7 +10,6 @@ import * as L from 'leaflet';
 import 'leaflet-fullscreen';
 import { HttpClientModule } from '@angular/common/http';
 import { LoginComponent } from './login/login/login.component';
-import { MainPageModule } from './main_page/main-page.module';
 import { AuthGuard } from './auth-guard';
 import { DataentryComponent } from './main_page/dataentry/dataentry.component';
 import { TableModule } from "primeng/table";
@@ -26,14 +25,26 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { DepartureMapComponent } from './main_page/departure-map/departure-map.component';
+import { DailyMapComponent } from './main_page/daily-map/daily-map.component';
+import { FrontPageComponent } from './main_page/front-page/front-page.component';
+import { HeaderComponent } from './main_page/header/header.component';
+import { NavbarComponent } from './main_page/navbar/navbar.component';
+import { NormalMapComponent } from './main_page/normal-map/normal-map.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     MapContainerComponent,
+    FrontPageComponent,
+    NormalMapComponent,
     LoginComponent,
     DataentryComponent,
-    StationLevelDataComponent
+    StationLevelDataComponent,
+    DepartureMapComponent,
+    DailyMapComponent,
+    HeaderComponent,
+    NavbarComponent
   ],
   imports: [
     HttpClientModule,
@@ -42,11 +53,9 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
     FormsModule,
     ReactiveFormsModule,
     AppRoutingModule,
-    MainPageModule,
     CommonModule,
     FormsModule,
     TableModule,
-    // DataTableModule,
     PaginatorModule,
     BrowserAnimationsModule,
     MatButtonModule,
@@ -57,11 +66,6 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
     MatIconModule,
     MatInputModule,
     MatButtonToggleModule
-  ],exports: [
-    TableModule,
-    // DataTableModule,
-    PaginatorModule,
-
   ],
   providers: [AuthGuard],
   bootstrap: [AppComponent]
