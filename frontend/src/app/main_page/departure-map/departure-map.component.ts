@@ -55,8 +55,8 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     this.initMap();
   }
   ngOnInit(): void {
-    this.loadGeoJSON();
     this.fetchDataFromBackend();
+    this.loadGeoJSON();
   }
 
   dateCalculation() {
@@ -289,7 +289,6 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
 // }
 
     for (const item of this.fetchedMasterData) {
-      console.log(item)
       if (item.district_code == previousdistrictid || previousdistrictid == null) {
         stationcumdata = 0;
         if (this.currentDateDaily.endsWith('Oct') || this.currentDateDaily.endsWith('Nov') || this.currentDateDaily.endsWith('Dec')) {
@@ -423,14 +422,6 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
           stationrainfallsum = 0;
           numberofstations = 0;
         }
-
-
-
-
-
-
-
-
         stationcumdata = 0;
         if (this.currentDateDaily.endsWith('Oct') || this.currentDateDaily.endsWith('Nov') || this.currentDateDaily.endsWith('Dec')) {
           if (this.currentDateDaily.endsWith('Oct')) {
@@ -582,13 +573,21 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       if (matchingItem) {
         this.stationtodistrictdatacum.push({ ...item1, ...matchingItem, dailydeparturerainfall, cumdeparture });
       } else {
-        console.log("data not found")
+        // console.log("data not found")
       }
     });
-
   }
 
   processFetchedDatastatedaily(): void {
+    // console.log("Before Sorting:", this.stationtodistrictdatacum);
+
+    // Sorting the array based on the correct property
+    this.stationtodistrictdatacum.sort((a, b) => {
+        // Replace 'stateid' with the correct property name for sorting
+        return a.stateid - b.stateid;
+    });
+
+    // console.log("After Sorting:", this.stationtodistrictdatacum);
     let product = 0;
     let sum = 0;
     let previousStateId = null;
@@ -620,7 +619,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
           sum = item['districtarea'];
         }
       }
-      // console.log(this.statefetchedDatadaily)
+
       product;
       sum;
       previousStateId = item['stateid'];
@@ -628,6 +627,8 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       previousregionid = item.regionid;
       previousregionname = item.regionname
     }
+
+    console.log(this.statefetchedDatadaily)
   }
 
   processFetchedDatastatenormal(): void {
@@ -652,14 +653,11 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
           });
 
         }
-
-
         this.mergestatedailyandnormal();
       }
       mergestatedailyandnormal(): void {
         this.statefetchedDatadep.forEach((item1) => {
           const matchingItem = this.statefetchedDatadaily.find((item2) => item1.statedepid == item2.statedailyid);
-
           let matcheddailyrainfall = 0;
           let matcheddailyrainfallcum = 0;
           if (matchingItem) {
@@ -668,22 +666,15 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
             }
             if (matchingItem.dailyrainfallcum !== undefined && !Number.isNaN(matchingItem.dailyrainfallcum)) {
               matcheddailyrainfallcum = matchingItem.dailyrainfallcum;
-            }
-          }
-
-
+            }}
           const dailydeparturerainfall = ((matcheddailyrainfall - item1.normalrainfall)/item1.normalrainfall)*100;
-
-          // const cumdeparture = ((matchingItem.dailyrainfallcum - item1.cummnormal)/item1.cummnormal)*100
-          // debugger
+          const cumdeparture = ((matchingItem.dailyrainfallcum - item1.cummnormal)/item1.cummnormal)*100
           if (matchingItem) {
-            this.statedatacum.push({ ...item1, ...matchingItem, dailydeparturerainfall });
+            this.statedatacum.push({ ...item1, ...matchingItem, dailydeparturerainfall, cumdeparture });
           } else {
-            console.log("data not found")
+            // console.log("data not found")
           }
         });
-
-
       }
   processFetchedDataregiondaily(): void {
     let product = 1;
@@ -1985,7 +1976,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
         'true': 'Exit Fullscreen'
       },
 
-      content: '<i class="fas fa-expand"></i>'
+      content: '<i class="bi bi-arrows-fullscreen"></i>'
     });
     this.map.addControl(fullscreenControl);
     const fullscreenControl1 = new (L.Control as any).Fullscreen({
@@ -1993,7 +1984,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
         'false': 'View Fullscreen',
         'true': 'Exit Fullscreen'
       },
-      content: '<i class="fas fa-expand"></i>'
+      content: '<i class="bi bi-arrows-fullscreen"></i>'
     });
     this.map1.addControl(fullscreenControl1);
     const fullscreenControl2 = new (L.Control as any).Fullscreen({
@@ -2491,8 +2482,8 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
 
   downloadMapData1(): void {
 
-    const data = this.statefetchedDatadep.sort((a, b) => {
-      return a.regionid - b.regionid;
+    const data = this.statedatacum.sort((a, b) => {
+      return a.RegionId - b.RegionId;
     });
     const data1 = this.regionfetchedDatadep;
 
@@ -2599,7 +2590,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
           item.statename,
           item.dailyrainfall.toFixed(2),
           item.normalrainfall.toFixed(2),
-          item.statedeprainfall.toFixed(2),
+          item.dailydeparturerainfall.toFixed(2),
           {
             content: this.getCatForRainfall(item.statedeprainfall),
             styles: { fillColor: this.getColorForRainfall(item.statedeprainfall) },
@@ -3198,15 +3189,6 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       }).addTo(this.map);
     });
 
-    // statedailyid: previousStateId,
-    // statedailyname: previousStatename,
-    // dailyrainfall: product / sum,
-    // RegionId: previousregionid,
-    // RegionName: previousregionname
-
-    // statedepid: item['state_code'],
-    // normalrainfall: normal1,
-    // cummnormal : statecumnormal
 
 
     this.http.get('assets/geojson/INDIA_STATE.json').subscribe((res: any) => {
@@ -3214,8 +3196,9 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
         style: (feature: any) => {
           const id2 = feature.properties['state_code'];
           const matchedData = this.findMatchingDatastate(id2);
-          const rainfall = matchedData ? matchedData.dailydeparturerainfall : 0;
-          const color = this.getColorForRainfall(rainfall);
+          const rainfall = matchedData ? matchedData.dailydeparturerainfall: -100;
+          const actual = matchedData && matchedData.dailyrainfall == null ? ' ' : "notnull";
+          const color = this.getColorForRainfall(rainfall, actual);
           return {
             fillColor: color,
             weight: 0.5,
@@ -3228,12 +3211,12 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
           const id1 = feature.properties['state_name'];
           const id2 = feature.properties['state_code'];
           const matchedData = this.findMatchingDatastate(id2);
-          const rainfall = matchedData ? matchedData.statedeprainfall.toFixed(2) : '0.00';
-          const dailyrainfall = matchedData ? matchedData.dailyrainfall.toFixed(2) : '0.00';
-          const normalrainfall = matchedData ? matchedData.normalrainfall.toFixed(2) : '0.00';
+          const rainfall = matchedData && matchedData.dailydeparturerainfall !== null && matchedData.dailydeparturerainfall !== undefined && !Number.isNaN(matchedData.dailydeparturerainfall) ? matchedData.dailydeparturerainfall.toFixed(2) : 'NA';
+          const dailyrainfall = matchedData && matchedData.dailyrainfall !== null && matchedData.dailyrainfall != undefined && !Number.isNaN(matchedData.dailyrainfall) ? matchedData.dailyrainfall.toFixed(2) : 'NA';
+          const normalrainfall = matchedData && !Number.isNaN(matchedData.normalrainfall) ? matchedData.normalrainfall.toFixed(2) : 'NA';
           const popupContent = `
                 <div style="background-color: white; padding: 5px; font-family: Arial, sans-serif;">
-                  <div style="color: #002467; font-weight: bold; font-size: 10px;">DISTRICT: ${id1}</div>
+                  <div style="color: #002467; font-weight: bold; font-size: 10px;">STATE: ${id1}</div>
                   <div style="color: #002467; font-weight: bold; font-size: 10px;">DAILY RAINFALL: ${dailyrainfall}</div>
                   <div style="color: #002467; font-weight: bold; font-size: 10px;">NORMAL RAINFALL: ${normalrainfall}</div>
                   <div style="color: #002467; font-weight: bold; font-size: 10px;">DEPARTURE: ${rainfall}% </div>
