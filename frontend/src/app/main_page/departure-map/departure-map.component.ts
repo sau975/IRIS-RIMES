@@ -81,14 +81,6 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     this.currentDateDaily = `${this.dd.padStart(2, '0')}_${currmonth}`;
   }
   fetchDataFromBackend(): void {
-    this.dataService.fetchMasterFile().subscribe({
-      next: value => {
-        this.fetchedMasterData = value;
-        this.stationtodistrict();
-      },
-      error: err => console.error('Error fetching data:', err)
-    });
-
     this.dataService.fetchData().subscribe({
       next: value => {
         this.fetchedData = value;
@@ -139,8 +131,14 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       },
       error: err => console.error('Error fetching data:', err)
     });
-
-
+    this.dataService.fetchMasterFile().subscribe({
+      next: value => {
+        this.fetchedMasterData = value;
+        console.log(value, "yyyyyyyyyyyyy")
+        this.stationtodistrict();
+      },
+      error: err => console.error('Error fetching data:', err)
+    });
   }
 
   findMatchingData(id: string): any | null {
@@ -677,7 +675,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
           const dailydeparturerainfall = ((matcheddailyrainfall - item1.normalrainfall)/item1.normalrainfall)*100;
 
           // const cumdeparture = ((matchingItem.dailyrainfallcum - item1.cummnormal)/item1.cummnormal)*100
-          debugger
+          // debugger
           if (matchingItem) {
             this.statedatacum.push({ ...item1, ...matchingItem, dailydeparturerainfall });
           } else {
