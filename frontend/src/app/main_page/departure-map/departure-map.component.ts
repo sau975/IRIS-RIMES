@@ -81,6 +81,14 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     this.currentDateDaily = `${this.dd.padStart(2, '0')}_${currmonth}`;
   }
   fetchDataFromBackend(): void {
+    this.dataService.fetchMasterFile().subscribe({
+      next: value => {
+        this.fetchedMasterData = value;
+        this.stationtodistrict();
+      },
+      error: err => console.error('Error fetching data:', err)
+    });
+
     this.dataService.fetchData().subscribe({
       next: value => {
         this.fetchedData = value;
@@ -131,14 +139,8 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       },
       error: err => console.error('Error fetching data:', err)
     });
-    this.dataService.fetchMasterFile().subscribe({
-      next: value => {
-        this.fetchedMasterData = value;
-        console.log(value, "yyyyyyyyyyyyy")
-        this.stationtodistrict();
-      },
-      error: err => console.error('Error fetching data:', err)
-    });
+
+
   }
 
   findMatchingData(id: string): any | null {
@@ -292,6 +294,248 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     for (const item of this.fetchedMasterData) {
       if (item.district_code == previousdistrictid || previousdistrictid == null) {
         stationcumdata = 0;
+        if (this.currentDateDaily.endsWith('Jan') || this.currentDateDaily.endsWith('Feb')) {
+          if (this.currentDateDaily.endsWith('Jan')) {
+            let startMonth = "Jan";
+            let startDay = 1;
+            let endDay = this.today.getDate();
+            for (let day = startDay; day <= endDay; day++) {
+              const currentDateStrdaily = `${day.toString().padStart(2, '0')}_${startMonth}`;
+              let daily: number
+              if (item[currentDateStrdaily] !== -999.9) {
+                daily = item[currentDateStrdaily]
+              }
+              else {
+                daily = 0
+              }
+              stationcumdata += daily
+            }
+          }
+          if (this.currentDateDaily.endsWith('Feb')) {
+            let startMonth = "Jan";
+            let startDay = 1;
+            let endDay = 31;
+            for (let day = startDay; day <= endDay; day++) {
+              const currentDateStrdaily = `${day.toString().padStart(2, '0')}_${startMonth}`;
+              let daily: number
+              if (item[currentDateStrdaily] != -999.9) {
+                daily = item[currentDateStrdaily]
+              }
+              else {
+                daily = 0
+              }
+              stationcumdata += daily
+            }
+            startMonth = "Feb";
+            startDay = 1;
+            endDay = this.today.getDate();
+            for (let day = startDay; day <= endDay; day++) {
+              const currentDateStrdaily = `${day.toString().padStart(2, '0')}_${startMonth}`;
+              let daily: number
+              if (item[currentDateStrdaily] != -999.9) {
+                daily = item[currentDateStrdaily]
+              }
+              else {
+                daily = 0
+              }
+              stationcumdata += daily
+            }
+          }
+        }
+          if (this.currentDateDaily.endsWith('Mar') || this.currentDateDaily.endsWith('Apr') || this.currentDateDaily.endsWith('May')) {
+            if (this.currentDateDaily.endsWith('Mar')) {
+              let startMonth = "Mar";
+              let startDay = 1;
+              let endDay = this.today.getDate();
+              for (let day = startDay; day <= endDay; day++) {
+                const currentDateStrdaily = `${day.toString().padStart(2, '0')}_${startMonth}`;
+                let daily: number
+                if (item[currentDateStrdaily] !== -999.9) {
+                  daily = item[currentDateStrdaily]
+                }
+                else {
+                  daily = 0
+                }
+                stationcumdata += daily
+              }
+            }
+            if (this.currentDateDaily.endsWith('Apr')) {
+              let startMonth = "Mar";
+              let startDay = 1;
+              let endDay = 31;
+              for (let day = startDay; day <= endDay; day++) {
+                const currentDateStrdaily = `${day.toString().padStart(2, '0')}_${startMonth}`;
+                let daily: number
+                if (item[currentDateStrdaily] != -999.9) {
+                  daily = item[currentDateStrdaily]
+                }
+                else {
+                  daily = 0
+                }
+                stationcumdata += daily
+              }
+              startMonth = "Apr";
+              startDay = 1;
+              endDay = this.today.getDate();
+              for (let day = startDay; day <= endDay; day++) {
+                const currentDateStrdaily = `${day.toString().padStart(2, '0')}_${startMonth}`;
+                let daily: number
+                if (item[currentDateStrdaily] != -999.9) {
+                  daily = item[currentDateStrdaily]
+                }
+                else {
+                  daily = 0
+                }
+                stationcumdata += daily
+              }
+            }
+            if (this.currentDateDaily.endsWith('May')) {
+              let startMonth = "Mar";
+              let startDay = 1;
+              let endDay = 31;
+              let dataavailabledates = 0;
+              for (let day = startDay; day <= endDay; day++) {
+                const currentDateStrdaily = `${day.toString().padStart(2, '0')}_${startMonth}`;
+                let daily: number
+                if (item[currentDateStrdaily] != -999.9) {
+                  daily = item[currentDateStrdaily]
+                  dataavailabledates = dataavailabledates + 1;
+                }
+                else {
+                  daily = 0
+                }
+                stationcumdata += daily
+              }
+              startMonth = "Apr";
+              startDay = 1;
+              endDay = 30;
+              for (let day = startDay; day <= endDay; day++) {
+                const currentDateStrdaily = `${day.toString().padStart(2, '0')}_${startMonth}`;
+                let daily: number
+                if (item[currentDateStrdaily] != -999.9) {
+                  daily = item[currentDateStrdaily]
+                  dataavailabledates = dataavailabledates + 1;
+                }
+                else {
+                  daily = 0
+                }
+                stationcumdata += daily
+              }
+              startMonth = "May";
+              startDay = 1;
+              endDay = this.today.getDate();
+              for (let day = startDay; day <= endDay; day++) {
+                const currentDateStrdaily = `${day.toString().padStart(2, '0')}_${startMonth}`;
+                let daily: number
+                if (item[currentDateStrdaily] != -999.9) {
+                  daily = item[currentDateStrdaily]
+                  dataavailabledates = dataavailabledates + 1;
+                }
+                else {
+                  daily = 0
+                }
+                stationcumdata += daily
+              }
+            }
+        }
+
+        if (this.currentDateDaily.endsWith('Jun') || this.currentDateDaily.endsWith('Jul') || this.currentDateDaily.endsWith('Aug')) {
+          if (this.currentDateDaily.endsWith('Jun')) {
+            let startMonth = "Jun";
+            let startDay = 1;
+            let endDay = this.today.getDate();
+            for (let day = startDay; day <= endDay; day++) {
+              const currentDateStrdaily = `${day.toString().padStart(2, '0')}_${startMonth}`;
+              let daily: number
+              if (item[currentDateStrdaily] !== -999.9) {
+                daily = item[currentDateStrdaily]
+              }
+              else {
+                daily = 0
+              }
+              stationcumdata += daily
+            }
+          }
+          if (this.currentDateDaily.endsWith('Jul')) {
+            let startMonth = "Jun";
+            let startDay = 1;
+            let endDay = 31;
+            for (let day = startDay; day <= endDay; day++) {
+              const currentDateStrdaily = `${day.toString().padStart(2, '0')}_${startMonth}`;
+              let daily: number
+              if (item[currentDateStrdaily] != -999.9) {
+                daily = item[currentDateStrdaily]
+              }
+              else {
+                daily = 0
+              }
+              stationcumdata += daily
+            }
+            startMonth = "Jul";
+            startDay = 1;
+            endDay = this.today.getDate();
+            for (let day = startDay; day <= endDay; day++) {
+              const currentDateStrdaily = `${day.toString().padStart(2, '0')}_${startMonth}`;
+              let daily: number
+              if (item[currentDateStrdaily] != -999.9) {
+                daily = item[currentDateStrdaily]
+              }
+              else {
+                daily = 0
+              }
+              stationcumdata += daily
+            }
+          }
+          if (this.currentDateDaily.endsWith('Aug')) {
+            let startMonth = "Jun";
+            let startDay = 1;
+            let endDay = 31;
+            let dataavailabledates = 0;
+            for (let day = startDay; day <= endDay; day++) {
+              const currentDateStrdaily = `${day.toString().padStart(2, '0')}_${startMonth}`;
+              let daily: number
+              if (item[currentDateStrdaily] != -999.9) {
+                daily = item[currentDateStrdaily]
+                dataavailabledates = dataavailabledates + 1;
+              }
+              else {
+                daily = 0
+              }
+              stationcumdata += daily
+            }
+            startMonth = "Jul";
+            startDay = 1;
+            endDay = 30;
+            for (let day = startDay; day <= endDay; day++) {
+              const currentDateStrdaily = `${day.toString().padStart(2, '0')}_${startMonth}`;
+              let daily: number
+              if (item[currentDateStrdaily] != -999.9) {
+                daily = item[currentDateStrdaily]
+                dataavailabledates = dataavailabledates + 1;
+              }
+              else {
+                daily = 0
+              }
+              stationcumdata += daily
+            }
+            startMonth = "Aug";
+            startDay = 1;
+            endDay = this.today.getDate();
+            for (let day = startDay; day <= endDay; day++) {
+              const currentDateStrdaily = `${day.toString().padStart(2, '0')}_${startMonth}`;
+              let daily: number
+              if (item[currentDateStrdaily] != -999.9) {
+                daily = item[currentDateStrdaily]
+                dataavailabledates = dataavailabledates + 1;
+              }
+              else {
+                daily = 0
+              }
+              stationcumdata += daily
+            }
+          }
+      }
+
         if (this.currentDateDaily.endsWith('Oct') || this.currentDateDaily.endsWith('Nov') || this.currentDateDaily.endsWith('Dec')) {
           if (this.currentDateDaily.endsWith('Oct')) {
             let startMonth = "Oct";
@@ -390,8 +634,6 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
 
         }
         districtcumdata = districtcumdata + stationcumdata;
-
-
         if (item[this.currentDateDaily] != -999.9) {
           stationrainfallsum = stationrainfallsum + item[this.currentDateDaily];
           numberofstations = numberofstations + 1;
@@ -545,7 +787,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       }
       else {
         normal1 = (item[this.currentDateNormal] - item[this.currentDateNormaly])
-        if( normal1 === 0){
+        if(normal1 === 0){
           normal1 = 0.01
         }
       }
@@ -553,7 +795,8 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
        this.processedData.push({
         districtID: item.district_code,
         normalrainfall: normal1,
-        cummnormal: districtcumnormal });
+        cummnormal: districtcumnormal
+      });
     }
     this.mergedistrictdailyandnormal();
   }
@@ -578,6 +821,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
         // console.log("data not found")
       }
     });
+    console.log(this.stationtodistrictdatacum)
 
 
   }
