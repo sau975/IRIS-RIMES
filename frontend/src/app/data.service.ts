@@ -30,18 +30,18 @@ export class DataService {
     const url = `${this.baseUrl}`+'/districtdep';
     return this.http.get(url);
   }
-  fetchData1(): Observable<any> {
-    const url = `${this.baseUrl}`+'/statedaily';
-    return this.http.get(url);
-  }
-  fetchData2(): Observable<any> {
-    const url = `${this.baseUrl}`+'/subdivdaily';
-    return this.http.get(url);
-  }
-  fetchData3(): Observable<any> {
-    const url = `${this.baseUrl}`+'/regiondaily';
-    return this.http.get(url);
-  }
+  // fetchData1(): Observable<any> {
+  //   const url = `${this.baseUrl}`+'/statedaily';
+  //   return this.http.get(url);
+  // }
+  // fetchData2(): Observable<any> {
+  //   const url = `${this.baseUrl}`+'/subdivdaily';
+  //   return this.http.get(url);
+  // }
+  // fetchData3(): Observable<any> {
+  //   const url = `${this.baseUrl}`+'/regiondaily';
+  //   return this.http.get(url);
+  // }
   fetchData4(): Observable<any> {
     const url = `${this.baseUrl}`+'/statenormal';
     return this.http.get(url);
