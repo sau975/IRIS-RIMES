@@ -97,27 +97,27 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       error: err => console.error('Error fetching data:', err)
     });
 
-    this.dataService.fetchData1().subscribe({
-      next: value => {
-        this.fetchedData1 = value;
-        this.processFetchedDatastatedaily();
-      },
-      error: err => console.error('Error fetching data:', err)
-    });
-    this.dataService.fetchData2().subscribe({
-      next: value => {
-        this.fetchedData2 = value;
-        this.processFetchedDatasubdivdaily();
-      },
-      error: err => console.error('Error fetching data:', err)
-    });
-    this.dataService.fetchData3().subscribe({
-      next: value => {
-        this.fetchedData3 = value;
-        this.processFetchedDataregiondaily();
-      },
-      error: err => console.error('Error fetching data:', err)
-    });
+    // this.dataService.fetchData1().subscribe({
+    //   next: value => {
+    //     this.fetchedData1 = value;
+    //     this.processFetchedDatastatedaily();
+    //   },
+    //   error: err => console.error('Error fetching data:', err)
+    // });
+    // this.dataService.fetchData2().subscribe({
+    //   next: value => {
+    //     this.fetchedData2 = value;
+    //     this.processFetchedDatasubdivdaily();
+    //   },
+    //   error: err => console.error('Error fetching data:', err)
+    // });
+    // this.dataService.fetchData3().subscribe({
+    //   next: value => {
+    //     this.fetchedData3 = value;
+    //     this.processFetchedDataregiondaily();
+    //   },
+    //   error: err => console.error('Error fetching data:', err)
+    // });
     this.dataService.fetchData4().subscribe({
       next: value => {
         this.fetchedData4 = value;
@@ -359,6 +359,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
                 stationcumdata += daily
               }
             }
+
             if (this.currentDateDaily.endsWith('Apr')) {
               let startMonth = "Mar";
               let startDay = 1;
@@ -2786,7 +2787,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
           const id1 = feature.properties['district'];
           const id2 = feature.properties['district_c'];
           const matchedData = this.findMatchingData(id2);
-          const rainfall = matchedData && matchedData.Rainfall !== null && matchedData.Rainfall !== undefined && !Number.isNaN(matchedData.Rainfall) ? matchedData.Rainfall.toFixed(2) : 'NA';
+          const rainfall = matchedData && matchedData.dailydeparturerainfall !== null && matchedData.dailydeparturerainfall !== undefined && !Number.isNaN(matchedData.dailydeparturerainfall) ? matchedData.dailydeparturerainfall.toFixed(2) : 'NA';
           const dailyrainfall = matchedData && matchedData.dailyrainfall !== null && matchedData.dailyrainfall != undefined && !Number.isNaN(matchedData.dailyrainfall) ? matchedData.dailyrainfall.toFixed(2) : 'NA';
           const normalrainfall = matchedData && !Number.isNaN(matchedData.normalrainfall) ? matchedData.normalrainfall.toFixed(2) : 'NA';
           const popupContent = `

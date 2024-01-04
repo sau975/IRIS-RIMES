@@ -90,33 +90,33 @@ export class DailyMapComponent {
         console.error('Error fetching data:', error);
       }
     );
-    this.dataService.fetchData1().subscribe(
-      (data) => {
-        this.fetchedData1 = data;
-        this.processFetchedDatastatedaily();
-      },
-      (error) => {
-        console.error('Error fetching data:', error);
-      }
-    );
-    this.dataService.fetchData2().subscribe(
-      (data) => {
-        this.fetchedData2 = data;
-        this.processFetchedDatasubdivdaily();
-      },
-      (error) => {
-        console.error('Error fetching data:', error);
-      }
-    );
-    this.dataService.fetchData3().subscribe(
-      (data) => {
-        this.fetchedData3 = data;
-        this.processFetchedDataregiondaily();
-      },
-      (error) => {
-        console.error('Error fetching data:', error);
-      }
-    );
+    // this.dataService.fetchData1().subscribe(
+    //   (data) => {
+    //     this.fetchedData1 = data;
+    //     this.processFetchedDatastatedaily();
+    //   },
+    //   (error) => {
+    //     console.error('Error fetching data:', error);
+    //   }
+    // );
+    // this.dataService.fetchData2().subscribe(
+    //   (data) => {
+    //     this.fetchedData2 = data;
+    //     this.processFetchedDatasubdivdaily();
+    //   },
+    //   (error) => {
+    //     console.error('Error fetching data:', error);
+    //   }
+    // );
+    // this.dataService.fetchData3().subscribe(
+    //   (data) => {
+    //     this.fetchedData3 = data;
+    //     this.processFetchedDataregiondaily();
+    //   },
+    //   (error) => {
+    //     console.error('Error fetching data:', error);
+    //   }
+    // );
     this.dataService.fetchMasterFile().subscribe({
       next: value => {
         this.fetchedMasterData = value;

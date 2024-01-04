@@ -101,17 +101,17 @@ app.get("/districtdep", (req, res) => {
     }
   );
 });
-app.get("/statedaily", (req, res) => {
-  client.query(
-    "SELECT * FROM del1 ORDER BY regionid, stateid ASC",
-    (err, result) => {
-      if (err) {
-        res.send(err);
-      }
-      res.send(result.rows);
-    }
-  );
-});
+// app.get("/statedaily", (req, res) => {
+//   client.query(
+//     "SELECT * FROM del1 ORDER BY regionid, stateid ASC",
+//     (err, result) => {
+//       if (err) {
+//         res.send(err);
+//       }
+//       res.send(result.rows);
+//     }
+//   );
+// });
 app.get("/statenormal", (req, res) => {
   client.query(
     "SELECT * FROM nstate",
@@ -124,17 +124,17 @@ app.get("/statenormal", (req, res) => {
   );
 });
 
-app.get("/subdivdaily", (req, res) => {
-  client.query(
-    "SELECT * FROM del1 ORDER BY subdivid ASC",
-    (err, result) => {
-      if (err) {
-        res.send(err);
-      }
-      res.send(result.rows);
-    }
-  );
-});
+// app.get("/subdivdaily", (req, res) => {
+//   client.query(
+//     "SELECT * FROM del1 ORDER BY subdivid ASC",
+//     (err, result) => {
+//       if (err) {
+//         res.send(err);
+//       }
+//       res.send(result.rows);
+//     }
+//   );
+// });
 
 app.get("/subdivnormal", (req, res) => {
   client.query(
@@ -148,17 +148,17 @@ app.get("/subdivnormal", (req, res) => {
   );
 });
 
-app.get("/regiondaily", (req, res) => {
-  client.query(
-    "SELECT * FROM del1 ORDER BY regionid ASC",
-    (err, result) => {
-      if (err) {
-        res.send(err);
-      }
-      res.send(result.rows);
-    }
-  );
-});
+// app.get("/regiondaily", (req, res) => {
+//   client.query(
+//     "SELECT * FROM del1 ORDER BY regionid ASC",
+//     (err, result) => {
+//       if (err) {
+//         res.send(err);
+//       }
+//       res.send(result.rows);
+//     }
+//   );
+// });
 
 app.get("/regionnormal", (req, res) => {
   client.query(
