@@ -145,6 +145,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
 
   findMatchingData(id: string): any | null {
     const matchedData = this.stationtodistrictdatacum.find((data: any) => data.districtID == id);
+    console.log(matchedData, "ppppppppp")
     return matchedData || null;
   }
 
@@ -778,6 +779,81 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
 
   }
 
+  dailyRainFallCumulative(){
+    // Initialize an object to store the sum and count of each Oct value for each districtId
+    const districtSumCount:any = {};
+
+    // Calculate the sum and count for each districtId and each Oct value
+    this.fetchedMasterData.forEach((entry:any) => {
+        const districtId = entry.district_code;
+        const octValues = this.date();
+
+        if (!districtSumCount[districtId]) {
+            districtSumCount[districtId] = {};
+            octValues.forEach(oct => districtSumCount[districtId][oct] = { sum: 0, count: 0 });
+        }
+
+        octValues.forEach(oct => {
+            districtSumCount[districtId][oct].sum += entry[oct] == undefined ? 0 : entry[oct];
+            districtSumCount[districtId][oct].count++;
+        });
+    });
+
+    // Calculate the average for each districtId and each Oct value
+    const districtAverage:any = {};
+    for (const districtId in districtSumCount) {
+        districtAverage[districtId] = {};
+        const octValues = this.date();
+        octValues.forEach(oct => {
+            districtAverage[districtId][oct] = districtSumCount[districtId][oct].sum / districtSumCount[districtId][oct].count;
+        });
+    }
+
+    // Convert the result object into an array
+    const resultArray = Object.entries(districtAverage).map(([districtId, averages]) => ({
+        districtId,
+        ...averages as {}
+    }));
+
+    // Calculate the total sum for each districtId and add the total value to the array
+    const totalByDistrict:any = {};
+    resultArray.forEach((entry:any) => {
+        const districtId = entry.districtId;
+        const octValues = this.date();
+
+        if (!totalByDistrict[districtId]) {
+            totalByDistrict[districtId] = { total: 0 };
+        }
+
+        octValues.forEach(oct => {
+            totalByDistrict[districtId][oct] = (totalByDistrict[districtId][oct] || 0) + entry[oct];
+            totalByDistrict[districtId].total += entry[oct];
+        });
+    });
+
+    // Add the total value to the array
+    resultArray.forEach((entry:any) => {
+        const districtId = entry.districtId;
+        const totalValue = totalByDistrict[districtId].total;
+        entry.total = totalValue;
+    });
+
+    // Print the updated array
+    return resultArray;
+  }
+
+  date(){
+    let startMonth = "Oct";
+    let startDay = 1;
+    let endDay = 31;
+    let allDates = [];
+    for (let day = startDay; day <= endDay; day++) {
+      const currentDateStrdaily = `${day.toString().padStart(2, '0')}_${startMonth}`;
+      allDates.push(currentDateStrdaily);
+    }
+    return allDates;
+  }
+
   processFetchedData(): void {
     this.processedData = [];
     let districtcumnormal = 0;
@@ -822,9 +898,23 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
         // console.log("data not found")
       }
     });
-    console.log(this.stationtodistrictdatacum)
 
+    var dailyRainFallCumulativeArray = this.dailyRainFallCumulative();
 
+    // Create a map from array2 for faster lookup
+    var array2Map = dailyRainFallCumulativeArray.reduce((acc:any, obj:any) => {
+      acc[obj.districtId] = obj.total;
+      return acc;
+    }, {});
+
+    // Update the name values in array1
+    this.stationtodistrictdatacum.forEach((obj:any) => {
+      if (array2Map.hasOwnProperty(obj.districtid)) {
+        obj.dailyrainfallcum = array2Map[obj.districtid];
+      }
+    });
+
+    console.log(this.stationtodistrictdatacum, "------------");
   }
 
   processFetchedDatastatedaily(): void {
