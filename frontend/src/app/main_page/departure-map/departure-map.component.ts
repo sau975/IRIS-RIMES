@@ -54,8 +54,8 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     this.initMap();
   }
-  ngOnInit(): void {
-    this.fetchDataFromBackend();
+  async ngOnInit(): Promise<void> {
+    await this.fetchDataFromBackend();
     this.loadGeoJSON();
   }
 
@@ -80,7 +80,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     this.currentDateNormaly = `${currmonthy}${ddy}`;
     this.currentDateDaily = `${this.dd.padStart(2, '0')}_${currmonth}`;
   }
-  fetchDataFromBackend(): void {
+  async fetchDataFromBackend(): Promise<void> {
     this.dataService.fetchMasterFile().subscribe({
       next: value => {
         this.fetchedMasterData = value;
@@ -142,11 +142,27 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
 
 
   }
+  // if (matchingItem) {
+  //   if (matchingItem.dailyrainfall !== undefined && !Number.isNaN(matchingItem.dailyrainfall)) {
+  //     matcheddailyrainfall = matchingItem.dailyrainfall;
+  //   }
+  //   if (matchingItem.dailyrainfallcum !== undefined && !Number.isNaN(matchingItem.dailyrainfallcum)) {
+  //     matcheddailyrainfallcum = matchingItem.dailyrainfallcum;
+  //   }
+  // }
 
   findMatchingData(id: string): any | null {
     const matchedData = this.stationtodistrictdatacum.find((data: any) => data.districtID == id);
-    console.log(matchedData, "ppppppppp")
-    return matchedData || null;
+    if (matchedData) {
+      console.log(matchedData, "ppppppppp")
+      return matchedData;
+    }
+    else{
+      console.log("null")
+      return null;
+    }
+
+
   }
 
   findMatchingDatastate(id: string): any | null {
@@ -1105,7 +1121,6 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
             // console.log("data not found")
           }
         });
-        console.log(this.subdivisionfetchedDatadepcum)
       }
 
       processFetchedDataregiondaily(): void {
