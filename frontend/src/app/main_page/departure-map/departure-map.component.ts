@@ -158,7 +158,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       return matchedData;
     }
     else{
-      console.log("null")
+      // console.log("null")
       return null;
     }
 
@@ -805,15 +805,15 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
         const octValues = this.date();
 
         if (!districtSumCount[districtId]) {
-            districtSumCount[districtId] = {};
-            octValues.forEach(oct => districtSumCount[districtId][oct] = { sum: 0, count: 0 });
+          districtSumCount[districtId] = {};
+          octValues.forEach(oct => districtSumCount[districtId][oct] = { sum: 0, count: 0 });
         }
 
         octValues.forEach(oct => {
-            districtSumCount[districtId][oct].sum += entry[oct] == undefined ? 0 : entry[oct];
-            districtSumCount[districtId][oct].count++;
+          districtSumCount[districtId][oct].sum += entry[oct] == -999.9 ? 0 : entry[oct];
+          entry[oct] == 0 || entry[oct] == -999.9 ? districtSumCount[districtId][oct].count+0 : districtSumCount[districtId][oct].count++;
         });
-    });
+      });
 
     // Calculate the average for each districtId and each Oct value
     const districtAverage:any = {};
@@ -821,7 +821,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
         districtAverage[districtId] = {};
         const octValues = this.date();
         octValues.forEach(oct => {
-            districtAverage[districtId][oct] = districtSumCount[districtId][oct].sum / districtSumCount[districtId][oct].count;
+            districtAverage[districtId][oct] = districtSumCount[districtId][oct].sum == 0 ? 0:  districtSumCount[districtId][oct].sum / districtSumCount[districtId][oct].count;
         });
     }
 
@@ -917,7 +917,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
 
     var dailyRainFallCumulativeArray = this.dailyRainFallCumulative();
 
-    // Create a map from array2 for faster lookup
+        // Create a map from array2 for faster lookup
     var array2Map = dailyRainFallCumulativeArray.reduce((acc:any, obj:any) => {
       acc[obj.districtId] = obj.total;
       return acc;
