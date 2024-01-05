@@ -7,19 +7,19 @@ const { Client } = require('pg');
 //   password: "Saurav@132",
 //   database: "IRIS"
 // });
-const client = new Client( {
-  host:"localhost",
-  user: "postgres",
-  port: 5432,
-  password: "Pavan@123",
-  database: "IRIS"
-});
 // const client = new Client( {
 //   host:"localhost",
 //   user: "postgres",
 //   port: 5432,
-//   password: "rimes@123",
+//   password: "Pavan@123",
 //   database: "IRIS"
 // });
+const client = new Client( {
+  host:"localhost",
+  user: "postgres",
+  port: 5432,
+  password: "rimes@123",
+  database: "IRIS"
+});
 
 module.exports = client;

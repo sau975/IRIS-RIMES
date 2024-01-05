@@ -928,7 +928,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       }
     });
 
-    console.log(this.stationtodistrictdatacum, "------------");
+    console.log(this.stationtodistrictdatacum);
   }
 
   processFetchedDatastatedaily(): void {
@@ -1645,7 +1645,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
 
   private initMap(): void {
     this.map = L.map('map', {
-      center: [26, 76.9629],
+      center: [24, 76.9629],
       zoom: this.initialZoom,
       scrollWheelZoom: false,
     });
@@ -1657,7 +1657,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       }
     });
     this.map1 = L.map('map1', {
-      center: [26, 76.9629],
+      center: [24, 76.9629],
       zoom: this.initialZoom,
       scrollWheelZoom: false,
     });
@@ -1670,7 +1670,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       }
     });
     this.map2 = L.map('map2', {
-      center: [26, 76.9629],
+      center: [24, 76.9629],
       zoom: this.initialZoom,
       scrollWheelZoom: false,
     });
@@ -1682,7 +1682,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       }
     });
     this.map3 = L.map('map3', {
-      center: [26, 76.9629],
+      center: [24, 76.9629],
       zoom: this.initialZoom,
       scrollWheelZoom: false,
     });
@@ -1694,7 +1694,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       }
     });
     this.map4 = L.map('map4', {
-      center: [26, 76.9629],
+      center: [24, 76.9629],
       zoom: this.initialZoom,
       scrollWheelZoom: false,
     });
