@@ -56,7 +56,6 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
   }
   async ngOnInit(): Promise<void> {
     await this.fetchDataFromBackend();
-    this.loadGeoJSON();
   }
 
   dateCalculation() {
@@ -93,6 +92,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       next: value => {
         this.fetchedData = value;
         this.processFetchedData();
+        this.loadGeoJSON();
       },
       error: err => console.error('Error fetching data:', err)
     });
@@ -154,7 +154,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
   findMatchingData(id: string): any | null {
     const matchedData = this.stationtodistrictdatacum.find((data: any) => data.districtID == id);
     if (matchedData) {
-      console.log(matchedData, "ppppppppp")
+      // console.log(matchedData, "ppppppppp")
       return matchedData;
     }
     else{
@@ -810,8 +810,10 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
         }
 
         octValues.forEach(oct => {
-          districtSumCount[districtId][oct].sum += entry[oct] == -999.9 ? 0 : entry[oct];
-          entry[oct] == 0 || entry[oct] == -999.9 ? districtSumCount[districtId][oct].count+0 : districtSumCount[districtId][oct].count++;
+          if(entry[oct] != undefined){
+            districtSumCount[districtId][oct].sum += entry[oct] == -999.9 ? 0 : entry[oct];
+            entry[oct] == -999.9 ? districtSumCount[districtId][oct].count+0 : districtSumCount[districtId][oct].count++;
+          }
         });
       });
 
@@ -859,7 +861,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
   }
 
   date(){
-    let startMonth = "Oct";
+    let startMonth = "Jan";
     let startDay = 1;
     let endDay = 31;
     let allDates = [];
