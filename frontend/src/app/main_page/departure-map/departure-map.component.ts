@@ -161,17 +161,13 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       console.log("null")
       return null;
     }
-
-
   }
-
   findMatchingDatastate(id: string): any | null {
     const matchedData = this.statedatacum.find((data: any) => data.statedepid == id);
     return matchedData || null;
   }
   findMatchingDatasubdiv(id: string): any | null {
     const matchedData = this.subdivisionfetchedDatadepcum.find((data: any) => data.subdivid == id);
-    console.log(matchedData)
     return matchedData || null;
   }
   findMatchingDataregion(id: string): any | null {
