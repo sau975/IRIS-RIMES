@@ -307,7 +307,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
 //         }
 //       }
 // }
-
+    this.stationtodistrictdata = [];
     for (const item of this.fetchedMasterData) {
       if (item.district_code == previousdistrictid || previousdistrictid == null) {
         stationcumdata = 0;
@@ -896,6 +896,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     this.mergedistrictdailyandnormal();
   }
   mergedistrictdailyandnormal(): void {
+    this.stationtodistrictdatacum = [];
     this.processedData.forEach((item1) => {
       const matchingItem = this.stationtodistrictdata.find((item2) => item1.districtID == item2.districtid);
       let matcheddailyrainfall = 0;
