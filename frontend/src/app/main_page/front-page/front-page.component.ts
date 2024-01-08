@@ -11,7 +11,7 @@ import { DataService } from 'src/app/data.service';
 export class FrontPageComponent implements OnInit{
 
   date: string = String(new Date().getDate());
-  month: string = String(new Date().getMonth()+1);
+  month: string = String((new Date().getMonth()+1).toString().length == 1 ? ('0' + (new Date().getMonth()+1)) : (new Date().getMonth()+1));
 
   constructor(
     private router: Router,

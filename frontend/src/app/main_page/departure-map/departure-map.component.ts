@@ -861,9 +861,10 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
   }
 
   date(){
+    let currentEndDay = this.today.getDate();
     let startMonth = "Jan";
     let startDay = 1;
-    let endDay = 31;
+    let endDay = currentEndDay.toString().length == 1 ? 0 + currentEndDay : currentEndDay;
     let allDates = [];
     for (let day = startDay; day <= endDay; day++) {
       const currentDateStrdaily = `${day.toString().padStart(2, '0')}_${startMonth}`;
