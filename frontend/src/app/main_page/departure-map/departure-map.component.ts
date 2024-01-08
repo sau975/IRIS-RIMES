@@ -92,32 +92,13 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       next: value => {
         this.fetchedData = value;
         this.processFetchedData();
+        this.processFetchedDatastatedaily();
+        this.processFetchedDatasubdivdaily();
+        this.processFetchedDataregiondaily();
         this.loadGeoJSON();
       },
       error: err => console.error('Error fetching data:', err)
     });
-
-    // this.dataService.fetchData1().subscribe({
-    //   next: value => {
-    //     this.fetchedData1 = value;
-    //     this.processFetchedDatastatedaily();
-    //   },
-    //   error: err => console.error('Error fetching data:', err)
-    // });
-    // this.dataService.fetchData2().subscribe({
-    //   next: value => {
-    //     this.fetchedData2 = value;
-    //     this.processFetchedDatasubdivdaily();
-    //   },
-    //   error: err => console.error('Error fetching data:', err)
-    // });
-    // this.dataService.fetchData3().subscribe({
-    //   next: value => {
-    //     this.fetchedData3 = value;
-    //     this.processFetchedDataregiondaily();
-    //   },
-    //   error: err => console.error('Error fetching data:', err)
-    // });
     this.dataService.fetchData4().subscribe({
       next: value => {
         this.fetchedData4 = value;
@@ -139,39 +120,22 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       },
       error: err => console.error('Error fetching data:', err)
     });
-
-
   }
-  // if (matchingItem) {
-  //   if (matchingItem.dailyrainfall !== undefined && !Number.isNaN(matchingItem.dailyrainfall)) {
-  //     matcheddailyrainfall = matchingItem.dailyrainfall;
-  //   }
-  //   if (matchingItem.dailyrainfallcum !== undefined && !Number.isNaN(matchingItem.dailyrainfallcum)) {
-  //     matcheddailyrainfallcum = matchingItem.dailyrainfallcum;
-  //   }
-  // }
-
   findMatchingData(id: string): any | null {
     const matchedData = this.stationtodistrictdatacum.find((data: any) => data.districtID == id);
     if (matchedData) {
-      // console.log(matchedData, "ppppppppp")
       return matchedData;
     }
     else{
-      // console.log("null")
       return null;
     }
-
-
   }
-
   findMatchingDatastate(id: string): any | null {
     const matchedData = this.statedatacum.find((data: any) => data.statedepid == id);
     return matchedData || null;
   }
   findMatchingDatasubdiv(id: string): any | null {
     const matchedData = this.subdivisionfetchedDatadepcum.find((data: any) => data.subdivid == id);
-    console.log(matchedData)
     return matchedData || null;
   }
   findMatchingDataregion(id: string): any | null {
@@ -204,37 +168,6 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
   countryfetcheddata: any[] = [];
   public countrydaily = 0
 
-
-  // getColumnSum(currentDateStrdaily: string): number {
-  //   let numberofstations = 0
-  //   let cellValue = 0;
-  //   return this.fetchedMasterData.reduce((sum: any, row: { [x: string]: any; }) => {
-  //     if(cellValue !== -999.9){
-  //       numberofstations = numberofstations + 1;
-  //       cellValue = row[currentDateStrdaily];
-  //     }
-  //     return (sum +cellValue) ;
-  //   }, 0);
-  // }
-
-// getColumnSum(currentDateStrdaily: string): number {
-//   return this.fetchedMasterData.reduce((sum: any, row: { [x: string]: any; }) => {
-//     const cellValue = row[currentDateStrdaily];
-
-//     if (cellValue === -999.9) {
-//       return sum + 0;
-//     } else {
-//       return sum + cellValue;
-//     }
-//   }, 0);
-// }
-
-
-
-
-  // getColumnSum(columnIndex: number): number {
-  //   return this.matrix.reduce((sum, row) => sum + row[columnIndex], 0);
-  // }
   stationtodistrict() {
     this.stationtodistrictdata = [];
     let previousdistrictid = null;
@@ -832,7 +765,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
         districtId,
         ...averages as {}
     }));
-
+console.log(resultArray, "result")
     // Calculate the total sum for each districtId and add the total value to the array
     const totalByDistrict:any = {};
     resultArray.forEach((entry:any) => {
@@ -920,8 +853,6 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     });
 
     var dailyRainFallCumulativeArray = this.dailyRainFallCumulative();
-
-        // Create a map from array2 for faster lookup
     var array2Map = dailyRainFallCumulativeArray.reduce((acc:any, obj:any) => {
       acc[obj.districtId] = obj.total;
       return acc;
@@ -934,7 +865,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       }
     });
 
-    console.log(this.stationtodistrictdatacum, "------------");
+    console.log(this.stationtodistrictdatacum);
   }
 
   processFetchedDatastatedaily(): void {
@@ -942,6 +873,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
         return a.stateid - b.stateid;
     });
     let product = 0;
+    let cumproduct = 0;
     let sum = 0;
     let previousStateId = null;
     let previousStatename = null;
@@ -951,32 +883,35 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     for (const item of this.stationtodistrictdatacum) {
       if (previousStateId === item['stateid'] || previousStateId === null) {
         if (Number.isNaN(item[item.dailyrainfall]) || Number.isNaN(item['districtarea']) ||item[item.dailyrainfall] === undefined || item['districtarea'] === undefined) {
+          cumproduct +=0;
           product += 0;
           sum += 0
-
         }
-
         else {
+          cumproduct +=item['districtarea']*item.dailyrainfallcum;
           product += item['districtarea'] * item.dailyrainfall;
           sum += item['districtarea'];
         }
       }
-      if(item['stateid']=== 305){
-          console.log(item.statename, product / sum)
-      }
+      // if(item['stateid']=== 305){
+      //     console.log(item.statename, product / sum)
+      // }
       else {
         if (previousStateId !== null) {
           this.statefetchedDatadaily.push({
             statedailyid: previousStateId,
             statename: previousStatename,
+            dailyrainfallcum : cumproduct/sum,
             dailyrainfall: product / sum,
             RegionId: previousregionid,
             RegionName: previousregionname
           });
+          cumproduct +=item['districtarea']*item.dailyrainfallcum;
           product = item['districtarea'] * item.dailyrainfall;
           sum = item['districtarea'];
         }
       }
+      cumproduct;
       product;
       sum;
       previousStateId = item['stateid'];
@@ -1021,14 +956,14 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
               matcheddailyrainfallcum = matchingItem.dailyrainfallcum;
             }}
           const dailydeparturerainfall = ((matcheddailyrainfall - item1.normalrainfall)/item1.normalrainfall)*100;
-          //const cumdeparture = ((matchingItem.dailyrainfallcum - item1.cummnormal)/item1.cummnormal)*100
+          const cumdeparture = ((matcheddailyrainfallcum - item1.cummnormal)/item1.cummnormal)*100
           if (matchingItem) {
-            this.statedatacum.push({ ...item1, ...matchingItem, dailydeparturerainfall });
+            this.statedatacum.push({ ...item1, ...matchingItem, dailydeparturerainfall,cumdeparture });
           } else {
             // console.log("data not found")
           }
         });
-
+         console.log(this.statedatacum)
 
       }
 
@@ -1077,7 +1012,6 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       previousregionid = item.regionid;
       previousregionname = item.regionname
     }
-    // console.log(this.subdivisionfetchedDatadaily)
   }
 
   processFetchedDatasubdivnormal(): void {
@@ -1128,23 +1062,43 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       }
 
       processFetchedDataregiondaily(): void {
-        let product = 1;
-        let sum = 0;
-        let previousregionID = null;
-        for (const item of this.stationtodistrictdata) {
-          product += item['imdarea_squarekm'] * item[this.currentDateDaily];
-          sum += item['imdarea_squarekm'];
-          if (previousregionID != item['regionid']) {
-            this.countrydaily = this.countrydaily + (product / sum)
-            this.regionfetchedDatadaily.push({
-              regiondailyid: item['regionid'],
-              regiondailyrainfall: product / sum,
-            });
-            product = 1;
-            sum = 0;
+        this.stationtodistrictdatacum.sort((a, b) => {
+          return a.regionid - b.regionid;
+      });
+      let product = 0;
+      let sum = 0;
+      let previousregionid = null;
+      let previousregionname = null;
+
+      for (const item of this.stationtodistrictdatacum) {
+        if (previousregionid === item['regionid'] || previousregionid === null) {
+          if (Number.isNaN(item[item.dailyrainfall]) || Number.isNaN(item['districtarea']) ||item[item.dailyrainfall] === undefined || item['districtarea'] === undefined) {
+            product += 0;
+            sum += 0
           }
-          previousregionID = item['regionid'];
+
+          else {
+            product += item['districtarea'] * item.dailyrainfall;
+            sum += item['districtarea'];
+          }
         }
+
+        else {
+          if (previousregionid !== null) {
+            this.regionfetchedDatadaily.push({
+              dailyrainfall: product / sum,
+              RegionId: previousregionid,
+              RegionName: previousregionname
+            });
+            product = item['districtarea'] * item.dailyrainfall;
+            sum = item['districtarea'];
+          }
+        }
+        product;
+        sum;
+        previousregionid = item.regionid;
+        previousregionname = item.regionname
+      }
       }
 
   processFetchedDataregionnormal(): void {
@@ -1220,7 +1174,6 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
               endDay = parseInt(enddate.slice(3));
               for (let day = startDay; day <= endDay; day++) {
                 const currentDateStr = `${startMonth}${day.toString()}`;
-                //const currentDateStrdaily = `${day.toString().padStart(2, '0')}_${startMonth}`;
                 let normal: number
                 let daily: number
                 let yesterday: number;
@@ -1651,10 +1604,15 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
 
   private initMap(): void {
     this.map = L.map('map', {
-      center: [26, 76.9629],
+      center: [24, 76.9629],
       zoom: this.initialZoom,
       scrollWheelZoom: false,
     });
+    const wmsLayer = L.tileLayer.wms('http://localhost:8080/geoserver/IRIS/wms', {
+      layers: 'IRIS:District',
+      format: 'image/png',
+      transparent: true,
+    }).addTo(this.map);
     this.map.on('fullscreenchange', () => {
       if (this.isFullscreen()) {
         this.map.setZoom(this.initialZoom + 1);
@@ -1663,7 +1621,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       }
     });
     this.map1 = L.map('map1', {
-      center: [26, 76.9629],
+      center: [24, 76.9629],
       zoom: this.initialZoom,
       scrollWheelZoom: false,
     });
@@ -1676,7 +1634,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       }
     });
     this.map2 = L.map('map2', {
-      center: [26, 76.9629],
+      center: [24, 76.9629],
       zoom: this.initialZoom,
       scrollWheelZoom: false,
     });
@@ -1688,7 +1646,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       }
     });
     this.map3 = L.map('map3', {
-      center: [26, 76.9629],
+      center: [24, 76.9629],
       zoom: this.initialZoom,
       scrollWheelZoom: false,
     });
@@ -1700,7 +1658,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       }
     });
     this.map4 = L.map('map4', {
-      center: [26, 76.9629],
+      center: [24, 76.9629],
       zoom: this.initialZoom,
       scrollWheelZoom: false,
     });
@@ -2303,9 +2261,9 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
             content: this.getCatForRainfall(item.statedeprainfall),
             styles: { fillColor: this.getColorForRainfall(item.statedeprainfall) },
           },
-          // item.cummdaily.toFixed(2),
-          // item.cummnormal.toFixed(2),
-          // item.cumdeparture.toFixed(2),
+          item.dailyrainfallcum.toFixed(2),
+          item.cummnormal.toFixed(2),
+          item.cumdeparture.toFixed(2),
           {
             content: this.getCatForRainfall(item.cumdeparture),
             styles: { fillColor: this.getColorForRainfall(item.cumdeparture) },
@@ -2324,9 +2282,9 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
             content: this.getCatForRainfall(item.statedeprainfall),
             styles: { fillColor: this.getColorForRainfall(item.statedeprainfall) },
           },
-          // item.cummdaily.toFixed(2),
-          // item.cummnormal.toFixed(2),
-          // item.cumdeparture.toFixed(2),
+          item.dailyrainfallcum.toFixed(2),
+          item.cummnormal.toFixed(2),
+          item.cumdeparture.toFixed(2),
           {
             content: this.getCatForRainfall(item.cumdeparture),
             styles: { fillColor: this.getColorForRainfall(item.cumdeparture) },
