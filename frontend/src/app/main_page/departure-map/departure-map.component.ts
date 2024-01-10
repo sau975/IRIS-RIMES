@@ -7,6 +7,7 @@ import { jsPDF } from 'jspdf';
 import 'jspdf-autotable';
 import * as htmlToImage from 'html-to-image';
 import { Router } from '@angular/router';
+import { interval } from 'rxjs';
 
 @Component({
   selector: 'app-departure-map',
@@ -54,8 +55,8 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     this.initMap();
   }
-  async ngOnInit(): Promise<void> {
-    await this.fetchDataFromBackend();
+  ngOnInit(): void {
+   this.fetchDataFromBackend();
   }
 
   dateCalculation() {
@@ -79,11 +80,12 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     this.currentDateNormaly = `${currmonthy}${ddy}`;
     this.currentDateDaily = `${this.dd.padStart(2, '0')}_${currmonth}`;
   }
-  async fetchDataFromBackend(): Promise<void> {
+  fetchDataFromBackend(): void {
     this.dataService.fetchMasterFile().subscribe({
       next: value => {
         this.fetchedMasterData = value;
         this.stationtodistrict();
+
       },
       error: err => console.error('Error fetching data:', err)
     });
@@ -122,7 +124,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     });
   }
   findMatchingData(id: string): any | null {
-    const matchedData = this.stationtodistrictdatacum.find((data: any) => data.districtID == id);
+    const matchedData = this.districtdatacum.find((data: any) => data.districtID == id);
     if (matchedData) {
       return matchedData;
     }
@@ -131,7 +133,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     }
   }
   findMatchingDatastate(id: string): any | null {
-    const matchedData = this.statedatacum.find((data: any) => data.statedepid == id);
+    const matchedData = this.statefetchedDatadepcum.find((data: any) => data.statedepid == id);
     return matchedData || null;
   }
   findMatchingDatasubdiv(id: string): any | null {
@@ -139,31 +141,25 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     return matchedData || null;
   }
   findMatchingDataregion(id: string): any | null {
-    const matchedData = this.regionfetchedDatadep.find((data: any) => data.regiondepid === id);
+    const matchedData = this.regionfetchedDatadepcum.find((data: any) => data.regiondepid === id);
     return matchedData || null;
   }
   findMatchingDatacountry(id: string): any | null {
     const matchedData = this.countryfetcheddata.find((data: any) => data.countryid === id);
     return matchedData || null;
   }
-  processedData: any[] = [];
+  
   stationtodistrictdata: any[] = [];
-  stationtodistrictdatacum: any[] = [];
-  statedatacum : any [] = [];
-  processedDatacum: any[] = [];
+  districtnormals: any[] = [];
+  districtdatacum: any[] = [];
   statefetchedDatadaily: any[] = [];
   statefetchedDatanormal: any[] = [];
-  statefetchedDatadep: any[] = [];
   statefetchedDatadepcum: any[] = [];
-  statefetchedDatacum: any[] = [];
   subdivisionfetchedDatadaily: any[] = [];
-  subdivisionfetchedDatacum: any[] = [];
   subdivisionfetchedDatanormal: any[] = [];
-  subdivisionfetchedDatadep: any[] = [];
   subdivisionfetchedDatadepcum: any[] = [];
   regionfetchedDatadaily: any[] = [];
   regionfetchedDatanormal: any[] = [];
-  regionfetchedDatadep: any[] = [];
   regionfetchedDatadepcum: any[] = [];
   countryfetcheddata: any[] = [];
   public countrydaily = 0
@@ -182,412 +178,15 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     let subdivweights = null;
     let previousregionid = null;
     let previousregionname = "";
-    let stationcumdata = 0
     let districtcumdata = 0
-    // let sum = this.getColumnSum('Oct');
-    // console.log(sum)
-//     if (this.currentDateDaily.endsWith('Oct') || this.currentDateDaily.endsWith('Nov') || this.currentDateDaily.endsWith('Dec')) {
-//       if (this.currentDateDaily.endsWith('Dec')) {
-//         let startMonth = "Oct";
-//         let startDay = 1;
-//         let endDay = 31;
-//         let dataavailabledates = 0;
-//         for (let day = startDay; day <= endDay; day++) {
-//           const currentDateStrdaily = `${day.toString().padStart(2, '0')}_${startMonth}`;
-//           let sumofcolumn = this.getColumnSum(currentDateStrdaily);
-//           console.log(currentDateStrdaily, sumofcolumn)
-
-
-//           // let daily: number
-//           // if (item[currentDateStrdaily] != -999.9) {
-//           //   daily = item[currentDateStrdaily]
-//           //   dataavailabledates = dataavailabledates + 1;
-//           // }
-//           // else {
-//           //   daily = 0
-//           // }
-//           // stationcumdata += daily
-//         }
-//         startMonth = "Nov";
-//         startDay = 1;
-//         endDay = 30;
-//         for (let day = startDay; day <= endDay; day++) {
-//           const currentDateStrdaily = `${day.toString().padStart(2, '0')}_${startMonth}`;
-//           let daily: number
-//           // if (item[currentDateStrdaily] != -999.9) {
-//           //   daily = item[currentDateStrdaily]
-//           //   dataavailabledates = dataavailabledates + 1;
-//           // }
-//           // else {
-//           //   daily = 0
-//           // }
-//           // stationcumdata += daily
-//         }
-//         startMonth = "Dec";
-//         startDay = 1;
-//         endDay = this.today.getDate();
-//         for (let day = startDay; day <= endDay; day++) {
-//           const currentDateStrdaily = `${day.toString().padStart(2, '0')}_${startMonth}`;
-//           let daily: number
-//           // if (item[currentDateStrdaily] != -999.9) {
-//           //   daily = item[currentDateStrdaily]
-//           //   dataavailabledates = dataavailabledates + 1;
-//           // }
-//           // else {
-//           //   daily = 0
-//           // }
-//           // stationcumdata += daily
-//         }
-//       }
-// }
-    this.stationtodistrictdata = [];
     for (const item of this.fetchedMasterData) {
       if (item.district_code == previousdistrictid || previousdistrictid == null) {
-        stationcumdata = 0;
-        if (this.currentDateDaily.endsWith('Jan') || this.currentDateDaily.endsWith('Feb')) {
-          if (this.currentDateDaily.endsWith('Jan')) {
-            let startMonth = "Jan";
-            let startDay = 1;
-            let endDay = this.today.getDate();
-            for (let day = startDay; day <= endDay; day++) {
-              const currentDateStrdaily = `${day.toString().padStart(2, '0')}_${startMonth}`;
-              let daily: number
-              if (item[currentDateStrdaily] !== -999.9) {
-                daily = item[currentDateStrdaily]
-              }
-              else {
-                daily = 0
-              }
-              stationcumdata += daily
-            }
-          }
-          if (this.currentDateDaily.endsWith('Feb')) {
-            let startMonth = "Jan";
-            let startDay = 1;
-            let endDay = 31;
-            for (let day = startDay; day <= endDay; day++) {
-              const currentDateStrdaily = `${day.toString().padStart(2, '0')}_${startMonth}`;
-              let daily: number
-              if (item[currentDateStrdaily] != -999.9) {
-                daily = item[currentDateStrdaily]
-              }
-              else {
-                daily = 0
-              }
-              stationcumdata += daily
-            }
-            startMonth = "Feb";
-            startDay = 1;
-            endDay = this.today.getDate();
-            for (let day = startDay; day <= endDay; day++) {
-              const currentDateStrdaily = `${day.toString().padStart(2, '0')}_${startMonth}`;
-              let daily: number
-              if (item[currentDateStrdaily] != -999.9) {
-                daily = item[currentDateStrdaily]
-              }
-              else {
-                daily = 0
-              }
-              stationcumdata += daily
-            }
-          }
-        }
-          if (this.currentDateDaily.endsWith('Mar') || this.currentDateDaily.endsWith('Apr') || this.currentDateDaily.endsWith('May')) {
-            if (this.currentDateDaily.endsWith('Mar')) {
-              let startMonth = "Mar";
-              let startDay = 1;
-              let endDay = this.today.getDate();
-              for (let day = startDay; day <= endDay; day++) {
-                const currentDateStrdaily = `${day.toString().padStart(2, '0')}_${startMonth}`;
-                let daily: number
-                if (item[currentDateStrdaily] !== -999.9) {
-                  daily = item[currentDateStrdaily]
-                }
-                else {
-                  daily = 0
-                }
-                stationcumdata += daily
-              }
-            }
-
-            if (this.currentDateDaily.endsWith('Apr')) {
-              let startMonth = "Mar";
-              let startDay = 1;
-              let endDay = 31;
-              for (let day = startDay; day <= endDay; day++) {
-                const currentDateStrdaily = `${day.toString().padStart(2, '0')}_${startMonth}`;
-                let daily: number
-                if (item[currentDateStrdaily] != -999.9) {
-                  daily = item[currentDateStrdaily]
-                }
-                else {
-                  daily = 0
-                }
-                stationcumdata += daily
-              }
-              startMonth = "Apr";
-              startDay = 1;
-              endDay = this.today.getDate();
-              for (let day = startDay; day <= endDay; day++) {
-                const currentDateStrdaily = `${day.toString().padStart(2, '0')}_${startMonth}`;
-                let daily: number
-                if (item[currentDateStrdaily] != -999.9) {
-                  daily = item[currentDateStrdaily]
-                }
-                else {
-                  daily = 0
-                }
-                stationcumdata += daily
-              }
-            }
-            if (this.currentDateDaily.endsWith('May')) {
-              let startMonth = "Mar";
-              let startDay = 1;
-              let endDay = 31;
-              let dataavailabledates = 0;
-              for (let day = startDay; day <= endDay; day++) {
-                const currentDateStrdaily = `${day.toString().padStart(2, '0')}_${startMonth}`;
-                let daily: number
-                if (item[currentDateStrdaily] != -999.9) {
-                  daily = item[currentDateStrdaily]
-                  dataavailabledates = dataavailabledates + 1;
-                }
-                else {
-                  daily = 0
-                }
-                stationcumdata += daily
-              }
-              startMonth = "Apr";
-              startDay = 1;
-              endDay = 30;
-              for (let day = startDay; day <= endDay; day++) {
-                const currentDateStrdaily = `${day.toString().padStart(2, '0')}_${startMonth}`;
-                let daily: number
-                if (item[currentDateStrdaily] != -999.9) {
-                  daily = item[currentDateStrdaily]
-                  dataavailabledates = dataavailabledates + 1;
-                }
-                else {
-                  daily = 0
-                }
-                stationcumdata += daily
-              }
-              startMonth = "May";
-              startDay = 1;
-              endDay = this.today.getDate();
-              for (let day = startDay; day <= endDay; day++) {
-                const currentDateStrdaily = `${day.toString().padStart(2, '0')}_${startMonth}`;
-                let daily: number
-                if (item[currentDateStrdaily] != -999.9) {
-                  daily = item[currentDateStrdaily]
-                  dataavailabledates = dataavailabledates + 1;
-                }
-                else {
-                  daily = 0
-                }
-                stationcumdata += daily
-              }
-            }
-        }
-
-        if (this.currentDateDaily.endsWith('Jun') || this.currentDateDaily.endsWith('Jul') || this.currentDateDaily.endsWith('Aug')) {
-          if (this.currentDateDaily.endsWith('Jun')) {
-            let startMonth = "Jun";
-            let startDay = 1;
-            let endDay = this.today.getDate();
-            for (let day = startDay; day <= endDay; day++) {
-              const currentDateStrdaily = `${day.toString().padStart(2, '0')}_${startMonth}`;
-              let daily: number
-              if (item[currentDateStrdaily] !== -999.9) {
-                daily = item[currentDateStrdaily]
-              }
-              else {
-                daily = 0
-              }
-              stationcumdata += daily
-            }
-          }
-          if (this.currentDateDaily.endsWith('Jul')) {
-            let startMonth = "Jun";
-            let startDay = 1;
-            let endDay = 31;
-            for (let day = startDay; day <= endDay; day++) {
-              const currentDateStrdaily = `${day.toString().padStart(2, '0')}_${startMonth}`;
-              let daily: number
-              if (item[currentDateStrdaily] != -999.9) {
-                daily = item[currentDateStrdaily]
-              }
-              else {
-                daily = 0
-              }
-              stationcumdata += daily
-            }
-            startMonth = "Jul";
-            startDay = 1;
-            endDay = this.today.getDate();
-            for (let day = startDay; day <= endDay; day++) {
-              const currentDateStrdaily = `${day.toString().padStart(2, '0')}_${startMonth}`;
-              let daily: number
-              if (item[currentDateStrdaily] != -999.9) {
-                daily = item[currentDateStrdaily]
-              }
-              else {
-                daily = 0
-              }
-              stationcumdata += daily
-            }
-          }
-          if (this.currentDateDaily.endsWith('Aug')) {
-            let startMonth = "Jun";
-            let startDay = 1;
-            let endDay = 31;
-            let dataavailabledates = 0;
-            for (let day = startDay; day <= endDay; day++) {
-              const currentDateStrdaily = `${day.toString().padStart(2, '0')}_${startMonth}`;
-              let daily: number
-              if (item[currentDateStrdaily] != -999.9) {
-                daily = item[currentDateStrdaily]
-                dataavailabledates = dataavailabledates + 1;
-              }
-              else {
-                daily = 0
-              }
-              stationcumdata += daily
-            }
-            startMonth = "Jul";
-            startDay = 1;
-            endDay = 30;
-            for (let day = startDay; day <= endDay; day++) {
-              const currentDateStrdaily = `${day.toString().padStart(2, '0')}_${startMonth}`;
-              let daily: number
-              if (item[currentDateStrdaily] != -999.9) {
-                daily = item[currentDateStrdaily]
-                dataavailabledates = dataavailabledates + 1;
-              }
-              else {
-                daily = 0
-              }
-              stationcumdata += daily
-            }
-            startMonth = "Aug";
-            startDay = 1;
-            endDay = this.today.getDate();
-            for (let day = startDay; day <= endDay; day++) {
-              const currentDateStrdaily = `${day.toString().padStart(2, '0')}_${startMonth}`;
-              let daily: number
-              if (item[currentDateStrdaily] != -999.9) {
-                daily = item[currentDateStrdaily]
-                dataavailabledates = dataavailabledates + 1;
-              }
-              else {
-                daily = 0
-              }
-              stationcumdata += daily
-            }
-          }
-      }
-
-        if (this.currentDateDaily.endsWith('Oct') || this.currentDateDaily.endsWith('Nov') || this.currentDateDaily.endsWith('Dec')) {
-          if (this.currentDateDaily.endsWith('Oct')) {
-            let startMonth = "Oct";
-            let startDay = 1;
-            let endDay = this.today.getDate();
-            for (let day = startDay; day <= endDay; day++) {
-              const currentDateStrdaily = `${day.toString().padStart(2, '0')}_${startMonth}`;
-              let daily: number
-              if (item[currentDateStrdaily] !== -999.9) {
-                daily = item[currentDateStrdaily]
-              }
-              else {
-                daily = 0
-              }
-              stationcumdata += daily
-            }
-          }
-          if (this.currentDateDaily.endsWith('Nov')) {
-            let startMonth = "Oct";
-            let startDay = 1;
-            let endDay = 31;
-            for (let day = startDay; day <= endDay; day++) {
-              const currentDateStrdaily = `${day.toString().padStart(2, '0')}_${startMonth}`;
-              let daily: number
-              if (item[currentDateStrdaily] != -999.9) {
-                daily = item[currentDateStrdaily]
-              }
-              else {
-                daily = 0
-              }
-              stationcumdata += daily
-            }
-            startMonth = "Nov";
-            startDay = 1;
-            endDay = this.today.getDate();
-            for (let day = startDay; day <= endDay; day++) {
-              const currentDateStrdaily = `${day.toString().padStart(2, '0')}_${startMonth}`;
-              let daily: number
-              if (item[currentDateStrdaily] != -999.9) {
-                daily = item[currentDateStrdaily]
-              }
-              else {
-                daily = 0
-              }
-              stationcumdata += daily
-            }
-          }
-          if (this.currentDateDaily.endsWith('Dec')) {
-            let startMonth = "Oct";
-            let startDay = 1;
-            let endDay = 31;
-            let dataavailabledates = 0;
-            for (let day = startDay; day <= endDay; day++) {
-              const currentDateStrdaily = `${day.toString().padStart(2, '0')}_${startMonth}`;
-              let daily: number
-              if (item[currentDateStrdaily] != -999.9) {
-                daily = item[currentDateStrdaily]
-                dataavailabledates = dataavailabledates + 1;
-              }
-              else {
-                daily = 0
-              }
-              stationcumdata += daily
-            }
-            startMonth = "Nov";
-            startDay = 1;
-            endDay = 30;
-            for (let day = startDay; day <= endDay; day++) {
-              const currentDateStrdaily = `${day.toString().padStart(2, '0')}_${startMonth}`;
-              let daily: number
-              if (item[currentDateStrdaily] != -999.9) {
-                daily = item[currentDateStrdaily]
-                dataavailabledates = dataavailabledates + 1;
-              }
-              else {
-                daily = 0
-              }
-              stationcumdata += daily
-            }
-            startMonth = "Dec";
-            startDay = 1;
-            endDay = this.today.getDate();
-            for (let day = startDay; day <= endDay; day++) {
-              const currentDateStrdaily = `${day.toString().padStart(2, '0')}_${startMonth}`;
-              let daily: number
-              if (item[currentDateStrdaily] != -999.9) {
-                daily = item[currentDateStrdaily]
-                dataavailabledates = dataavailabledates + 1;
-              }
-              else {
-                daily = 0
-              }
-              stationcumdata += daily
-            }
-          }
-
-        }
-        districtcumdata = districtcumdata + stationcumdata;
         if (item[this.currentDateDaily] != -999.9) {
           stationrainfallsum = stationrainfallsum + item[this.currentDateDaily];
           numberofstations = numberofstations + 1;
+        }
+       else{
+          stationrainfallsum = stationrainfallsum + 0;
         }
       }
       else {
@@ -616,103 +215,6 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
           stationrainfallsum = 0;
           numberofstations = 0;
         }
-        stationcumdata = 0;
-        if (this.currentDateDaily.endsWith('Oct') || this.currentDateDaily.endsWith('Nov') || this.currentDateDaily.endsWith('Dec')) {
-          if (this.currentDateDaily.endsWith('Oct')) {
-            let startMonth = "Oct";
-            let startDay = 1;
-            let endDay = this.today.getDate();
-            for (let day = startDay; day <= endDay; day++) {
-              const currentDateStrdaily = `${day.toString().padStart(2, '0')}_${startMonth}`;
-              let daily: number
-              if (item[currentDateStrdaily] !== -999.9) {
-                daily = item[currentDateStrdaily]
-              }
-              else {
-                daily = 0
-              }
-              stationcumdata += daily
-            }
-          }
-          if (this.currentDateDaily.endsWith('Nov')) {
-            let startMonth = "Oct";
-            let startDay = 1;
-            let endDay = 31;
-            for (let day = startDay; day <= endDay; day++) {
-              const currentDateStrdaily = `${day.toString().padStart(2, '0')}_${startMonth}`;
-              let daily: number
-              if (item[currentDateStrdaily] != -999.9) {
-                daily = item[currentDateStrdaily]
-              }
-              else {
-                daily = 0
-              }
-              stationcumdata += daily
-            }
-            startMonth = "Nov";
-            startDay = 1;
-            endDay = this.today.getDate();
-            for (let day = startDay; day <= endDay; day++) {
-              const currentDateStrdaily = `${day.toString().padStart(2, '0')}_${startMonth}`;
-              let daily: number
-              if (item[currentDateStrdaily] != -999.9) {
-                daily = item[currentDateStrdaily]
-              }
-              else {
-                daily = 0
-              }
-              stationcumdata += daily
-            }
-          }
-          if (this.currentDateDaily.endsWith('Dec')) {
-            let startMonth = "Oct";
-            let startDay = 1;
-            let endDay = 31;
-            for (let day = startDay; day <= endDay; day++) {
-              const currentDateStrdaily = `${day.toString().padStart(2, '0')}_${startMonth}`;
-              let daily: number
-              if (item[currentDateStrdaily] != -999.9) {
-                daily = item[currentDateStrdaily]
-              }
-              else {
-                daily = 0
-              }
-              stationcumdata += daily
-            }
-            startMonth = "Nov";
-            startDay = 1;
-            endDay = 30;
-            for (let day = startDay; day <= endDay; day++) {
-              const currentDateStrdaily = `${day.toString().padStart(2, '0')}_${startMonth}`;
-              let daily: number
-              if (item[currentDateStrdaily] != -999.9) {
-                daily = item[currentDateStrdaily]
-              }
-              else {
-                daily = 0
-              }
-              stationcumdata += daily
-            }
-            startMonth = "Dec";
-            startDay = 1;
-            endDay = this.today.getDate();
-            for (let day = startDay; day <= endDay; day++) {
-              const currentDateStrdaily = `${day.toString().padStart(2, '0')}_${startMonth}`;
-              let daily: number
-              if (item[currentDateStrdaily] != -999.9) {
-                daily = item[currentDateStrdaily]
-              }
-              else {
-                daily = 0
-              }
-              stationcumdata += daily
-            }
-          }
-        }
-        districtcumdata = stationcumdata
-
-
-
       }
       previousdistrictid = item.district_code;
       previousdistrictname = item.district_name;
@@ -725,9 +227,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       previousregionid = item.region_code;
       previousregionname = item.region_name;
     }
-
   }
-
   dailyRainFallCumulative(){
     // Initialize an object to store the sum and count of each Oct value for each districtId
     const districtSumCount:any = {};
@@ -765,7 +265,6 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
         districtId,
         ...averages as {}
     }));
-console.log(resultArray, "result")
     // Calculate the total sum for each districtId and add the total value to the array
     const totalByDistrict:any = {};
     resultArray.forEach((entry:any) => {
@@ -807,7 +306,7 @@ console.log(resultArray, "result")
   }
 
   processFetchedData(): void {
-    this.processedData = [];
+    this.districtnormals = [];
     let districtcumnormal = 0;
     for (const item of this.fetchedData) {
       let normal1: number
@@ -821,7 +320,7 @@ console.log(resultArray, "result")
         }
       }
       districtcumnormal = item[this.currentDateNormal]
-       this.processedData.push({
+       this.districtnormals.push({
         districtID: item.district_code,
         normalrainfall: normal1,
         cummnormal: districtcumnormal
@@ -830,8 +329,8 @@ console.log(resultArray, "result")
     this.mergedistrictdailyandnormal();
   }
   mergedistrictdailyandnormal(): void {
-    this.stationtodistrictdatacum = [];
-    this.processedData.forEach((item1) => {
+    this.districtdatacum = [];
+    this.districtnormals.forEach((item1) => {
       const matchingItem = this.stationtodistrictdata.find((item2) => item1.districtID == item2.districtid);
       let matcheddailyrainfall = 0;
       let matcheddailyrainfallcum = 0;
@@ -846,7 +345,7 @@ console.log(resultArray, "result")
       const dailydeparturerainfall = ((matcheddailyrainfall - item1.normalrainfall)/item1.normalrainfall)*100;
       const cumdeparture = ((matcheddailyrainfallcum - item1.cummnormal)/item1.cummnormal)*100
       if (matchingItem) {
-        this.stationtodistrictdatacum.push({ ...item1, ...matchingItem, dailydeparturerainfall, cumdeparture });
+        this.districtdatacum.push({ ...item1, ...matchingItem, dailydeparturerainfall, cumdeparture });
       } else {
         // console.log("data not found")
       }
@@ -859,17 +358,17 @@ console.log(resultArray, "result")
     }, {});
 
     // Update the name values in array1
-    this.stationtodistrictdatacum.forEach((obj:any) => {
+    this.districtdatacum.forEach((obj:any) => {
       if (array2Map.hasOwnProperty(obj.districtid)) {
         obj.dailyrainfallcum = array2Map[obj.districtid];
+        obj.cumdeparture = (array2Map[obj.districtid] - obj.cummnormal) / obj.cummnormal * 100;
       }
     });
-
-    console.log(this.stationtodistrictdatacum);
   }
 
   processFetchedDatastatedaily(): void {
-    this.stationtodistrictdatacum.sort((a, b) => {
+    this.statefetchedDatadaily = [];
+    this.districtdatacum.sort((a, b) => {
         return a.stateid - b.stateid;
     });
     let product = 0;
@@ -880,34 +379,32 @@ console.log(resultArray, "result")
     let previousregionid = null;
     let previousregionname = null;
 
-    for (const item of this.stationtodistrictdatacum) {
-      if (previousStateId === item['stateid'] || previousStateId === null) {
-        if (Number.isNaN(item[item.dailyrainfall]) || Number.isNaN(item['districtarea']) ||item[item.dailyrainfall] === undefined || item['districtarea'] === undefined) {
+    for (const item of this.districtdatacum) {
+      if (previousStateId == item['stateid'] || previousStateId === null) {
+        if (Number.isNaN(item[item.dailyrainfall])) {
           cumproduct +=0;
           product += 0;
           sum += 0
         }
         else {
           cumproduct +=item['districtarea']*item.dailyrainfallcum;
-          product += item['districtarea'] * item.dailyrainfall;
+          product += item['districtarea']*item.dailyrainfall;
           sum += item['districtarea'];
         }
       }
-      // if(item['stateid']=== 305){
-      //     console.log(item.statename, product / sum)
-      // }
+
       else {
         if (previousStateId !== null) {
           this.statefetchedDatadaily.push({
             statedailyid: previousStateId,
             statename: previousStatename,
             dailyrainfallcum : cumproduct/sum,
-            dailyrainfall: product / sum,
+            dailyrainfall: product/sum,
             RegionId: previousregionid,
             RegionName: previousregionname
           });
-          cumproduct +=item['districtarea']*item.dailyrainfallcum;
-          product = item['districtarea'] * item.dailyrainfall;
+          cumproduct =item['districtarea']*item.dailyrainfallcum;
+          product = item['districtarea']*item.dailyrainfall;
           sum = item['districtarea'];
         }
       }
@@ -921,7 +418,7 @@ console.log(resultArray, "result")
     }
   }
   processFetchedDatastatenormal(): void {
-    this.statefetchedDatadep = [];
+    this.statefetchedDatanormal = [];
     let statecumnormal = 0;
     for (const item of this.fetchedData4) {
       let normal1: number
@@ -935,7 +432,7 @@ console.log(resultArray, "result")
         }
       }
       statecumnormal = item[this.currentDateNormal]
-          this.statefetchedDatadep.push({
+          this.statefetchedDatanormal.push({
             statedepid: item['state_code'],
             normalrainfall: normal1,
             cummnormal : statecumnormal
@@ -944,7 +441,8 @@ console.log(resultArray, "result")
         this.mergestatedailyandnormal();
       }
       mergestatedailyandnormal(): void {
-        this.statefetchedDatadep.forEach((item1) => {
+        this.statefetchedDatadepcum = []
+        this.statefetchedDatanormal.forEach((item1) => {
           const matchingItem = this.statefetchedDatadaily.find((item2) => item1.statedepid == item2.statedailyid);
           let matcheddailyrainfall = 0;
           let matcheddailyrainfallcum = 0;
@@ -958,46 +456,47 @@ console.log(resultArray, "result")
           const dailydeparturerainfall = ((matcheddailyrainfall - item1.normalrainfall)/item1.normalrainfall)*100;
           const cumdeparture = ((matcheddailyrainfallcum - item1.cummnormal)/item1.cummnormal)*100
           if (matchingItem) {
-            this.statedatacum.push({ ...item1, ...matchingItem, dailydeparturerainfall,cumdeparture });
+            this.statefetchedDatadepcum.push({ ...item1, ...matchingItem, dailydeparturerainfall,cumdeparture });
           } else {
             // console.log("data not found")
           }
         });
-         console.log(this.statedatacum)
-
+        // console.log(this.statefetchedDatadepcum)
       }
 
   processFetchedDatasubdivdaily(): void {
-    this.stationtodistrictdatacum.sort((a, b) => {
+    this.subdivisionfetchedDatadaily = []
+    this.districtdatacum.sort((a, b) => {
         return a.subdivid - b.subdivid;
     });
     let product = 0;
     let sum = 0;
+    let cumproduct =0;
     let previoussubdivname = null;
     let previoussubdivid = null;
     let previousregionid = null;
     let previousregionname = null;
 
-    for (const item of this.stationtodistrictdatacum) {
+    for (const item of this.districtdatacum) {
       if (previoussubdivid === item['subdivid'] || previoussubdivid === null) {
-        if (Number.isNaN(item[item.dailyrainfall]) || Number.isNaN(item['districtarea']) ||item[item.dailyrainfall] === undefined || item['districtarea'] === undefined) {
+        if (Number.isNaN(item[item.dailyrainfall])) {
+          cumproduct +=0;
           product += 0;
           sum += 0
-
         }
-
         else {
+          cumproduct +=item['districtarea'] * item.dailyrainfallcum;
           product += item['districtarea'] * item.dailyrainfall;
           sum += item['districtarea'];
         }
       }
-
       else {
         if (previoussubdivid !== null) {
           this.subdivisionfetchedDatadaily.push({
             subdivdailyid: previoussubdivid,
             subdivname: previoussubdivname,
             dailyrainfall: product / sum,
+            dailyrainfallcum: cumproduct/sum, 
             RegionId: previousregionid,
             RegionName: previousregionname
           });
@@ -1015,6 +514,7 @@ console.log(resultArray, "result")
   }
 
   processFetchedDatasubdivnormal(): void {
+    this.subdivisionfetchedDatanormal = [];
     let subdivcumnormal = 0;
     for (const item of this.fetchedData5) {
       let normal1: number
@@ -1038,6 +538,7 @@ console.log(resultArray, "result")
 
       }
       mergesubdivdailyandnormal(): void {
+        this.subdivisionfetchedDatadepcum = []
         this.subdivisionfetchedDatanormal.forEach((item1) => {
           const matchingItem = this.subdivisionfetchedDatadaily.find((item2) => item1.subdivid == item2.subdivdailyid);
           let matcheddailyrainfall = 0;
@@ -1052,32 +553,37 @@ console.log(resultArray, "result")
 
           }
           const dailydeparturerainfall = ((matcheddailyrainfall - item1.normalrainfall)/item1.normalrainfall)*100;
-          //const cumdeparture = ((matchingItem.dailyrainfallcum - item1.cummnormal)/item1.cummnormal)*100
+          const cumdeparture = ((matcheddailyrainfallcum - item1.cummnormal)/item1.cummnormal)*100
           if (matchingItem) {
-            this.subdivisionfetchedDatadepcum.push({ ...item1, ...matchingItem, dailydeparturerainfall });
+            this.subdivisionfetchedDatadepcum.push({ ...item1, ...matchingItem, dailydeparturerainfall, cumdeparture });
           } else {
             // console.log("data not found")
           }
         });
+        // console.log(this.subdivisionfetchedDatadepcum)
       }
 
       processFetchedDataregiondaily(): void {
-        this.stationtodistrictdatacum.sort((a, b) => {
+        this.regionfetchedDatadaily = [];
+        this.districtdatacum.sort((a, b) => {
           return a.regionid - b.regionid;
       });
       let product = 0;
       let sum = 0;
+      let cumproduct =0;
       let previousregionid = null;
       let previousregionname = null;
 
-      for (const item of this.stationtodistrictdatacum) {
+      for (const item of this.districtdatacum) {
         if (previousregionid === item['regionid'] || previousregionid === null) {
           if (Number.isNaN(item[item.dailyrainfall]) || Number.isNaN(item['districtarea']) ||item[item.dailyrainfall] === undefined || item['districtarea'] === undefined) {
+            cumproduct +=0;
             product += 0;
             sum += 0
           }
 
           else {
+            cumproduct += item['districtarea'] * item.dailyrainfallcum;
             product += item['districtarea'] * item.dailyrainfall;
             sum += item['districtarea'];
           }
@@ -1087,6 +593,7 @@ console.log(resultArray, "result")
           if (previousregionid !== null) {
             this.regionfetchedDatadaily.push({
               dailyrainfall: product / sum,
+              dailyrainfallcum : cumproduct/sum,
               RegionId: previousregionid,
               RegionName: previousregionname
             });
@@ -1102,7 +609,8 @@ console.log(resultArray, "result")
       }
 
   processFetchedDataregionnormal(): void {
-    this.regionfetchedDatadep = [];
+    this.regionfetchedDatanormal = [];
+    let regioncumnormal = 0;
     for (const item of this.fetchedData6) {
       let normal1: number
       if (this.currentDateNormal === 'Jan1' || this.currentDateNormal === 'Mar1' || this.currentDateNormal === 'Jun1' || this.currentDateNormal === 'Oct1') {
@@ -1110,498 +618,44 @@ console.log(resultArray, "result")
       }
       else {
         normal1 = (item[this.currentDateNormal] - item[this.currentDateNormaly])
-      }
-      this.regionfetchedDatanormal.push({
-        regionnormalid: item['regionid'],
-        regionnormalrainfall: normal1
-      });
-      if (item['regionid'] === 1) {
-        this.countryfetcheddata.push({ countryid: item['regionid'], countrynormal: normal1, countrydaily: this.countrydaily, countrydep: (this.countrydaily - normal1) / normal1 });
-      }
-      else {
-        const matchedData = this.regionfetchedDatadaily.find((data: any) => data.regiondailyid === item['regionid']);
-        if (matchedData) {
-          if (this.currentDateNormal.startsWith('Jan') || this.currentDateNormal.startsWith('Feb')) {
-            let cumnormalwinter = 0;
-            let cumdailywinter = 0;
-            let startdate = 'Jan1';
-            const today = new Date();
-            const months = [
-              'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-              'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
-            ];
-            const dd = String(today.getDate());
-            const currmonth = months[today.getMonth()];
-            let enddate = `${currmonth}${dd}`
-            let startMonth = startdate.slice(0, 3);
-            let startDay = parseInt(startdate.slice(3));
-            let endDay = parseInt(enddate.slice(3));
-            let normal: number
-            let daily: number
-            for (let day = startDay; day <= endDay; day++) {
-              const currentDateStr = `${startMonth}${day.toString()}`;
-              const currentDateStrdaily = `${day.toString()}_${startMonth}`;
-              if (currentDateStr === 'Jan1') {
-                normal = item[currentDateStr]
-                daily = item[currentDateStrdaily]
-                if (Number.isNaN(normal)) {
-                  normal = 0;
-                }
-                if (Number.isNaN(daily)) {
-                  daily = 0;
-                }
-              }
-              else {
-                const yesterday = day - 1;
-                const yesterdayStr = `${startMonth}${yesterday.toString()}`;
-                const yesterdayStrdaily = `${yesterday.toString()}_${startMonth}`;
-                normal = (item[currentDateStr] - item[yesterdayStr])
-                daily = (item[currentDateStrdaily] - item[yesterdayStrdaily])
-                if (Number.isNaN(normal)) {
-                  normal = 0;
-                }
-                if (Number.isNaN(daily)) {
-                  daily = 0;
-                }
-              }
-              cumnormalwinter += normal
-              cumdailywinter += daily
-            }
-            if (enddate.slice(0, 3) === 'Feb') {
-              startdate = 'Feb1';
-              startMonth = startdate.slice(0, 3);
-              startDay = parseInt(startdate.slice(3));
-              endDay = parseInt(enddate.slice(3));
-              for (let day = startDay; day <= endDay; day++) {
-                const currentDateStr = `${startMonth}${day.toString()}`;
-                let normal: number
-                let daily: number
-                let yesterday: number;
-                let yesterdayStr: string;
-                let yesterdayStrdaily: string;
-                if (currentDateStr === 'Feb1') {
-                  yesterdayStr = 'Jan31'
-                  yesterdayStrdaily = '31_Jan'
-                }
-                else {
-                  yesterday = day - 1;
-                  yesterdayStr = `${startMonth}${yesterday.toString()}`;
-                  yesterdayStrdaily = `${day.toString().padStart(2, '0')}_${startMonth}`;
-                }
-                normal = (item[currentDateStr] - item[yesterdayStr])
-                daily = matchedData.regiondailyrainfall
-                if (Number.isNaN(normal)) {
-                  normal = 0;
-                }
-                if (Number.isNaN(daily)) {
-                  daily = 0;
-                }
-                cumnormalwinter += normal
-                cumdailywinter += daily
-              }
-            }
-            const cumdep = ((cumdailywinter - cumnormalwinter) / cumnormalwinter)
-            this.regionfetchedDatadep.push({ regiondepid: item['regionid'], regionname: item.REGION, dailyrainfall: matchedData.regiondailyrainfall, normalrainfall: normal1, regiondeprainfall: (((matchedData.regiondailyrainfall - normal1) / normal1) * 100), cummnormal: cumnormalwinter, cummdaily: cumdailywinter, cumdeparture: cumdep });
-
-          }
-          else if (this.currentDateNormal.startsWith('Mar') || this.currentDateNormal.startsWith('Apr') || this.currentDateNormal.startsWith('May')) {
-            let cumnormalpremon = 0;
-            let cumdailypremon = 0;
-            let startdate = 'Mar1';
-            const today = new Date();
-            const months = [
-              'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-              'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
-            ];
-            const dd = String(today.getDate());
-            const currmonth = months[today.getMonth()];
-            let enddate = `${currmonth}${dd}`
-            let startMonth = startdate.slice(0, 3);
-            let endMonth = enddate.slice(0, 3);
-            let startDay = parseInt(startdate.slice(3));
-            let endDay = parseInt(enddate.slice(3));
-            let normal: number
-            let daily: number
-            for (let day = startDay; day <= endDay; day++) {
-              const currentDateStr = `${startMonth}${day.toString()}`;
-              if (currentDateStr === 'Mar1') {
-                normal = item[currentDateStr]
-                daily = matchedData.regiondailyrainfall
-                if (Number.isNaN(normal)) {
-                  normal = 0;
-                }
-                if (Number.isNaN(daily)) {
-                  daily = 0;
-                }
-              }
-              else {
-                const yesterday = day - 1;
-                const yesterdayStr = `${startMonth}${yesterday.toString()}`;
-                const yesterdayStrdaily = `${day.toString().padStart(2, '0')}_${startMonth}`;
-                normal = (item[currentDateStr] - item[yesterdayStr])
-                daily = matchedData.regiondailyrainfall
-                if (Number.isNaN(normal)) {
-                  normal = 0;
-                }
-                if (Number.isNaN(daily)) {
-                  daily = 0;
-                }
-              }
-              cumnormalpremon += normal
-              cumdailypremon += daily
-            }
-            if (enddate.slice(0, 3) === 'Apr' || enddate.slice(0, 3) === 'May') {
-              startdate = 'Apr1';
-              startMonth = startdate.slice(0, 3);
-              endMonth = enddate.slice(0, 3);
-              startDay = parseInt(startdate.slice(3));
-              endDay = parseInt(enddate.slice(3));
-              for (let day = startDay; day <= endDay; day++) {
-                const currentDateStr = `${startMonth}${day.toString()}`;
-                // const currentDateStrdaily = `${day.toString().padStart(2, '0')}_${startMonth}`;
-                let normal: number
-                let daily: number
-                let yesterday: number;
-                let yesterdayStr: string;
-                let yesterdayStrdaily: string;
-                if (currentDateStr === 'Apr1') {
-                  yesterdayStr = 'May31'
-                  yesterdayStrdaily = '31_May'
-                }
-                else {
-                  yesterday = day - 1;
-                  yesterdayStr = `${startMonth}${yesterday.toString()}`;
-                  yesterdayStrdaily = `${day.toString().padStart(2, '0')}_${startMonth}`;
-                }
-                normal = (item[currentDateStr] - item[yesterdayStr])
-                daily = matchedData.regiondailyrainfall
-                if (Number.isNaN(normal)) {
-                  normal = 0;
-                }
-                if (Number.isNaN(daily)) {
-                  daily = 0;
-                }
-                cumnormalpremon += normal
-                cumdailypremon += daily
-              }
-            }
-            if (enddate.slice(0, 3) === 'Apr' || enddate.slice(0, 3) === 'May') {
-              startdate = 'May1';
-              enddate = 'May30';
-              startMonth = startdate.slice(0, 3);
-              startDay = parseInt(startdate.slice(3));
-              endDay = parseInt(enddate.slice(3));
-              for (let day = startDay; day <= endDay; day++) {
-                const currentDateStr = `${startMonth}${day.toString()}`;
-                //const currentDateStrdaily = `${day.toString().padStart(2, '0')}_${startMonth}`;
-                let normal: number
-                let daily: number
-                let yesterday: number;
-                let yesterdayStr: string;
-                let yesterdayStrdaily: string;
-                if (currentDateStr === 'May1') {
-                  yesterdayStr = 'Apr30'
-                  yesterdayStrdaily = '30_Apr'
-                }
-                else {
-                  yesterday = day - 1;
-                  yesterdayStr = `${startMonth}${yesterday.toString()}`;
-                  yesterdayStrdaily = `${day.toString().padStart(2, '0')}_${startMonth}`;
-                }
-                normal = (item[currentDateStr] - item[yesterdayStr])
-                daily = matchedData.regiondailyrainfall
-                if (Number.isNaN(normal)) {
-                  normal = 0;
-                }
-                if (Number.isNaN(daily)) {
-                  daily = 0;
-                }
-                cumnormalpremon += normal
-                cumdailypremon += daily
-              }
-            }
-            const cumdep = ((cumdailypremon - cumnormalpremon) / cumnormalpremon)
-            this.regionfetchedDatadep.push({ regiondepid: item['regionid'], regionname: item.REGION, dailyrainfall: matchedData.regiondailyrainfall, normalrainfall: normal1, regiondeprainfall: (((matchedData.regiondailyrainfall - normal1) / normal1) * 100), cummnormal: cumnormalpremon, cummdaily: cumdailypremon, cumdeparture: cumdep });
-          }
-          else if (this.currentDateNormal.startsWith('Jun') || this.currentDateNormal.startsWith('Jul') || this.currentDateNormal.startsWith('Aug') || this.currentDateNormal.startsWith('Sep')) {
-            let cumnormalmon = 0;
-            let cumdailymon = 0;
-            let startdate = 'Jun1';
-            const today = new Date();
-            const months = [
-              'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-              'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
-            ];
-            const dd = String(today.getDate());
-            const currmonth = months[today.getMonth()];
-            let enddate = `${currmonth}${dd}`
-            let startMonth = startdate.slice(0, 3);
-            let endMonth = enddate.slice(0, 3);
-            let startDay = parseInt(startdate.slice(3));
-            let endDay = parseInt(enddate.slice(3));
-            let normal: number
-            let daily: number
-            let cumdep: number
-            for (let day = startDay; day <= endDay; day++) {
-              const currentDateStr = `${startMonth}${day.toString()}`;
-              if (currentDateStr === 'Jun1') {
-                normal = item[currentDateStr]
-                daily = matchedData.regiondailyrainfall
-                if (Number.isNaN(normal)) {
-                  normal = 0;
-                }
-                if (Number.isNaN(daily)) {
-                  daily = 0;
-                }
-              }
-              else {
-                const yesterday = day - 1;
-                const yesterdayStr = `${startMonth}${yesterday.toString()}`;
-                const yesterdayStrdaily = `${day.toString().padStart(2, '0')}_${startMonth}`;
-                normal = (item[currentDateStr] - item[yesterdayStr])
-                daily = matchedData.regiondailyrainfall
-                if (Number.isNaN(normal)) {
-                  normal = 0;
-                }
-                if (Number.isNaN(daily)) {
-                  daily = 0;
-                }
-              }
-              cumnormalmon += normal
-              cumdailymon += daily
-            }
-            if (enddate.slice(0, 3) === 'Jul' || enddate.slice(0, 3) === 'Aug' || enddate.slice(0, 3) === 'Sep') {
-              startdate = 'Jul1';
-              startMonth = startdate.slice(0, 3);
-              endMonth = enddate.slice(0, 3);
-              startDay = parseInt(startdate.slice(3));
-              endDay = parseInt(enddate.slice(3));
-              for (let day = startDay; day <= endDay; day++) {
-                const currentDateStr = `${startMonth}${day.toString()}`;
-                // const currentDateStrdaily = `${day.toString().padStart(2, '0')}_${startMonth}`;
-                let normal: number
-                let daily: number
-                let yesterday: number;
-                let yesterdayStr: string;
-                let yesterdayStrdaily: string;
-                if (currentDateStr === 'Jul1') {
-                  yesterdayStr = 'Jun30'
-                  yesterdayStrdaily = '30_Jun'
-                }
-                else {
-                  yesterday = day - 1;
-                  yesterdayStr = `${startMonth}${yesterday.toString()}`;
-                  yesterdayStrdaily = `${day.toString().padStart(2, '0')}_${startMonth}`;
-                }
-                normal = (item[currentDateStr] - item[yesterdayStr])
-                daily = matchedData.regiondailyrainfall
-                if (Number.isNaN(normal)) {
-                  normal = 0;
-                }
-                if (Number.isNaN(daily)) {
-                  daily = 0;
-                }
-                cumnormalmon += normal
-                cumdailymon += daily
-              }
-            }
-            if (enddate.slice(0, 3) === 'Jul' || enddate.slice(0, 3) === 'Aug' || enddate.slice(0, 3) === 'Sep') {
-              startdate = 'Aug1';
-              enddate = 'Aug31';
-              startMonth = startdate.slice(0, 3);
-              endMonth = enddate.slice(0, 3);
-              startDay = parseInt(startdate.slice(3));
-              endDay = parseInt(enddate.slice(3));
-              for (let day = startDay; day <= endDay; day++) {
-                const currentDateStr = `${startMonth}${day.toString()}`;
-                let normal: number
-                let daily: number
-                let yesterday: number;
-                let yesterdayStr: string;
-                let yesterdayStrdaily: string;
-                if (currentDateStr === 'Aug1') {
-                  yesterdayStr = 'Jul31'
-                  yesterdayStrdaily = '31_Jul'
-                }
-                else {
-                  yesterday = day - 1;
-                  yesterdayStr = `${startMonth}${yesterday.toString()}`;
-                  yesterdayStrdaily = `${day.toString().padStart(2, '0')}_${startMonth}`;
-                }
-                normal = (item[currentDateStr] - item[yesterdayStr])
-                daily = matchedData.regiondailyrainfall
-                if (Number.isNaN(normal)) {
-                  normal = 0;
-                }
-                if (Number.isNaN(daily)) {
-                  daily = 0;
-                }
-                cumnormalmon += normal
-                cumdailymon += daily
-              }
-            }
-            if (enddate.slice(0, 3) === 'Jul' || enddate.slice(0, 3) === 'Aug' || enddate.slice(0, 3) === 'Sep') {
-              startdate = 'Sep1';
-              enddate = 'Sep30';
-              startMonth = startdate.slice(0, 3);
-              startDay = parseInt(startdate.slice(3));
-              endDay = parseInt(enddate.slice(3));
-              for (let day = startDay; day <= endDay; day++) {
-                const currentDateStr = `${startMonth}${day.toString()}`;
-                //const currentDateStrdaily = `${day.toString().padStart(2, '0')}_${startMonth}`;
-                let normal: number
-                let daily: number
-                let yesterday: number;
-                let yesterdayStr: string;
-                let yesterdayStrdaily: string;
-                if (currentDateStr === 'Sep1') {
-                  yesterdayStr = 'Aug31'
-                  yesterdayStrdaily = '31_Aug'
-                }
-                else {
-                  yesterday = day - 1;
-                  yesterdayStr = `${startMonth}${yesterday.toString()}`;
-                  yesterdayStrdaily = `${day.toString().padStart(2, '0')}_${startMonth}`;
-                }
-                normal = (item[currentDateStr] - item[yesterdayStr])
-                daily = matchedData.regiondailyrainfall
-                if (Number.isNaN(normal)) {
-                  normal = 0;
-                }
-                if (Number.isNaN(daily)) {
-                  daily = 0;
-                }
-                cumnormalmon += normal
-                cumdailymon += daily
-              }
-            }
-            cumdep = ((cumdailymon - cumnormalmon) / cumnormalmon)
-            this.regionfetchedDatadep.push({ regiondepid: item['regionid'], regionname: item.REGION, dailyrainfall: matchedData.regiondailyrainfall, normalrainfall: normal1, regiondeprainfall: (((matchedData.regiondailyrainfall - normal1) / normal1) * 100), cummnormal: cumnormalmon, cummdaily: cumdailymon, cumdeparture: cumdep });
-          }
-
-
-          else {
-            let cumnormalpostmon = 0;
-            let cumdailypostmon = 0;
-            let startdate = 'Oct1';
-            const today = new Date();
-            const months = [
-              'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-              'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
-            ];
-            const dd = String(today.getDate());
-            const currmonth = months[today.getMonth()];
-            let enddate = `${currmonth}${dd}`
-            let startMonth = startdate.slice(0, 3);
-            let startDay = parseInt(startdate.slice(3));
-            let endDay = parseInt(enddate.slice(3));
-            for (let day = startDay; day <= endDay; day++) {
-              const currentDateStr = `${startMonth}${day.toString()}`;
-              let normal: number
-              let daily: number
-              if (currentDateStr === 'Oct1') {
-                normal = item[currentDateStr]
-                daily = matchedData.regiondailyrainfall
-                if (Number.isNaN(normal)) {
-                  normal = 0;
-                }
-                if (Number.isNaN(daily)) {
-                  daily = 0;
-                }
-              }
-              else {
-                const yesterday = day - 1;
-                const yesterdayStr = `${startMonth}${yesterday.toString()}`;
-                const yesterdayStrdaily = `${yesterday.toString()}_${startMonth}`;
-                normal = (item[currentDateStr] - item[yesterdayStr])
-                daily = matchedData.regiondailyrainfall
-                if (Number.isNaN(normal)) {
-                  normal = 0;
-                }
-                if (Number.isNaN(daily)) {
-                  daily = 0;
-                }
-              }
-              cumnormalpostmon += normal
-              cumdailypostmon += daily
-            }
-            if (enddate.slice(0, 3) === 'Nov' || enddate.slice(0, 3) === 'Dec') {
-              startdate = 'Nov1';
-              startMonth = startdate.slice(0, 3);
-              startDay = parseInt(startdate.slice(3));
-              endDay = parseInt(enddate.slice(3));
-              for (let day = startDay; day <= endDay; day++) {
-                const currentDateStr = `${startMonth}${day.toString()}`;
-                let normal: number
-                let daily: number
-                let yesterday: number;
-                let yesterdayStr: string;
-                let yesterdayStrdaily: string;
-                if (currentDateStr === 'Nov1') {
-                  yesterdayStr = 'Oct31'
-                  yesterdayStrdaily = '31_Oct'
-                }
-                else {
-                  yesterday = day - 1;
-                  yesterdayStr = `${startMonth}${yesterday.toString()}`;
-                  yesterdayStrdaily = `${yesterday.toString()}_${startMonth}`;
-                }
-                normal = (item[currentDateStr] - item[yesterdayStr])
-                daily = matchedData.regiondailyrainfall
-                if (Number.isNaN(normal)) {
-                  normal = 0;
-                }
-                if (Number.isNaN(daily)) {
-                  daily = 0;
-                }
-                cumnormalpostmon += normal
-                cumdailypostmon += daily
-              }
-            }
-            if (enddate.slice(0, 3) === 'Nov' || enddate.slice(0, 3) === 'Dec') {
-              startdate = 'Dec1';
-              startMonth = startdate.slice(0, 3);
-              startDay = parseInt(startdate.slice(3));
-              endDay = parseInt(enddate.slice(3));
-              for (let day = startDay; day <= endDay; day++) {
-                const currentDateStr = `${startMonth}${day.toString()}`;
-                let normal: number
-                let daily: number
-                let yesterday: number;
-                let yesterdayStr: string;
-                let yesterdayStrdaily: string;
-                if (currentDateStr === 'Dec1') {
-                  yesterdayStr = 'Nov30'
-                  yesterdayStrdaily = '30_Nov'
-                }
-                else {
-                  yesterday = day - 1;
-                  yesterdayStr = `${startMonth}${yesterday.toString()}`;
-                  yesterdayStrdaily = `${yesterday.toString()}_${startMonth}`;
-                }
-                normal = (item[currentDateStr] - item[yesterdayStr])
-                daily = matchedData.regiondailyrainfall
-                if (Number.isNaN(normal)) {
-                  normal = 0;
-                }
-                if (Number.isNaN(daily)) {
-                  daily = 0;
-                }
-                cumnormalpostmon += normal
-                cumdailypostmon += daily
-              }
-            }
-            const cumdep = ((cumdailypostmon - cumnormalpostmon) / cumnormalpostmon)
-            this.regionfetchedDatadep.push({ regiondepid: item['regionid'], regionname: item.REGION, dailyrainfall: matchedData.regiondailyrainfall, normalrainfall: normal1, regiondeprainfall: (((matchedData.regiondailyrainfall - normal1) / normal1) * 100), cummnormal: cumnormalpostmon, cummdaily: cumdailypostmon, cumdeparture: cumdep });
-          }
+        if( normal1 === 0){
+          normal1 = 0.001
         }
       }
-    }
-
-
+       regioncumnormal = item[this.currentDateNormal]
+       this.regionfetchedDatanormal.push({
+            regionid: item['regionid'],
+            normalrainfall: normal1,
+            cummnormal : regioncumnormal
+          });
+        }
+        this.mergeregiondailyandnormal();
   }
+  mergeregiondailyandnormal(): void {
+    this.regionfetchedDatadepcum = [ ]
+    this.regionfetchedDatanormal.forEach((item1) => {
+      const matchingItem = this.regionfetchedDatadaily.find((item2) => item1.regionid == item2.RegionId);
+      let matcheddailyrainfall = 0;
+      let matcheddailyrainfallcum = 0;
+      if (matchingItem) {
+        if (matchingItem.dailyrainfall !== undefined && !Number.isNaN(matchingItem.dailyrainfall)) {
+          matcheddailyrainfall = matchingItem.dailyrainfall;
+        }
+        if (matchingItem.dailyrainfallcum !== undefined && !Number.isNaN(matchingItem.dailyrainfallcum)) {
+          matcheddailyrainfallcum = matchingItem.dailyrainfallcum;
+        }
 
-
+      }
+      const dailydeparturerainfall = ((matcheddailyrainfall - item1.normalrainfall)/item1.normalrainfall)*100;
+      const cumdeparture = ((matcheddailyrainfallcum - item1.cummnormal)/item1.cummnormal)*100
+      if (matchingItem) {
+        this.regionfetchedDatadepcum.push({ ...item1, ...matchingItem, dailydeparturerainfall, cumdeparture});
+      } else {
+        // console.log("data not found")
+      }
+    });
+    console.log(this.regionfetchedDatadepcum)
+  }
   private initMap(): void {
     this.map = L.map('map', {
       center: [24, 76.9629],
@@ -1674,7 +728,6 @@ console.log(resultArray, "result")
         'false': 'View Fullscreen',
         'true': 'Exit Fullscreen'
       },
-
       content: '<i class="bi bi-arrows-fullscreen"></i>'
     });
     this.map.addControl(fullscreenControl);
@@ -1711,7 +764,6 @@ console.log(resultArray, "result")
     });
     this.map4.addControl(fullscreenControl4);
   }
-
   private isFullscreen(): boolean {
     return !!(document.fullscreenElement || document.fullscreenElement ||
       document.fullscreenElement || document.fullscreenElement);
@@ -1720,42 +772,13 @@ console.log(resultArray, "result")
     "Jan", "Feb", "Mar", "Apr", "May", "Jun",
     "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
   ];
-
-  // public today = new Date();
   public month = this.months[this.today.getMonth()];
   public day = String(this.today.getDate()).padStart(2, '0');
-  public sortedDataArray: any[] = [];
-  public regions: any[] = [];
-  public sortedSubDivisions: any[] = [];
-  async pushDistrict(item: any, name: string) {
-    if (item.statename == name) {
-      this.sortedDataArray.push(item);
-    }
-  }
-
-  async pushDistrict1(item: any, name: string) {
-    if (item.subdivisionname == name) {
-      this.sortedDataArray.push(item);
-    }
-  }
-
-  async pushRegion(item: any, name: string) {
-    if (item.regionname == name) {
-      this.regions.push(item);
-    }
-  }
-
-  async pushSubDivision(item: any, name: string) {
-    if (item.subdivname == name) {
-      this.sortedSubDivisions.push(item);
-    }
-  }
-
   downloadMapData(): void {
-    const data = this.stationtodistrictdatacum;
-    const data1 = this.subdivisionfetchedDatadep;
-    const data2 = this.statefetchedDatadep;
-    const doc = new jsPDF() as any;
+    const data = this.districtdatacum.sort((a, b) => a.districtid - b.districtid);
+    const data1 = this.subdivisionfetchedDatadepcum.sort((a, b) => a.subdivid - b.subdivid);
+    const data2 = this.statefetchedDatadepcum.sort((a, b) => a.statedepid - b.statedepid);
+    const doc = new jsPDF() as any
     const columns1 = [' ', ' ', { content: 'Day : ' + this.formatteddate, colSpan: 4 }, { content: 'Period:01-10-2023 To ' + this.formatteddate, colSpan: 4 }]
     const columns = ['S.No', 'MET.SUBDIVISION/UT/STATE/DISTRICT', 'ACTUAL(mm)', 'NORMAL(mm)', '%DEP.', 'CAT.', 'ACTUAL(mm)', 'NORMAL(mm)', '%DEP.', 'CAT.'];
     const rows: any[][] = [];
@@ -1777,161 +800,15 @@ console.log(resultArray, "result")
     let Subdivcumnormalindist: number;
     let Subdivcumdepindist: number;
 
-    // Group the data by "subdivisionname"
-    const groupedData = data.reduce((acc, current) => {
-      const group = acc.find((group: any) => group.subdivisionname === current.subdivisionname);
-      if (group) {
-        var dist = group.districts.find((i: any) => i.districtname == current.districtname);
-        if (!dist) {
-          group.districts.push(current);
-        }
-      } else {
-        acc.push({ subdivisionname: current.subdivisionname, districts: [current] });
-      }
-      return acc;
-    }, []);
-    groupedData.forEach((group: any) => {
-      group.districts.sort((a: any, b: any) => a.districtname.localeCompare(b.districtname));
-      group.districts.sort((a: any, b: any) => a.statename.localeCompare(b.statename));
-    });
-    const sortedData = groupedData.flatMap((group: any) => group.districts);
-
-    sortedData.forEach(async (item: any) => {
-      await this.pushDistrict(item, "ANDAMAN & NICOBAR (UT)");
-    })
-    sortedData.forEach(async (item: any) => {
-      await this.pushDistrict(item, "ARUNACHAL PRADESH");
-    })
-    sortedData.forEach(async (item: any) => {
-      await this.pushDistrict(item, "ASSAM");
-    })
-    sortedData.forEach(async (item: any) => {
-      await this.pushDistrict(item, "MEGHALAYA");
-    })
-    sortedData.forEach(async (item: any) => {
-      await this.pushDistrict(item, "NAGALAND");
-    })
-    sortedData.forEach(async (item: any) => {
-      await this.pushDistrict(item, "MANIPUR");
-    })
-    sortedData.forEach(async (item: any) => {
-      await this.pushDistrict(item, "MIZORAM");
-    })
-    sortedData.forEach(async (item: any) => {
-      await this.pushDistrict(item, "TRIPURA");
-    })
-    sortedData.forEach(async (item: any) => {
-      await this.pushDistrict(item, "SIKKIM");
-    })
-    sortedData.forEach(async (item: any) => {
-      await this.pushDistrict(item, "WEST BENGAL");
-    })
-    sortedData.forEach(async (item: any) => {
-      await this.pushDistrict(item, "ORISSA");
-    })
-    sortedData.forEach(async (item: any) => {
-      await this.pushDistrict(item, "JHARKHAND");
-    })
-    sortedData.forEach(async (item: any) => {
-      await this.pushDistrict(item, "BIHAR");
-    })
-    sortedData.forEach(async (item: any) => {
-      await this.pushDistrict(item, "UTTAR PRADESH");
-    })
-    sortedData.forEach(async (item: any) => {
-      await this.pushDistrict(item, "UTTARAKHAND");
-    })
-    sortedData.forEach(async (item: any) => {
-      await this.pushDistrict(item, "HARYANA");
-    })
-    sortedData.forEach(async (item: any) => {
-      await this.pushDistrict(item, "CHANDIGARH (UT)");
-    })
-    sortedData.forEach(async (item: any) => {
-      await this.pushDistrict(item, "DELHI (UT)");
-    })
-    sortedData.forEach(async (item: any) => {
-      await this.pushDistrict(item, "PUNJAB");
-    })
-    sortedData.forEach(async (item: any) => {
-      await this.pushDistrict(item, "HIMACHAL PRADESH");
-    })
-    sortedData.forEach(async (item: any) => {
-      await this.pushDistrict(item, "JAMMU & KASHMIR (UT)");
-    })
-    sortedData.forEach(async (item: any) => {
-      await this.pushDistrict(item, "LADAKH (UT)");
-    })
-    sortedData.forEach(async (item: any) => {
-      await this.pushDistrict(item, "RAJASTHAN");
-    })
-    sortedData.forEach(async (item: any) => {
-      await this.pushDistrict(item, "MADHYA PRADESH");
-    })
-    sortedData.forEach(async (item: any) => {
-      if (item.subdivisionname !== "SAURASHTRA & KUTCH") {
-        await this.pushDistrict(item, "GUJARAT");
-      }
-    })
-    sortedData.forEach(async (item: any) => {
-      await this.pushDistrict(item, "DADRA & NAGAR HAVELI AND DAMAN & DIU (UT)");
-    })
-    sortedData.forEach(async (item: any) => {
-      await this.pushDistrict1(item, "SAURASHTRA & KUTCH");
-    })
-    sortedData.forEach(async (item: any) => {
-      await this.pushDistrict(item, "GOA");
-    })
-    sortedData.forEach(async (item: any) => {
-      await this.pushDistrict(item, "MAHARASHTRA");
-    })
-    sortedData.forEach(async (item: any) => {
-      await this.pushDistrict(item, "CHHATTISGARH");
-    })
-    sortedData.forEach(async (item: any) => {
-      if (item.subdivisionname !== "TN PUDU and KARAIKAL") {
-        await this.pushDistrict(item, "PUDUCHERRY (UT)");
-      }
-    })
-    sortedData.forEach(async (item: any) => {
-      if (item.subdivisionname !== "RAYALASEEMA") {
-        await this.pushDistrict(item, "ANDHRA PRADESH");
-      }
-    })
-    sortedData.forEach(async (item: any) => {
-      await this.pushDistrict(item, "TELANGANA");
-    })
-    sortedData.forEach(async (item: any) => {
-      await this.pushDistrict1(item, "RAYALASEEMA");
-    })
-    sortedData.forEach(async (item: any) => {
-      await this.pushDistrict(item, "TAMIL NADU");
-    })
-    sortedData.forEach(async (item: any) => {
-      if (item.subdivisionname == "TN PUDU and KARAIKAL") {
-        await this.pushDistrict(item, "PUDUCHERRY (UT)");
-      }
-    })
-    sortedData.forEach(async (item: any) => {
-      await this.pushDistrict(item, "KARNATAKA");
-    })
-    sortedData.forEach(async (item: any) => {
-      await this.pushDistrict(item, "KERALA");
-    })
-    sortedData.forEach(async (item: any) => {
-      await this.pushDistrict(item, "LAKSHADWEEP (UT)");
-    })
-
-    this.sortedDataArray.forEach((item: any, index: number) => {
-      let currentsubdivname = item.subdivisionname;
-
+data.forEach((item, index) => {
+      let currentsubdivname = item.subdivname;
       if (currentsubdivname !== previoussubdivName) {
         data1.forEach((item2, index) => {
           if (currentsubdivname === item2.subdivname) {
             Subdivdailyindist = item2.dailyrainfall;
             Subdivnormalindist = item2.normalrainfall;
             Subdivdepindist = item2.subdivdeprainfall;
-            Subdivcumdailyindist = item2.cummdaily;
+            Subdivcumdailyindist = item2.dailyrainfallcum;
             Subdivcumnormalindist = item2.cummnormal;
             Subdivcumdepindist = item2.cumdeparture;
           }
@@ -1993,7 +870,7 @@ console.log(resultArray, "result")
             statedailyindist = item1.dailyrainfall;
             statenormalindist = item1.normalrainfall;
             statedepindist = item1.statedeprainfall;
-            statecumdailyindist = item1.cummdaily;
+            statecumdailyindist = item1.dailyrainfallcum;
             statecumnormalindist = item1.cummnormal;
             statecumdepindist = item1.cumdeparture;
           }
@@ -2169,13 +1046,12 @@ console.log(resultArray, "result")
   }
 
   downloadMapData1(): void {
-    const data = this.statedatacum.sort((a, b) => {
-      return a.RegionId - b.RegionId;
-    });
-    const data1 = this.regionfetchedDatadep;
+
+    const data = this.statefetchedDatadepcum.sort((a, b) => a.statedepid - b.statedepid);
+    const data1 = this.regionfetchedDatadepcum.sort((a, b) => a.regionid - b.regionid);
 
     const doc = new jsPDF() as any;
-    const columns1 = [' ', ' ', { content: 'Day : ' + this.formatteddate, colSpan: 4 }, { content: 'Period:01-06-2023 To ' + this.formatteddate, colSpan: 4 }]
+    const columns1 = [' ', ' ', { content: 'Day : ' + this.formatteddate, colSpan: 4 }, { content: 'Period:01-01-2024 To ' + this.formatteddate, colSpan: 4 }]
     const columns = ['S.No', 'MET.SUBDIVISION/UT/STATE/DISTRICT', 'DAILY', 'NORMAL', 'DEPARTURE', 'CAT', 'DAILY', 'NORMAL', 'DEPARTURE', 'CAT'];
     const rows = [];
     let previousregionName: string;
@@ -2188,14 +1064,14 @@ console.log(resultArray, "result")
     let regioncumdepindist: number;
 
     data.forEach((item, index) => {
-      let currentregionname = item.regionname;
+      let currentregionname = item.RegionName;
       if (currentregionname != previousregionName) {
         data1.forEach((item1, index) => {
-          if (currentregionname === item1.regionname) {
+          if (currentregionname === item.RegionName) {
             regiondailyindist = item1.dailyrainfall;
             regionnormalindist = item1.normalrainfall;
             regiondepindist = item1.regiondeprainfall;
-            regioncumdailyindist = item1.cummdaily;
+            regioncumdailyindist = item1.dailyrainfallcum;
             regioncumnormalindist = item1.cummnormal;
             regioncumdepindist = item1.cumdeparture;
           }
@@ -2256,10 +1132,10 @@ console.log(resultArray, "result")
           item.statename,
           item.dailyrainfall !== null && item.dailyrainfall !== undefined && !Number.isNaN(item.dailyrainfall) ? item.dailyrainfall.toFixed(2) : 'NA',
           item.normalrainfall !== null && item.normalrainfall !== undefined && !Number.isNaN(item.normalrainfall) ? item.normalrainfall.toFixed(2) : 'NA',
-          item.dailydeparturerainfall !== null && item.statedeprainfall !== undefined && !Number.isNaN(item.statedeprainfall) ? item.statedeprainfall.toFixed(2) : 'NA',
+          (item.dailyrainfall !== null && item.dailyrainfall !== undefined && !Number.isNaN(item.dailyrainfall) ? item.dailyrainfall.toFixed(1) : ' ') == ' ' ? ' ' : (item.dailydeparturerainfall !== null && item.dailydeparturerainfall !== undefined && !Number.isNaN(item.dailydeparturerainfall) ? Math.round(item.dailydeparturerainfall) + "%" : 'NA'),
           {
-            content: this.getCatForRainfall(item.statedeprainfall),
-            styles: { fillColor: this.getColorForRainfall(item.statedeprainfall) },
+            content: this.getCatForRainfall(item.dailydeparturerainfall, item.dailyrainfall !== null && item.dailyrainfall !== undefined && !Number.isNaN(item.dailyrainfall) ? item.dailyrainfall.toFixed(1) : ' '),
+            styles: { fillColor: this.getColorForRainfall(item.dailydeparturerainfall, item.dailyrainfall !== null && item.dailyrainfall !== undefined && !Number.isNaN(item.dailyrainfall) ? item.dailyrainfall.toFixed(1) : ' ') }, // Background color
           },
           item.dailyrainfallcum.toFixed(2),
           item.cummnormal.toFixed(2),
@@ -2275,12 +1151,12 @@ console.log(resultArray, "result")
         rows.push([
           regionIndex,
           item.statename,
-          item.dailyrainfall.toFixed(2),
-          item.normalrainfall.toFixed(2),
-          item.dailydeparturerainfall.toFixed(2),
+          item.dailyrainfall !== null && item.dailyrainfall !== undefined && !Number.isNaN(item.dailyrainfall) ? item.dailyrainfall.toFixed(2) : 'NA',
+          item.normalrainfall !== null && item.normalrainfall !== undefined && !Number.isNaN(item.normalrainfall) ? item.normalrainfall.toFixed(2) : 'NA',
+          (item.dailyrainfall !== null && item.dailyrainfall !== undefined && !Number.isNaN(item.dailyrainfall) ? item.dailyrainfall.toFixed(1) : ' ') == ' ' ? ' ' : (item.dailydeparturerainfall !== null && item.dailydeparturerainfall !== undefined && !Number.isNaN(item.dailydeparturerainfall) ? Math.round(item.dailydeparturerainfall) + "%" : 'NA'),
           {
-            content: this.getCatForRainfall(item.statedeprainfall),
-            styles: { fillColor: this.getColorForRainfall(item.statedeprainfall) },
+            content: this.getCatForRainfall(item.dailydeparturerainfall, item.dailyrainfall !== null && item.dailyrainfall !== undefined && !Number.isNaN(item.dailyrainfall) ? item.dailyrainfall.toFixed(1) : ' '),
+            styles: { fillColor: this.getColorForRainfall(item.dailydeparturerainfall, item.dailyrainfall !== null && item.dailyrainfall !== undefined && !Number.isNaN(item.dailyrainfall) ? item.dailyrainfall.toFixed(1) : ' ') }, // Background color
           },
           item.dailyrainfallcum.toFixed(2),
           item.cummnormal.toFixed(2),
@@ -2356,10 +1232,7 @@ console.log(resultArray, "result")
       margin: { left: marginLeft },
     };
 
-    // Start a new page
     doc.addPage();
-
-    // Add the second table to the PDF document
     doc.autoTable({
       head: [columns2, columns3],
       body: rows2,
@@ -2374,145 +1247,11 @@ console.log(resultArray, "result")
   }
 
   downloadMapData2(): void {
-    const groupedData = this.subdivisionfetchedDatadep.reduce((acc, current) => {
-      const group = acc.find((group: any) => group.regionname === current.regionname);
-      if (group) {
-        var dist = group.subDivisions.find((i: any) => i.subdivname == current.subdivname);
-        if (!dist) {
-          group.subDivisions.push(current);
-        }
-      } else {
-        acc.push({ regionname: current.regionname, subDivisions: [current] });
-      }
-      return acc;
-    }, []);
-
-    groupedData.forEach(async (item: any) => {
-      await this.pushRegion(item, "EAST & NORTH EAST INDIA");
-    })
-    groupedData.forEach(async (item: any) => {
-      await this.pushRegion(item, "NORTH WEST INDIA");
-    })
-    groupedData.forEach(async (item: any) => {
-      await this.pushRegion(item, "CENTRAL INDIA");
-    })
-    groupedData.forEach(async (item: any) => {
-      await this.pushRegion(item, "SOUTH PENINSULA");
-    })
-    const sortedData = this.regions.flatMap((group: any) => group.subDivisions);
-    sortedData.forEach(async (item: any) => {
-      await this.pushSubDivision(item, "ARUNACHAL PRADESH");
-    })
-    sortedData.forEach(async (item: any) => {
-      await this.pushSubDivision(item, "ASSAM & MEGHALAYA");
-    })
-    sortedData.forEach(async (item: any) => {
-      await this.pushSubDivision(item, "N M M T");
-    })
-    sortedData.forEach(async (item: any) => {
-      await this.pushSubDivision(item, "SHWB & SIKKIM");
-    })
-    sortedData.forEach(async (item: any) => {
-      await this.pushSubDivision(item, "GANGETIC WEST BENGAL");
-    })
-    sortedData.forEach(async (item: any) => {
-      await this.pushSubDivision(item, "JHARKHAND");
-    })
-    sortedData.forEach(async (item: any) => {
-      await this.pushSubDivision(item, "BIHAR");
-    })
-    sortedData.forEach(async (item: any) => {
-      await this.pushSubDivision(item, "EAST UTTAR PRADESH");
-    })
-    sortedData.forEach(async (item: any) => {
-      await this.pushSubDivision(item, "WEST UTTAR PRADESH");
-    })
-    sortedData.forEach(async (item: any) => {
-      await this.pushSubDivision(item, "UTTARAKHAND");
-    })
-    sortedData.forEach(async (item: any) => {
-      await this.pushSubDivision(item, "HAR. CHD & DELHI");
-    })
-    sortedData.forEach(async (item: any) => {
-      await this.pushSubDivision(item, "PUNJAB");
-    })
-    sortedData.forEach(async (item: any) => {
-      await this.pushSubDivision(item, "HIMACHAL PRADESH");
-    })
-    sortedData.forEach(async (item: any) => {
-      await this.pushSubDivision(item, "JK AND LADAKH (UT)");
-    })
-    sortedData.forEach(async (item: any) => {
-      await this.pushSubDivision(item, "WEST RAJASTHAN");
-    })
-    sortedData.forEach(async (item: any) => {
-      await this.pushSubDivision(item, "EAST RAJASTHAN");
-    })
-    sortedData.forEach(async (item: any) => {
-      await this.pushSubDivision(item, "ORISSA");
-    })
-    sortedData.forEach(async (item: any) => {
-      await this.pushSubDivision(item, "WEST MADHYA PRADESH");
-    })
-    sortedData.forEach(async (item: any) => {
-      await this.pushSubDivision(item, "EAST MADHYA PRADESH");
-    })
-    sortedData.forEach(async (item: any) => {
-      await this.pushSubDivision(item, "GUJARAT REGION");
-    })
-    sortedData.forEach(async (item: any) => {
-      await this.pushSubDivision(item, "SAURASHTRA & KUTCH");
-    })
-    sortedData.forEach(async (item: any) => {
-      await this.pushSubDivision(item, "KONKAN & GOA");
-    })
-    sortedData.forEach(async (item: any) => {
-      await this.pushSubDivision(item, "MADHYA MAHARASHTRA");
-    })
-    sortedData.forEach(async (item: any) => {
-      await this.pushSubDivision(item, "MARATHWADA");
-    })
-    sortedData.forEach(async (item: any) => {
-      await this.pushSubDivision(item, "VIDARBHA");
-    })
-    sortedData.forEach(async (item: any) => {
-      await this.pushSubDivision(item, "CHHATTISGARH");
-    })
-    sortedData.forEach(async (item: any) => {
-      await this.pushSubDivision(item, "A & N ISLAND");
-    })
-    sortedData.forEach(async (item: any) => {
-      await this.pushSubDivision(item, "COASTAL A.P. & YANAM");
-    })
-    sortedData.forEach(async (item: any) => {
-      await this.pushSubDivision(item, "TELANGANA");
-    })
-    sortedData.forEach(async (item: any) => {
-      await this.pushSubDivision(item, "RAYALASEEMA");
-    })
-    sortedData.forEach(async (item: any) => {
-      await this.pushSubDivision(item, "TN PUDU and KARAIKAL");
-    })
-    sortedData.forEach(async (item: any) => {
-      await this.pushSubDivision(item, "COASTAL KARNATAKA");
-    })
-    sortedData.forEach(async (item: any) => {
-      await this.pushSubDivision(item, "N. I. KARNATAKA");
-    })
-    sortedData.forEach(async (item: any) => {
-      await this.pushSubDivision(item, "S. I. KARNATAKA");
-    })
-    sortedData.forEach(async (item: any) => {
-      await this.pushSubDivision(item, "KERALA & MAHE");
-    })
-    sortedData.forEach(async (item: any) => {
-      await this.pushSubDivision(item, "LAKSHADWEEP");
-    })
-
-    const data1 = this.regionfetchedDatadep;
+    const data = this.subdivisionfetchedDatadepcum.sort((a, b) => a.subdivid - b.subdivid);
+    const data1 = this.regionfetchedDatadepcum.sort((a, b) => a.regionid - b.regionid);
     const doc = new jsPDF() as any;
 
-    const columns1 = [' ', ' ', { content: 'Day : ' + this.formatteddate, colSpan: 4 }, { content: 'Period:01-06-2023 To ' + this.formatteddate, colSpan: 4 }]
+    const columns1 = [' ', ' ', { content: 'Day : ' + this.formatteddate, colSpan: 4 }, { content: 'Period:01-01-2024 To ' + this.formatteddate, colSpan: 4 }]
     const columns = ['S.No', 'MET.SUBDIVISION/UT/STATE/DISTRICT', 'DAILY', 'NORMAL', 'DEPARTURE', 'CAT', 'DAILY', 'NORMAL', 'DEPARTURE', 'CAT'];
     const rows = [];
     let previousregionName: string;
@@ -2525,15 +1264,15 @@ console.log(resultArray, "result")
     let regioncumnormalindist: number;
     let regioncumdepindist: number;
 
-    this.sortedSubDivisions.forEach((item: any, index: number) => {
-      let currentregionname = item.regionname;
+    data.forEach((item, index) => {
+      let currentregionname = item.RegionName;
       if (currentregionname != previousregionName) {
         data1.forEach((item1, index) => {
-          if (currentregionname === item1.regionname) {
+          if (currentregionname === item.RegionName) {
             regiondailyindist = item1.dailyrainfall;
             regionnormalindist = item1.normalrainfall;
-            regiondepindist = item1.regiondeprainfall;
-            regioncumdailyindist = item1.cummdaily;
+            regiondepindist = item1.dailydeparturerainfall;
+            regioncumdailyindist = item1.dailyrainfallcum;
             regioncumnormalindist = item1.cummnormal;
             regioncumdepindist = item1.cumdeparture;
           }
@@ -2588,18 +1327,17 @@ console.log(resultArray, "result")
             styles: { fillColor: this.getColorForRainfall(regiondepindist) },
           },
         ])
-
         rows.push([
           regionIndex,
           item.subdivname,
           item.dailyrainfall.toFixed(2),
           item.normalrainfall.toFixed(2),
-          item.subdivdeprainfall.toFixed(2),
+          (item.dailyrainfall !== null && item.dailyrainfall !== undefined && !Number.isNaN(item.dailyrainfall) ? item.dailyrainfall.toFixed(1) : ' ') == ' ' ? ' ' : (item.dailydeparturerainfall !== null && item.dailydeparturerainfall !== undefined && !Number.isNaN(item.dailydeparturerainfall) ? Math.round(item.dailydeparturerainfall) + "%" : 'NA'),
           {
-            content: this.getCatForRainfall(item.subdivdeprainfall),
-            styles: { fillColor: this.getColorForRainfall(item.subdivdeprainfall) },
+            content: this.getCatForRainfall(item.dailydeparturerainfall, item.dailyrainfall !== null && item.dailyrainfall !== undefined && !Number.isNaN(item.dailyrainfall) ? item.dailyrainfall.toFixed(1) : ' '),
+            styles: { fillColor: this.getColorForRainfall(item.dailydeparturerainfall, item.dailyrainfall !== null && item.dailyrainfall !== undefined && !Number.isNaN(item.dailyrainfall) ? item.dailyrainfall.toFixed(1) : ' ') }, // Background color
           },
-          item.cummdaily.toFixed(2),
+          item.dailyrainfallcum.toFixed(2),
           item.cummnormal.toFixed(2),
           item.cumdeparture.toFixed(2),
           {
@@ -2615,12 +1353,12 @@ console.log(resultArray, "result")
           item.subdivname,
           item.dailyrainfall.toFixed(2),
           item.normalrainfall.toFixed(2),
-          item.subdivdeprainfall.toFixed(2),
+          (item.dailyrainfall !== null && item.dailyrainfall !== undefined && !Number.isNaN(item.dailyrainfall) ? item.dailyrainfall.toFixed(1) : ' ') == ' ' ? ' ' : (item.dailydeparturerainfall !== null && item.dailydeparturerainfall !== undefined && !Number.isNaN(item.dailydeparturerainfall) ? Math.round(item.dailydeparturerainfall) + "%" : 'NA'),
           {
-            content: this.getCatForRainfall(item.subdivdeprainfall),
-            styles: { fillColor: this.getColorForRainfall(item.subdivdeprainfall) },
+            content: this.getCatForRainfall(item.dailydeparturerainfall, item.dailyrainfall !== null && item.dailyrainfall !== undefined && !Number.isNaN(item.dailyrainfall) ? item.dailyrainfall.toFixed(1) : ' '),
+            styles: { fillColor: this.getColorForRainfall(item.dailydeparturerainfall, item.dailyrainfall !== null && item.dailyrainfall !== undefined && !Number.isNaN(item.dailyrainfall) ? item.dailyrainfall.toFixed(1) : ' ') }, // Background color
           },
-          item.cummdaily.toFixed(2),
+          item.dailyrainfallcum.toFixed(2),
           item.cummnormal.toFixed(2),
           item.cumdeparture.toFixed(2),
           {
@@ -2632,21 +1370,21 @@ console.log(resultArray, "result")
       previousregionName = currentregionname;
     });
     rows.unshift(columns);
+
     const tableWidth = 180;
     const cellWidth = 36;
     const cellHeight = 8;
     const marginLeft = 10;
     const marginTop = 10;
     const fontSize = 10;
-
     const options: any = {
       startY: marginTop,
       margin: { left: marginLeft },
     };
 
-    const imgData = '/assets/images/IMDlogo_Ipart.png';
-    doc.addImage(imgData, 'PNG', marginLeft, marginTop, 20, 20);
 
+    const imgData = '/assets/images/IMDlogo_Ipart.png'; // Replace with the actual image path
+    doc.addImage(imgData, 'PNG', marginLeft, marginTop, 15, 20); // Adjust image dimensions as needed
     doc.setFontSize(12);
     doc.setTextColor(0, 0, 0); // Set font color to black
     const headingText = 'India Meteorological Department\nHydromet Division, New Delhi';
@@ -2658,21 +1396,62 @@ console.log(resultArray, "result")
       head: [columns1, columns],
       body: rows,
       theme: 'striped',
-      startY: marginTop + cellHeight + 25,
+      startY: marginTop + cellHeight + 25, // Adjust the vertical position below the image and heading
       margin: { left: marginLeft },
       styles: { fontSize: 7 },
+      didDrawCell: function (data: { cell: { text: any; x: number; y: number; width: any; height: any; }; }) {
+        doc.rect(data.cell.x, data.cell.y, data.cell.width, data.cell.height);
+        doc.setDrawColor(0);
+      },
+      didParseCell: function (data: any) {
+        data.cell.styles.fontStyle = 'bold';
+      }
     });
+
+
+    const columns2 = ['', 'LEGEND', ''];
+    const columns3 = ['CATEGORY', '% DEPARTURES OF RAINFALL', 'COLOUR CODE']; // Update with your second table column names
+
+    const rows2 = [
+      ['Large Excess\n(LE or L.Excess)', '>= 60%', { content: '', styles: { fillColor: '#0096ff' } }],
+      ['Excess (E)', '>= 20% and <= 59%', { content: '', styles: { fillColor: '#32c0f8' } }],
+      ['Normal (N)', '>= -19% and <= +19%', { content: '', styles: { fillColor: '#00cd5b' } }],
+      ['Deficient (D)', '>= -59% and <= -20%', { content: '', styles: { fillColor: '#ff2700' } }],
+      ['Large Deficient\n(LD or L.Deficient)', '>= -99% and <= -60%', { content: '', styles: { fillColor: '#ffff20' } }],
+      ['No Rain(NR)', '= -100%', { content: '', styles: { fillColor: '#ffffff' } }],
+      ['Not Available', 'ND', { content: '', styles: { fillColor: '#c0c0c0' } }],
+      ['Note : ', { content: 'The rainfall values are rounded off up to one place of decimal.', colSpan: 2 }]
+    ];
+
+    // Add a header row to the data array for the second table
+
+
+    // Define the table options for the second table
+    const options2: any = {
+      startY: doc.autoTable.previous.finalY + 10, // Start below the first table
+      margin: { left: marginLeft },
+    };
+
+    doc.addPage();
+    doc.autoTable({
+      head: [columns2, columns3],
+      body: rows2,
+      theme: 'striped',
+      didDrawCell: function (data: { cell: { text: any; x: number; y: number; width: any; height: any; }; }) {
+        doc.rect(data.cell.x, data.cell.y, data.cell.width, data.cell.height);
+        doc.setDrawColor(0);
+      },
+    });    
     const filename = 'Subdivdeparture_data.pdf';
     doc.save(filename);
   }
   downloadMapData3(): void {
-    // Get the data from the map, for example, this.processedData
-    const data = this.regionfetchedDatadep;
+    const data = this.regionfetchedDatadepcum;
 
     // Create a new jsPDF instance
     const doc = new jsPDF() as any;
 
-    const columns1 = [' ', ' ', { content: 'Day : ' + this.formatteddate, colSpan: 4 }, { content: 'Period:01-06-2023 To ' + this.formatteddate, colSpan: 4 }];
+    const columns1 = [' ', ' ', { content: 'Day : ' + this.formatteddate, colSpan: 4 }, { content: 'Period:01-01-2024 To ' + this.formatteddate, colSpan: 4 }];
     const columns = ['S.No', 'REGION', 'DAILY', 'NORMAL', 'DEPARTURE', 'CAT', 'DAILY', 'NORMAL', 'DEPARTURE', 'CAT'];
 
     const rows = data.map((item, index) => [
@@ -2739,8 +1518,7 @@ console.log(resultArray, "result")
     doc.save(filename);
   }
   downloadMapData4(): void {
-    // Get the data from the map, for example, this.processedData
-    const data = this.regionfetchedDatadep;
+    const data = this.regionfetchedDatadepcum;
 
     // Create a new jsPDF instance
     const doc = new jsPDF() as any;
@@ -2916,23 +1694,14 @@ console.log(resultArray, "result")
         }
       }).addTo(this.map1);
     });
-
-    // subdivid: item['subdivid'],
-    // normalrainfall: normal1,
-    // cummnormal : subdivcumnormal
-    // subdivdailyid: previoussubdivid,
-    // subdivname: previoussubdivname,
-    // dailyrainfall: product / sum,
-    // RegionId: previousregionid,
-    // RegionName: previousregionname
-
     this.http.get('assets/geojson/INDIA_SUB_DIVISION.json').subscribe((res: any) => {
       L.geoJSON(res, {
         style: (feature: any) => {
           const id2 = feature.properties['SubDiv_Cod'];
           const matchedData = this.findMatchingDatasubdiv(id2);
-          const rainfall = matchedData ? matchedData.dailydeparturerainfall : 0;
-          const color = this.getColorForRainfall(rainfall);
+          const rainfall = matchedData ? matchedData.dailydeparturerainfall : -100;
+          const actual = matchedData && matchedData.dailyrainfall == null ? ' ' : "notnull";
+          const color = this.getColorForRainfall(rainfall, actual);
           return {
             fillColor: color,
             weight: 0.5,
@@ -2969,10 +1738,11 @@ console.log(resultArray, "result")
     this.http.get('assets/geojson/INDIA_REGIONS.json').subscribe((res: any) => {
       const geoJsonLayer = L.geoJSON(res, {
         style: (feature: any) => {
-          const id2 = feature.properties['OBJECTID'];
+          const id2 = feature.properties['region_cod'];
           const matchedData = this.findMatchingDataregion(id2);
-          const rainfall = matchedData ? matchedData.regiondeprainfall : 0;
-          const color = this.getColorForRainfall(rainfall);
+          const rainfall = matchedData ? matchedData.dailydeparturerainfall : -100;
+          const actual = matchedData && matchedData.dailyrainfall == null ? ' ' : "notnull";
+          const color = this.getColorForRainfall(rainfall, actual);
           return {
             fillColor: color,
             weight: 0.5,
@@ -2983,48 +1753,32 @@ console.log(resultArray, "result")
         },
 
         onEachFeature: (feature: any, layer: any) => {
-          const id1 = feature.properties['name'];
-          const id2 = feature.properties['OBJECTID'];
+          const id1 = feature.properties['region_nam'];
+          const id2 = feature.properties['region_cod'];
           const matchedData = this.findMatchingDataregion(id2);
-          const rainfall = matchedData ? matchedData.regiondeprainfall.toFixed(2) : '0.00';
+          const rainfall = matchedData ? matchedData.dailydeparturerainfall.toFixed(2) : '-100.00';
           const dailyrainfall = matchedData ? matchedData.dailyrainfall.toFixed(2) : '0.00';
           const normalrainfall = matchedData ? matchedData.normalrainfall.toFixed(2) : '0.00';
-
-          // Create a custom HTML element for the text
-          // Create a custom HTML element for the text
-          const textElement = document.createElement('div');
-          textElement.innerHTML = `
-          <div style="padding: 5px; font-family: Arial, sans-serif; font-weight: bolder;">
-          <div style="color: #000000;font-weight: bolder; font-size: 9px;">${dailyrainfall}(${rainfall})</div>
-          <div style="color: #000000;font-weight: bolder; font-size: 9px;">${id1}</div>
-          <div style="color: #000000;font-weight: bolder; font-size: 9px;">${normalrainfall}</div>
-          </div>`;
-
-          // Get the bounds of the layer and calculate its center
-          const bounds = layer.getBounds();
-          const center = bounds.getCenter();
-
-          // Set the position of the custom HTML element on the map
-          textElement.style.position = 'absolute';
-          textElement.style.left = `${this.map3.latLngToLayerPoint(center).x - 25}px`;
-          textElement.style.top = `${this.map3.latLngToLayerPoint(center).y - 25}px`;
-
-          // Set a higher z-index to ensure the text appears on top of the map
-          textElement.style.zIndex = '1000';
-
-          // Append the custom HTML element to the map container
-          this.map3.getPanes().overlayPane.appendChild(textElement);
-
-        }
-
+          const popupContent = `
+          <div style="background-color: white; padding: 5px; font-family: Arial, sans-serif;">
+            <div style="color: #002467; font-weight: bold; font-size: 10px;">REGION: ${id1}</div>
+            <div style="color: #002467; font-weight: bold; font-size: 10px;">DAILY RAINFALL: ${dailyrainfall}</div>
+            <div style="color: #002467; font-weight: bold; font-size: 10px;">NORMAL RAINFALL: ${normalrainfall}</div>
+            <div style="color: #002467; font-weight: bold; font-size: 10px;">DEPARTURE: ${rainfall}% </div>
+          </div>
+        `;
+      layer.bindPopup(popupContent);
+      layer.on('mouseover', () => {
+        layer.openPopup();
       });
-
-      // Add the geoJsonLayer to the map
-      geoJsonLayer.addTo(this.map3);
+      layer.on('mouseout', () => {
+        layer.closePopup();
+      });
+    }
+  }).addTo(this.map3);
     });
     this.http.get('assets/geojson/INDIA_COUNTRY.json').subscribe((res: any) => {
       L.geoJSON(res, {
-        //this.countryfetcheddata.push({countryid : item['regionid'],countrynormal : normal, countrydaily : this.countrydaily, countrydep : ( this.countrydaily- normal )/normal  });
         style: (feature: any) => {
           const id2 = feature.properties['object_id'];
           const matchedData = this.findMatchingDatacountry(id2);
@@ -3177,22 +1931,10 @@ console.log(resultArray, "result")
         link.href = dataUrl;
         link.click();
       });
-
-
-
-
-    // html2canvas(document.getElementById('map4') as HTMLElement).then(canvas => {
-    //   const link = document.createElement('a');
-    //   link.download = 'country_dep.png';
-    //   link.href = canvas.toDataURL('image/png');
-    //   link.click();
-    // });
   }
-
   getNormalMap() {
     this.router.navigate(['/normal']);
   }
-
   getDepartureMap() {
     this.router.navigate(['/departure']);
   }
