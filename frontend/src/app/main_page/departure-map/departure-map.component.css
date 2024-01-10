@@ -143,3 +143,11 @@ img{
   background: none;
 }
 
+.checkbox-container {
+  display: inline-block;
+  margin-right: 20px; /* Adjust the margin as needed */
+}
+
+.checkbox-container input {
+  margin-right: 8px; /* Add space to the right of the checkbox */
+}

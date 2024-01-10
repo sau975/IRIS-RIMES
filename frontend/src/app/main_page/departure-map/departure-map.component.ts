@@ -14,6 +14,8 @@ import { Router } from '@angular/router';
   styleUrls: ['./departure-map.component.css']
 })
 export class DepartureMapComponent implements OnInit, AfterViewInit {
+  tileCount:number = 1;
+  mapTileTypes:string[] = ['District'];
   private initialZoom = 4;
   private map: L.Map = {} as L.Map;
   private map1: L.Map = {} as L.Map;
@@ -146,24 +148,24 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     const matchedData = this.countryfetcheddata.find((data: any) => data.countryid === id);
     return matchedData || null;
   }
-  processedData: any[] = [];
+processedData: any[] = [];
   stationtodistrictdata: any[] = [];
   stationtodistrictdatacum: any[] = [];
   statedatacum : any [] = [];
   processedDatacum: any[] = [];
   statefetchedDatadaily: any[] = [];
   statefetchedDatanormal: any[] = [];
-  statefetchedDatadep: any[] = [];
+statefetchedDatadep: any[] = [];
   statefetchedDatadepcum: any[] = [];
-  statefetchedDatacum: any[] = [];
+statefetchedDatacum: any[] = [];
   subdivisionfetchedDatadaily: any[] = [];
-  subdivisionfetchedDatacum: any[] = [];
+subdivisionfetchedDatacum: any[] = [];
   subdivisionfetchedDatanormal: any[] = [];
-  subdivisionfetchedDatadep: any[] = [];
+subdivisionfetchedDatadep: any[] = [];
   subdivisionfetchedDatadepcum: any[] = [];
   regionfetchedDatadaily: any[] = [];
   regionfetchedDatanormal: any[] = [];
-  regionfetchedDatadep: any[] = [];
+regionfetchedDatadep: any[] = [];
   regionfetchedDatadepcum: any[] = [];
   countryfetcheddata: any[] = [];
   public countrydaily = 0
@@ -184,7 +186,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     let previousregionname = "";
     let stationcumdata = 0
     let districtcumdata = 0
-    // let sum = this.getColumnSum('Oct');
+// let sum = this.getColumnSum('Oct');
     // console.log(sum)
 //     if (this.currentDateDaily.endsWith('Oct') || this.currentDateDaily.endsWith('Nov') || this.currentDateDaily.endsWith('Dec')) {
 //       if (this.currentDateDaily.endsWith('Dec')) {
@@ -862,7 +864,7 @@ console.log(resultArray, "result")
     this.stationtodistrictdatacum.forEach((obj:any) => {
       if (array2Map.hasOwnProperty(obj.districtid)) {
         obj.dailyrainfallcum = array2Map[obj.districtid];
-      }
+              }
     });
 
     console.log(this.stationtodistrictdatacum);
@@ -893,7 +895,7 @@ console.log(resultArray, "result")
           sum += item['districtarea'];
         }
       }
-      // if(item['stateid']=== 305){
+// if(item['stateid']=== 305){
       //     console.log(item.statename, product / sum)
       // }
       else {
@@ -963,7 +965,7 @@ console.log(resultArray, "result")
             // console.log("data not found")
           }
         });
-         console.log(this.statedatacum)
+console.log(this.statedatacum)
 
       }
 
@@ -1015,7 +1017,7 @@ console.log(resultArray, "result")
   }
 
   processFetchedDatasubdivnormal(): void {
-    let subdivcumnormal = 0;
+        let subdivcumnormal = 0;
     for (const item of this.fetchedData5) {
       let normal1: number
       if (this.currentDateNormal === 'Jan1' || this.currentDateNormal === 'Mar1' || this.currentDateNormal === 'Jun1' || this.currentDateNormal === 'Oct1') {
@@ -1103,22 +1105,22 @@ console.log(resultArray, "result")
 
   processFetchedDataregionnormal(): void {
     this.regionfetchedDatadep = [];
-    for (const item of this.fetchedData6) {
+        for (const item of this.fetchedData6) {
       let normal1: number
       if (this.currentDateNormal === 'Jan1' || this.currentDateNormal === 'Mar1' || this.currentDateNormal === 'Jun1' || this.currentDateNormal === 'Oct1') {
         normal1 = item[this.currentDateNormal]
       }
       else {
         normal1 = (item[this.currentDateNormal] - item[this.currentDateNormaly])
-      }
-      this.regionfetchedDatanormal.push({
-        regionnormalid: item['regionid'],
-        regionnormalrainfall: normal1
+                }
+             this.regionfetchedDatanormal.push({
+            regionnormalid: item['regionid'],
+            regionnormalrainfall: normal1
       });
       if (item['regionid'] === 1) {
         this.countryfetcheddata.push({ countryid: item['regionid'], countrynormal: normal1, countrydaily: this.countrydaily, countrydep: (this.countrydaily - normal1) / normal1 });
       }
-      else {
+        else {
         const matchedData = this.regionfetchedDatadaily.find((data: any) => data.regiondailyid === item['regionid']);
         if (matchedData) {
           if (this.currentDateNormal.startsWith('Jan') || this.currentDateNormal.startsWith('Feb')) {
@@ -1323,7 +1325,7 @@ console.log(resultArray, "result")
             const cumdep = ((cumdailypremon - cumnormalpremon) / cumnormalpremon)
             this.regionfetchedDatadep.push({ regiondepid: item['regionid'], regionname: item.REGION, dailyrainfall: matchedData.regiondailyrainfall, normalrainfall: normal1, regiondeprainfall: (((matchedData.regiondailyrainfall - normal1) / normal1) * 100), cummnormal: cumnormalpremon, cummdaily: cumdailypremon, cumdeparture: cumdep });
           }
-          else if (this.currentDateNormal.startsWith('Jun') || this.currentDateNormal.startsWith('Jul') || this.currentDateNormal.startsWith('Aug') || this.currentDateNormal.startsWith('Sep')) {
+        else if (this.currentDateNormal.startsWith('Jun') || this.currentDateNormal.startsWith('Jul') || this.currentDateNormal.startsWith('Aug') || this.currentDateNormal.startsWith('Sep')) {
             let cumnormalmon = 0;
             let cumdailymon = 0;
             let startdate = 'Jun1';
@@ -1609,9 +1611,9 @@ console.log(resultArray, "result")
       scrollWheelZoom: false,
     });
     const wmsLayer = L.tileLayer.wms('http://localhost:8080/geoserver/IRIS/wms', {
-      layers: 'IRIS:District',
-      format: 'image/png',
-      transparent: true,
+    layers: 'IRIS:District',
+    format: 'image/png',
+    transparent: true,
     }).addTo(this.map);
     this.map.on('fullscreenchange', () => {
       if (this.isFullscreen()) {
@@ -3195,6 +3197,26 @@ console.log(resultArray, "result")
 
   getDepartureMap() {
     this.router.navigate(['/departure']);
+  }
+
+  changeMapTile(event:any){
+    this.tileCount = event;
+  }
+
+  changeMapType(event:any, mapTile:any){
+    if(event.target.checked == true){
+      if(this.mapTileTypes.length < Number(this.tileCount)){
+        this.mapTileTypes.push(event.target.value);
+      }else{
+        alert(`You can't see more than ${this.tileCount} map, Please change the selected tile.`)
+        const checkboxElement: HTMLInputElement | null = document.getElementById(mapTile) as HTMLInputElement;
+        if (checkboxElement) {
+          checkboxElement.checked = false;
+        }
+      }
+    }else{
+      this.mapTileTypes = this.mapTileTypes.filter(item => item !== event.target.value);
+    }
   }
 }
 
