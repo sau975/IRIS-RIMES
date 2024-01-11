@@ -227,6 +227,23 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       previousregionid = item.region_code;
       previousregionname = item.region_name;
     }
+    this.stationtodistrictdata.push({
+      districtid: previousdistrictid,
+      districtname: previousdistrictname,
+      districtarea: districtarea,
+      subdivweights: subdivweights,
+      numberofstations: numberofstations,
+      stationrainfallsum: stationrainfallsum,
+      dailyrainfall: stationrainfallsum/numberofstations,
+      stateid: previousstateid,
+      statename: previousstatename,
+      subdivid: previoussubdivid,
+      subdivname: previoussubdivname,
+      regionid: previousregionid,
+      regionname: previousregionname,
+      stationrainfallsumcum : districtcumdata,
+      dailyrainfallcum : districtcumdata/numberofstations,
+    });
   }
   dailyRainFallCumulative(){
     // Initialize an object to store the sum and count of each Oct value for each districtId
@@ -394,7 +411,6 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       }
 
       else {
-        if (previousStateId !== null) {
           this.statefetchedDatadaily.push({
             statedailyid: previousStateId,
             statename: previousStatename,
@@ -406,7 +422,6 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
           cumproduct =item['districtarea']*item.dailyrainfallcum;
           product = item['districtarea']*item.dailyrainfall;
           sum = item['districtarea'];
-        }
       }
       cumproduct;
       product;
@@ -416,6 +431,14 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       previousregionid = item.regionid;
       previousregionname = item.regionname
     }
+    this.statefetchedDatadaily.push({
+      statedailyid: previousStateId,
+      statename: previousStatename,
+      dailyrainfallcum : cumproduct/sum,
+      dailyrainfall: product/sum,
+      RegionId: previousregionid,
+      RegionName: previousregionname
+    });
   }
   processFetchedDatastatenormal(): void {
     this.statefetchedDatanormal = [];
@@ -491,7 +514,6 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
         }
       }
       else {
-        if (previoussubdivid !== null) {
           this.subdivisionfetchedDatadaily.push({
             subdivdailyid: previoussubdivid,
             subdivname: previoussubdivname,
@@ -502,7 +524,6 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
           });
           product = item['districtarea'] * item.dailyrainfall;
           sum = item['districtarea'];
-        }
       }
       product;
       sum;
@@ -511,6 +532,14 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       previousregionid = item.regionid;
       previousregionname = item.regionname
     }
+    this.subdivisionfetchedDatadaily.push({
+      subdivdailyid: previoussubdivid,
+      subdivname: previoussubdivname,
+      dailyrainfall: product / sum,
+      dailyrainfallcum: cumproduct/sum, 
+      RegionId: previousregionid,
+      RegionName: previousregionname
+    });
   }
 
   processFetchedDatasubdivnormal(): void {
