@@ -16,7 +16,7 @@ import { interval } from 'rxjs';
 })
 export class DepartureMapComponent implements OnInit, AfterViewInit {
   tileCount:number = 1;
-  mapTileTypes:string[] = ['District'];
+  mapTileTypes:string[] = ['District', 'State', 'SubDivision', 'Homogenous', 'Country'];
   private initialZoom = 4;
   private map: L.Map = {} as L.Map;
   private map1: L.Map = {} as L.Map;
@@ -537,7 +537,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       subdivdailyid: previoussubdivid,
       subdivname: previoussubdivname,
       dailyrainfall: product / sum,
-      dailyrainfallcum: cumproduct/sum, 
+      dailyrainfallcum: cumproduct/sum,
       RegionId: previousregionid,
       RegionName: previousregionname
     });
@@ -840,7 +840,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     const data1 = this.subdivisionfetchedDatadepcum;
     const data2 = this.statefetchedDatadepcum;
     const doc = new jsPDF() as any;
-    
+
     const columns1 = [' ', ' ', { content: 'Day : ' + this.formatteddate, colSpan: 4 }, { content: 'Period:01-10-2023 To ' + this.formatteddate, colSpan: 4 }]
     const columns = ['S.No', 'MET.SUBDIVISION/UT/STATE/DISTRICT', 'ACTUAL(mm)', 'NORMAL(mm)', '%DEP.', 'CAT.', 'ACTUAL(mm)', 'NORMAL(mm)', '%DEP.', 'CAT.'];
     const rows: any[][] = [];
