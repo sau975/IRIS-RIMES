@@ -141,7 +141,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     return matchedData || null;
   }
   findMatchingDataregion(id: string): any | null {
-    const matchedData = this.regionfetchedDatadepcum.find((data: any) => data.regiondepid === id);
+    const matchedData = this.regionfetchedDatadepcum.find((data: any) => data.regionid === id);
     return matchedData || null;
   }
   findMatchingDatacountry(id: string): any | null {
@@ -381,7 +381,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
 
     for (const item of this.districtdatacum) {
       if (previousStateId == item['stateid'] || previousStateId === null) {
-        if (Number.isNaN(item[item.dailyrainfall])) {
+        if (Number.isNaN(item.dailyrainfall)){
           cumproduct +=0;
           product += 0;
           sum += 0
@@ -479,7 +479,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
 
     for (const item of this.districtdatacum) {
       if (previoussubdivid === item['subdivid'] || previoussubdivid === null) {
-        if (Number.isNaN(item[item.dailyrainfall])) {
+        if(Number.isNaN(item.dailyrainfall)){
           cumproduct +=0;
           product += 0;
           sum += 0
@@ -576,7 +576,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
 
       for (const item of this.districtdatacum) {
         if (previousregionid === item['regionid'] || previousregionid === null) {
-          if (Number.isNaN(item[item.dailyrainfall]) || Number.isNaN(item['districtarea']) ||item[item.dailyrainfall] === undefined || item['districtarea'] === undefined) {
+          if (Number.isNaN(item.dailyrainfall)){
             cumproduct +=0;
             product += 0;
             sum += 0
@@ -590,7 +590,6 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
         }
 
         else {
-          if (previousregionid !== null) {
             this.regionfetchedDatadaily.push({
               dailyrainfall: product / sum,
               dailyrainfallcum : cumproduct/sum,
@@ -599,13 +598,18 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
             });
             product = item['districtarea'] * item.dailyrainfall;
             sum = item['districtarea'];
-          }
         }
         product;
         sum;
         previousregionid = item.regionid;
         previousregionname = item.regionname
       }
+        this.regionfetchedDatadaily.push({
+          dailyrainfall: product / sum,
+          dailyrainfallcum: cumproduct / sum,
+          RegionId: previousregionid,
+          RegionName: previousregionname
+        });
       }
 
   processFetchedDataregionnormal(): void {
@@ -662,11 +666,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       zoom: this.initialZoom,
       scrollWheelZoom: false,
     });
-    const wmsLayer = L.tileLayer.wms('http://localhost:8080/geoserver/IRIS/wms', {
-      layers: 'IRIS:District',
-      format: 'image/png',
-      transparent: true,
-    }).addTo(this.map);
+
     this.map.on('fullscreenchange', () => {
       if (this.isFullscreen()) {
         this.map.setZoom(this.initialZoom + 1);
@@ -774,11 +774,39 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
   ];
   public month = this.months[this.today.getMonth()];
   public day = String(this.today.getDate()).padStart(2, '0');
+  public sortedDataArray: any[] = [];
+  public regions: any[] = [];
+  public sortedSubDivisions: any[] = [];
+  async pushDistrict(item: any, name: string) {
+    if (item.statename == name) {
+      this.sortedDataArray.push(item);
+    }
+  }
+
+  async pushDistrict1(item: any, name: string) {
+    if (item.subdivisionname == name) {
+      this.sortedDataArray.push(item);
+    }
+  }
+
+  async pushRegion(item: any, name: string) {
+    if (item.regionname == name) {
+      this.regions.push(item);
+    }
+  }
+
+  async pushSubDivision(item: any, name: string) {
+    if (item.subdivname == name) {
+      this.sortedSubDivisions.push(item);
+    }
+  }
+
   downloadMapData(): void {
-    const data = this.districtdatacum.sort((a, b) => a.districtid - b.districtid);
-    const data1 = this.subdivisionfetchedDatadepcum.sort((a, b) => a.subdivid - b.subdivid);
-    const data2 = this.statefetchedDatadepcum.sort((a, b) => a.statedepid - b.statedepid);
-    const doc = new jsPDF() as any
+    const data = this.districtdatacum;
+    const data1 = this.subdivisionfetchedDatadepcum;
+    const data2 = this.statefetchedDatadepcum;
+    const doc = new jsPDF() as any;
+    
     const columns1 = [' ', ' ', { content: 'Day : ' + this.formatteddate, colSpan: 4 }, { content: 'Period:01-10-2023 To ' + this.formatteddate, colSpan: 4 }]
     const columns = ['S.No', 'MET.SUBDIVISION/UT/STATE/DISTRICT', 'ACTUAL(mm)', 'NORMAL(mm)', '%DEP.', 'CAT.', 'ACTUAL(mm)', 'NORMAL(mm)', '%DEP.', 'CAT.'];
     const rows: any[][] = [];
@@ -800,8 +828,154 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     let Subdivcumnormalindist: number;
     let Subdivcumdepindist: number;
 
-data.forEach((item, index) => {
+    // Group the data by "subdivisionname"
+    const groupedData = data.reduce((acc, current) => {
+      const group = acc.find((group: any) => group.subdivname === current.subdivname);
+      if (group) {
+        var dist = group.districts.find((i: any) => i.districtname == current.districtname);
+        if (!dist) {
+          group.districts.push(current);
+        }
+      } else {
+        acc.push({ subdivisionname: current.subdivname, districts: [current] });
+      }
+      return acc;
+    }, []);
+    groupedData.forEach((group: any) => {
+      group.districts.sort((a: any, b: any) => a.districtname.localeCompare(b.districtname));
+      group.districts.sort((a: any, b: any) => a.statename.localeCompare(b.statename));
+    });
+    const sortedData = groupedData.flatMap((group: any) => group.districts);
+
+    sortedData.forEach(async (item: any) => {
+      await this.pushDistrict(item, ":A & N ISLAND");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushDistrict(item, "ARUNACHAL PRADESH");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushDistrict(item, "ASSAM");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushDistrict(item, "MEGHALAYA");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushDistrict(item, "NAGALAND");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushDistrict(item, "MANIPUR");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushDistrict(item, "MIZORAM");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushDistrict(item, "TRIPURA");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushDistrict(item, "SIKKIM");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushDistrict(item, "WEST BENGAL");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushDistrict(item, "ORISSA");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushDistrict(item, "JHARKHAND");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushDistrict(item, "BIHAR");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushDistrict(item, "UTTAR PRADESH");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushDistrict(item, "UTTARAKHAND");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushDistrict(item, "HARYANA");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushDistrict(item, "CHANDIGARH (UT)");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushDistrict(item, "DELHI (UT)");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushDistrict(item, "PUNJAB");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushDistrict(item, "HIMACHAL PRADESH");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushDistrict(item, "JAMMU & KASHMIR (UT)");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushDistrict(item, "LADAKH (UT)");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushDistrict(item, "RAJASTHAN");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushDistrict(item, "MADHYA PRADESH");
+    })
+    sortedData.forEach(async (item: any) => {
+      if (item.subdivisionname !== "SAURASHTRA & KUTCH") {
+        await this.pushDistrict(item, "GUJARAT");
+      }
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushDistrict(item, "DADRA & NAGAR HAVELI AND DAMAN & DIU (UT)");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushDistrict1(item, "SAURASHTRA & KUTCH");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushDistrict(item, "GOA");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushDistrict(item, "MAHARASHTRA");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushDistrict(item, "CHHATTISGARH");
+    })
+    sortedData.forEach(async (item: any) => {
+      if (item.subdivisionname !== "TN PUDU and KARAIKAL") {
+        await this.pushDistrict(item, "PUDUCHERRY (UT)");
+      }
+    })
+    sortedData.forEach(async (item: any) => {
+      if (item.subdivisionname !== "RAYALASEEMA") {
+        await this.pushDistrict(item, "ANDHRA PRADESH");
+      }
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushDistrict(item, "TELANGANA");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushDistrict1(item, "RAYALASEEMA");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushDistrict(item, "TAMIL NADU");
+    })
+    sortedData.forEach(async (item: any) => {
+      if (item.subdivisionname == "TN PUDU and KARAIKAL") {
+        await this.pushDistrict(item, "PUDUCHERRY (UT)");
+      }
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushDistrict(item, "KARNATAKA");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushDistrict(item, "KERALA");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushDistrict(item, "LAKSHADWEEP (UT)");
+    })
+
+    this.sortedDataArray.forEach((item: any, index: number) => {
       let currentsubdivname = item.subdivname;
+
       if (currentsubdivname !== previoussubdivName) {
         data1.forEach((item2, index) => {
           if (currentsubdivname === item2.subdivname) {
@@ -1247,8 +1421,142 @@ data.forEach((item, index) => {
   }
 
   downloadMapData2(): void {
-    const data = this.subdivisionfetchedDatadepcum.sort((a, b) => a.subdivid - b.subdivid);
-    const data1 = this.regionfetchedDatadepcum.sort((a, b) => a.regionid - b.regionid);
+    const groupedData = this.subdivisionfetchedDatadepcum.reduce((acc, current) => {
+      const group = acc.find((group: any) => group.regionname === current.regionname);
+      if (group) {
+        var dist = group.subDivisions.find((i: any) => i.subdivname == current.subdivname);
+        if (!dist) {
+          group.subDivisions.push(current);
+        }
+      } else {
+        acc.push({ regionname: current.regionname, subDivisions: [current] });
+      }
+      return acc;
+    }, []);
+
+    groupedData.forEach(async (item: any) => {
+      await this.pushRegion(item, "EAST & NORTH EAST INDIA");
+    })
+    groupedData.forEach(async (item: any) => {
+      await this.pushRegion(item, "NORTH WEST INDIA");
+    })
+    groupedData.forEach(async (item: any) => {
+      await this.pushRegion(item, "CENTRAL INDIA");
+    })
+    groupedData.forEach(async (item: any) => {
+      await this.pushRegion(item, "SOUTH PENINSULA");
+    })
+    const sortedData = this.regions.flatMap((group: any) => group.subDivisions);
+    sortedData.forEach(async (item: any) => {
+      await this.pushSubDivision(item, "ARUNACHAL PRADESH");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushSubDivision(item, "ASSAM & MEGHALAYA");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushSubDivision(item, "N M M T");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushSubDivision(item, "SHWB & SIKKIM");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushSubDivision(item, "GANGETIC WEST BENGAL");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushSubDivision(item, "JHARKHAND");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushSubDivision(item, "BIHAR");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushSubDivision(item, "EAST UTTAR PRADESH");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushSubDivision(item, "WEST UTTAR PRADESH");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushSubDivision(item, "UTTARAKHAND");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushSubDivision(item, "HAR. CHD & DELHI");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushSubDivision(item, "PUNJAB");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushSubDivision(item, "HIMACHAL PRADESH");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushSubDivision(item, "JK AND LADAKH (UT)");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushSubDivision(item, "WEST RAJASTHAN");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushSubDivision(item, "EAST RAJASTHAN");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushSubDivision(item, "ORISSA");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushSubDivision(item, "WEST MADHYA PRADESH");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushSubDivision(item, "EAST MADHYA PRADESH");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushSubDivision(item, "GUJARAT REGION");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushSubDivision(item, "SAURASHTRA & KUTCH");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushSubDivision(item, "KONKAN & GOA");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushSubDivision(item, "MADHYA MAHARASHTRA");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushSubDivision(item, "MARATHWADA");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushSubDivision(item, "VIDARBHA");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushSubDivision(item, "CHHATTISGARH");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushSubDivision(item, "A & N ISLAND");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushSubDivision(item, "COASTAL A.P. & YANAM");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushSubDivision(item, "TELANGANA");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushSubDivision(item, "RAYALASEEMA");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushSubDivision(item, "TN PUDU and KARAIKAL");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushSubDivision(item, "COASTAL KARNATAKA");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushSubDivision(item, "N. I. KARNATAKA");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushSubDivision(item, "S. I. KARNATAKA");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushSubDivision(item, "KERALA & MAHE");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushSubDivision(item, "LAKSHADWEEP");
+    })
+
+    const data1 = this.regionfetchedDatadepcum;
     const doc = new jsPDF() as any;
 
     const columns1 = [' ', ' ', { content: 'Day : ' + this.formatteddate, colSpan: 4 }, { content: 'Period:01-01-2024 To ' + this.formatteddate, colSpan: 4 }]
@@ -1264,15 +1572,15 @@ data.forEach((item, index) => {
     let regioncumnormalindist: number;
     let regioncumdepindist: number;
 
-    data.forEach((item, index) => {
-      let currentregionname = item.RegionName;
+    this.sortedSubDivisions.forEach((item: any, index: number) => {
+      let currentregionname = item.regionname;
       if (currentregionname != previousregionName) {
         data1.forEach((item1, index) => {
-          if (currentregionname === item.RegionName) {
+          if (currentregionname === item1.regionname) {
             regiondailyindist = item1.dailyrainfall;
             regionnormalindist = item1.normalrainfall;
-            regiondepindist = item1.dailydeparturerainfall;
-            regioncumdailyindist = item1.dailyrainfallcum;
+            regiondepindist = item1.regiondeprainfall;
+            regioncumdailyindist = item1.cummdaily;
             regioncumnormalindist = item1.cummnormal;
             regioncumdepindist = item1.cumdeparture;
           }
@@ -1327,17 +1635,18 @@ data.forEach((item, index) => {
             styles: { fillColor: this.getColorForRainfall(regiondepindist) },
           },
         ])
+
         rows.push([
           regionIndex,
           item.subdivname,
           item.dailyrainfall.toFixed(2),
           item.normalrainfall.toFixed(2),
-          (item.dailyrainfall !== null && item.dailyrainfall !== undefined && !Number.isNaN(item.dailyrainfall) ? item.dailyrainfall.toFixed(1) : ' ') == ' ' ? ' ' : (item.dailydeparturerainfall !== null && item.dailydeparturerainfall !== undefined && !Number.isNaN(item.dailydeparturerainfall) ? Math.round(item.dailydeparturerainfall) + "%" : 'NA'),
+          item.subdivdeprainfall.toFixed(2),
           {
-            content: this.getCatForRainfall(item.dailydeparturerainfall, item.dailyrainfall !== null && item.dailyrainfall !== undefined && !Number.isNaN(item.dailyrainfall) ? item.dailyrainfall.toFixed(1) : ' '),
-            styles: { fillColor: this.getColorForRainfall(item.dailydeparturerainfall, item.dailyrainfall !== null && item.dailyrainfall !== undefined && !Number.isNaN(item.dailyrainfall) ? item.dailyrainfall.toFixed(1) : ' ') }, // Background color
+            content: this.getCatForRainfall(item.subdivdeprainfall),
+            styles: { fillColor: this.getColorForRainfall(item.subdivdeprainfall) },
           },
-          item.dailyrainfallcum.toFixed(2),
+          item.cummdaily.toFixed(2),
           item.cummnormal.toFixed(2),
           item.cumdeparture.toFixed(2),
           {
@@ -1353,12 +1662,12 @@ data.forEach((item, index) => {
           item.subdivname,
           item.dailyrainfall.toFixed(2),
           item.normalrainfall.toFixed(2),
-          (item.dailyrainfall !== null && item.dailyrainfall !== undefined && !Number.isNaN(item.dailyrainfall) ? item.dailyrainfall.toFixed(1) : ' ') == ' ' ? ' ' : (item.dailydeparturerainfall !== null && item.dailydeparturerainfall !== undefined && !Number.isNaN(item.dailydeparturerainfall) ? Math.round(item.dailydeparturerainfall) + "%" : 'NA'),
+          item.subdivdeprainfall.toFixed(2),
           {
-            content: this.getCatForRainfall(item.dailydeparturerainfall, item.dailyrainfall !== null && item.dailyrainfall !== undefined && !Number.isNaN(item.dailyrainfall) ? item.dailyrainfall.toFixed(1) : ' '),
-            styles: { fillColor: this.getColorForRainfall(item.dailydeparturerainfall, item.dailyrainfall !== null && item.dailyrainfall !== undefined && !Number.isNaN(item.dailyrainfall) ? item.dailyrainfall.toFixed(1) : ' ') }, // Background color
+            content: this.getCatForRainfall(item.subdivdeprainfall),
+            styles: { fillColor: this.getColorForRainfall(item.subdivdeprainfall) },
           },
-          item.dailyrainfallcum.toFixed(2),
+          item.cummdaily.toFixed(2),
           item.cummnormal.toFixed(2),
           item.cumdeparture.toFixed(2),
           {
@@ -1370,21 +1679,21 @@ data.forEach((item, index) => {
       previousregionName = currentregionname;
     });
     rows.unshift(columns);
-
     const tableWidth = 180;
     const cellWidth = 36;
     const cellHeight = 8;
     const marginLeft = 10;
     const marginTop = 10;
     const fontSize = 10;
+
     const options: any = {
       startY: marginTop,
       margin: { left: marginLeft },
     };
 
+    const imgData = '/assets/images/IMDlogo_Ipart.png';
+    doc.addImage(imgData, 'PNG', marginLeft, marginTop, 20, 20);
 
-    const imgData = '/assets/images/IMDlogo_Ipart.png'; // Replace with the actual image path
-    doc.addImage(imgData, 'PNG', marginLeft, marginTop, 15, 20); // Adjust image dimensions as needed
     doc.setFontSize(12);
     doc.setTextColor(0, 0, 0); // Set font color to black
     const headingText = 'India Meteorological Department\nHydromet Division, New Delhi';
@@ -1396,52 +1705,10 @@ data.forEach((item, index) => {
       head: [columns1, columns],
       body: rows,
       theme: 'striped',
-      startY: marginTop + cellHeight + 25, // Adjust the vertical position below the image and heading
+      startY: marginTop + cellHeight + 25,
       margin: { left: marginLeft },
       styles: { fontSize: 7 },
-      didDrawCell: function (data: { cell: { text: any; x: number; y: number; width: any; height: any; }; }) {
-        doc.rect(data.cell.x, data.cell.y, data.cell.width, data.cell.height);
-        doc.setDrawColor(0);
-      },
-      didParseCell: function (data: any) {
-        data.cell.styles.fontStyle = 'bold';
-      }
     });
-
-
-    const columns2 = ['', 'LEGEND', ''];
-    const columns3 = ['CATEGORY', '% DEPARTURES OF RAINFALL', 'COLOUR CODE']; // Update with your second table column names
-
-    const rows2 = [
-      ['Large Excess\n(LE or L.Excess)', '>= 60%', { content: '', styles: { fillColor: '#0096ff' } }],
-      ['Excess (E)', '>= 20% and <= 59%', { content: '', styles: { fillColor: '#32c0f8' } }],
-      ['Normal (N)', '>= -19% and <= +19%', { content: '', styles: { fillColor: '#00cd5b' } }],
-      ['Deficient (D)', '>= -59% and <= -20%', { content: '', styles: { fillColor: '#ff2700' } }],
-      ['Large Deficient\n(LD or L.Deficient)', '>= -99% and <= -60%', { content: '', styles: { fillColor: '#ffff20' } }],
-      ['No Rain(NR)', '= -100%', { content: '', styles: { fillColor: '#ffffff' } }],
-      ['Not Available', 'ND', { content: '', styles: { fillColor: '#c0c0c0' } }],
-      ['Note : ', { content: 'The rainfall values are rounded off up to one place of decimal.', colSpan: 2 }]
-    ];
-
-    // Add a header row to the data array for the second table
-
-
-    // Define the table options for the second table
-    const options2: any = {
-      startY: doc.autoTable.previous.finalY + 10, // Start below the first table
-      margin: { left: marginLeft },
-    };
-
-    doc.addPage();
-    doc.autoTable({
-      head: [columns2, columns3],
-      body: rows2,
-      theme: 'striped',
-      didDrawCell: function (data: { cell: { text: any; x: number; y: number; width: any; height: any; }; }) {
-        doc.rect(data.cell.x, data.cell.y, data.cell.width, data.cell.height);
-        doc.setDrawColor(0);
-      },
-    });    
     const filename = 'Subdivdeparture_data.pdf';
     doc.save(filename);
   }
