@@ -15,6 +15,8 @@ import { interval } from 'rxjs';
   styleUrls: ['./departure-map.component.css']
 })
 export class DepartureMapComponent implements OnInit, AfterViewInit {
+  tileCount:number = 1;
+  mapTileTypes:string[] = ['District'];
   private initialZoom = 4;
   private map: L.Map = {} as L.Map;
   private map1: L.Map = {} as L.Map;
@@ -148,7 +150,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     const matchedData = this.countryfetcheddata.find((data: any) => data.countryid === id);
     return matchedData || null;
   }
-  
+
   stationtodistrictdata: any[] = [];
   districtnormals: any[] = [];
   districtdatacum: any[] = [];
@@ -409,7 +411,6 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
           sum += item['districtarea'];
         }
       }
-
       else {
           this.statefetchedDatadaily.push({
             statedailyid: previousStateId,
@@ -518,7 +519,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
             subdivdailyid: previoussubdivid,
             subdivname: previoussubdivname,
             dailyrainfall: product / sum,
-            dailyrainfallcum: cumproduct/sum, 
+            dailyrainfallcum: cumproduct/sum,
             RegionId: previousregionid,
             RegionName: previousregionname
           });
@@ -695,7 +696,11 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       zoom: this.initialZoom,
       scrollWheelZoom: false,
     });
-
+    // const wmsLayer = L.tileLayer.wms('http://localhost:8080/geoserver/IRIS/wms', {
+    // layers: 'IRIS:District',
+    // format: 'image/png',
+    // transparent: true,
+    // }).addTo(this.map);
     this.map.on('fullscreenchange', () => {
       if (this.isFullscreen()) {
         this.map.setZoom(this.initialZoom + 1);
@@ -1738,6 +1743,41 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       margin: { left: marginLeft },
       styles: { fontSize: 7 },
     });
+
+
+    const columns2 = ['', 'LEGEND', ''];
+    const columns3 = ['CATEGORY', '% DEPARTURES OF RAINFALL', 'COLOUR CODE']; // Update with your second table column names
+
+    const rows2 = [
+      ['Large Excess\n(LE or L.Excess)', '>= 60%', { content: '', styles: { fillColor: '#0096ff' } }],
+      ['Excess (E)', '>= 20% and <= 59%', { content: '', styles: { fillColor: '#32c0f8' } }],
+      ['Normal (N)', '>= -19% and <= +19%', { content: '', styles: { fillColor: '#00cd5b' } }],
+      ['Deficient (D)', '>= -59% and <= -20%', { content: '', styles: { fillColor: '#ff2700' } }],
+      ['Large Deficient\n(LD or L.Deficient)', '>= -99% and <= -60%', { content: '', styles: { fillColor: '#ffff20' } }],
+      ['No Rain(NR)', '= -100%', { content: '', styles: { fillColor: '#ffffff' } }],
+      ['Not Available', 'ND', { content: '', styles: { fillColor: '#c0c0c0' } }],
+      ['Note : ', { content: 'The rainfall values are rounded off up to one place of decimal.', colSpan: 2 }]
+    ];
+
+    // Add a header row to the data array for the second table
+
+
+    // Define the table options for the second table
+    const options2: any = {
+      startY: doc.autoTable.previous.finalY + 10, // Start below the first table
+      margin: { left: marginLeft },
+    };
+
+    doc.addPage();
+    doc.autoTable({
+      head: [columns2, columns3],
+      body: rows2,
+      theme: 'striped',
+      didDrawCell: function (data: { cell: { text: any; x: number; y: number; width: any; height: any; }; }) {
+        doc.rect(data.cell.x, data.cell.y, data.cell.width, data.cell.height);
+        doc.setDrawColor(0);
+      },
+    });
     const filename = 'Subdivdeparture_data.pdf';
     doc.save(filename);
   }
@@ -2233,6 +2273,26 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
   }
   getDepartureMap() {
     this.router.navigate(['/departure']);
+  }
+
+  changeMapTile(event:any){
+    this.tileCount = event;
+  }
+
+  changeMapType(event:any, mapTile:any){
+    if(event.target.checked == true){
+      if(this.mapTileTypes.length < Number(this.tileCount)){
+        this.mapTileTypes.push(event.target.value);
+      }else{
+        alert(`You can't see more than ${this.tileCount} map, Please change the selected tile.`)
+        const checkboxElement: HTMLInputElement | null = document.getElementById(mapTile) as HTMLInputElement;
+        if (checkboxElement) {
+          checkboxElement.checked = false;
+        }
+      }
+    }else{
+      this.mapTileTypes = this.mapTileTypes.filter(item => item !== event.target.value);
+    }
   }
 }
 
