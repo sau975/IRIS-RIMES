@@ -60,7 +60,6 @@ export class DailyMapComponent {
       location.reload();
     });
     this.initMap();
-    this.loadGeoJSON();
     this.loadGeoJSON1();
     this.fetchDataFromBackend();
   }
@@ -83,7 +82,7 @@ export class DailyMapComponent {
 
     this.currentDateNormal = `${currmonth}${this.dd}`;
     this.currentDateNormaly = `${currmonthy}${ddy}`;
-    this.currentDateDaily = `${this.dd.padStart(2, '0')}-${currmonth}`;
+    this.currentDateDaily = `${this.dd.padStart(2, '0')}_${currmonth}`;
     console.log(this.currentDateDaily)
   }
   fetchDataFromBackend(): void {
@@ -127,6 +126,8 @@ export class DailyMapComponent {
       next: value => {
         this.fetchedMasterData = value;
         this.stationtodistrict();
+        this.processFetchedDatastatedaily()
+        this.loadGeoJSON();
       },
       error: err => console.error('Error fetching data:', err)
     });
@@ -138,6 +139,7 @@ export class DailyMapComponent {
   }
   findMatchingDatastate(id: string): any | null {
     const matchedData = this.statefetchedDatadaily.find((data: any) => data.statedailyid === id );
+    console.log(matchedData, "gggg")
     return matchedData || null;
   }
   findMatchingDatasubdiv(id: string): any | null {
@@ -203,8 +205,8 @@ export class DailyMapComponent {
     let product = 1;
     let sum = 0;
     let previousStateId = null;
-      for (const item of this.fetchedData1) {
-      if ( previousStateId === item['stateid']) {
+      for (const item of this.fetchedMasterData) {
+      if ( previousStateId === item['state_code']) {
         product += item['imdarea_squarekm'] * item[this.currentDateDaily];
         sum += item['imdarea_squarekm'];
       }
@@ -217,10 +219,11 @@ export class DailyMapComponent {
         }}
         product = item['imdarea_squarekm'] * item[this.currentDateDaily];
         sum = item['imdarea_squarekm'];
-      previousStateId = item['stateid'];
+      previousStateId = item['state_code'];
     }
   }
-  stationtodistrict(){
+
+  stationtodistrict() {
     this.stationtodistrictdata = [];
     let previousdistrictid = null;
     let previousdistrictname = "";
@@ -234,30 +237,44 @@ export class DailyMapComponent {
     let subdivweights = null;
     let previousregionid = null;
     let previousregionname = "";
-        for (const item of this.fetchedMasterData) {
-      if(item.district_code == previousdistrictid || previousdistrictid == null){
+    let districtcumdata = 0
+    for (const item of this.fetchedMasterData) {
+      if (item.district_code == previousdistrictid || previousdistrictid == null) {
+        if (item[this.currentDateDaily] != -999.9) {
           stationrainfallsum = stationrainfallsum + item[this.currentDateDaily];
-          numberofstations =  numberofstations + 1;
+          numberofstations = numberofstations + 1;
         }
-       else{
-                  this.stationtodistrictdata.push({
+        else {
+          stationrainfallsum = stationrainfallsum + 0;
+        }
+      }
+      else {
+        this.stationtodistrictdata.push({
           districtid: previousdistrictid,
           districtname: previousdistrictname,
-          districtarea : districtarea,
-          subdivweights : subdivweights,
-          numberofstations : numberofstations,
-          stationrainfallsum : stationrainfallsum,
-          dailyrainfall: stationrainfallsum/numberofstations,
-          stateid : previousstateid,
-          statename : previousstatename,
-          subdivid : previoussubdivid,
-          subdivname : previoussubdivname,
-          regionid : previousregionid,
-          regionname :previousregionname,
-          });
-          numberofstations = 0;
+          districtarea: districtarea,
+          subdivweights: subdivweights,
+          numberofstations: numberofstations,
+          stationrainfallsum: stationrainfallsum,
+          dailyrainfall: stationrainfallsum / numberofstations,
+          stateid: previousstateid,
+          statename: previousstatename,
+          subdivid: previoussubdivid,
+          subdivname: previoussubdivname,
+          regionid: previousregionid,
+          regionname: previousregionname,
+          stationrainfallsumcum: districtcumdata,
+          dailyrainfallcum: districtcumdata / numberofstations,
+        });
+        if (item[this.currentDateDaily] != -999.9) {
+          stationrainfallsum = item[this.currentDateDaily];
+          numberofstations = 1;
+        }
+        else {
           stationrainfallsum = 0;
-                }
+          numberofstations = 0;
+        }
+      }
       previousdistrictid = item.district_code;
       previousdistrictname = item.district_name;
       districtarea = item.district_area
@@ -269,7 +286,23 @@ export class DailyMapComponent {
       previousregionid = item.region_code;
       previousregionname = item.region_name;
     }
-
+    this.stationtodistrictdata.push({
+      districtid: previousdistrictid,
+      districtname: previousdistrictname,
+      districtarea: districtarea,
+      subdivweights: subdivweights,
+      numberofstations: numberofstations,
+      stationrainfallsum: stationrainfallsum,
+      dailyrainfall: stationrainfallsum / numberofstations,
+      stateid: previousstateid,
+      statename: previousstatename,
+      subdivid: previoussubdivid,
+      subdivname: previoussubdivname,
+      regionid: previousregionid,
+      regionname: previousregionname,
+      stationrainfallsumcum: districtcumdata,
+      dailyrainfallcum: districtcumdata / numberofstations,
+    });
   }
 
   processFetchedData(): void {
@@ -422,7 +455,7 @@ export class DailyMapComponent {
         this.http.get('assets/geojson/INDIA_STATE.json').subscribe((res: any) => {
           L.geoJSON(res, {
             style: (feature: any) => {
-              const id2 = feature.properties['OBJECTID'];
+              const id2 = feature.properties['state_code'];
               const matchedData = this.findMatchingDatastate(id2);
               const rainfall = matchedData ? matchedData.statedailyrainfall: 0;
               const color = this.getColorForRainfall(rainfall);
@@ -435,8 +468,8 @@ export class DailyMapComponent {
               };
             },
             onEachFeature: (feature: any, layer: any) => {
-              const id1 = feature.properties['name'];
-              const id2 = feature.properties['OBJECTID'];
+              const id1 = feature.properties['state_name'];
+              const id2 = feature.properties['state_code'];
               const matchedData = this.findMatchingDatastate(id2);
               const rainfall = matchedData ? matchedData.statedailyrainfall.toFixed(2) : '0.00';
               const popupContent = `
@@ -458,7 +491,7 @@ export class DailyMapComponent {
       this.http.get('assets/geojson/INDIA_SUB_DIVISION.json').subscribe((res: any) => {
         L.geoJSON(res, {
           style: (feature: any) => {
-            const id2 = feature.properties['OBJECTID'];
+            const id2 = feature.properties['SubDiv_Cod'];
             const matchedData = this.findMatchingDatasubdiv(id2);
             const rainfall = matchedData ? matchedData.subdivdailyrainfall : 0;
             const color = this.getColorForRainfall(rainfall);
@@ -471,8 +504,8 @@ export class DailyMapComponent {
             };
           },
           onEachFeature: (feature: any, layer: any) => {
-            const id1 = feature.properties['name'];
-            const id2 = feature.properties['OBJECTID'];
+            const id1 = feature.properties['subdivisio'];
+            const id2 = feature.properties['SubDiv_Cod'];
             const matchedData = this.findMatchingDatasubdiv(id2);
             const rainfall = matchedData ? matchedData.subdivdailyrainfall.toFixed(2) : '0.00';;
             const popupContent = `
@@ -494,7 +527,7 @@ export class DailyMapComponent {
       this.http.get('assets/geojson/INDIA_REGIONS.json').subscribe((res: any) => {
         L.geoJSON(res, {
           style: (feature: any) => {
-            const id2 = feature.properties['OBJECTID'];
+            const id2 = feature.properties['region_cod'];
             const matchedData = this.findMatchingDataregion(id2);
             const rainfall = matchedData ? matchedData.regiondailyrainfall : 0;
             const color = this.getColorForRainfall(rainfall);
@@ -507,8 +540,8 @@ export class DailyMapComponent {
             };
           },
           onEachFeature: (feature: any, layer: any) => {
-            const id1 = feature.properties['name'];
-            const id2 = feature.properties['OBJECTID'];
+            const id1 = feature.properties['region_nam'];
+            const id2 = feature.properties['region_cod'];
             const matchedData = this.findMatchingDataregion(id2);
             const rainfall = matchedData ? matchedData.regiondailyrainfall.toFixed(2) : '0.00';;
             const popupContent = `

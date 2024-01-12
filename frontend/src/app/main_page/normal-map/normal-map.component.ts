@@ -54,7 +54,6 @@ export class NormalMapComponent {
 
   ngAfterViewInit(): void {
     this.initMap();
-    this.loadGeoJSON();
   }
   ngOnInit(): void {
     this.router.events.pipe(
@@ -93,6 +92,7 @@ export class NormalMapComponent {
       (data) => {
         this.fetchedData = data;
         this.processFetchedData();
+        this.loadGeoJSON();
       },
       (error) => {
         console.error('Error fetching data:', error);
@@ -135,7 +135,7 @@ export class NormalMapComponent {
     return matchedData || null;
   }
   findMatchingDatasubdiv(id: string): any | null {
-    const matchedData = this.subdivisionfetchedDatanormal.find((data: any) => data.subdivnormalid === id);
+    const matchedData = this.subdivisionfetchedDatanormal.find((data: any) => data.subdivnormalid === Number(id));
     return matchedData || null;
   }
   findMatchingDataregion(id: string): any | null {
@@ -190,14 +190,14 @@ export class NormalMapComponent {
         normal = (item[this.currentDateNormal] - item[this.currentDateNormaly])
       }
       this.statefetchedDatanormal.push({
-        statenormalid: item['state_id'],
+        statenormalid: item['state_code'],
         statenormalrainfall: normal
       });
     }
   }
   processFetchedData(): void {
 
-        this.processedData = [];
+      this.processedData = [];
       for (const item of this.fetchedData) {
         let normal: number
         if(this.currentDateNormal === 'Jan1' || this.currentDateNormal === 'Mar1' ||this.currentDateNormal === 'Jun1' ||this.currentDateNormal === 'Oct1'){
@@ -210,8 +210,9 @@ export class NormalMapComponent {
         if (item[this.currentDateDaily] == 0) {
           den = 1;
         }
-        this.processedData.push({ districtID: item.districtid, Rainfall: normal });
-      }}
+        this.processedData.push({ districtID: item.district_code, Rainfall: normal });
+      }
+    }
 
   private initMap(): void {
     this.map = L.map('map', {
@@ -348,7 +349,7 @@ export class NormalMapComponent {
     this.http.get('assets/geojson/INDIA_DISTRICT.json').subscribe((res: any) => {
       L.geoJSON(res, {
         style: (feature: any) => {
-          const id2 = feature.properties['OBJECTID'];
+          const id2 = feature.properties['district_c'];
           const matchedData = this.findMatchingData(id2);
           const rainfall = matchedData ? matchedData.Rainfall : 0;
           const color = this.getColorForRainfall(rainfall);
@@ -361,8 +362,8 @@ export class NormalMapComponent {
           };
         },
         onEachFeature: (feature: any, layer: any) => {
-          const id1 = feature.properties['name'];
-          const id2 = feature.properties['OBJECTID'];
+          const id1 = feature.properties['district'];
+          const id2 = feature.properties['district_c'];
           const matchedData = this.findMatchingData(id2);
           const rainfall = matchedData ? matchedData.Rainfall.toFixed(2) : '0.00';;
           const popupContent = `
@@ -384,7 +385,7 @@ export class NormalMapComponent {
         this.http.get('assets/geojson/INDIA_STATE.json').subscribe((res: any) => {
           L.geoJSON(res, {
             style: (feature: any) => {
-              const id2 = feature.properties['OBJECTID'];
+              const id2 = feature.properties['state_code'];
               const matchedData = this.findMatchingDatastate(id2);
               const rainfall = matchedData ? matchedData.statenormalrainfall: 0;
               const color = this.getColorForRainfall(rainfall);
@@ -397,8 +398,8 @@ export class NormalMapComponent {
               };
             },
             onEachFeature: (feature: any, layer: any) => {
-              const id1 = feature.properties['name'];
-              const id2 = feature.properties['OBJECTID'];
+              const id1 = feature.properties['state_name'];
+              const id2 = feature.properties['state_code'];
               const matchedData = this.findMatchingDatastate(id2);
               const rainfall = matchedData ? matchedData.statenormalrainfall.toFixed(2) : '0.00';
               const popupContent = `
@@ -420,7 +421,7 @@ export class NormalMapComponent {
       this.http.get('assets/geojson/INDIA_SUB_DIVISION.json').subscribe((res: any) => {
         L.geoJSON(res, {
           style: (feature: any) => {
-            const id2 = feature.properties['OBJECTID'];
+            const id2 = feature.properties['SubDiv_Cod'];
             const matchedData = this.findMatchingDatasubdiv(id2);
             const rainfall = matchedData ? matchedData.subdivnormalrainfall : 0;
             const color = this.getColorForRainfall(rainfall);
@@ -433,8 +434,8 @@ export class NormalMapComponent {
             };
           },
           onEachFeature: (feature: any, layer: any) => {
-            const id1 = feature.properties['name'];
-            const id2 = feature.properties['OBJECTID'];
+            const id1 = feature.properties['subdivisio'];
+            const id2 = feature.properties['SubDiv_Cod'];
             const matchedData = this.findMatchingDatasubdiv(id2);
             const rainfall = matchedData ? matchedData.subdivnormalrainfall.toFixed(2) : '0.00';;
             const popupContent = `
@@ -456,7 +457,7 @@ export class NormalMapComponent {
       this.http.get('assets/geojson/INDIA_REGIONS.json').subscribe((res: any) => {
         L.geoJSON(res, {
           style: (feature: any) => {
-            const id2 = feature.properties['OBJECTID'];
+            const id2 = feature.properties['region_cod'];
             const matchedData = this.findMatchingDataregion(id2);
             const rainfall = matchedData ? matchedData.regionnormalrainfall : 0;
             const color = this.getColorForRainfall(rainfall);
@@ -469,8 +470,8 @@ export class NormalMapComponent {
             };
           },
           onEachFeature: (feature: any, layer: any) => {
-            const id1 = feature.properties['name'];
-            const id2 = feature.properties['OBJECTID'];
+            const id1 = feature.properties['region_nam'];
+            const id2 = feature.properties['region_cod'];
             const matchedData = this.findMatchingDataregion(id2);
             const rainfall = matchedData ? matchedData.regionnormalrainfall.toFixed(2) : '0.00';;
             const popupContent = `
