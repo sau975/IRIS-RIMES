@@ -1,10 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
-import html2canvas from 'html2canvas';
+import * as htmlToImage from 'html-to-image';
 import * as L from 'leaflet';
 import 'leaflet.fullscreen';
 import { DataService } from '../../data.service';
-import { Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
+import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-normal-map',
@@ -50,10 +51,17 @@ export class NormalMapComponent {
       });
 
   }
-  ngOnInit(): void {
+
+  ngAfterViewInit(): void {
     this.initMap();
     this.loadGeoJSON();
-    // this.loadGeoJSON1();
+  }
+  ngOnInit(): void {
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe(() => {
+      location.reload();
+    });
     this.fetchDataFromBackend();
   }
 
@@ -675,39 +683,45 @@ export class NormalMapComponent {
   //   }
   // }
 
+  filter = (node: HTMLElement) => {
+    const exclusionClasses = ['download', 'downloadpdf', 'leaflet-control-zoom', 'leaflet-control-fullscreen', 'leaflet-control-zoomin'];
+    return !exclusionClasses.some((classname) => node.classList?.contains(classname));
+  }
+
   downloadMapImage(): void {
-    html2canvas(document.getElementById('map') as HTMLElement).then(canvas => {
-      const link = document.createElement('a');
-      link.download = 'district_normal.png';
-      link.href = canvas.toDataURL('image/png');
-      link.click();
-    });
+    htmlToImage.toJpeg(document.getElementById('map') as HTMLElement, { quality: 0.95, filter: this.filter })
+      .then(function (dataUrl) {
+        var link = document.createElement('a');
+        link.download = 'District_dep.jpeg';
+        link.href = dataUrl;
+        link.click();
+      });
   }
   downloadMapImage1(): void {
-    html2canvas(document.getElementById('map1') as HTMLElement).then(canvas => {
-      const link = document.createElement('a');
-      link.download = 'state_normal.png';
-      link.href = canvas.toDataURL('image/png');
-      link.click();
-    });
+    htmlToImage.toJpeg(document.getElementById('map1') as HTMLElement, { quality: 0.95, filter: this.filter })
+      .then(function (dataUrl) {
+        var link = document.createElement('a');
+        link.download = 'state_dep.jpeg';
+        link.href = dataUrl;
+        link.click();
+      });
   }
   downloadMapImage2(): void {
-    html2canvas(document.getElementById('map2') as HTMLElement).then(canvas => {
-      const link = document.createElement('a');
-      link.download = 'sub-division_normal.png';
-      link.href = canvas.toDataURL('image/png');
-      link.click();
-    });
+    htmlToImage.toJpeg(document.getElementById('map2') as HTMLElement, { quality: 0.95, filter: this.filter })
+      .then(function (dataUrl) {
+        var link = document.createElement('a');
+        link.download = 'sub-division_dep.jpeg';
+        link.href = dataUrl;
+        link.click();
+      });
   }
   downloadMapImage3(): void {
-    html2canvas(document.getElementById('map3') as HTMLElement, {
-      scrollX: 0,
-      scrollY: 0
-    }).then(canvas => {
-      const link = document.createElement('a');
-      link.download = 'region_normal.png';
-      link.href = canvas.toDataURL('image/png');
-      link.click();
-    });
+    htmlToImage.toJpeg(document.getElementById('map3') as HTMLElement, { quality: 0.95, filter: this.filter })
+      .then(function (dataUrl) {
+        var link = document.createElement('a');
+        link.download = 'region_dep.jpeg';
+        link.href = dataUrl;
+        link.click();
+      });
   }
 }

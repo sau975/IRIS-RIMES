@@ -6,8 +6,8 @@ import { DataService } from '../../data.service';
 import { jsPDF } from 'jspdf';
 import 'jspdf-autotable';
 import * as htmlToImage from 'html-to-image';
-import { Router } from '@angular/router';
-import { EMPTY, concatMap } from 'rxjs';
+import { NavigationEnd, Router } from '@angular/router';
+import { EMPTY, concatMap, filter } from 'rxjs';
 @Component({
   selector: 'app-departure-map',
   templateUrl: './departure-map.component.html',
@@ -58,6 +58,11 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     this.initMap();
   }
   ngOnInit(): void {
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe(() => {
+      location.reload();
+    });
     this.fetchDataFromBackend();
   }
 
@@ -731,7 +736,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
 
   mergecountrydailyandnormal(): void {
     this.countryfetchedDatadepcum = []
-    
+
     this.countryfetchedDatanormal.forEach((item1) => {
       const matchingItem = this.countryfetchedDatadaily.find((item2) => item1.normalcountryid == item2.countryid);
       let matcheddailyrainfall = 0;
@@ -1687,9 +1692,9 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
           const rainfall = matchedData ? matchedData.dailydeparturerainfall : -100;
 
 
-          
+
           //const actual = matchedData && matchedData.dailyrainfall !== null && matchedData.dailyrainfall != undefined && !Number.isNaN(matchedData.dailyrainfall) ? "notnull" : ' ';
-          
+
           const actual = matchedData && matchedData.dailyrainfall == null ? ' ' : "notnull";
           const color = this.getColorForRainfall(rainfall, actual);
           return {
@@ -1744,7 +1749,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
         },
 
 
-        
+
 
         onEachFeature: (feature: any, layer: any) => {
           const id1 = feature.properties['state_name'];
@@ -1849,7 +1854,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
           };
         },
 
-        
+
 
       //   onEachFeature: (feature: any, layer: any) => {
       //     const id1 = feature.properties['region_nam'];
@@ -1892,31 +1897,31 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
             <div style="color: #000000;font-weight: bolder; font-size: 9px;">${id1}</div>
             <div style="color: #000000;font-weight: bolder; font-size: 9px;">${normalrainfall}</div>
             </div>`;
-  
+
             // Get the bounds of the layer and calculate its center
             const bounds = layer.getBounds();
             const center = bounds.getCenter();
-  
+
             // Set the position of the custom HTML element on the map
             textElement.style.position = 'absolute';
             textElement.style.left = `${this.map3.latLngToLayerPoint(center).x - 25}px`;
             textElement.style.top = `${this.map3.latLngToLayerPoint(center).y - 25}px`;
             // Set a higher z-index to ensure the text appears on top of the map
             textElement.style.zIndex = '1000';
-  
+
             // Append the custom HTML element to the map container
             this.map3.getPanes().overlayPane.appendChild(textElement);
-  
+
           }
-  
+
         });
-  
+
         // Add the geoJsonLayer to the map
         geoJsonLayer.addTo(this.map3);
 
 
 
-      
+
     });
     this.http.get('assets/geojson/INDIA_COUNTRY.json').subscribe((res: any) => {
       const geoJsonLayer = L.geoJSON(res, {

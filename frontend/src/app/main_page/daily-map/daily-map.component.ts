@@ -1,10 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
-import html2canvas from 'html2canvas';
+import * as htmlToImage from 'html-to-image';
 import * as L from 'leaflet';
 import 'leaflet.fullscreen';
 import { DataService } from '../../data.service';
-import { Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
+import { filter } from 'rxjs';
 @Component({
   selector: 'app-daily-map',
   templateUrl: './daily-map.component.html',
@@ -53,6 +54,11 @@ export class DailyMapComponent {
     });
   }
   ngOnInit(): void {
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe(() => {
+      location.reload();
+    });
     this.initMap();
     this.loadGeoJSON();
     this.loadGeoJSON1();
@@ -228,13 +234,13 @@ export class DailyMapComponent {
     let subdivweights = null;
     let previousregionid = null;
     let previousregionname = "";
-    for (const item of this.fetchedMasterData) {
+        for (const item of this.fetchedMasterData) {
       if(item.district_code == previousdistrictid || previousdistrictid == null){
-        stationrainfallsum = stationrainfallsum + item[this.currentDateDaily];
-        numberofstations =  numberofstations + 1;
-      }
-      else{
-        this.stationtodistrictdata.push({
+          stationrainfallsum = stationrainfallsum + item[this.currentDateDaily];
+          numberofstations =  numberofstations + 1;
+        }
+       else{
+                  this.stationtodistrictdata.push({
           districtid: previousdistrictid,
           districtname: previousdistrictname,
           districtarea : districtarea,
@@ -251,17 +257,17 @@ export class DailyMapComponent {
           });
           numberofstations = 0;
           stationrainfallsum = 0;
-      }
-       previousdistrictid = item.district_code;
-       previousdistrictname = item.district_name;
-       districtarea = item.district_area
-       previousstateid = item.state_code;
-       previousstatename = item.state_name;
-       previoussubdivid = item.subdiv_code;
-       previoussubdivname = item.subdiv_name;
-       subdivweights = item.subdiv_weights
-       previousregionid = item.region_code;
-       previousregionname = item.region_name;
+                }
+      previousdistrictid = item.district_code;
+      previousdistrictname = item.district_name;
+      districtarea = item.district_area
+      previousstateid = item.state_code;
+      previousstatename = item.state_name;
+      previoussubdivid = item.subdiv_code;
+      previoussubdivname = item.subdiv_name;
+      subdivweights = item.subdiv_weights
+      previousregionid = item.region_code;
+      previousregionname = item.region_name;
     }
 
   }
@@ -682,40 +688,45 @@ export class DailyMapComponent {
     }
   }
 
-  downloadMapImage(): void {
-    html2canvas(document.getElementById('map') as HTMLElement).then(canvas => {
-      const link = document.createElement('a');
-      link.download = 'district_normal.png';
-      link.href = canvas.toDataURL('image/png');
-      link.click();
-    });
-  }
-  downloadMapImage1(): void {
-    html2canvas(document.getElementById('map1') as HTMLElement).then(canvas => {
-      const link = document.createElement('a');
-      link.download = 'state_normal.png';
-      link.href = canvas.toDataURL('image/png');
-      link.click();
-    });
-  }
-  downloadMapImage2(): void {
-    html2canvas(document.getElementById('map2') as HTMLElement).then(canvas => {
-      const link = document.createElement('a');
-      link.download = 'sub-division_normal.png';
-      link.href = canvas.toDataURL('image/png');
-      link.click();
-    });
-  }
-  downloadMapImage3(): void {
-    html2canvas(document.getElementById('map3') as HTMLElement, {
-      scrollX: 0,
-      scrollY: 0
-    }).then(canvas => {
-      const link = document.createElement('a');
-      link.download = 'region_normal.png';
-      link.href = canvas.toDataURL('image/png');
-      link.click();
-    });
+  filter = (node: HTMLElement) => {
+    const exclusionClasses = ['download', 'downloadpdf', 'leaflet-control-zoom', 'leaflet-control-fullscreen', 'leaflet-control-zoomin'];
+    return !exclusionClasses.some((classname) => node.classList?.contains(classname));
   }
 
+  downloadMapImage(): void {
+    htmlToImage.toJpeg(document.getElementById('map') as HTMLElement, { quality: 0.95, filter: this.filter })
+      .then(function (dataUrl) {
+        var link = document.createElement('a');
+        link.download = 'District_dep.jpeg';
+        link.href = dataUrl;
+        link.click();
+      });
+  }
+  downloadMapImage1(): void {
+    htmlToImage.toJpeg(document.getElementById('map1') as HTMLElement, { quality: 0.95, filter: this.filter })
+      .then(function (dataUrl) {
+        var link = document.createElement('a');
+        link.download = 'state_dep.jpeg';
+        link.href = dataUrl;
+        link.click();
+      });
+  }
+  downloadMapImage2(): void {
+    htmlToImage.toJpeg(document.getElementById('map2') as HTMLElement, { quality: 0.95, filter: this.filter })
+      .then(function (dataUrl) {
+        var link = document.createElement('a');
+        link.download = 'sub-division_dep.jpeg';
+        link.href = dataUrl;
+        link.click();
+      });
+  }
+  downloadMapImage3(): void {
+    htmlToImage.toJpeg(document.getElementById('map3') as HTMLElement, { quality: 0.95, filter: this.filter })
+      .then(function (dataUrl) {
+        var link = document.createElement('a');
+        link.download = 'region_dep.jpeg';
+        link.href = dataUrl;
+        link.click();
+      });
+  }
 }
