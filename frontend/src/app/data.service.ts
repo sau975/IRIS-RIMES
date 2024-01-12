@@ -54,6 +54,10 @@ export class DataService {
     const url = `${this.baseUrl}`+'/regionnormal';
     return this.http.get(url);
   }
+  fetchData7(): Observable<any> {
+    const url = `${this.baseUrl}`+'/countrynormal';
+    return this.http.get(url);
+  }
   fetchMasterFile(): Observable<any> {
     const url = `${this.baseUrl}`+'/masterFile';
     return this.http.get(url);
