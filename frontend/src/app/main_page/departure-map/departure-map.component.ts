@@ -877,7 +877,32 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
   public month = this.months[this.today.getMonth()];
   public day = String(this.today.getDate()).padStart(2, '0');
 
+  public sortedDataArray: any[] = [];
+  public regions: any[] = [];
+  public sortedSubDivisions: any[] = [];
+  async pushDistrict(item: any, name: string) {
+    if (item.statename == name) {
+      this.sortedDataArray.push(item);
+    }
+  }
 
+  async pushDistrict1(item: any, name: string) {
+    if (item.subdivisionname == name) {
+      this.sortedDataArray.push(item);
+    }
+  }
+
+  async pushRegion(item: any, name: string) {
+    if (item.regionname == name) {
+      this.regions.push(item);
+    }
+  }
+
+  async pushSubDivision(item: any, name: string) {
+    if (item.subdivname == name) {
+      this.sortedSubDivisions.push(item);
+    }
+  }
 
   downloadMapData(): void {
     const data = this.districtdatacum;
@@ -906,9 +931,152 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     let Subdivcumnormalindist: number;
     let Subdivcumdepindist: number;
 
+    // Group the data by "subdivisionname"
+    const groupedData = data.reduce((acc, current) => {
+      const group = acc.find((group: any) => group.subdivname === current.subdivname);
+      if (group) {
+        var dist = group.districts.find((i: any) => i.districtname == current.districtname);
+        if (!dist) {
+          group.districts.push(current);
+        }
+      } else {
+        acc.push({ subdivisionname: current.subdivname, districts: [current] });
+      }
+      return acc;
+    }, []);
+    groupedData.forEach((group: any) => {
+      group.districts.sort((a: any, b: any) => a.districtname.localeCompare(b.districtname));
+      group.districts.sort((a: any, b: any) => a.statename.localeCompare(b.statename));
+    });
+    const sortedData = groupedData.flatMap((group: any) => group.districts);
 
+    sortedData.forEach(async (item: any) => {
+      await this.pushDistrict(item, ":A & N ISLAND");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushDistrict(item, "ARUNACHAL PRADESH");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushDistrict(item, "ASSAM");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushDistrict(item, "MEGHALAYA");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushDistrict(item, "NAGALAND");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushDistrict(item, "MANIPUR");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushDistrict(item, "MIZORAM");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushDistrict(item, "TRIPURA");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushDistrict(item, "SIKKIM");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushDistrict(item, "WEST BENGAL");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushDistrict(item, "ORISSA");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushDistrict(item, "JHARKHAND");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushDistrict(item, "BIHAR");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushDistrict(item, "UTTAR PRADESH");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushDistrict(item, "UTTARAKHAND");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushDistrict(item, "HARYANA");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushDistrict(item, "CHANDIGARH (UT)");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushDistrict(item, "DELHI (UT)");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushDistrict(item, "PUNJAB");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushDistrict(item, "HIMACHAL PRADESH");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushDistrict(item, "JAMMU & KASHMIR (UT)");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushDistrict(item, "LADAKH (UT)");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushDistrict(item, "RAJASTHAN");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushDistrict(item, "MADHYA PRADESH");
+    })
+    sortedData.forEach(async (item: any) => {
+      if (item.subdivisionname !== "SAURASHTRA & KUTCH") {
+        await this.pushDistrict(item, "GUJARAT");
+      }
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushDistrict(item, "DADRA & NAGAR HAVELI AND DAMAN & DIU (UT)");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushDistrict1(item, "SAURASHTRA & KUTCH");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushDistrict(item, "GOA");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushDistrict(item, "MAHARASHTRA");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushDistrict(item, "CHHATTISGARH");
+    })
+    sortedData.forEach(async (item: any) => {
+      if (item.subdivisionname !== "TN PUDU and KARAIKAL") {
+        await this.pushDistrict(item, "PUDUCHERRY (UT)");
+      }
+    })
+    sortedData.forEach(async (item: any) => {
+      if (item.subdivisionname !== "RAYALASEEMA") {
+        await this.pushDistrict(item, "ANDHRA PRADESH");
+      }
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushDistrict(item, "TELANGANA");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushDistrict1(item, "RAYALASEEMA");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushDistrict(item, "TAMIL NADU");
+    })
+    sortedData.forEach(async (item: any) => {
+      if (item.subdivisionname == "TN PUDU and KARAIKAL") {
+        await this.pushDistrict(item, "PUDUCHERRY (UT)");
+      }
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushDistrict(item, "KARNATAKA");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushDistrict(item, "KERALA");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushDistrict(item, "LAKSHADWEEP (UT)");
+    })
 
-    data.forEach((item: any, index: number) => {
+    this.sortedDataArray.forEach((item: any, index: number) => {
       let currentsubdivname = item.subdivname;
 
       if (currentsubdivname !== previoussubdivName) {
