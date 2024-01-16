@@ -6,8 +6,8 @@ import { DataService } from '../../data.service';
 import { jsPDF } from 'jspdf';
 import 'jspdf-autotable';
 import * as htmlToImage from 'html-to-image';
-import { Router } from '@angular/router';
-import { EMPTY, concatMap } from 'rxjs';
+import { NavigationEnd, Router } from '@angular/router';
+import { EMPTY, concatMap, filter } from 'rxjs';
 @Component({
   selector: 'app-departure-map',
   templateUrl: './departure-map.component.html',
@@ -15,9 +15,7 @@ import { EMPTY, concatMap } from 'rxjs';
 })
 export class DepartureMapComponent implements OnInit, AfterViewInit {
   tileCount: number = 1;
-  mapTileTypes: string[] = ['District', 'State', 'SubDivision', 'Homogenous', 'Country'];
-  // mapTileTypes: string[] = ['District'];
-
+  mapTileTypes: string[] = ['District'];
   private initialZoom = 4;
   private map: L.Map = {} as L.Map;
   private map1: L.Map = {} as L.Map;
@@ -58,8 +56,18 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
   }
   ngAfterViewInit(): void {
     this.initMap();
+    var mapArray = ['map1','map2','map3','map4'];
+    mapArray.forEach((m:any) => {
+      let hh:any = document.getElementById(m);
+      hh.style.display = 'none';
+    })
   }
   ngOnInit(): void {
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe(() => {
+      location.reload();
+    });
     this.fetchDataFromBackend();
   }
 
@@ -750,7 +758,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
 
   mergecountrydailyandnormal(): void {
     this.countryfetchedDatadepcum = []
-    
+
     this.countryfetchedDatanormal.forEach((item1) => {
       const matchingItem = this.countryfetchedDatadaily.find((item2) => item1.normalcountryid == item2.countryid);
       let matcheddailyrainfall = 0;
@@ -891,7 +899,32 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
   public month = this.months[this.today.getMonth()];
   public day = String(this.today.getDate()).padStart(2, '0');
 
+  public sortedDataArray: any[] = [];
+  public regions: any[] = [];
+  public sortedSubDivisions: any[] = [];
+  async pushDistrict(item: any, name: string) {
+    if (item.statename == name) {
+      this.sortedDataArray.push(item);
+    }
+  }
 
+  async pushDistrict1(item: any, name: string) {
+    if (item.subdivisionname == name) {
+      this.sortedDataArray.push(item);
+    }
+  }
+
+  async pushRegion(item: any, name: string) {
+    if (item.regionname == name) {
+      this.regions.push(item);
+    }
+  }
+
+  async pushSubDivision(item: any, name: string) {
+    if (item.subdivname == name) {
+      this.sortedSubDivisions.push(item);
+    }
+  }
 
   downloadMapData(): void {
     const data = this.districtdatacum.sort((a, b) => {
@@ -922,9 +955,152 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     let Subdivcumnormalindist: number;
     let Subdivcumdepindist: number;
 
+    // Group the data by "subdivisionname"
+    const groupedData = data.reduce((acc, current) => {
+      const group = acc.find((group: any) => group.subdivname === current.subdivname);
+      if (group) {
+        var dist = group.districts.find((i: any) => i.districtname == current.districtname);
+        if (!dist) {
+          group.districts.push(current);
+        }
+      } else {
+        acc.push({ subdivisionname: current.subdivname, districts: [current] });
+      }
+      return acc;
+    }, []);
+    groupedData.forEach((group: any) => {
+      group.districts.sort((a: any, b: any) => a.districtname.localeCompare(b.districtname));
+      group.districts.sort((a: any, b: any) => a.statename.localeCompare(b.statename));
+    });
+    const sortedData = groupedData.flatMap((group: any) => group.districts);
 
+    sortedData.forEach(async (item: any) => {
+      await this.pushDistrict(item, ":A & N ISLAND");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushDistrict(item, "ARUNACHAL PRADESH");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushDistrict(item, "ASSAM");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushDistrict(item, "MEGHALAYA");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushDistrict(item, "NAGALAND");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushDistrict(item, "MANIPUR");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushDistrict(item, "MIZORAM");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushDistrict(item, "TRIPURA");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushDistrict(item, "SIKKIM");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushDistrict(item, "WEST BENGAL");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushDistrict(item, "ORISSA");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushDistrict(item, "JHARKHAND");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushDistrict(item, "BIHAR");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushDistrict(item, "UTTAR PRADESH");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushDistrict(item, "UTTARAKHAND");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushDistrict(item, "HARYANA");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushDistrict(item, "CHANDIGARH (UT)");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushDistrict(item, "DELHI (UT)");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushDistrict(item, "PUNJAB");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushDistrict(item, "HIMACHAL PRADESH");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushDistrict(item, "JAMMU & KASHMIR (UT)");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushDistrict(item, "LADAKH (UT)");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushDistrict(item, "RAJASTHAN");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushDistrict(item, "MADHYA PRADESH");
+    })
+    sortedData.forEach(async (item: any) => {
+      if (item.subdivisionname !== "SAURASHTRA & KUTCH") {
+        await this.pushDistrict(item, "GUJARAT");
+      }
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushDistrict(item, "DADRA & NAGAR HAVELI AND DAMAN & DIU (UT)");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushDistrict1(item, "SAURASHTRA & KUTCH");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushDistrict(item, "GOA");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushDistrict(item, "MAHARASHTRA");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushDistrict(item, "CHHATTISGARH");
+    })
+    sortedData.forEach(async (item: any) => {
+      if (item.subdivisionname !== "TN PUDU and KARAIKAL") {
+        await this.pushDistrict(item, "PUDUCHERRY (UT)");
+      }
+    })
+    sortedData.forEach(async (item: any) => {
+      if (item.subdivisionname !== "RAYALASEEMA") {
+        await this.pushDistrict(item, "ANDHRA PRADESH");
+      }
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushDistrict(item, "TELANGANA");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushDistrict1(item, "RAYALASEEMA");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushDistrict(item, "TAMIL NADU");
+    })
+    sortedData.forEach(async (item: any) => {
+      if (item.subdivisionname == "TN PUDU and KARAIKAL") {
+        await this.pushDistrict(item, "PUDUCHERRY (UT)");
+      }
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushDistrict(item, "KARNATAKA");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushDistrict(item, "KERALA");
+    })
+    sortedData.forEach(async (item: any) => {
+      await this.pushDistrict(item, "LAKSHADWEEP (UT)");
+    })
 
-    data.forEach((item: any, index: number) => {
+    this.sortedDataArray.forEach((item: any, index: number) => {
       let currentsubdivname = item.subdivname;
 
       if (currentsubdivname !== previoussubdivName) {
@@ -1837,7 +2013,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
         },
 
 
-        
+
 
         onEachFeature: (feature: any, layer: any) => {
           const id1 = feature.properties['state_name'];
@@ -1942,7 +2118,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
           };
         },
 
-        
+
 
       //   onEachFeature: (feature: any, layer: any) => {
       //     const id1 = feature.properties['region_nam'];
@@ -1985,31 +2161,31 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
             <div style="color: #000000;font-weight: bolder; font-size: 9px;">${id1}</div>
             <div style="color: #000000;font-weight: bolder; font-size: 9px;">${normalrainfall}</div>
             </div>`;
-  
+
             // Get the bounds of the layer and calculate its center
             const bounds = layer.getBounds();
             const center = bounds.getCenter();
-  
+
             // Set the position of the custom HTML element on the map
             textElement.style.position = 'absolute';
             textElement.style.left = `${this.map3.latLngToLayerPoint(center).x - 25}px`;
             textElement.style.top = `${this.map3.latLngToLayerPoint(center).y - 25}px`;
             // Set a higher z-index to ensure the text appears on top of the map
             textElement.style.zIndex = '1000';
-  
+
             // Append the custom HTML element to the map container
             this.map3.getPanes().overlayPane.appendChild(textElement);
-  
+
           }
-  
+
         });
-  
+
         // Add the geoJsonLayer to the map
         geoJsonLayer.addTo(this.map3);
 
 
 
-      
+
     });
     this.http.get('assets/geojson/INDIA_COUNTRY.json').subscribe((res: any) => {
       const geoJsonLayer = L.geoJSON(res, {
@@ -2229,10 +2405,12 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     this.tileCount = event;
   }
 
-  changeMapType(event: any, mapTile: any) {
+  changeMapType(event: any, mapTile: any, mapId:any) {
     if (event.target.checked == true) {
       if (this.mapTileTypes.length < Number(this.tileCount)) {
         this.mapTileTypes.push(event.target.value);
+        let ele:any = document.getElementById(mapId);
+        ele.style.display = 'block';
       } else {
         alert(`You can't see more than ${this.tileCount} map, Please change the selected tile.`)
         const checkboxElement: HTMLInputElement | null = document.getElementById(mapTile) as HTMLInputElement;
@@ -2242,6 +2420,8 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       }
     } else {
       this.mapTileTypes = this.mapTileTypes.filter(item => item !== event.target.value);
+      let ele:any = document.getElementById(mapId);
+      ele.style.display = 'none';
     }
   }
 }

@@ -12,27 +12,27 @@
     </div>
 
     <div class="checkbox-container">
-      <input type="checkbox" id="mapTile1" name="mapTile1" value="District" checked (click)="changeMapType($event, 'mapTile1')">
+      <input type="checkbox" id="mapTile1" name="mapTile1" value="District" checked (click)="changeMapType($event, 'mapTile1', 'map')">
       <label for="mapTile1">District</label>
     </div>
 
     <div class="checkbox-container">
-      <input type="checkbox" id="mapTile2" name="mapTile2" value="State" (click)="changeMapType($event, 'mapTile2')">
+      <input type="checkbox" id="mapTile2" name="mapTile2" value="State" (click)="changeMapType($event, 'mapTile2', 'map1')">
       <label for="mapTile2">State</label>
     </div>
 
     <div class="checkbox-container">
-      <input type="checkbox" id="mapTile3" name="mapTile3" value="SubDivision" (click)="changeMapType($event, 'mapTile3')">
+      <input type="checkbox" id="mapTile3" name="mapTile3" value="SubDivision" (click)="changeMapType($event, 'mapTile3', 'map2')">
       <label for="mapTile3">Sub-Division</label>
     </div>
 
     <div class="checkbox-container">
-      <input type="checkbox" id="mapTile4" name="mapTile4" value="Homogenous" (click)="changeMapType($event, 'mapTile4')">
+      <input type="checkbox" id="mapTile4" name="mapTile4" value="Homogenous" (click)="changeMapType($event, 'mapTile4', 'map3')">
       <label for="mapTile3">Homogenous</label>
     </div>
 
     <div class="checkbox-container">
-      <input type="checkbox" id="mapTile5" name="mapTile5" value="Country" (click)="changeMapType($event, 'mapTile5')">
+      <input type="checkbox" id="mapTile5" name="mapTile5" value="Country" (click)="changeMapType($event, 'mapTile5', 'map4')">
       <label for="mapTile3">Country</label>
     </div>
   </div>
@@ -41,7 +41,7 @@
       <tr style="width: 100%; height: 100%; vertical-align: middle">
         <td style="width: 50%; padding-top: 0px">
           <div class="map-container">
-            <div [hidden]="!mapTileTypes.includes('District')" class="map-frame">
+            <div class="map-frame">
               <div
                 id="map"
                 style="
@@ -187,7 +187,7 @@
         </td>
         <td style="width: 50%">
           <div class="map-container;">
-            <div [hidden]="!mapTileTypes.includes('State')" class="map-frame">
+            <div class="map-frame">
               <div
                 id="map1"
                 style="
@@ -334,7 +334,7 @@
       <tr style="width: 100%; height: 50%; vertical-align: middle">
         <td style="width: 50%; padding-top: 0px">
           <div class="map-container;">
-            <div [hidden]="!mapTileTypes.includes('SubDivision')" class="map-frame">
+            <div class="map-frame">
               <div
                 id="map2"
                 style="
@@ -480,7 +480,7 @@
         </td>
         <td style="width: 50%">
           <div class="map-container;">
-            <div [hidden]="!mapTileTypes.includes('Homogenous')" class="map-frame">
+            <div class="map-frame">
               <div
                 id="map3"
                 style="
@@ -628,7 +628,7 @@
       <tr style="width: 100%; height: 100%; vertical-align: middle">
         <td style="width: 50%; padding-top: 0px text_">
           <div class="map-container">
-            <div [hidden]="!mapTileTypes.includes('Country')" class="map-frame">
+            <div class="map-frame">
               <div
                 id="map4"
                 style="

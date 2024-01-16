@@ -1,10 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
-import html2canvas from 'html2canvas';
+import * as htmlToImage from 'html-to-image';
 import * as L from 'leaflet';
 import 'leaflet.fullscreen';
 import { DataService } from '../../data.service';
-import { Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
+import { filter } from 'rxjs';
 @Component({
   selector: 'app-daily-map',
   templateUrl: './daily-map.component.html',
@@ -53,8 +54,12 @@ export class DailyMapComponent {
     });
   }
   ngOnInit(): void {
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe(() => {
+      location.reload();
+    });
     this.initMap();
-    this.loadGeoJSON();
     this.loadGeoJSON1();
     this.fetchDataFromBackend();
   }
@@ -77,7 +82,7 @@ export class DailyMapComponent {
 
     this.currentDateNormal = `${currmonth}${this.dd}`;
     this.currentDateNormaly = `${currmonthy}${ddy}`;
-    this.currentDateDaily = `${this.dd.padStart(2, '0')}-${currmonth}`;
+    this.currentDateDaily = `${this.dd.padStart(2, '0')}_${currmonth}`;
     console.log(this.currentDateDaily)
   }
   fetchDataFromBackend(): void {
@@ -121,6 +126,8 @@ export class DailyMapComponent {
       next: value => {
         this.fetchedMasterData = value;
         this.stationtodistrict();
+        this.processFetchedDatastatedaily()
+        this.loadGeoJSON();
       },
       error: err => console.error('Error fetching data:', err)
     });
@@ -132,6 +139,7 @@ export class DailyMapComponent {
   }
   findMatchingDatastate(id: string): any | null {
     const matchedData = this.statefetchedDatadaily.find((data: any) => data.statedailyid === id );
+    console.log(matchedData, "gggg")
     return matchedData || null;
   }
   findMatchingDatasubdiv(id: string): any | null {
@@ -197,8 +205,8 @@ export class DailyMapComponent {
     let product = 1;
     let sum = 0;
     let previousStateId = null;
-      for (const item of this.fetchedData1) {
-      if ( previousStateId === item['stateid']) {
+      for (const item of this.fetchedMasterData) {
+      if ( previousStateId === item['state_code']) {
         product += item['imdarea_squarekm'] * item[this.currentDateDaily];
         sum += item['imdarea_squarekm'];
       }
@@ -211,10 +219,11 @@ export class DailyMapComponent {
         }}
         product = item['imdarea_squarekm'] * item[this.currentDateDaily];
         sum = item['imdarea_squarekm'];
-      previousStateId = item['stateid'];
+      previousStateId = item['state_code'];
     }
   }
-  stationtodistrict(){
+
+  stationtodistrict() {
     this.stationtodistrictdata = [];
     let previousdistrictid = null;
     let previousdistrictname = "";
@@ -228,42 +237,72 @@ export class DailyMapComponent {
     let subdivweights = null;
     let previousregionid = null;
     let previousregionname = "";
+    let districtcumdata = 0
     for (const item of this.fetchedMasterData) {
-      if(item.district_code == previousdistrictid || previousdistrictid == null){
-        stationrainfallsum = stationrainfallsum + item[this.currentDateDaily];
-        numberofstations =  numberofstations + 1;
+      if (item.district_code == previousdistrictid || previousdistrictid == null) {
+        if (item[this.currentDateDaily] != -999.9) {
+          stationrainfallsum = stationrainfallsum + item[this.currentDateDaily];
+          numberofstations = numberofstations + 1;
+        }
+        else {
+          stationrainfallsum = stationrainfallsum + 0;
+        }
       }
-      else{
+      else {
         this.stationtodistrictdata.push({
           districtid: previousdistrictid,
           districtname: previousdistrictname,
-          districtarea : districtarea,
-          subdivweights : subdivweights,
-          numberofstations : numberofstations,
-          stationrainfallsum : stationrainfallsum,
-          dailyrainfall: stationrainfallsum/numberofstations,
-          stateid : previousstateid,
-          statename : previousstatename,
-          subdivid : previoussubdivid,
-          subdivname : previoussubdivname,
-          regionid : previousregionid,
-          regionname :previousregionname,
-          });
-          numberofstations = 0;
+          districtarea: districtarea,
+          subdivweights: subdivweights,
+          numberofstations: numberofstations,
+          stationrainfallsum: stationrainfallsum,
+          dailyrainfall: stationrainfallsum / numberofstations,
+          stateid: previousstateid,
+          statename: previousstatename,
+          subdivid: previoussubdivid,
+          subdivname: previoussubdivname,
+          regionid: previousregionid,
+          regionname: previousregionname,
+          stationrainfallsumcum: districtcumdata,
+          dailyrainfallcum: districtcumdata / numberofstations,
+        });
+        if (item[this.currentDateDaily] != -999.9) {
+          stationrainfallsum = item[this.currentDateDaily];
+          numberofstations = 1;
+        }
+        else {
           stationrainfallsum = 0;
+          numberofstations = 0;
+        }
       }
-       previousdistrictid = item.district_code;
-       previousdistrictname = item.district_name;
-       districtarea = item.district_area
-       previousstateid = item.state_code;
-       previousstatename = item.state_name;
-       previoussubdivid = item.subdiv_code;
-       previoussubdivname = item.subdiv_name;
-       subdivweights = item.subdiv_weights
-       previousregionid = item.region_code;
-       previousregionname = item.region_name;
+      previousdistrictid = item.district_code;
+      previousdistrictname = item.district_name;
+      districtarea = item.district_area
+      previousstateid = item.state_code;
+      previousstatename = item.state_name;
+      previoussubdivid = item.subdiv_code;
+      previoussubdivname = item.subdiv_name;
+      subdivweights = item.subdiv_weights
+      previousregionid = item.region_code;
+      previousregionname = item.region_name;
     }
-
+    this.stationtodistrictdata.push({
+      districtid: previousdistrictid,
+      districtname: previousdistrictname,
+      districtarea: districtarea,
+      subdivweights: subdivweights,
+      numberofstations: numberofstations,
+      stationrainfallsum: stationrainfallsum,
+      dailyrainfall: stationrainfallsum / numberofstations,
+      stateid: previousstateid,
+      statename: previousstatename,
+      subdivid: previoussubdivid,
+      subdivname: previoussubdivname,
+      regionid: previousregionid,
+      regionname: previousregionname,
+      stationrainfallsumcum: districtcumdata,
+      dailyrainfallcum: districtcumdata / numberofstations,
+    });
   }
 
   processFetchedData(): void {
@@ -416,7 +455,7 @@ export class DailyMapComponent {
         this.http.get('assets/geojson/INDIA_STATE.json').subscribe((res: any) => {
           L.geoJSON(res, {
             style: (feature: any) => {
-              const id2 = feature.properties['OBJECTID'];
+              const id2 = feature.properties['state_code'];
               const matchedData = this.findMatchingDatastate(id2);
               const rainfall = matchedData ? matchedData.statedailyrainfall: 0;
               const color = this.getColorForRainfall(rainfall);
@@ -429,8 +468,8 @@ export class DailyMapComponent {
               };
             },
             onEachFeature: (feature: any, layer: any) => {
-              const id1 = feature.properties['name'];
-              const id2 = feature.properties['OBJECTID'];
+              const id1 = feature.properties['state_name'];
+              const id2 = feature.properties['state_code'];
               const matchedData = this.findMatchingDatastate(id2);
               const rainfall = matchedData ? matchedData.statedailyrainfall.toFixed(2) : '0.00';
               const popupContent = `
@@ -452,7 +491,7 @@ export class DailyMapComponent {
       this.http.get('assets/geojson/INDIA_SUB_DIVISION.json').subscribe((res: any) => {
         L.geoJSON(res, {
           style: (feature: any) => {
-            const id2 = feature.properties['OBJECTID'];
+            const id2 = feature.properties['SubDiv_Cod'];
             const matchedData = this.findMatchingDatasubdiv(id2);
             const rainfall = matchedData ? matchedData.subdivdailyrainfall : 0;
             const color = this.getColorForRainfall(rainfall);
@@ -465,8 +504,8 @@ export class DailyMapComponent {
             };
           },
           onEachFeature: (feature: any, layer: any) => {
-            const id1 = feature.properties['name'];
-            const id2 = feature.properties['OBJECTID'];
+            const id1 = feature.properties['subdivisio'];
+            const id2 = feature.properties['SubDiv_Cod'];
             const matchedData = this.findMatchingDatasubdiv(id2);
             const rainfall = matchedData ? matchedData.subdivdailyrainfall.toFixed(2) : '0.00';;
             const popupContent = `
@@ -488,7 +527,7 @@ export class DailyMapComponent {
       this.http.get('assets/geojson/INDIA_REGIONS.json').subscribe((res: any) => {
         L.geoJSON(res, {
           style: (feature: any) => {
-            const id2 = feature.properties['OBJECTID'];
+            const id2 = feature.properties['region_cod'];
             const matchedData = this.findMatchingDataregion(id2);
             const rainfall = matchedData ? matchedData.regiondailyrainfall : 0;
             const color = this.getColorForRainfall(rainfall);
@@ -501,8 +540,8 @@ export class DailyMapComponent {
             };
           },
           onEachFeature: (feature: any, layer: any) => {
-            const id1 = feature.properties['name'];
-            const id2 = feature.properties['OBJECTID'];
+            const id1 = feature.properties['region_nam'];
+            const id2 = feature.properties['region_cod'];
             const matchedData = this.findMatchingDataregion(id2);
             const rainfall = matchedData ? matchedData.regiondailyrainfall.toFixed(2) : '0.00';;
             const popupContent = `
@@ -682,40 +721,45 @@ export class DailyMapComponent {
     }
   }
 
-  downloadMapImage(): void {
-    html2canvas(document.getElementById('map') as HTMLElement).then(canvas => {
-      const link = document.createElement('a');
-      link.download = 'district_normal.png';
-      link.href = canvas.toDataURL('image/png');
-      link.click();
-    });
-  }
-  downloadMapImage1(): void {
-    html2canvas(document.getElementById('map1') as HTMLElement).then(canvas => {
-      const link = document.createElement('a');
-      link.download = 'state_normal.png';
-      link.href = canvas.toDataURL('image/png');
-      link.click();
-    });
-  }
-  downloadMapImage2(): void {
-    html2canvas(document.getElementById('map2') as HTMLElement).then(canvas => {
-      const link = document.createElement('a');
-      link.download = 'sub-division_normal.png';
-      link.href = canvas.toDataURL('image/png');
-      link.click();
-    });
-  }
-  downloadMapImage3(): void {
-    html2canvas(document.getElementById('map3') as HTMLElement, {
-      scrollX: 0,
-      scrollY: 0
-    }).then(canvas => {
-      const link = document.createElement('a');
-      link.download = 'region_normal.png';
-      link.href = canvas.toDataURL('image/png');
-      link.click();
-    });
+  filter = (node: HTMLElement) => {
+    const exclusionClasses = ['download', 'downloadpdf', 'leaflet-control-zoom', 'leaflet-control-fullscreen', 'leaflet-control-zoomin'];
+    return !exclusionClasses.some((classname) => node.classList?.contains(classname));
   }
 
+  downloadMapImage(): void {
+    htmlToImage.toJpeg(document.getElementById('map') as HTMLElement, { quality: 0.95, filter: this.filter })
+      .then(function (dataUrl) {
+        var link = document.createElement('a');
+        link.download = 'District_dep.jpeg';
+        link.href = dataUrl;
+        link.click();
+      });
+  }
+  downloadMapImage1(): void {
+    htmlToImage.toJpeg(document.getElementById('map1') as HTMLElement, { quality: 0.95, filter: this.filter })
+      .then(function (dataUrl) {
+        var link = document.createElement('a');
+        link.download = 'state_dep.jpeg';
+        link.href = dataUrl;
+        link.click();
+      });
+  }
+  downloadMapImage2(): void {
+    htmlToImage.toJpeg(document.getElementById('map2') as HTMLElement, { quality: 0.95, filter: this.filter })
+      .then(function (dataUrl) {
+        var link = document.createElement('a');
+        link.download = 'sub-division_dep.jpeg';
+        link.href = dataUrl;
+        link.click();
+      });
+  }
+  downloadMapImage3(): void {
+    htmlToImage.toJpeg(document.getElementById('map3') as HTMLElement, { quality: 0.95, filter: this.filter })
+      .then(function (dataUrl) {
+        var link = document.createElement('a');
+        link.download = 'region_dep.jpeg';
+        link.href = dataUrl;
+        link.click();
+      });
+  }
 }
