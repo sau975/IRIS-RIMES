@@ -15,7 +15,7 @@ import { EMPTY, concatMap, filter } from 'rxjs';
 })
 export class DepartureMapComponent implements OnInit, AfterViewInit {
   tileCount: number = 1;
-  mapTileTypes: string[] = ['District', 'State', 'SubDivision', 'Homogenous', 'Country'];
+  mapTileTypes: string[] = ['District'];
   private initialZoom = 4;
   private map: L.Map = {} as L.Map;
   private map1: L.Map = {} as L.Map;
@@ -56,6 +56,11 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
   }
   ngAfterViewInit(): void {
     this.initMap();
+    var mapArray = ['map1','map2','map3','map4'];
+    mapArray.forEach((m:any) => {
+      let hh:any = document.getElementById(m);
+      hh.style.display = 'none';
+    })
   }
   ngOnInit(): void {
     this.router.events.pipe(
@@ -2268,10 +2273,12 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     this.tileCount = event;
   }
 
-  changeMapType(event: any, mapTile: any) {
+  changeMapType(event: any, mapTile: any, mapId:any) {
     if (event.target.checked == true) {
       if (this.mapTileTypes.length < Number(this.tileCount)) {
         this.mapTileTypes.push(event.target.value);
+        let ele:any = document.getElementById(mapId);
+        ele.style.display = 'block';
       } else {
         alert(`You can't see more than ${this.tileCount} map, Please change the selected tile.`)
         const checkboxElement: HTMLInputElement | null = document.getElementById(mapTile) as HTMLInputElement;
@@ -2281,6 +2288,8 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       }
     } else {
       this.mapTileTypes = this.mapTileTypes.filter(item => item !== event.target.value);
+      let ele:any = document.getElementById(mapId);
+      ele.style.display = 'none';
     }
   }
 }
