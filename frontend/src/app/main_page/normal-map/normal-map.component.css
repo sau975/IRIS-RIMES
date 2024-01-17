@@ -84,3 +84,21 @@ img{
   font-weight: 600;
 }
 
+.checkbox-container {
+  display: inline-block;
+  margin-right: 20px; /* Adjust the margin as needed */
+}
+
+.checkbox-container input {
+  margin-right: 8px; /* Add space to the right of the checkbox */
+}
+
+.gridmap {
+  left: 308px;
+  position: relative;
+}
+
+.gridmap-another-class {
+  left: 0px;
+  position: sticky;
+}
