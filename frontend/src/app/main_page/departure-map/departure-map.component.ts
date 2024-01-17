@@ -1187,7 +1187,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
 
     const data = this.statefetchedDatadepcum.sort((a, b) => a.regionorder - b.regionorder);
     const data1 = this.regionfetchedDatadepcum.sort((a, b) => a.regionid - b.regionid);
-
+    const data2 = this.countryfetchedDatadepcum;
     const doc = new jsPDF() as any;
     const columns1 = [' ', ' ', { content: 'Day : ' + this.formatteddate, colSpan: 4 }, { content: 'Period:01-01-2024 To ' + this.formatteddate, colSpan: 4 }]
     const columns = ['S.No', 'MET.SUBDIVISION/UT/STATE/DISTRICT', 'DAILY', 'NORMAL', 'DEPARTURE', 'CAT', 'DAILY', 'NORMAL', 'DEPARTURE', 'CAT'];
@@ -1339,8 +1339,46 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       }
       previousregionName = currentregionname;
     });
+    data2.forEach((item, index) => {
+    rows.push([ 
+        {
+          content: '',
+          styles: { fillColor: '#85ff86' },
+        },
+        {
+          content: 'COUNTRY',
+          styles: { fillColor: '#85ff86' },
+        },
+        {
+          content: item.dailyrainfall.toFixed(2),
+          styles: { fillColor: '#85ff86' },
+        },
+        {
+          content: item.normalrainfall.toFixed(2),
+          styles: { fillColor: '#85ff86' },
+        },
+      item.dailydeparturerainfall.toFixed(2),
+      {
+        content: this.getCatForRainfall(item.dailydeparturerainfall),
+        styles: { fillColor: this.getColorForRainfall(item.dailydeparturerainfall) }, // Background color
+      },
+      {
+        content: item.dailyrainfallcum.toFixed(2),
+        styles: { fillColor: '#85ff86' },
+      },
+      {
+        content: item.cummnormal.toFixed(2),
+        styles: { fillColor: '#85ff86' },
+      },
+      item.cumdeparture.toFixed(2),
+      {
+        content: this.getCatForRainfall(item.cumdeparture),
+        styles: { fillColor: this.getColorForRainfall(item.cumdeparture) }, // Background color
+      },
+    ]);
+  });
+    
     rows.unshift(columns);
-
     const tableWidth = 180;
     const cellWidth = 36;
     const cellHeight = 8;
@@ -1364,7 +1402,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
 
     doc.autoTable({
       head: [columns1, columns],
-      body: rows,
+      body: rows, 
       theme: 'striped',
       startY: marginTop + cellHeight + 25, // Adjust the vertical position below the image and heading
       margin: { left: marginLeft },
@@ -1415,6 +1453,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
   downloadMapData2(): void {
     const data = this.subdivisionfetchedDatadepcum.sort((a, b) => a.regionorder - b.regionorder);
     const data1 = this.regionfetchedDatadepcum;
+    const data2 = this.countryfetchedDatadepcum;
     const doc = new jsPDF() as any;
 
     const columns1 = [' ', ' ', { content: 'Day : ' + this.formatteddate, colSpan: 4 }, { content: 'Period:01-01-2024 To ' + this.formatteddate, colSpan: 4 }]
@@ -1536,6 +1575,44 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       }
       previousregionName = currentregionname;
     });
+    data2.forEach((item, index) => {
+      rows.push([ 
+          {
+            content: '',
+            styles: { fillColor: '#85ff86' },
+          },
+          {
+            content: 'COUNTRY',
+            styles: { fillColor: '#85ff86' },
+          },
+          {
+            content: item.dailyrainfall.toFixed(2),
+            styles: { fillColor: '#85ff86' },
+          },
+          {
+            content: item.normalrainfall.toFixed(2),
+            styles: { fillColor: '#85ff86' },
+          },
+        item.dailydeparturerainfall.toFixed(2),
+        {
+          content: this.getCatForRainfall(item.dailydeparturerainfall),
+          styles: { fillColor: this.getColorForRainfall(item.dailydeparturerainfall) }, // Background color
+        },
+        {
+          content: item.dailyrainfallcum.toFixed(2),
+          styles: { fillColor: '#85ff86' },
+        },
+        {
+          content: item.cummnormal.toFixed(2),
+          styles: { fillColor: '#85ff86' },
+        },
+        item.cumdeparture.toFixed(2),
+        {
+          content: this.getCatForRainfall(item.cumdeparture),
+          styles: { fillColor: this.getColorForRainfall(item.cumdeparture) }, // Background color
+        },
+      ]);
+    });
 
     const tableWidth = 180;
     const cellWidth = 36;
@@ -1611,7 +1688,6 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
   downloadMapData3(): void {
     const data = this.regionfetchedDatadepcum;
 
-    // Create a new jsPDF instance
     const doc = new jsPDF() as any;
 
     const columns1 = [' ', ' ', { content: 'Day : ' + this.formatteddate, colSpan: 4 }, { content: 'Period:01-01-2024 To ' + this.formatteddate, colSpan: 4 }];
@@ -1619,7 +1695,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
 
     const rows = data.map((item, index) => [
       index + 1, // Serial number
-      item.regionname,
+      item.RegionName,
       item.dailyrainfall.toFixed(2),
       item.normalrainfall.toFixed(2),
       item.dailydeparturerainfall.toFixed(2),
@@ -1627,7 +1703,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
         content: this.getCatForRainfall(item.dailydeparturerainfall),
         styles: { fillColor: this.getColorForRainfall(item.dailydeparturerainfall) }, // Background color
       },
-      item.cummdaily.toFixed(2),
+      item.dailyrainfallcum.toFixed(2),
       item.cummnormal.toFixed(2),
       item.cumdeparture.toFixed(2),
       {
@@ -1636,64 +1712,15 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       },
     ]);
 
-    rows.unshift(columns);
+
+
     const tableWidth = 180;
     const cellWidth = 36;
     const cellHeight = 8;
     const marginLeft = 10;
     const marginTop = 10;
     const fontSize = 10;
-    const options: any = {
-      startY: marginTop,
-      margin: { left: marginLeft },
-    };
-    const imgData = '/assets/images/IMDlogo_Ipart.png'; // Replace with the actual image path
-    doc.addImage(imgData, 'PNG', marginLeft, marginTop, 20, 20); // Adjust image dimensions as needed
-    doc.setFontSize(12);
-    doc.setTextColor(0, 0, 0); // Set font color to black
-    const headingText = 'India Meteorological Department\nHydromet Division, New Delhi';
-    const headingText1 = 'REGION-WISE RAINFALL DISTRIBUTION';
-    doc.text(headingText, marginLeft + 25, marginTop + 8); // Adjust position as needed
-    doc.text(headingText1, marginLeft + 50, marginTop + 28);
 
-    // Add the table to the PDF document
-    doc.autoTable({
-      head: [columns1, columns],
-      body: rows,
-      theme: 'striped',
-      startY: marginTop + cellHeight + 25, // Adjust the vertical position below the image and heading
-      margin: { left: marginLeft },
-      styles: { fontSize: 7 },
-    });
-
-    // Save or download the PDF
-    const filename = 'Regiondeparture_data.pdf';
-    doc.save(filename);
-  }
-  downloadMapData4(): void {
-    const data = this.regionfetchedDatadepcum;
-    const doc = new jsPDF() as any;
-    const columns = ['S.No', 'RegionID', 'Regionname', 'Daily Rainfall', 'Normal Rainfall', 'Departure'];
-    // Create a data array for the table
-    const rows = data.map((item, index) => [
-      index + 1,
-      item.regiondepid,
-      item.regionname,
-      item.dailyrainfall.toFixed(2),
-      item.normalrainfall.toFixed(2),
-      item.dailydeparturerainfall.toFixed(2),
-      {
-        content: this.getCatForRainfall(item.dailydeparturerainfall),
-        styles: { fillColor: this.getColorForRainfall(item.dailydeparturerainfall) }, // Background color
-      },
-    ]);
-    rows.unshift(columns);
-    const tableWidth = 180;
-    const cellWidth = 36;
-    const cellHeight = 8;
-    const marginLeft = 10;
-    const marginTop = 10;
-    const fontSize = 10;
     const options: any = {
       startY: marginTop,
       margin: { left: marginLeft },
@@ -1707,42 +1734,153 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     doc.text(headingText, marginLeft + 25, marginTop + 8); // Adjust position as needed
     doc.text(headingText1, marginLeft + 50, marginTop + 28);
 
-    // Add the table to the PDF document
     doc.autoTable({
-      head: [columns],
+      head: [columns1, columns],
       body: rows,
       theme: 'striped',
       startY: marginTop + cellHeight + 25, // Adjust the vertical position below the image and heading
       margin: { left: marginLeft },
+      styles: { fontSize: 7 },
+      didDrawCell: function (data: { cell: { text: any; x: number; y: number; width: any; height: any; }; }) {
+        doc.rect(data.cell.x, data.cell.y, data.cell.width, data.cell.height);
+        doc.setDrawColor(0);
+      },
+      didParseCell: function (data: any) {
+        data.cell.styles.fontStyle = 'bold';
+      }
     });
 
-    const columns2 = ['CATEGORY', '% DEPARTURES OF RAINFALL', 'COLOUR CODE']; // Update with your second table column names
+
+    const columns2 = ['', 'LEGEND', ''];
+    const columns3 = ['CATEGORY', '% DEPARTURES OF RAINFALL', 'COLOUR CODE']; // Update with your second table column names
 
     const rows2 = [
-      ['Large Excess\n(LE or L.Excess)', '>= 60%', { styles: { fillColor: '#0096ff' } }],
-      ['Excess (E)', '>= 20% and <= 59%', { styles: { fillColor: '#32c0f8' } }],
-      ['Normal (N)', '>= -19% and <= +19%', { styles: { fillColor: '#00cd5b' } }],
-      ['Deficient (D)', '>= -59% and <= -20%', { styles: { fillColor: '#ff2700' } }],
-      ['Large Deficient\n(LD or L.Deficient)', '>= -99% and <= -60%', { styles: { fillColor: '#ffff20' } }],
-      ['No Rain(NR)', '= -100%', { styles: { fillColor: '#c0c0c0' } }],
-      ['No Data(*)', 'Not Available', { styles: { fillColor: '#ffffff' } }],
+      ['Large Excess\n(LE or L.Excess)', '>= 60%', { content: '', styles: { fillColor: '#0096ff' } }],
+      ['Excess (E)', '>= 20% and <= 59%', { content: '', styles: { fillColor: '#32c0f8' } }],
+      ['Normal (N)', '>= -19% and <= +19%', { content: '', styles: { fillColor: '#00cd5b' } }],
+      ['Deficient (D)', '>= -59% and <= -20%', { content: '', styles: { fillColor: '#ff2700' } }],
+      ['Large Deficient\n(LD or L.Deficient)', '>= -99% and <= -60%', { content: '', styles: { fillColor: '#ffff20' } }],
+      ['No Rain(NR)', '= -100%', { content: '', styles: { fillColor: '#ffffff' } }],
+      ['Not Available', 'ND', { content: '', styles: { fillColor: '#c0c0c0' } }],
       ['Note : ', { content: 'The rainfall values are rounded off up to one place of decimal.', colSpan: 2 }]
     ];
-
-    // Add a header row to the data array for the second table
-
-
-    // Define the table options for the second table
     const options2: any = {
       startY: doc.autoTable.previous.finalY + 10, // Start below the first table
       margin: { left: marginLeft },
     };
 
+    // Start a new page
+    doc.addPage();
+
     // Add the second table to the PDF document
     doc.autoTable({
-      head: [columns2],
+      head: [columns2, columns3],
       body: rows2,
       theme: 'striped',
+      didDrawCell: function (data: { cell: { text: any; x: number; y: number; width: any; height: any; }; }) {
+        doc.rect(data.cell.x, data.cell.y, data.cell.width, data.cell.height);
+        doc.setDrawColor(0);
+      },
+    });
+    const filename = 'Regiondeparture_data.pdf';
+    doc.save(filename);
+  }
+  downloadMapData4(): void {
+    const data = this.countryfetchedDatadepcum;
+
+    const doc = new jsPDF() as any;
+
+    const columns1 = [' ', ' ', { content: 'Day : ' + this.formatteddate, colSpan: 4 }, { content: 'Period:01-01-2024 To ' + this.formatteddate, colSpan: 4 }];
+    const columns = ['S.No', 'COUNTRY AS WHOLE', 'DAILY', 'NORMAL', 'DEPARTURE', 'CAT', 'DAILY', 'NORMAL', 'DEPARTURE', 'CAT'];
+
+    const rows = data.map((item, index) => [
+      index + 1, // Serial number
+      'COUNTRY',
+      item.dailyrainfall.toFixed(2),
+      item.normalrainfall.toFixed(2),
+      item.dailydeparturerainfall.toFixed(2),
+      {
+        content: this.getCatForRainfall(item.dailydeparturerainfall),
+        styles: { fillColor: this.getColorForRainfall(item.dailydeparturerainfall) }, // Background color
+      },
+      item.dailyrainfallcum.toFixed(2),
+      item.cummnormal.toFixed(2),
+      item.cumdeparture.toFixed(2),
+      {
+        content: this.getCatForRainfall(item.cumdeparture),
+        styles: { fillColor: this.getColorForRainfall(item.cumdeparture) }, // Background color
+      },
+    ]);
+
+
+
+    const tableWidth = 180;
+    const cellWidth = 36;
+    const cellHeight = 8;
+    const marginLeft = 10;
+    const marginTop = 10;
+    const fontSize = 10;
+
+    const options: any = {
+      startY: marginTop,
+      margin: { left: marginLeft },
+    };
+    const imgData = '/assets/images/IMDlogo_Ipart.png'; // Replace with the actual image path
+    doc.addImage(imgData, 'PNG', marginLeft, marginTop, 15, 20); // Adjust image dimensions as needed
+    doc.setFontSize(12);
+    doc.setTextColor(0, 0, 0); // Set font color to black
+    const headingText = 'India Meteorological Department\nHydromet Division, New Delhi';
+    const headingText1 = 'COUNTRY AS WHOLE RAINFALL DISTRIBUTION';
+    doc.text(headingText, marginLeft + 25, marginTop + 8); // Adjust position as needed
+    doc.text(headingText1, marginLeft + 50, marginTop + 28);
+
+    doc.autoTable({
+      head: [columns1, columns],
+      body: rows,
+      theme: 'striped',
+      startY: marginTop + cellHeight + 25, // Adjust the vertical position below the image and heading
+      margin: { left: marginLeft },
+      styles: { fontSize: 7 },
+      didDrawCell: function (data: { cell: { text: any; x: number; y: number; width: any; height: any; }; }) {
+        doc.rect(data.cell.x, data.cell.y, data.cell.width, data.cell.height);
+        doc.setDrawColor(0);
+      },
+      didParseCell: function (data: any) {
+        data.cell.styles.fontStyle = 'bold';
+      }
+    });
+
+
+    const columns2 = ['', 'LEGEND', ''];
+    const columns3 = ['CATEGORY', '% DEPARTURES OF RAINFALL', 'COLOUR CODE']; // Update with your second table column names
+
+    const rows2 = [
+      ['Large Excess\n(LE or L.Excess)', '>= 60%', { content: '', styles: { fillColor: '#0096ff' } }],
+      ['Excess (E)', '>= 20% and <= 59%', { content: '', styles: { fillColor: '#32c0f8' } }],
+      ['Normal (N)', '>= -19% and <= +19%', { content: '', styles: { fillColor: '#00cd5b' } }],
+      ['Deficient (D)', '>= -59% and <= -20%', { content: '', styles: { fillColor: '#ff2700' } }],
+      ['Large Deficient\n(LD or L.Deficient)', '>= -99% and <= -60%', { content: '', styles: { fillColor: '#ffff20' } }],
+      ['No Rain(NR)', '= -100%', { content: '', styles: { fillColor: '#ffffff' } }],
+      ['Not Available', 'ND', { content: '', styles: { fillColor: '#c0c0c0' } }],
+      ['Note : ', { content: 'The rainfall values are rounded off up to one place of decimal.', colSpan: 2 }]
+    ];
+    const options2: any = {
+      startY: doc.autoTable.previous.finalY + 10, // Start below the first table
+      margin: { left: marginLeft },
+    };
+
+    // Start a new page
+    doc.addPage();
+
+    // Add the second table to the PDF document
+    doc.autoTable({
+      head: [columns2, columns3],
+      body: rows2,
+      theme: 'striped',
+      didDrawCell: function (data: { cell: { text: any; x: number; y: number; width: any; height: any; }; }) {
+        doc.rect(data.cell.x, data.cell.y, data.cell.width, data.cell.height);
+        doc.setDrawColor(0);
+      },
     });
 
     const filename = 'countrydeparture_data.pdf';
