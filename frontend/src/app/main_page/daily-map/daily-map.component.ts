@@ -451,7 +451,7 @@ export class DailyMapComponent {
           const popupContent = `
             <div style="background-color: white; padding: 5px; font-family: Arial, sans-serif;">
               <div style="color: #002467; font-weight: bold; font-size: 10px;">DISTRICT: ${id1}</div>
-              <div style="color: #002467; font-weight: bold; font-size: 10px;">DAILY RAINFALL: ${rainfall}% </div>
+              <div style="color: #002467; font-weight: bold; font-size: 10px;">DAILY RAINFALL: ${rainfall}mm </div>
             </div>
           `;
           layer.bindPopup(popupContent);
@@ -487,7 +487,7 @@ export class DailyMapComponent {
               const popupContent = `
                 <div style="background-color: white; padding: 5px; font-family: Arial, sans-serif;">
                   <div style="color: #002467; font-weight: bold; font-size: 10px;">DISTRICT: ${id1}</div>
-                  <div style="color: #002467; font-weight: bold; font-size: 10px;">DAILY RAINFALL: ${rainfall}% </div>
+                  <div style="color: #002467; font-weight: bold; font-size: 10px;">DAILY RAINFALL: ${rainfall}mm </div>
                 </div>
               `;
               layer.bindPopup(popupContent);
@@ -523,7 +523,7 @@ export class DailyMapComponent {
             const popupContent = `
               <div style="background-color: white; padding: 5px; font-family: Arial, sans-serif;">
                 <div style="color: #002467; font-weight: bold; font-size: 10px;">DISTRICT: ${id1}</div>
-                <div style="color: #002467; font-weight: bold; font-size: 10px;">DAILY RAINFALL: ${rainfall}% </div>
+                <div style="color: #002467; font-weight: bold; font-size: 10px;">DAILY RAINFALL: ${rainfall}mm </div>
               </div>
             `;
             layer.bindPopup(popupContent);
@@ -559,7 +559,7 @@ export class DailyMapComponent {
             const popupContent = `
               <div style="background-color: white; padding: 5px; font-family: Arial, sans-serif;">
                 <div style="color: #002467; font-weight: bold; font-size: 10px;">DISTRICT: ${id1}</div>
-                <div style="color: #002467; font-weight: bold; font-size: 10px;">DAILY RAINFALL: ${rainfall}% </div>
+                <div style="color: #002467; font-weight: bold; font-size: 10px;">DAILY RAINFALL: ${rainfall}mm </div>
               </div>
             `;
             layer.bindPopup(popupContent);
@@ -573,32 +573,34 @@ export class DailyMapComponent {
         }).addTo(this.map3);
       });
   }
+
   getColorForRainfall(rainfall: number): string {
     const numericId = rainfall;
-
-    if (numericId>=60) {
-      return '#0096ff';
-    }
-    if (numericId>=20 && numericId<=59) {
-      return '#32c0f8';
-    }
-    if (numericId >=-19 && numericId <=19 ) {
-      return '#00cd5b';
-    }
-    if (numericId >= -59 && numericId <= -20) {
-      return '#ff2700';
-    }
-    if (numericId >= -99 && numericId <= -60) {
-      return '#ffff20';
-    }
-    if (numericId <= -100 ) {
+    if (numericId <= 1 ) {
       return '#ffffff';
+    }
+    if (numericId >= 1 && numericId <= 5) {
+      return '#f3ffdd';
+    }
+    if (numericId >= 5 && numericId <= 10) {
+      return '#fff57c';
+    }
+    if (numericId >= 10 && numericId <= 20) {
+      return '#ffa600';
+    }
+    if (numericId >= 20 && numericId <= 35) {
+      return '#00fb3b';
+    }
+    if (numericId >= 35 && numericId <= 50) {
+      return '#fff57c';
+    }
+    if (numericId > 50) {
+      return '#001ca1';
     }
     else {
       return '#c0c0c0';
     }
   }
-
 
   loadGeoJSON1(): void {
     if (this.inputValue && this.inputValue1) {
