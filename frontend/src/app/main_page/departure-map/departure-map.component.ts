@@ -1355,20 +1355,6 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
           content: 'COUNTRY',
           styles: { fillColor: '#85ff86' },
         },
-
-  
-       
-
-        
-       
-    
-
-
-
-
-
-
-
         {
           content: (Math.round(item.dailyrainfall* 10) / 10).toFixed(1),
           styles: { fillColor: '#85ff86' },
