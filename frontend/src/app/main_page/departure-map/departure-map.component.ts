@@ -14,6 +14,7 @@ import { EMPTY, concatMap, filter } from 'rxjs';
   styleUrls: ['./departure-map.component.css']
 })
 export class DepartureMapComponent implements OnInit, AfterViewInit {
+  showMapInCenter:string = 'District';
   tileCount: number = 1;
   mapTileTypes: string[] = ['District'];
   private initialZoom = 4;
@@ -56,7 +57,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
   }
   ngAfterViewInit(): void {
     this.initMap();
-    var mapArray = ['map1','map2','map3','map4'];
+    var mapArray = ['mapdiv2','mapdiv3','mapdiv4','mapdiv5'];
     mapArray.forEach((m:any) => {
       let hh:any = document.getElementById(m);
       hh.style.display = 'none';
@@ -1177,14 +1178,14 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
           }
         });
 
-        const statedailyindistFormatted = statedailyindist !== null && statedailyindist !== undefined && !Number.isNaN(statedailyindist) ? 
+        const statedailyindistFormatted = statedailyindist !== null && statedailyindist !== undefined && !Number.isNaN(statedailyindist) ?
     (Math.round(statedailyindist * 10) / 10).toFixed(1) : 'NA';
-        const statenormalindistFormatted = statenormalindist !== null && statenormalindist !== undefined && !Number.isNaN(statenormalindist) ? 
+        const statenormalindistFormatted = statenormalindist !== null && statenormalindist !== undefined && !Number.isNaN(statenormalindist) ?
         (Math.round(statenormalindist * 10) / 10).toFixed(1): 'NA';
         const statedepindistFormatted = (Math.round(statedepindist)).toFixed(1);
-        const statecumdailyindistFormatted = statecumdailyindist !== null && statecumdailyindist !== undefined && !Number.isNaN(statecumdailyindist) ? 
+        const statecumdailyindistFormatted = statecumdailyindist !== null && statecumdailyindist !== undefined && !Number.isNaN(statecumdailyindist) ?
         (Math.round(statecumdailyindist * 10) / 10).toFixed(1) : 'NA';
-        const statecumnormalindistFormatted = statecumnormalindist !== null && statecumnormalindist !== undefined && !Number.isNaN(statecumnormalindist) ? 
+        const statecumnormalindistFormatted = statecumnormalindist !== null && statecumnormalindist !== undefined && !Number.isNaN(statecumnormalindist) ?
         (Math.round(statecumnormalindist * 10) / 10).toFixed(1): 'NA';
         const statecumdepindistFormatted = (Math.round(statecumdepindist*10)/10).toFixed(1);
 
@@ -1923,7 +1924,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
           const matchedData = this.findMatchingData(id2);
           // let actual: any;
           let rainfall: any;
-         
+
           if(matchedData){
 
             if(Number.isNaN(matchedData.dailyrainfall)){
@@ -1932,14 +1933,14 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
             else{
               rainfall = matchedData.dailydeparturerainfall;
             }
-            
+
           }
           else{
             rainfall = -100
           }
 
           // const rainfall = matchedData ? matchedData.dailydeparturerainfall : -100;
-          
+
           // const actual = matchedData && matchedData.dailyrainfall == 'NaN' ? ' ' : "notnull";
           const color = this.getColorForRainfall1(rainfall);
           return {
@@ -1957,7 +1958,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
           const matchedData = this.findMatchingData(id2);
 
           let rainfall: any;
-         
+
           if(matchedData){
 
             if(Number.isNaN(matchedData.dailyrainfall)){
@@ -1966,7 +1967,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
             else{
               rainfall = matchedData.dailydeparturerainfall;
             }
-            
+
           }
           else{
             rainfall = -100
@@ -2224,7 +2225,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
           textElement.style.position = 'absolute';
           textElement.style.left = `${this.map4.latLngToLayerPoint(center).x - 25}px`;
           textElement.style.top = `${this.map4.latLngToLayerPoint(center).y - 25}px`;
-  
+
           textElement.style.zIndex = '1000';
 
           this.map4.getPanes().overlayPane.appendChild(textElement);
@@ -2409,6 +2410,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     if (event.target.checked == true) {
       if (this.mapTileTypes.length < Number(this.tileCount)) {
         this.mapTileTypes.push(event.target.value);
+        this.autoSetMapTile();
         let ele:any = document.getElementById(mapId);
         ele.style.display = 'block';
       } else {
@@ -2420,10 +2422,35 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       }
     } else {
       this.mapTileTypes = this.mapTileTypes.filter(item => item !== event.target.value);
+      this.autoSetMapTile();
       let ele:any = document.getElementById(mapId);
       ele.style.display = 'none';
     }
   }
-}
 
+  autoSetMapTile(){
+    var dataArray = ['District', 'State', 'SubDivision', 'Homogenous', 'Country'];
+    var index:number = 0;
+    this.mapTileTypes.forEach(x => {
+      if(index){
+        if(index > dataArray.indexOf(x)){
+        }else{
+          index = dataArray.indexOf(x);
+      }
+      }else{
+        index = dataArray.indexOf(x);
+      }
+    })
+    if(this.mapTileTypes.length == 1){
+      this.showMapInCenter = this.mapTileTypes[0];
+    }
+    if(this.mapTileTypes.length == 3){
+      this.showMapInCenter = dataArray[index];
+    }
+    if(this.mapTileTypes.length == 5){
+      this.showMapInCenter = dataArray[index];
+    }
+  }
+
+}
 
