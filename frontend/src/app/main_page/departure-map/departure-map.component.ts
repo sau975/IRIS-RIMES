@@ -194,6 +194,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     let previousregionname = "";
     let districtcumdata = 0;
     let prevsubdivorder = 0;
+    let prevstateorder = 0;
     let prevregionorder = 0;
     for (const item of this.fetchedMasterData) {
       if (item.district_code == previousdistrictid || previousdistrictid == null) {
@@ -216,6 +217,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
           dailyrainfall: stationrainfallsum / numberofstations,
           stateid: previousstateid,
           statename: previousstatename,
+          stateorder : prevstateorder,
           subdivid: previoussubdivid,
           subdivname: previoussubdivname,
           subdivorder : prevsubdivorder,
@@ -246,6 +248,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       previousregionname = item.region_name;
       prevsubdivorder = item.subdivorder;
       prevregionorder = item.regionorder;
+      prevstateorder = item.stateorder;
     }
     this.stationtodistrictdata.push({
       districtid: previousdistrictid,
@@ -257,6 +260,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       dailyrainfall: stationrainfallsum / numberofstations,
       stateid: previousstateid,
       statename: previousstatename,
+      stateorder : prevstateorder,
       subdivid: previoussubdivid,
       subdivname: previoussubdivname,
       subdivorder : prevsubdivorder,
@@ -343,10 +347,13 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       let normal1: number
       if (this.currentDateNormal === 'Jan1' || this.currentDateNormal === 'Mar1' || this.currentDateNormal === 'Jun1' || this.currentDateNormal === 'Oct1') {
         normal1 = item[this.currentDateNormal]
+        if (normal1 == 0) {
+          normal1 = 0.01
+        }
       }
       else {
         normal1 = (item[this.currentDateNormal] - item[this.currentDateNormaly])
-        if (normal1 === 0) {
+        if (normal1 == 0) {
           normal1 = 0.01
         }
       }
@@ -373,7 +380,11 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
           matcheddailyrainfallcum = matchingItem.dailyrainfallcum;
         }
       }
+
       const dailydeparturerainfall = ((matcheddailyrainfall - item1.normalrainfall) / item1.normalrainfall) * 100;
+           if(item1.normalrainfall == 0.01){
+        console.log(item1.normalrainfall, matchingItem.districtname,dailydeparturerainfall)
+      }
       const cumdeparture = ((matcheddailyrainfallcum - item1.cummnormal) / item1.cummnormal) * 100
       if (matchingItem) {
         this.districtdatacum.push({ ...item1, ...matchingItem, dailydeparturerainfall, cumdeparture });
@@ -399,7 +410,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
   processFetchedDatastatedaily(): void {
     this.statefetchedDatadaily = [];
     this.districtdatacum.sort((a, b) => {
-      return a.stateid - b.stateid;
+      return a.stateorder - b.stateorder;
     });
     let product = 0;
     let cumproduct = 0;
@@ -713,24 +724,21 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     console.log(this.regionfetchedDatadepcum)
   }
 
-
-
-
-
-
   processFetchedDatacountrydaily(): void {
     this.countryfetchedDatadaily = [];
-    let dailyrainfall = 0;
-    let dailyrainfallcum = 0;
-    for (const item of this.regionfetchedDatadepcum) {
-      dailyrainfall += item.dailyrainfall;
-      dailyrainfallcum += item.dailyrainfallcum
+    let dailyrainfalldata = 0;
+    let dailyrainfallcumdata = 0;
+    for (const item of this.regionfetchedDatadaily) {
+      dailyrainfalldata += item.dailyrainfall;
+      dailyrainfallcumdata += item.dailyrainfallcum;
     }
+
     this.countryfetchedDatadaily.push({
-      dailyrainfall: dailyrainfall,
-      dailyrainfallcum : dailyrainfallcum,
+      dailyrainfall: dailyrainfalldata/4,
+      dailyrainfallcum : dailyrainfallcumdata/4,
       countryid: 1,
     });
+    console.log(this.countryfetchedDatadaily)
   }
 
   processFetchedDatacountrynormal(): void {
@@ -900,38 +908,17 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
   public month = this.months[this.today.getMonth()];
   public day = String(this.today.getDate()).padStart(2, '0');
 
-  public sortedDataArray: any[] = [];
-  public regions: any[] = [];
-  public sortedSubDivisions: any[] = [];
-  async pushDistrict(item: any, name: string) {
-    if (item.statename == name) {
-      this.sortedDataArray.push(item);
-    }
-  }
 
-  async pushDistrict1(item: any, name: string) {
-    if (item.subdivisionname == name) {
-      this.sortedDataArray.push(item);
-    }
-  }
-
-  async pushRegion(item: any, name: string) {
-    if (item.regionname == name) {
-      this.regions.push(item);
-    }
-  }
-
-  async pushSubDivision(item: any, name: string) {
-    if (item.subdivname == name) {
-      this.sortedSubDivisions.push(item);
-    }
-  }
 
   downloadMapData(): void {
+    // const data = this.districtdatacum.sort((a, b) => {
+    //   return a.subdivorder - b.subdivorder;
+    // });
     const data = this.districtdatacum.sort((a, b) => {
       return a.subdivorder - b.subdivorder;
     });
     const data1 = this.subdivisionfetchedDatadepcum;
+
     const data2 = this.statefetchedDatadepcum;
     const doc = new jsPDF() as any;
 
@@ -956,155 +943,11 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     let Subdivcumnormalindist: number;
     let Subdivcumdepindist: number;
 
-    // Group the data by "subdivisionname"
-    const groupedData = data.reduce((acc, current) => {
-      const group = acc.find((group: any) => group.subdivname === current.subdivname);
-      if (group) {
-        var dist = group.districts.find((i: any) => i.districtname == current.districtname);
-        if (!dist) {
-          group.districts.push(current);
-        }
-      } else {
-        acc.push({ subdivisionname: current.subdivname, districts: [current] });
-      }
-      return acc;
-    }, []);
-    groupedData.forEach((group: any) => {
-      group.districts.sort((a: any, b: any) => a.districtname.localeCompare(b.districtname));
-      group.districts.sort((a: any, b: any) => a.statename.localeCompare(b.statename));
-    });
-    const sortedData = groupedData.flatMap((group: any) => group.districts);
-
-    sortedData.forEach(async (item: any) => {
-      await this.pushDistrict(item, ":A & N ISLAND");
-    })
-    sortedData.forEach(async (item: any) => {
-      await this.pushDistrict(item, "ARUNACHAL PRADESH");
-    })
-    sortedData.forEach(async (item: any) => {
-      await this.pushDistrict(item, "ASSAM");
-    })
-    sortedData.forEach(async (item: any) => {
-      await this.pushDistrict(item, "MEGHALAYA");
-    })
-    sortedData.forEach(async (item: any) => {
-      await this.pushDistrict(item, "NAGALAND");
-    })
-    sortedData.forEach(async (item: any) => {
-      await this.pushDistrict(item, "MANIPUR");
-    })
-    sortedData.forEach(async (item: any) => {
-      await this.pushDistrict(item, "MIZORAM");
-    })
-    sortedData.forEach(async (item: any) => {
-      await this.pushDistrict(item, "TRIPURA");
-    })
-    sortedData.forEach(async (item: any) => {
-      await this.pushDistrict(item, "SIKKIM");
-    })
-    sortedData.forEach(async (item: any) => {
-      await this.pushDistrict(item, "WEST BENGAL");
-    })
-    sortedData.forEach(async (item: any) => {
-      await this.pushDistrict(item, "ORISSA");
-    })
-    sortedData.forEach(async (item: any) => {
-      await this.pushDistrict(item, "JHARKHAND");
-    })
-    sortedData.forEach(async (item: any) => {
-      await this.pushDistrict(item, "BIHAR");
-    })
-    sortedData.forEach(async (item: any) => {
-      await this.pushDistrict(item, "UTTAR PRADESH");
-    })
-    sortedData.forEach(async (item: any) => {
-      await this.pushDistrict(item, "UTTARAKHAND");
-    })
-    sortedData.forEach(async (item: any) => {
-      await this.pushDistrict(item, "HARYANA");
-    })
-    sortedData.forEach(async (item: any) => {
-      await this.pushDistrict(item, "CHANDIGARH (UT)");
-    })
-    sortedData.forEach(async (item: any) => {
-      await this.pushDistrict(item, "DELHI (UT)");
-    })
-    sortedData.forEach(async (item: any) => {
-      await this.pushDistrict(item, "PUNJAB");
-    })
-    sortedData.forEach(async (item: any) => {
-      await this.pushDistrict(item, "HIMACHAL PRADESH");
-    })
-    sortedData.forEach(async (item: any) => {
-      await this.pushDistrict(item, "JAMMU & KASHMIR (UT)");
-    })
-    sortedData.forEach(async (item: any) => {
-      await this.pushDistrict(item, "LADAKH (UT)");
-    })
-    sortedData.forEach(async (item: any) => {
-      await this.pushDistrict(item, "RAJASTHAN");
-    })
-    sortedData.forEach(async (item: any) => {
-      await this.pushDistrict(item, "MADHYA PRADESH");
-    })
-    sortedData.forEach(async (item: any) => {
-      if (item.subdivisionname !== "SAURASHTRA & KUTCH") {
-        await this.pushDistrict(item, "GUJARAT");
-      }
-    })
-    sortedData.forEach(async (item: any) => {
-      await this.pushDistrict(item, "DADRA & NAGAR HAVELI AND DAMAN & DIU (UT)");
-    })
-    sortedData.forEach(async (item: any) => {
-      await this.pushDistrict1(item, "SAURASHTRA & KUTCH");
-    })
-    sortedData.forEach(async (item: any) => {
-      await this.pushDistrict(item, "GOA");
-    })
-    sortedData.forEach(async (item: any) => {
-      await this.pushDistrict(item, "MAHARASHTRA");
-    })
-    sortedData.forEach(async (item: any) => {
-      await this.pushDistrict(item, "CHHATTISGARH");
-    })
-    sortedData.forEach(async (item: any) => {
-      if (item.subdivisionname !== "TN PUDU and KARAIKAL") {
-        await this.pushDistrict(item, "PUDUCHERRY (UT)");
-      }
-    })
-    sortedData.forEach(async (item: any) => {
-      if (item.subdivisionname !== "RAYALASEEMA") {
-        await this.pushDistrict(item, "ANDHRA PRADESH");
-      }
-    })
-    sortedData.forEach(async (item: any) => {
-      await this.pushDistrict(item, "TELANGANA");
-    })
-    sortedData.forEach(async (item: any) => {
-      await this.pushDistrict1(item, "RAYALASEEMA");
-    })
-    sortedData.forEach(async (item: any) => {
-      await this.pushDistrict(item, "TAMIL NADU");
-    })
-    sortedData.forEach(async (item: any) => {
-      if (item.subdivisionname == "TN PUDU and KARAIKAL") {
-        await this.pushDistrict(item, "PUDUCHERRY (UT)");
-      }
-    })
-    sortedData.forEach(async (item: any) => {
-      await this.pushDistrict(item, "KARNATAKA");
-    })
-    sortedData.forEach(async (item: any) => {
-      await this.pushDistrict(item, "KERALA");
-    })
-    sortedData.forEach(async (item: any) => {
-      await this.pushDistrict(item, "LAKSHADWEEP (UT)");
-    })
-
-    this.sortedDataArray.forEach((item: any, index: number) => {
+   data.forEach((item: any, index: number) => {
       let currentsubdivname = item.subdivname;
 
       if (currentsubdivname !== previoussubdivName) {
+
         data1.forEach((item2, index) => {
           if (currentsubdivname === item2.subdivname) {
             Subdivdailyindist = item2.dailyrainfall;
@@ -1115,12 +958,12 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
             Subdivcumdepindist = item2.cumdeparture;
           }
         });
-        const SubdivdailyindistFormatted = Subdivdailyindist !== null && Subdivdailyindist !== undefined && !Number.isNaN(Subdivdailyindist) ? Subdivdailyindist.toFixed(1) : 'NA';
-        const SubdivnormalindistFormatted = Subdivnormalindist !== null && Subdivnormalindist !== undefined && !Number.isNaN(Subdivnormalindist) ? Subdivnormalindist.toFixed(1) : 'NA';
-        const SubdivdepindistFormatted = Math.floor(Subdivdepindist);
-        const SubdivcumdailyindistFormatted = Subdivcumdailyindist !== null && Subdivcumdailyindist !== undefined && !Number.isNaN(Subdivcumdailyindist) ? Subdivcumdailyindist.toFixed(1) : 'NA';
-        const SubdivcumnormalindistFormatted = Subdivcumnormalindist !== null && Subdivcumnormalindist !== undefined && !Number.isNaN(Subdivcumnormalindist) ? Subdivcumnormalindist.toFixed(1) : 'NA';
-        const SubdivcumdepindistFormatted = Math.floor(Subdivcumdepindist);
+        const SubdivdailyindistFormatted = Subdivdailyindist !== null && Subdivdailyindist !== undefined && !Number.isNaN(Subdivdailyindist) ?(Math.round(Subdivdailyindist * 10) / 10).toFixed(1) : 'NA';
+        const SubdivnormalindistFormatted = Subdivnormalindist !== null && Subdivnormalindist !== undefined && !Number.isNaN(Subdivnormalindist) ?(Math.round(Subdivnormalindist * 10) / 10).toFixed(1) : 'NA';
+        const SubdivdepindistFormatted = (Math.round(Subdivdepindist * 10) / 10).toFixed(0);
+        const SubdivcumdailyindistFormatted = Subdivcumdailyindist !== null && Subdivcumdailyindist !== undefined && !Number.isNaN(Subdivcumdailyindist) ?(Math.round(Subdivcumdailyindist * 10) / 10).toFixed(1) : 'NA';
+        const SubdivcumnormalindistFormatted = Subdivcumnormalindist !== null && Subdivcumnormalindist !== undefined && !Number.isNaN(Subdivcumnormalindist) ?(Math.round(Subdivcumnormalindist * 10) / 10).toFixed(1) : 'NA';
+        const SubdivcumdepindistFormatted = (Math.round(Subdivcumdepindist* 10) / 10).toFixed(0);
         stateIndex = 0;
         rows.push([
           {
@@ -1166,12 +1009,12 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
         ])
       }
       let currentstatename = item.statename;
-      if (currentstatename !== previousstateName &&item.subdivname != item.statename && item.statename !=  'ANDAMAN & NICOBAR ISLANDS (UT)') {
+      if (currentstatename !== previousstateName &&item.subdivname != item.statename &&  item.statename != 'ANDAMAN & NICOBAR ISLANDS (UT)') {
         data2.forEach((item1, index) => {
           if (currentstatename === item1.statename) {
             statedailyindist = item1.dailyrainfall;
             statenormalindist = item1.normalrainfall;
-            statedepindist = item1.statedeprainfall;
+            statedepindist = item1.dailydeparturerainfall;
             statecumdailyindist = item1.dailyrainfallcum;
             statecumnormalindist = item1.cummnormal;
             statecumdepindist = item1.cumdeparture;
@@ -1182,7 +1025,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     (Math.round(statedailyindist * 10) / 10).toFixed(1) : 'NA';
         const statenormalindistFormatted = statenormalindist !== null && statenormalindist !== undefined && !Number.isNaN(statenormalindist) ?
         (Math.round(statenormalindist * 10) / 10).toFixed(1): 'NA';
-        const statedepindistFormatted = (Math.round(statedepindist)).toFixed(1);
+        const statedepindistFormatted = (Math.round(statedepindist * 10) / 10).toFixed(1);
         const statecumdailyindistFormatted = statecumdailyindist !== null && statecumdailyindist !== undefined && !Number.isNaN(statecumdailyindist) ?
         (Math.round(statecumdailyindist * 10) / 10).toFixed(1) : 'NA';
         const statecumnormalindistFormatted = statecumnormalindist !== null && statecumnormalindist !== undefined && !Number.isNaN(statecumnormalindist) ?
@@ -1234,11 +1077,11 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
         ])
 
         rows.push([
-          stateIndex,
+          stateIndex, // Serial number
           item.districtname,
           item.dailyrainfall !== null && item.dailyrainfall !== undefined && !Number.isNaN(item.dailyrainfall) ? (Math.round(item.dailyrainfall * 10) / 10).toFixed(1) : ' ',
-          item.normalrainfall !== null && item.normalrainfall !== undefined && !Number.isNaN(item.normalrainfall) ? Math.round(item.normalrainfall * 10) / 10 : 'NA',
-          (item.dailyrainfall !== null && item.dailyrainfall !== undefined && !Number.isNaN(item.dailyrainfall) ?Math.round(item.dailyrainfall * 10) / 10 : ' ') == ' ' ? ' ' : (item.dailydeparturerainfall !== null && item.dailydeparturerainfall !== undefined && !Number.isNaN(item.dailydeparturerainfall) ? Math.round(item.dailydeparturerainfall) + "%" : 'NA'),
+          item.normalrainfall !== null && item.normalrainfall !== undefined && !Number.isNaN(item.normalrainfall) ? item.normalrainfall.toFixed(1) : 'NA',
+          (item.dailyrainfall !== null && item.dailyrainfall !== undefined && !Number.isNaN(item.dailyrainfall) ? item.dailyrainfall.toFixed(1) : ' ') == ' ' ? ' ' : (item.dailydeparturerainfall !== null && item.dailydeparturerainfall !== undefined && !Number.isNaN(item.dailydeparturerainfall) ? Math.round(item.dailydeparturerainfall) + "%" : 'NA'),
           {
             content: this.getCatForRainfall(item.dailydeparturerainfall, item.dailyrainfall !== null && item.dailyrainfall !== undefined && !Number.isNaN(item.dailyrainfall) ? item.dailyrainfall.toFixed(1) : ' '),
             styles: { fillColor: this.getColorForRainfall(item.dailydeparturerainfall, item.dailyrainfall !== null && item.dailyrainfall !== undefined && !Number.isNaN(item.dailyrainfall) ? item.dailyrainfall.toFixed(1) : ' ') }, // Background color
@@ -1276,7 +1119,6 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       previoussubdivName = currentsubdivname;
       previousstateName = currentstatename;
     });
-    // rows.unshift(columns,columns1);
     const tableWidth = 180;
     const cellWidth = 36;
     const cellHeight = 8;
@@ -1284,7 +1126,6 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     const marginTop = 10;
     const fontSize = 10;
 
-    // Define the table options
     const options: any = {
       startY: marginTop,
       margin: { left: marginLeft },
@@ -1302,7 +1143,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       head: [columns1, columns],
       body: rows,
       theme: 'striped',
-      startY: marginTop + cellHeight + 25, // Adjust the vertical position below the image and heading
+      startY: marginTop + cellHeight + 25,
       margin: { left: marginLeft },
       styles: { fontSize: 7 },
       didDrawCell: function (data: { cell: { text: any; x: number; y: number; width: any; height: any; }; }) {
@@ -1329,14 +1170,10 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       ['Note : ', { content: 'The rainfall values are rounded off up to one place of decimal.', colSpan: 2 }]
     ];
     const options2: any = {
-      startY: doc.autoTable.previous.finalY + 10, // Start below the first table
+      startY: doc.autoTable.previous.finalY + 10,
       margin: { left: marginLeft },
     };
-
-    // Start a new page
     doc.addPage();
-
-    // Add the second table to the PDF document
     doc.autoTable({
       head: [columns2, columns3],
       body: rows2,
@@ -1355,7 +1192,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
 
     const data = this.statefetchedDatadepcum.sort((a, b) => a.regionorder - b.regionorder);
     const data1 = this.regionfetchedDatadepcum.sort((a, b) => a.regionid - b.regionid);
-
+    const data2 = this.countryfetchedDatadepcum;
     const doc = new jsPDF() as any;
     const columns1 = [' ', ' ', { content: 'Day : ' + this.formatteddate, colSpan: 4 }, { content: 'Period:01-01-2024 To ' + this.formatteddate, colSpan: 4 }]
     const columns = ['S.No', 'MET.SUBDIVISION/UT/STATE/DISTRICT', 'DAILY', 'NORMAL', 'DEPARTURE', 'CAT', 'DAILY', 'NORMAL', 'DEPARTURE', 'CAT'];
@@ -1468,18 +1305,19 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
         rows.push([
           regionIndex,
           item.statename,
-          item.dailyrainfall !== null && item.dailyrainfall !== undefined && !Number.isNaN(item.dailyrainfall) ? item.dailyrainfall.toFixed(2) : 'NA',
-          item.normalrainfall !== null && item.normalrainfall !== undefined && !Number.isNaN(item.normalrainfall) ? item.normalrainfall.toFixed(2) : 'NA',
+          item.dailyrainfall !== null && item.dailyrainfall !== undefined && !Number.isNaN(item.dailyrainfall) ?(Math.round(item.dailyrainfall* 10) / 10).toFixed(1): 'NA',
+          item.normalrainfall !== null && item.normalrainfall !== undefined && !Number.isNaN(item.normalrainfall) ? (Math.round(item.normalrainfall* 10) / 10).toFixed(1): 'NA',
           (item.dailyrainfall !== null && item.dailyrainfall !== undefined && !Number.isNaN(item.dailyrainfall) ? item.dailyrainfall.toFixed(1) : ' ') == ' ' ? ' ' : (item.dailydeparturerainfall !== null && item.dailydeparturerainfall !== undefined && !Number.isNaN(item.dailydeparturerainfall) ? Math.round(item.dailydeparturerainfall) + "%" : 'NA'),
           {
-            content: this.getCatForRainfall(item.dailydeparturerainfall, item.dailyrainfall !== null && item.dailyrainfall !== undefined && !Number.isNaN(item.dailyrainfall) ? item.dailyrainfall.toFixed(1) : ' '),
+            content: this.getCatForRainfall(item.dailydeparturerainfall, item.dailyrainfall !== null && item.dailyrainfall !== undefined && !Number.isNaN(item.dailyrainfall) ? (Math.round(item.dailydeparturerainfall* 10) / 10).toFixed(1) : ' '),
             styles: { fillColor: this.getColorForRainfall(item.dailydeparturerainfall, item.dailyrainfall !== null && item.dailyrainfall !== undefined && !Number.isNaN(item.dailyrainfall) ? item.dailyrainfall.toFixed(1) : ' ') }, // Background color
           },
-          item.dailyrainfallcum.toFixed(2),
-          item.cummnormal.toFixed(2),
-          item.cumdeparture.toFixed(2),
+          (Math.round(item.dailyrainfallcum* 10) / 10).toFixed(1),
+          (Math.round(item.cummnormal* 10) / 10).toFixed(1),
+          (Math.round(item.cumdeparture* 10) / 10).toFixed(1),
           {
-            content: this.getCatForRainfall(item.cumdeparture),
+            content: this.getCatForRainfall(
+              Math.round(item.cumdeparture*10)/10),
             styles: { fillColor: this.getColorForRainfall(item.cumdeparture) },
           },
         ]);
@@ -1489,26 +1327,65 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
         rows.push([
           regionIndex,
           item.statename,
-          item.dailyrainfall !== null && item.dailyrainfall !== undefined && !Number.isNaN(item.dailyrainfall) ? item.dailyrainfall.toFixed(2) : 'NA',
-          item.normalrainfall !== null && item.normalrainfall !== undefined && !Number.isNaN(item.normalrainfall) ? item.normalrainfall.toFixed(2) : 'NA',
+          item.dailyrainfall !== null && item.dailyrainfall !== undefined && !Number.isNaN(item.dailyrainfall) ?(Math.round(item.dailyrainfall* 10) / 10).toFixed(1): 'NA',
+          item.normalrainfall !== null && item.normalrainfall !== undefined && !Number.isNaN(item.normalrainfall) ? (Math.round(item.normalrainfall* 10) / 10).toFixed(1): 'NA',
           (item.dailyrainfall !== null && item.dailyrainfall !== undefined && !Number.isNaN(item.dailyrainfall) ? item.dailyrainfall.toFixed(1) : ' ') == ' ' ? ' ' : (item.dailydeparturerainfall !== null && item.dailydeparturerainfall !== undefined && !Number.isNaN(item.dailydeparturerainfall) ? Math.round(item.dailydeparturerainfall) + "%" : 'NA'),
           {
-            content: this.getCatForRainfall(item.dailydeparturerainfall, item.dailyrainfall !== null && item.dailyrainfall !== undefined && !Number.isNaN(item.dailyrainfall) ? item.dailyrainfall.toFixed(1) : ' '),
+            content: this.getCatForRainfall(item.dailydeparturerainfall, item.dailyrainfall !== null && item.dailyrainfall !== undefined && !Number.isNaN(item.dailyrainfall) ? (Math.round(item.dailydeparturerainfall* 10) / 10).toFixed(1) : ' '),
             styles: { fillColor: this.getColorForRainfall(item.dailydeparturerainfall, item.dailyrainfall !== null && item.dailyrainfall !== undefined && !Number.isNaN(item.dailyrainfall) ? item.dailyrainfall.toFixed(1) : ' ') }, // Background color
           },
-          item.dailyrainfallcum.toFixed(2),
-          item.cummnormal.toFixed(2),
-          item.cumdeparture.toFixed(2),
+          (Math.round(item.dailyrainfallcum* 10) / 10).toFixed(1),
+          (Math.round(item.cummnormal* 10) / 10).toFixed(1),
+          (Math.round(item.cumdeparture* 10) / 10).toFixed(1),
           {
-            content: this.getCatForRainfall(item.cumdeparture),
+            content: this.getCatForRainfall(
+              Math.round(item.cumdeparture*10)/10),
             styles: { fillColor: this.getColorForRainfall(item.cumdeparture) },
           },
         ]);
       }
       previousregionName = currentregionname;
     });
-    rows.unshift(columns);
+    data2.forEach((item, index) => {
+    rows.push([
+        {
+          content: '',
+          styles: { fillColor: '#85ff86' },
+        },
+        {
+          content: 'COUNTRY',
+          styles: { fillColor: '#85ff86' },
+        },
+        {
+          content: (Math.round(item.dailyrainfall* 10) / 10).toFixed(1),
+          styles: { fillColor: '#85ff86' },
+        },
+        {
+          content:  (Math.round(item.normalrainfall* 10) / 10).toFixed(1),
+          styles: { fillColor: '#85ff86' },
+        },
+        (Math.round(item.dailydeparturerainfall* 10) / 10).toFixed(1),
+        {
+          content: this.getCatForRainfall(item.dailydeparturerainfall),
+          styles: { fillColor: this.getColorForRainfall(item.dailydeparturerainfall) }, // Background color
+        },
+      {
+        content: (Math.round(item.dailyrainfallcum* 10) / 10).toFixed(1),
+        styles: { fillColor: '#85ff86' },
+      },
+      {
+        content:  (Math.round(item.cummnormal* 10) / 10).toFixed(1),
+        styles: { fillColor: '#85ff86' },
+      },
+      (Math.round(item.cumdeparture* 10) / 10).toFixed(1),
+      {
+        content: this.getCatForRainfall(item.cumdeparture),
+        styles: { fillColor: this.getColorForRainfall(item.cumdeparture) }, // Background color
+      },
+    ]);
+  });
 
+    rows.unshift(columns);
     const tableWidth = 180;
     const cellWidth = 36;
     const cellHeight = 8;
@@ -1583,6 +1460,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
   downloadMapData2(): void {
     const data = this.subdivisionfetchedDatadepcum.sort((a, b) => a.regionorder - b.regionorder);
     const data1 = this.regionfetchedDatadepcum;
+    const data2 = this.countryfetchedDatadepcum;
     const doc = new jsPDF() as any;
 
     const columns1 = [' ', ' ', { content: 'Day : ' + this.formatteddate, colSpan: 4 }, { content: 'Period:01-01-2024 To ' + this.formatteddate, colSpan: 4 }]
@@ -1611,12 +1489,12 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
             regioncumdepindist = item1.cumdeparture;
           }
         });
-        const regiondailyindistFormatted = regiondailyindist.toFixed(2);
-        const regionnormalindistFormatted = regionnormalindist.toFixed(2);
-        const regiondepindistFormatted = regiondepindist.toFixed(2);
-        const regioncumdailyindistFormatted = regioncumdailyindist.toFixed(2);
-        const regioncumnormalindistFormatted = regioncumnormalindist.toFixed(2);
-        const regioncumdepindistFormatted = regioncumdepindist.toFixed(2);
+        const regiondailyindistFormatted = (Math.round(regiondailyindist * 10) / 10).toFixed(1);
+        const regionnormalindistFormatted = (Math.round(regionnormalindist * 10) / 10).toFixed(1);
+        const regiondepindistFormatted =(Math.round(regiondepindist * 10) / 10).toFixed(1);
+        const regioncumdailyindistFormatted =(Math.round(regioncumdailyindist * 10) / 10).toFixed(1);
+        const regioncumnormalindistFormatted =(Math.round(regioncumnormalindist * 10) / 10).toFixed(1);
+        const regioncumdepindistFormatted =(Math.round( regioncumdepindist* 10) / 10).toFixed(1);
 
         regionIndex = 1;
         rows.push([
@@ -1665,16 +1543,16 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
         rows.push([
           regionIndex,
           item.subdivname,
-          item.dailyrainfall.toFixed(2),
-          item.normalrainfall.toFixed(2),
-          item.dailydeparturerainfall.toFixed(2),
+          (Math.round(item.dailyrainfall* 10) / 10).toFixed(1),
+          (Math.round(item.normalrainfall* 10) / 10).toFixed(1),
+          (Math.round(item.dailydeparturerainfall* 10) / 10).toFixed(1),
           {
             content: this.getCatForRainfall(item.dailydeparturerainfall),
             styles: { fillColor: this.getColorForRainfall(item.dailydeparturerainfall) },
           },
-          item.dailyrainfallcum.toFixed(2),
-          item.cummnormal.toFixed(2),
-          item.cumdeparture.toFixed(2),
+          (Math.round(item.dailyrainfallcum* 10) / 10).toFixed(1),
+          (Math.round(item.cummnormal* 10) / 10).toFixed(1),
+          (Math.round(item.cumdeparture* 10) / 10).toFixed(1),
           {
             content: this.getCatForRainfall(item.cumdeparture),
             styles: { fillColor: this.getColorForRainfall(item.cumdeparture) },
@@ -1686,16 +1564,16 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
         rows.push([
           regionIndex,
           item.subdivname,
-          item.dailyrainfall.toFixed(2),
-          item.normalrainfall.toFixed(2),
-          item.dailydeparturerainfall.toFixed(2),
+          (Math.round(item.dailyrainfall* 10) / 10).toFixed(1),
+          (Math.round(item.normalrainfall* 10) / 10).toFixed(1),
+          (Math.round(item.dailydeparturerainfall* 10) / 10).toFixed(1),
           {
             content: this.getCatForRainfall(item.dailydeparturerainfall),
             styles: { fillColor: this.getColorForRainfall(item.dailydeparturerainfall) },
           },
-          item.dailyrainfallcum.toFixed(2),
-          item.cummnormal.toFixed(2),
-          item.cumdeparture.toFixed(2),
+          (Math.round(item.dailyrainfallcum* 10) / 10).toFixed(1),
+          (Math.round(item.cummnormal* 10) / 10).toFixed(1),
+          (Math.round(item.cumdeparture* 10) / 10).toFixed(1),
           {
             content: this.getCatForRainfall(item.cumdeparture),
             styles: { fillColor: this.getColorForRainfall(item.cumdeparture) },
@@ -1703,6 +1581,44 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
         ]);
       }
       previousregionName = currentregionname;
+    });
+    data2.forEach((item, index) => {
+      rows.push([
+          {
+            content: '',
+            styles: { fillColor: '#85ff86' },
+          },
+          {
+            content: 'COUNTRY',
+            styles: { fillColor: '#85ff86' },
+          },
+          {
+            content: item.dailyrainfall.toFixed(2),
+            styles: { fillColor: '#85ff86' },
+          },
+          {
+            content: item.normalrainfall.toFixed(2),
+            styles: { fillColor: '#85ff86' },
+          },
+        item.dailydeparturerainfall.toFixed(2),
+        {
+          content: this.getCatForRainfall(item.dailydeparturerainfall),
+          styles: { fillColor: this.getColorForRainfall(item.dailydeparturerainfall) }, // Background color
+        },
+        {
+          content: item.dailyrainfallcum.toFixed(2),
+          styles: { fillColor: '#85ff86' },
+        },
+        {
+          content: item.cummnormal.toFixed(2),
+          styles: { fillColor: '#85ff86' },
+        },
+        item.cumdeparture.toFixed(2),
+        {
+          content: this.getCatForRainfall(item.cumdeparture),
+          styles: { fillColor: this.getColorForRainfall(item.cumdeparture) }, // Background color
+        },
+      ]);
     });
 
     const tableWidth = 180;
@@ -1779,7 +1695,6 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
   downloadMapData3(): void {
     const data = this.regionfetchedDatadepcum;
 
-    // Create a new jsPDF instance
     const doc = new jsPDF() as any;
 
     const columns1 = [' ', ' ', { content: 'Day : ' + this.formatteddate, colSpan: 4 }, { content: 'Period:01-01-2024 To ' + this.formatteddate, colSpan: 4 }];
@@ -1787,36 +1702,35 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
 
     const rows = data.map((item, index) => [
       index + 1, // Serial number
-      item.regionname,
-      item.dailyrainfall.toFixed(2),
-      item.normalrainfall.toFixed(2),
-      item.dailydeparturerainfall.toFixed(2),
+      item.RegionName,
+      (Math.round(item.dailyrainfall* 10) / 10).toFixed(1),
+      (Math.round(item.normalrainfall* 10) / 10).toFixed(1),
+      (Math.round(item.dailydeparturerainfall* 10) / 10).toFixed(1),
       {
         content: this.getCatForRainfall(item.dailydeparturerainfall),
         styles: { fillColor: this.getColorForRainfall(item.dailydeparturerainfall) }, // Background color
       },
-      item.cummdaily.toFixed(2),
-      item.cummnormal.toFixed(2),
-      item.cumdeparture.toFixed(2),
+      (Math.round(item.dailyrainfallcum* 10) / 10).toFixed(1),
+      (Math.round(item.cummnormal* 10) / 10).toFixed(1),
+      (Math.round(item.cumdeparture* 10) / 10).toFixed(1),
       {
         content: this.getCatForRainfall(item.cumdeparture),
         styles: { fillColor: this.getColorForRainfall(item.cumdeparture) }, // Background color
       },
     ]);
-
-    rows.unshift(columns);
     const tableWidth = 180;
     const cellWidth = 36;
     const cellHeight = 8;
     const marginLeft = 10;
     const marginTop = 10;
     const fontSize = 10;
+
     const options: any = {
       startY: marginTop,
       margin: { left: marginLeft },
     };
     const imgData = '/assets/images/IMDlogo_Ipart.png'; // Replace with the actual image path
-    doc.addImage(imgData, 'PNG', marginLeft, marginTop, 20, 20); // Adjust image dimensions as needed
+    doc.addImage(imgData, 'PNG', marginLeft, marginTop, 15, 20); // Adjust image dimensions as needed
     doc.setFontSize(12);
     doc.setTextColor(0, 0, 0); // Set font color to black
     const headingText = 'India Meteorological Department\nHydromet Division, New Delhi';
@@ -1824,7 +1738,6 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     doc.text(headingText, marginLeft + 25, marginTop + 8); // Adjust position as needed
     doc.text(headingText1, marginLeft + 50, marginTop + 28);
 
-    // Add the table to the PDF document
     doc.autoTable({
       head: [columns1, columns],
       body: rows,
@@ -1832,30 +1745,73 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       startY: marginTop + cellHeight + 25, // Adjust the vertical position below the image and heading
       margin: { left: marginLeft },
       styles: { fontSize: 7 },
+      didDrawCell: function (data: { cell: { text: any; x: number; y: number; width: any; height: any; }; }) {
+        doc.rect(data.cell.x, data.cell.y, data.cell.width, data.cell.height);
+        doc.setDrawColor(0);
+      },
+      didParseCell: function (data: any) {
+        data.cell.styles.fontStyle = 'bold';
+      }
     });
 
-    // Save or download the PDF
+
+    const columns2 = ['', 'LEGEND', ''];
+    const columns3 = ['CATEGORY', '% DEPARTURES OF RAINFALL', 'COLOUR CODE']; // Update with your second table column names
+
+    const rows2 = [
+      ['Large Excess\n(LE or L.Excess)', '>= 60%', { content: '', styles: { fillColor: '#0096ff' } }],
+      ['Excess (E)', '>= 20% and <= 59%', { content: '', styles: { fillColor: '#32c0f8' } }],
+      ['Normal (N)', '>= -19% and <= +19%', { content: '', styles: { fillColor: '#00cd5b' } }],
+      ['Deficient (D)', '>= -59% and <= -20%', { content: '', styles: { fillColor: '#ff2700' } }],
+      ['Large Deficient\n(LD or L.Deficient)', '>= -99% and <= -60%', { content: '', styles: { fillColor: '#ffff20' } }],
+      ['No Rain(NR)', '= -100%', { content: '', styles: { fillColor: '#ffffff' } }],
+      ['Not Available', 'ND', { content: '', styles: { fillColor: '#c0c0c0' } }],
+      ['Note : ', { content: 'The rainfall values are rounded off up to one place of decimal.', colSpan: 2 }]
+    ];
+    const options2: any = {
+      startY: doc.autoTable.previous.finalY + 10, // Start below the first table
+      margin: { left: marginLeft },
+    };
+
+    // Start a new page
+    doc.addPage();
+
+    // Add the second table to the PDF document
+    doc.autoTable({
+      head: [columns2, columns3],
+      body: rows2,
+      theme: 'striped',
+      didDrawCell: function (data: { cell: { text: any; x: number; y: number; width: any; height: any; }; }) {
+        doc.rect(data.cell.x, data.cell.y, data.cell.width, data.cell.height);
+        doc.setDrawColor(0);
+      },
+    });
     const filename = 'Regiondeparture_data.pdf';
     doc.save(filename);
   }
   downloadMapData4(): void {
-    const data = this.regionfetchedDatadepcum;
+    const data = this.countryfetchedDatadepcum;
     const doc = new jsPDF() as any;
-    const columns = ['S.No', 'RegionID', 'Regionname', 'Daily Rainfall', 'Normal Rainfall', 'Departure'];
-    // Create a data array for the table
+    const columns1 = [' ', ' ', { content: 'Day : ' + this.formatteddate, colSpan: 4 }, { content: 'Period:01-01-2024 To ' + this.formatteddate, colSpan: 4 }];
+    const columns = ['S.No', 'COUNTRY AS WHOLE', 'DAILY', 'NORMAL', 'DEPARTURE', 'CAT', 'DAILY', 'NORMAL', 'DEPARTURE', 'CAT'];
     const rows = data.map((item, index) => [
-      index + 1,
-      item.regiondepid,
-      item.regionname,
-      item.dailyrainfall.toFixed(2),
-      item.normalrainfall.toFixed(2),
-      item.dailydeparturerainfall.toFixed(2),
+      index + 1, // Serial number
+      'COUNTRY',
+      (Math.round(item.dailyrainfall* 10) / 10).toFixed(1),
+      (Math.round(item.normalrainfall* 10) / 10).toFixed(1),
+      (Math.round(item.dailydeparturerainfall* 10) / 10).toFixed(1),
       {
         content: this.getCatForRainfall(item.dailydeparturerainfall),
         styles: { fillColor: this.getColorForRainfall(item.dailydeparturerainfall) }, // Background color
       },
+      (Math.round(item.dailyrainfallcum* 10) / 10).toFixed(1),
+      (Math.round(item.cummnormal* 10) / 10).toFixed(1),
+      (Math.round(item.cumdeparture* 10) / 10).toFixed(1),
+      {
+        content: this.getCatForRainfall(item.cumdeparture),
+        styles: { fillColor: this.getColorForRainfall(item.cumdeparture) }, // Background color
+      },
     ]);
-    rows.unshift(columns);
     const tableWidth = 180;
     const cellWidth = 36;
     const cellHeight = 8;
@@ -1871,48 +1827,50 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     doc.setFontSize(12);
     doc.setTextColor(0, 0, 0); // Set font color to black
     const headingText = 'India Meteorological Department\nHydromet Division, New Delhi';
-    const headingText1 = 'REGION-WISE RAINFALL DISTRIBUTION';
+    const headingText1 = 'COUNTRY AS WHOLE RAINFALL DISTRIBUTION';
     doc.text(headingText, marginLeft + 25, marginTop + 8); // Adjust position as needed
     doc.text(headingText1, marginLeft + 50, marginTop + 28);
-
-    // Add the table to the PDF document
     doc.autoTable({
-      head: [columns],
+      head: [columns1, columns],
       body: rows,
       theme: 'striped',
       startY: marginTop + cellHeight + 25, // Adjust the vertical position below the image and heading
       margin: { left: marginLeft },
+      styles: { fontSize: 7 },
+      didDrawCell: function (data: { cell: { text: any; x: number; y: number; width: any; height: any; }; }) {
+        doc.rect(data.cell.x, data.cell.y, data.cell.width, data.cell.height);
+        doc.setDrawColor(0);
+      },
+      didParseCell: function (data: any) {
+        data.cell.styles.fontStyle = 'bold';
+      }
     });
-
-    const columns2 = ['CATEGORY', '% DEPARTURES OF RAINFALL', 'COLOUR CODE']; // Update with your second table column names
-
+    const columns2 = ['', 'LEGEND', ''];
+    const columns3 = ['CATEGORY', '% DEPARTURES OF RAINFALL', 'COLOUR CODE']; // Update with your second table column names
     const rows2 = [
-      ['Large Excess\n(LE or L.Excess)', '>= 60%', { styles: { fillColor: '#0096ff' } }],
-      ['Excess (E)', '>= 20% and <= 59%', { styles: { fillColor: '#32c0f8' } }],
-      ['Normal (N)', '>= -19% and <= +19%', { styles: { fillColor: '#00cd5b' } }],
-      ['Deficient (D)', '>= -59% and <= -20%', { styles: { fillColor: '#ff2700' } }],
-      ['Large Deficient\n(LD or L.Deficient)', '>= -99% and <= -60%', { styles: { fillColor: '#ffff20' } }],
-      ['No Rain(NR)', '= -100%', { styles: { fillColor: '#c0c0c0' } }],
-      ['No Data(*)', 'Not Available', { styles: { fillColor: '#ffffff' } }],
+      ['Large Excess\n(LE or L.Excess)', '>= 60%', { content: '', styles: { fillColor: '#0096ff' } }],
+      ['Excess (E)', '>= 20% and <= 59%', { content: '', styles: { fillColor: '#32c0f8' } }],
+      ['Normal (N)', '>= -19% and <= +19%', { content: '', styles: { fillColor: '#00cd5b' } }],
+      ['Deficient (D)', '>= -59% and <= -20%', { content: '', styles: { fillColor: '#ff2700' } }],
+      ['Large Deficient\n(LD or L.Deficient)', '>= -99% and <= -60%', { content: '', styles: { fillColor: '#ffff20' } }],
+      ['No Rain(NR)', '= -100%', { content: '', styles: { fillColor: '#ffffff' } }],
+      ['Not Available', 'ND', { content: '', styles: { fillColor: '#c0c0c0' } }],
       ['Note : ', { content: 'The rainfall values are rounded off up to one place of decimal.', colSpan: 2 }]
     ];
-
-    // Add a header row to the data array for the second table
-
-
-    // Define the table options for the second table
     const options2: any = {
       startY: doc.autoTable.previous.finalY + 10, // Start below the first table
       margin: { left: marginLeft },
     };
-
-    // Add the second table to the PDF document
+    doc.addPage();
     doc.autoTable({
-      head: [columns2],
+      head: [columns2, columns3],
       body: rows2,
       theme: 'striped',
+      didDrawCell: function (data: { cell: { text: any; x: number; y: number; width: any; height: any; }; }) {
+        doc.rect(data.cell.x, data.cell.y, data.cell.width, data.cell.height);
+        doc.setDrawColor(0);
+      },
     });
-
     const filename = 'countrydeparture_data.pdf';
     doc.save(filename);
   }
@@ -1922,7 +1880,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
         style: (feature: any) => {
           const id2 = feature.properties['district_c'];
           const matchedData = this.findMatchingData(id2);
-          // let actual: any;
+
           let rainfall: any;
 
           if(matchedData){
@@ -2279,7 +2237,9 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
   getColorForRainfall(rainfall: any, actual?: string): string {
     const numericId = rainfall;
     let cat = '';
-
+    if (actual == ' ') {
+      return '#c0c0c0';
+    }
     if (numericId > 60) {
       cat = 'LE';
       return '#0096ff';
@@ -2300,7 +2260,6 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       cat = 'LD';
       return '#ffff20';
     }
-
     if (numericId == -100) {
       cat = 'NR';
       return '#ffffff';
@@ -2308,9 +2267,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     if (numericId == ' ') {
       return '#c0c0c0';
     }
-    if (actual == ' ') {
-      return '#c0c0c0';
-    }
+
     else {
       cat = 'ND';
       return '#c0c0c0';
