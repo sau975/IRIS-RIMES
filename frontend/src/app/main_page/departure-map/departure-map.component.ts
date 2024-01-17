@@ -193,6 +193,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     let previousregionname = "";
     let districtcumdata = 0;
     let prevsubdivorder = 0;
+    let prevstateorder = 0;
     let prevregionorder = 0;
     for (const item of this.fetchedMasterData) {
       if (item.district_code == previousdistrictid || previousdistrictid == null) {
@@ -215,6 +216,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
           dailyrainfall: stationrainfallsum / numberofstations,
           stateid: previousstateid,
           statename: previousstatename,
+          stateorder : prevstateorder,
           subdivid: previoussubdivid,
           subdivname: previoussubdivname,
           subdivorder : prevsubdivorder,
@@ -245,6 +247,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       previousregionname = item.region_name;
       prevsubdivorder = item.subdivorder;
       prevregionorder = item.regionorder;
+      prevstateorder = item.stateorder;
     }
     this.stationtodistrictdata.push({
       districtid: previousdistrictid,
@@ -256,6 +259,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       dailyrainfall: stationrainfallsum / numberofstations,
       stateid: previousstateid,
       statename: previousstatename,
+      stateorder : prevstateorder,
       subdivid: previoussubdivid,
       subdivname: previoussubdivname,
       subdivorder : prevsubdivorder,
@@ -342,10 +346,13 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       let normal1: number
       if (this.currentDateNormal === 'Jan1' || this.currentDateNormal === 'Mar1' || this.currentDateNormal === 'Jun1' || this.currentDateNormal === 'Oct1') {
         normal1 = item[this.currentDateNormal]
+        if (normal1 == 0) {
+          normal1 = 0.01
+        }
       }
       else {
         normal1 = (item[this.currentDateNormal] - item[this.currentDateNormaly])
-        if (normal1 === 0) {
+        if (normal1 == 0) {
           normal1 = 0.01
         }
       }
@@ -372,7 +379,11 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
           matcheddailyrainfallcum = matchingItem.dailyrainfallcum;
         }
       }
+
       const dailydeparturerainfall = ((matcheddailyrainfall - item1.normalrainfall) / item1.normalrainfall) * 100;
+           if(item1.normalrainfall == 0.01){
+        console.log(item1.normalrainfall, matchingItem.districtname,dailydeparturerainfall)
+      } 
       const cumdeparture = ((matcheddailyrainfallcum - item1.cummnormal) / item1.cummnormal) * 100
       if (matchingItem) {
         this.districtdatacum.push({ ...item1, ...matchingItem, dailydeparturerainfall, cumdeparture });
@@ -398,7 +409,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
   processFetchedDatastatedaily(): void {
     this.statefetchedDatadaily = [];
     this.districtdatacum.sort((a, b) => {
-      return a.stateid - b.stateid;
+      return a.stateorder - b.stateorder;
     });
     let product = 0;
     let cumproduct = 0;
@@ -719,12 +730,11 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     for (const item of this.regionfetchedDatadaily) {
       dailyrainfalldata += item.dailyrainfall;
       dailyrainfallcumdata += item.dailyrainfallcum;
-      console.log(dailyrainfallcumdata)
     }
     
     this.countryfetchedDatadaily.push({
-      dailyrainfall: dailyrainfalldata,
-      dailyrainfallcum : dailyrainfallcumdata,
+      dailyrainfall: dailyrainfalldata/4,
+      dailyrainfallcum : dailyrainfallcumdata/4,
       countryid: 1,
     });
     console.log(this.countryfetchedDatadaily)
@@ -900,10 +910,14 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
   
 
   downloadMapData(): void {
+    // const data = this.districtdatacum.sort((a, b) => {
+    //   return a.subdivorder - b.subdivorder;
+    // });
     const data = this.districtdatacum.sort((a, b) => {
       return a.subdivorder - b.subdivorder;
     });
     const data1 = this.subdivisionfetchedDatadepcum;
+    
     const data2 = this.statefetchedDatadepcum;
     const doc = new jsPDF() as any;
 
@@ -932,9 +946,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       let currentsubdivname = item.subdivname;
 
       if (currentsubdivname !== previoussubdivName) {
-        if(item.subdivname == 'A&N ISLAND'){
-          console.log(item.subdivname)
-        }
+
         data1.forEach((item2, index) => {
           if (currentsubdivname === item2.subdivname) {
             Subdivdailyindist = item2.dailyrainfall;
@@ -947,10 +959,10 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
         });
         const SubdivdailyindistFormatted = Subdivdailyindist !== null && Subdivdailyindist !== undefined && !Number.isNaN(Subdivdailyindist) ?(Math.round(Subdivdailyindist * 10) / 10).toFixed(1) : 'NA';
         const SubdivnormalindistFormatted = Subdivnormalindist !== null && Subdivnormalindist !== undefined && !Number.isNaN(Subdivnormalindist) ?(Math.round(Subdivnormalindist * 10) / 10).toFixed(1) : 'NA';
-        const SubdivdepindistFormatted = (Math.round(Subdivdepindist * 10) / 10).toFixed(1);
+        const SubdivdepindistFormatted = (Math.round(Subdivdepindist * 10) / 10).toFixed(0);
         const SubdivcumdailyindistFormatted = Subdivcumdailyindist !== null && Subdivcumdailyindist !== undefined && !Number.isNaN(Subdivcumdailyindist) ?(Math.round(Subdivcumdailyindist * 10) / 10).toFixed(1) : 'NA';
         const SubdivcumnormalindistFormatted = Subdivcumnormalindist !== null && Subdivcumnormalindist !== undefined && !Number.isNaN(Subdivcumnormalindist) ?(Math.round(Subdivcumnormalindist * 10) / 10).toFixed(1) : 'NA';
-        const SubdivcumdepindistFormatted = (Math.round(Subdivcumdepindist* 10) / 10).toFixed(1);
+        const SubdivcumdepindistFormatted = (Math.round(Subdivcumdepindist* 10) / 10).toFixed(0);
         stateIndex = 0;
         rows.push([
           {
@@ -1001,7 +1013,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
           if (currentstatename === item1.statename) {
             statedailyindist = item1.dailyrainfall;
             statenormalindist = item1.normalrainfall;
-            statedepindist = item1.statedeprainfall;
+            statedepindist = item1.dailydeparturerainfall;
             statecumdailyindist = item1.dailyrainfallcum;
             statecumnormalindist = item1.cummnormal;
             statecumdepindist = item1.cumdeparture;
@@ -1012,7 +1024,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     (Math.round(statedailyindist * 10) / 10).toFixed(1) : 'NA';
         const statenormalindistFormatted = statenormalindist !== null && statenormalindist !== undefined && !Number.isNaN(statenormalindist) ? 
         (Math.round(statenormalindist * 10) / 10).toFixed(1): 'NA';
-        const statedepindistFormatted = (Math.round(statedepindist)).toFixed(1);
+        const statedepindistFormatted = (Math.round(statedepindist * 10) / 10).toFixed(1);
         const statecumdailyindistFormatted = statecumdailyindist !== null && statecumdailyindist !== undefined && !Number.isNaN(statecumdailyindist) ? 
         (Math.round(statecumdailyindist * 10) / 10).toFixed(1) : 'NA';
         const statecumnormalindistFormatted = statecumnormalindist !== null && statecumnormalindist !== undefined && !Number.isNaN(statecumnormalindist) ? 
@@ -1064,11 +1076,11 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
         ])
 
         rows.push([
-          stateIndex,
+          stateIndex, // Serial number
           item.districtname,
           item.dailyrainfall !== null && item.dailyrainfall !== undefined && !Number.isNaN(item.dailyrainfall) ? (Math.round(item.dailyrainfall * 10) / 10).toFixed(1) : ' ',
-          item.normalrainfall !== null && item.normalrainfall !== undefined && !Number.isNaN(item.normalrainfall) ? Math.round(item.normalrainfall * 10) / 10 : 'NA',
-          (item.dailyrainfall !== null && item.dailyrainfall !== undefined && !Number.isNaN(item.dailyrainfall) ?Math.round(item.dailyrainfall * 10) / 10 : ' ') == ' ' ? ' ' : (item.dailydeparturerainfall !== null && item.dailydeparturerainfall !== undefined && !Number.isNaN(item.dailydeparturerainfall) ? Math.round(item.dailydeparturerainfall) + "%" : 'NA'),
+          item.normalrainfall !== null && item.normalrainfall !== undefined && !Number.isNaN(item.normalrainfall) ? item.normalrainfall.toFixed(1) : 'NA',
+          (item.dailyrainfall !== null && item.dailyrainfall !== undefined && !Number.isNaN(item.dailyrainfall) ? item.dailyrainfall.toFixed(1) : ' ') == ' ' ? ' ' : (item.dailydeparturerainfall !== null && item.dailydeparturerainfall !== undefined && !Number.isNaN(item.dailydeparturerainfall) ? Math.round(item.dailydeparturerainfall) + "%" : 'NA'),
           {
             content: this.getCatForRainfall(item.dailydeparturerainfall, item.dailyrainfall !== null && item.dailyrainfall !== undefined && !Number.isNaN(item.dailyrainfall) ? item.dailyrainfall.toFixed(1) : ' '),
             styles: { fillColor: this.getColorForRainfall(item.dailydeparturerainfall, item.dailyrainfall !== null && item.dailyrainfall !== undefined && !Number.isNaN(item.dailyrainfall) ? item.dailyrainfall.toFixed(1) : ' ') }, // Background color
@@ -1343,28 +1355,42 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
           content: 'COUNTRY',
           styles: { fillColor: '#85ff86' },
         },
+
+  
+       
+
+        
+       
+    
+
+
+
+
+
+
+
         {
-          content: item.dailyrainfall.toFixed(2),
+          content: (Math.round(item.dailyrainfall* 10) / 10).toFixed(1),
           styles: { fillColor: '#85ff86' },
         },
         {
-          content: item.normalrainfall.toFixed(2),
+          content:  (Math.round(item.normalrainfall* 10) / 10).toFixed(1),
           styles: { fillColor: '#85ff86' },
         },
-      item.dailydeparturerainfall.toFixed(2),
+        (Math.round(item.dailydeparturerainfall* 10) / 10).toFixed(1),
+        {
+          content: this.getCatForRainfall(item.dailydeparturerainfall),
+          styles: { fillColor: this.getColorForRainfall(item.dailydeparturerainfall) }, // Background color
+        },
       {
-        content: this.getCatForRainfall(item.dailydeparturerainfall),
-        styles: { fillColor: this.getColorForRainfall(item.dailydeparturerainfall) }, // Background color
-      },
-      {
-        content: item.dailyrainfallcum.toFixed(2),
+        content: (Math.round(item.dailyrainfallcum* 10) / 10).toFixed(1),
         styles: { fillColor: '#85ff86' },
       },
       {
-        content: item.cummnormal.toFixed(2),
+        content:  (Math.round(item.cummnormal* 10) / 10).toFixed(1),
         styles: { fillColor: '#85ff86' },
       },
-      item.cumdeparture.toFixed(2),
+      (Math.round(item.cumdeparture* 10) / 10).toFixed(1),
       {
         content: this.getCatForRainfall(item.cumdeparture),
         styles: { fillColor: this.getColorForRainfall(item.cumdeparture) }, // Background color
@@ -1476,12 +1502,12 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
             regioncumdepindist = item1.cumdeparture;
           }
         });
-        const regiondailyindistFormatted = regiondailyindist.toFixed(2);
-        const regionnormalindistFormatted = regionnormalindist.toFixed(2);
-        const regiondepindistFormatted = regiondepindist.toFixed(2);
-        const regioncumdailyindistFormatted = regioncumdailyindist.toFixed(2);
-        const regioncumnormalindistFormatted = regioncumnormalindist.toFixed(2);
-        const regioncumdepindistFormatted = regioncumdepindist.toFixed(2);
+        const regiondailyindistFormatted = (Math.round(regiondailyindist * 10) / 10).toFixed(1);
+        const regionnormalindistFormatted = (Math.round(regionnormalindist * 10) / 10).toFixed(1); 
+        const regiondepindistFormatted =(Math.round(regiondepindist * 10) / 10).toFixed(1); 
+        const regioncumdailyindistFormatted =(Math.round(regioncumdailyindist * 10) / 10).toFixed(1); 
+        const regioncumnormalindistFormatted =(Math.round(regioncumnormalindist * 10) / 10).toFixed(1); 
+        const regioncumdepindistFormatted =(Math.round( regioncumdepindist* 10) / 10).toFixed(1); 
 
         regionIndex = 1;
         rows.push([
@@ -1530,16 +1556,16 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
         rows.push([
           regionIndex,
           item.subdivname,
-          item.dailyrainfall.toFixed(2),
-          item.normalrainfall.toFixed(2),
-          item.dailydeparturerainfall.toFixed(2),
+          (Math.round(item.dailyrainfall* 10) / 10).toFixed(1),
+          (Math.round(item.normalrainfall* 10) / 10).toFixed(1),
+          (Math.round(item.dailydeparturerainfall* 10) / 10).toFixed(1),
           {
             content: this.getCatForRainfall(item.dailydeparturerainfall),
             styles: { fillColor: this.getColorForRainfall(item.dailydeparturerainfall) },
           },
-          item.dailyrainfallcum.toFixed(2),
-          item.cummnormal.toFixed(2),
-          item.cumdeparture.toFixed(2),
+          (Math.round(item.dailyrainfallcum* 10) / 10).toFixed(1),
+          (Math.round(item.cummnormal* 10) / 10).toFixed(1),
+          (Math.round(item.cumdeparture* 10) / 10).toFixed(1),
           {
             content: this.getCatForRainfall(item.cumdeparture),
             styles: { fillColor: this.getColorForRainfall(item.cumdeparture) },
@@ -1551,16 +1577,16 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
         rows.push([
           regionIndex,
           item.subdivname,
-          item.dailyrainfall.toFixed(2),
-          item.normalrainfall.toFixed(2),
-          item.dailydeparturerainfall.toFixed(2),
+          (Math.round(item.dailyrainfall* 10) / 10).toFixed(1),
+          (Math.round(item.normalrainfall* 10) / 10).toFixed(1),
+          (Math.round(item.dailydeparturerainfall* 10) / 10).toFixed(1),
           {
             content: this.getCatForRainfall(item.dailydeparturerainfall),
             styles: { fillColor: this.getColorForRainfall(item.dailydeparturerainfall) },
           },
-          item.dailyrainfallcum.toFixed(2),
-          item.cummnormal.toFixed(2),
-          item.cumdeparture.toFixed(2),
+          (Math.round(item.dailyrainfallcum* 10) / 10).toFixed(1),
+          (Math.round(item.cummnormal* 10) / 10).toFixed(1),
+          (Math.round(item.cumdeparture* 10) / 10).toFixed(1),
           {
             content: this.getCatForRainfall(item.cumdeparture),
             styles: { fillColor: this.getColorForRainfall(item.cumdeparture) },
@@ -1690,16 +1716,16 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     const rows = data.map((item, index) => [
       index + 1, // Serial number
       item.RegionName,
-      item.dailyrainfall.toFixed(2),
-      item.normalrainfall.toFixed(2),
-      item.dailydeparturerainfall.toFixed(2),
+      (Math.round(item.dailyrainfall* 10) / 10).toFixed(1),
+      (Math.round(item.normalrainfall* 10) / 10).toFixed(1),
+      (Math.round(item.dailydeparturerainfall* 10) / 10).toFixed(1),
       {
         content: this.getCatForRainfall(item.dailydeparturerainfall),
         styles: { fillColor: this.getColorForRainfall(item.dailydeparturerainfall) }, // Background color
       },
-      item.dailyrainfallcum.toFixed(2),
-      item.cummnormal.toFixed(2),
-      item.cumdeparture.toFixed(2),
+      (Math.round(item.dailyrainfallcum* 10) / 10).toFixed(1),
+      (Math.round(item.cummnormal* 10) / 10).toFixed(1),
+      (Math.round(item.cumdeparture* 10) / 10).toFixed(1),
       {
         content: this.getCatForRainfall(item.cumdeparture),
         styles: { fillColor: this.getColorForRainfall(item.cumdeparture) }, // Background color
@@ -1784,16 +1810,16 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     const rows = data.map((item, index) => [
       index + 1, // Serial number
       'COUNTRY',
-      item.dailyrainfall.toFixed(2),
-      item.normalrainfall.toFixed(2),
-      item.dailydeparturerainfall.toFixed(2),
+      (Math.round(item.dailyrainfall* 10) / 10).toFixed(1),
+      (Math.round(item.normalrainfall* 10) / 10).toFixed(1),
+      (Math.round(item.dailydeparturerainfall* 10) / 10).toFixed(1),
       {
         content: this.getCatForRainfall(item.dailydeparturerainfall),
         styles: { fillColor: this.getColorForRainfall(item.dailydeparturerainfall) }, // Background color
       },
-      item.dailyrainfallcum.toFixed(2),
-      item.cummnormal.toFixed(2),
-      item.cumdeparture.toFixed(2),
+      (Math.round(item.dailyrainfallcum* 10) / 10).toFixed(1),
+      (Math.round(item.cummnormal* 10) / 10).toFixed(1),
+      (Math.round(item.cumdeparture* 10) / 10).toFixed(1),
       {
         content: this.getCatForRainfall(item.cumdeparture),
         styles: { fillColor: this.getColorForRainfall(item.cumdeparture) }, // Background color
@@ -2224,7 +2250,9 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
   getColorForRainfall(rainfall: any, actual?: string): string {
     const numericId = rainfall;
     let cat = '';
-
+    if (actual == ' ') {
+      return '#c0c0c0';
+    }
     if (numericId > 60) {
       cat = 'LE';
       return '#0096ff';
@@ -2245,7 +2273,6 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       cat = 'LD';
       return '#ffff20';
     }
-
     if (numericId == -100) {
       cat = 'NR';
       return '#ffffff';
@@ -2253,9 +2280,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     if (numericId == ' ') {
       return '#c0c0c0';
     }
-    if (actual == ' ') {
-      return '#c0c0c0';
-    }
+
     else {
       cat = 'ND';
       return '#c0c0c0';
