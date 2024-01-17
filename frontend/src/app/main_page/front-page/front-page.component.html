@@ -5,7 +5,10 @@
   <div style="margin: 30px 0px 20px 0px;">
     <div class="values">
       <label for="date" id="date_label">Enter Date : </label>
-      <input id="date" type="text" (keyup)="setDateMonth()" [(ngModel)]="date" />
+      <select id="date" type="text" [(ngModel)]="date" (ngModelChange)="setDateMonth()">
+        <option [value]="dt" *ngFor="let dt of allDaysInMonth">{{dt}}</option>
+      </select>
+
       <label for="month" id="month_label"> Enter Month : </label>
       <select id="month" type="text" [(ngModel)]="month" (ngModelChange)="setDateMonth()">
         <option value="01">January</option>
