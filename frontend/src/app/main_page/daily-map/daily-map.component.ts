@@ -12,6 +12,9 @@ import { filter } from 'rxjs';
   styleUrls: ['./daily-map.component.css']
 })
 export class DailyMapComponent {
+  showMapInCenter:string = 'District';
+  tileCount: number = 1;
+  mapTileTypes: string[] = ['District'];
   inputValue: string = '';
   inputValue1: string = '';
   private initialZoom = 4;
@@ -53,13 +56,22 @@ export class DailyMapComponent {
       }
     });
   }
+
+  ngAfterViewInit(): void {
+    this.initMap();
+    var mapArray = ['mapdiv2','mapdiv3','mapdiv4'];
+    mapArray.forEach((m:any) => {
+      let hh:any = document.getElementById(m);
+      hh.style.display = 'none';
+    })
+  }
+
   ngOnInit(): void {
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe(() => {
       location.reload();
     });
-    this.initMap();
     this.loadGeoJSON1();
     this.fetchDataFromBackend();
   }
@@ -762,4 +774,52 @@ export class DailyMapComponent {
         link.click();
       });
   }
+
+  changeMapTile(event: any) {
+    this.tileCount = event;
+  }
+
+  changeMapType(event: any, mapTile: any, mapId:any) {
+    if (event.target.checked == true) {
+      if (this.mapTileTypes.length < Number(this.tileCount)) {
+        this.mapTileTypes.push(event.target.value);
+        this.autoSetMapTile();
+        let ele:any = document.getElementById(mapId);
+        ele.style.display = 'block';
+      } else {
+        alert(`You can't see more than ${this.tileCount} map, Please change the selected tile.`)
+        const checkboxElement: HTMLInputElement | null = document.getElementById(mapTile) as HTMLInputElement;
+        if (checkboxElement) {
+          checkboxElement.checked = false;
+        }
+      }
+    } else {
+      this.mapTileTypes = this.mapTileTypes.filter(item => item !== event.target.value);
+      this.autoSetMapTile();
+      let ele:any = document.getElementById(mapId);
+      ele.style.display = 'none';
+    }
+  }
+
+  autoSetMapTile(){
+    var dataArray = ['District', 'State', 'SubDivision', 'Homogenous'];
+    var index:number = 0;
+    this.mapTileTypes.forEach(x => {
+      if(index){
+        if(index > dataArray.indexOf(x)){
+        }else{
+          index = dataArray.indexOf(x);
+      }
+      }else{
+        index = dataArray.indexOf(x);
+      }
+    })
+    if(this.mapTileTypes.length == 1){
+      this.showMapInCenter = this.mapTileTypes[0];
+    }
+    if(this.mapTileTypes.length == 3){
+      this.showMapInCenter = dataArray[index];
+    }
+  }
 }
+
