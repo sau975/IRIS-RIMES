@@ -712,16 +712,11 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     console.log(this.regionfetchedDatadepcum)
   }
 
-
-
-
-
-
   processFetchedDatacountrydaily(): void {
     this.countryfetchedDatadaily = [];
     let dailyrainfalldata = 0;
     let dailyrainfallcumdata = 0;
-    for (const item of this.regionfetchedDatadepcum) {
+    for (const item of this.regionfetchedDatadaily) {
       dailyrainfalldata += item.dailyrainfall;
       dailyrainfallcumdata += item.dailyrainfallcum;
       console.log(dailyrainfallcumdata)
