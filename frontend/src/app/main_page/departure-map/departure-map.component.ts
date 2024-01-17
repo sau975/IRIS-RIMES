@@ -719,17 +719,20 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
 
   processFetchedDatacountrydaily(): void {
     this.countryfetchedDatadaily = [];
-    let dailyrainfall = 0;
-    let dailyrainfallcum = 0;
+    let dailyrainfalldata = 0;
+    let dailyrainfallcumdata = 0;
     for (const item of this.regionfetchedDatadepcum) {
-      dailyrainfall += item.dailyrainfall;
-      dailyrainfallcum += item.dailyrainfallcum
+      dailyrainfalldata += item.dailyrainfall;
+      dailyrainfallcumdata += item.dailyrainfallcum;
+      console.log(dailyrainfallcumdata)
     }
+    
     this.countryfetchedDatadaily.push({
-      dailyrainfall: dailyrainfall,
-      dailyrainfallcum : dailyrainfallcum,
+      dailyrainfall: dailyrainfalldata,
+      dailyrainfallcum : dailyrainfallcumdata,
       countryid: 1,
     });
+    console.log(this.countryfetchedDatadaily)
   }
 
   processFetchedDatacountrynormal(): void {
@@ -947,12 +950,12 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
             Subdivcumdepindist = item2.cumdeparture;
           }
         });
-        const SubdivdailyindistFormatted = Subdivdailyindist !== null && Subdivdailyindist !== undefined && !Number.isNaN(Subdivdailyindist) ? Subdivdailyindist.toFixed(1) : 'NA';
-        const SubdivnormalindistFormatted = Subdivnormalindist !== null && Subdivnormalindist !== undefined && !Number.isNaN(Subdivnormalindist) ? Subdivnormalindist.toFixed(1) : 'NA';
-        const SubdivdepindistFormatted = Math.floor(Subdivdepindist);
-        const SubdivcumdailyindistFormatted = Subdivcumdailyindist !== null && Subdivcumdailyindist !== undefined && !Number.isNaN(Subdivcumdailyindist) ? Subdivcumdailyindist.toFixed(1) : 'NA';
-        const SubdivcumnormalindistFormatted = Subdivcumnormalindist !== null && Subdivcumnormalindist !== undefined && !Number.isNaN(Subdivcumnormalindist) ? Subdivcumnormalindist.toFixed(1) : 'NA';
-        const SubdivcumdepindistFormatted = Math.floor(Subdivcumdepindist);
+        const SubdivdailyindistFormatted = Subdivdailyindist !== null && Subdivdailyindist !== undefined && !Number.isNaN(Subdivdailyindist) ?(Math.round(Subdivdailyindist * 10) / 10).toFixed(1) : 'NA';
+        const SubdivnormalindistFormatted = Subdivnormalindist !== null && Subdivnormalindist !== undefined && !Number.isNaN(Subdivnormalindist) ?(Math.round(Subdivnormalindist * 10) / 10).toFixed(1) : 'NA';
+        const SubdivdepindistFormatted = (Math.round(Subdivdepindist * 10) / 10).toFixed(1);
+        const SubdivcumdailyindistFormatted = Subdivcumdailyindist !== null && Subdivcumdailyindist !== undefined && !Number.isNaN(Subdivcumdailyindist) ?(Math.round(Subdivcumdailyindist * 10) / 10).toFixed(1) : 'NA';
+        const SubdivcumnormalindistFormatted = Subdivcumnormalindist !== null && Subdivcumnormalindist !== undefined && !Number.isNaN(Subdivcumnormalindist) ?(Math.round(Subdivcumnormalindist * 10) / 10).toFixed(1) : 'NA';
+        const SubdivcumdepindistFormatted = (Math.round(Subdivcumdepindist* 10) / 10).toFixed(1);
         stateIndex = 0;
         rows.push([
           {
@@ -1108,7 +1111,6 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       previoussubdivName = currentsubdivname;
       previousstateName = currentstatename;
     });
-    // rows.unshift(columns,columns1);
     const tableWidth = 180;
     const cellWidth = 36;
     const cellHeight = 8;
@@ -1116,7 +1118,6 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     const marginTop = 10;
     const fontSize = 10;
 
-    // Define the table options
     const options: any = {
       startY: marginTop,
       margin: { left: marginLeft },
@@ -1134,7 +1135,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       head: [columns1, columns],
       body: rows,
       theme: 'striped',
-      startY: marginTop + cellHeight + 25, // Adjust the vertical position below the image and heading
+      startY: marginTop + cellHeight + 25, 
       margin: { left: marginLeft },
       styles: { fontSize: 7 },
       didDrawCell: function (data: { cell: { text: any; x: number; y: number; width: any; height: any; }; }) {
@@ -1161,14 +1162,10 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       ['Note : ', { content: 'The rainfall values are rounded off up to one place of decimal.', colSpan: 2 }]
     ];
     const options2: any = {
-      startY: doc.autoTable.previous.finalY + 10, // Start below the first table
+      startY: doc.autoTable.previous.finalY + 10, 
       margin: { left: marginLeft },
     };
-
-    // Start a new page
     doc.addPage();
-
-    // Add the second table to the PDF document
     doc.autoTable({
       head: [columns2, columns3],
       body: rows2,
@@ -1300,18 +1297,19 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
         rows.push([
           regionIndex,
           item.statename,
-          item.dailyrainfall !== null && item.dailyrainfall !== undefined && !Number.isNaN(item.dailyrainfall) ? item.dailyrainfall.toFixed(2) : 'NA',
-          item.normalrainfall !== null && item.normalrainfall !== undefined && !Number.isNaN(item.normalrainfall) ? item.normalrainfall.toFixed(2) : 'NA',
+          item.dailyrainfall !== null && item.dailyrainfall !== undefined && !Number.isNaN(item.dailyrainfall) ?(Math.round(item.dailyrainfall* 10) / 10).toFixed(1): 'NA',
+          item.normalrainfall !== null && item.normalrainfall !== undefined && !Number.isNaN(item.normalrainfall) ? (Math.round(item.normalrainfall* 10) / 10).toFixed(1): 'NA',
           (item.dailyrainfall !== null && item.dailyrainfall !== undefined && !Number.isNaN(item.dailyrainfall) ? item.dailyrainfall.toFixed(1) : ' ') == ' ' ? ' ' : (item.dailydeparturerainfall !== null && item.dailydeparturerainfall !== undefined && !Number.isNaN(item.dailydeparturerainfall) ? Math.round(item.dailydeparturerainfall) + "%" : 'NA'),
           {
-            content: this.getCatForRainfall(item.dailydeparturerainfall, item.dailyrainfall !== null && item.dailyrainfall !== undefined && !Number.isNaN(item.dailyrainfall) ? item.dailyrainfall.toFixed(1) : ' '),
+            content: this.getCatForRainfall(item.dailydeparturerainfall, item.dailyrainfall !== null && item.dailyrainfall !== undefined && !Number.isNaN(item.dailyrainfall) ? (Math.round(item.dailydeparturerainfall* 10) / 10).toFixed(1) : ' '),
             styles: { fillColor: this.getColorForRainfall(item.dailydeparturerainfall, item.dailyrainfall !== null && item.dailyrainfall !== undefined && !Number.isNaN(item.dailyrainfall) ? item.dailyrainfall.toFixed(1) : ' ') }, // Background color
           },
-          item.dailyrainfallcum.toFixed(2),
-          item.cummnormal.toFixed(2),
-          item.cumdeparture.toFixed(2),
+          (Math.round(item.dailyrainfallcum* 10) / 10).toFixed(1),
+          (Math.round(item.cummnormal* 10) / 10).toFixed(1),
+          (Math.round(item.cumdeparture* 10) / 10).toFixed(1),
           {
-            content: this.getCatForRainfall(item.cumdeparture),
+            content: this.getCatForRainfall(
+              Math.round(item.cumdeparture*10)/10),
             styles: { fillColor: this.getColorForRainfall(item.cumdeparture) },
           },
         ]);
@@ -1321,18 +1319,19 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
         rows.push([
           regionIndex,
           item.statename,
-          item.dailyrainfall !== null && item.dailyrainfall !== undefined && !Number.isNaN(item.dailyrainfall) ? item.dailyrainfall.toFixed(2) : 'NA',
-          item.normalrainfall !== null && item.normalrainfall !== undefined && !Number.isNaN(item.normalrainfall) ? item.normalrainfall.toFixed(2) : 'NA',
+          item.dailyrainfall !== null && item.dailyrainfall !== undefined && !Number.isNaN(item.dailyrainfall) ?(Math.round(item.dailyrainfall* 10) / 10).toFixed(1): 'NA',
+          item.normalrainfall !== null && item.normalrainfall !== undefined && !Number.isNaN(item.normalrainfall) ? (Math.round(item.normalrainfall* 10) / 10).toFixed(1): 'NA',
           (item.dailyrainfall !== null && item.dailyrainfall !== undefined && !Number.isNaN(item.dailyrainfall) ? item.dailyrainfall.toFixed(1) : ' ') == ' ' ? ' ' : (item.dailydeparturerainfall !== null && item.dailydeparturerainfall !== undefined && !Number.isNaN(item.dailydeparturerainfall) ? Math.round(item.dailydeparturerainfall) + "%" : 'NA'),
           {
-            content: this.getCatForRainfall(item.dailydeparturerainfall, item.dailyrainfall !== null && item.dailyrainfall !== undefined && !Number.isNaN(item.dailyrainfall) ? item.dailyrainfall.toFixed(1) : ' '),
+            content: this.getCatForRainfall(item.dailydeparturerainfall, item.dailyrainfall !== null && item.dailyrainfall !== undefined && !Number.isNaN(item.dailyrainfall) ? (Math.round(item.dailydeparturerainfall* 10) / 10).toFixed(1) : ' '),
             styles: { fillColor: this.getColorForRainfall(item.dailydeparturerainfall, item.dailyrainfall !== null && item.dailyrainfall !== undefined && !Number.isNaN(item.dailyrainfall) ? item.dailyrainfall.toFixed(1) : ' ') }, // Background color
           },
-          item.dailyrainfallcum.toFixed(2),
-          item.cummnormal.toFixed(2),
-          item.cumdeparture.toFixed(2),
+          (Math.round(item.dailyrainfallcum* 10) / 10).toFixed(1),
+          (Math.round(item.cummnormal* 10) / 10).toFixed(1),
+          (Math.round(item.cumdeparture* 10) / 10).toFixed(1),
           {
-            content: this.getCatForRainfall(item.cumdeparture),
+            content: this.getCatForRainfall(
+              Math.round(item.cumdeparture*10)/10),
             styles: { fillColor: this.getColorForRainfall(item.cumdeparture) },
           },
         ]);
@@ -1711,9 +1710,6 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
         styles: { fillColor: this.getColorForRainfall(item.cumdeparture) }, // Background color
       },
     ]);
-
-
-
     const tableWidth = 180;
     const cellWidth = 36;
     const cellHeight = 8;
@@ -1787,12 +1783,9 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
   }
   downloadMapData4(): void {
     const data = this.countryfetchedDatadepcum;
-
     const doc = new jsPDF() as any;
-
     const columns1 = [' ', ' ', { content: 'Day : ' + this.formatteddate, colSpan: 4 }, { content: 'Period:01-01-2024 To ' + this.formatteddate, colSpan: 4 }];
     const columns = ['S.No', 'COUNTRY AS WHOLE', 'DAILY', 'NORMAL', 'DEPARTURE', 'CAT', 'DAILY', 'NORMAL', 'DEPARTURE', 'CAT'];
-
     const rows = data.map((item, index) => [
       index + 1, // Serial number
       'COUNTRY',
@@ -1811,16 +1804,12 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
         styles: { fillColor: this.getColorForRainfall(item.cumdeparture) }, // Background color
       },
     ]);
-
-
-
     const tableWidth = 180;
     const cellWidth = 36;
     const cellHeight = 8;
     const marginLeft = 10;
     const marginTop = 10;
     const fontSize = 10;
-
     const options: any = {
       startY: marginTop,
       margin: { left: marginLeft },
@@ -1833,7 +1822,6 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     const headingText1 = 'COUNTRY AS WHOLE RAINFALL DISTRIBUTION';
     doc.text(headingText, marginLeft + 25, marginTop + 8); // Adjust position as needed
     doc.text(headingText1, marginLeft + 50, marginTop + 28);
-
     doc.autoTable({
       head: [columns1, columns],
       body: rows,
@@ -1849,11 +1837,8 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
         data.cell.styles.fontStyle = 'bold';
       }
     });
-
-
     const columns2 = ['', 'LEGEND', ''];
     const columns3 = ['CATEGORY', '% DEPARTURES OF RAINFALL', 'COLOUR CODE']; // Update with your second table column names
-
     const rows2 = [
       ['Large Excess\n(LE or L.Excess)', '>= 60%', { content: '', styles: { fillColor: '#0096ff' } }],
       ['Excess (E)', '>= 20% and <= 59%', { content: '', styles: { fillColor: '#32c0f8' } }],
@@ -1868,11 +1853,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       startY: doc.autoTable.previous.finalY + 10, // Start below the first table
       margin: { left: marginLeft },
     };
-
-    // Start a new page
     doc.addPage();
-
-    // Add the second table to the PDF document
     doc.autoTable({
       head: [columns2, columns3],
       body: rows2,
@@ -1882,7 +1863,6 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
         doc.setDrawColor(0);
       },
     });
-
     const filename = 'countrydeparture_data.pdf';
     doc.save(filename);
   }
@@ -1892,7 +1872,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
         style: (feature: any) => {
           const id2 = feature.properties['district_c'];
           const matchedData = this.findMatchingData(id2);
-          // let actual: any;
+
           let rainfall: any;
          
           if(matchedData){
