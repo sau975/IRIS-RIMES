@@ -581,26 +581,35 @@ export class DailyMapComponent {
 
   getColorForRainfall(rainfall: number): string {
     const numericId = rainfall;
-    if (numericId <= 1 ) {
-      return '#ffffff';
+    if (numericId == 0 ) {
+      return '#808080';
     }
-    if (numericId >= 1 && numericId <= 5) {
-      return '#f3ffdd';
+    if (numericId >= 0.1 && numericId <= 2.4) {
+      return '#90ee90';
     }
-    if (numericId >= 5 && numericId <= 10) {
-      return '#fff57c';
+    if (numericId >= 2.5 && numericId <= 7.5) {
+      return '#008000';
     }
-    if (numericId >= 10 && numericId <= 20) {
-      return '#ffa600';
+    if (numericId >= 7.6 && numericId <= 20.4) {
+      return '#add8e6';
     }
-    if (numericId >= 20 && numericId <= 35) {
-      return '#00fb3b';
+    if (numericId >= 20.5 && numericId <= 35.5) {
+      return '#0000ff';
     }
-    if (numericId >= 35 && numericId <= 50) {
-      return '#fff57c';
+    if (numericId >= 35.6 && numericId <= 64.4) {
+      return '#ffff00';
     }
-    if (numericId > 50) {
-      return '#001ca1';
+    if (numericId >= 64.5 && numericId <= 124.4) {
+      return '#ffd700';
+    }
+    if (numericId >= 124.5 && numericId <= 150.4) {
+      return '#ff8c00';
+    }
+    if (numericId >= 150.5 && numericId <= 204.4) {
+      return '#ff0000';
+    }
+    if (numericId > 204.4) {
+      return '#800000';
     }
     else {
       return '#c0c0c0';
