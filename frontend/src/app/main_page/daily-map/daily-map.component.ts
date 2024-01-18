@@ -332,7 +332,8 @@ export class DailyMapComponent {
   private initMap(): void {
     this.map = L.map('map', {
       center: [26, 76.9629],
-      zoom: this.initialZoom
+      zoom: this.initialZoom,
+      scrollWheelZoom: false
     });
     this.map.on('fullscreenchange', () => {
       if (this.isFullscreen()) {
@@ -343,7 +344,8 @@ export class DailyMapComponent {
     });
     this.map1 = L.map('map1', {
       center: [26, 76.9629],
-      zoom: this.initialZoom
+      zoom: this.initialZoom,
+      scrollWheelZoom: false
     });
 
     this.map1.on('fullscreenchange', () => {
@@ -355,7 +357,8 @@ export class DailyMapComponent {
     });
     this.map2 = L.map('map2', {
       center: [26, 76.9629],
-      zoom: this.initialZoom
+      zoom: this.initialZoom,
+      scrollWheelZoom: false
     });
     this.map2.on('fullscreenchange', () => {
       if (this.isFullscreen()) {
@@ -366,7 +369,8 @@ export class DailyMapComponent {
     });
     this.map3 = L.map('map3', {
       center: [26, 76.9629],
-      zoom: this.initialZoom
+      zoom: this.initialZoom,
+      scrollWheelZoom: false
     });
     this.map3.on('fullscreenchange', () => {
       if (this.isFullscreen()) {

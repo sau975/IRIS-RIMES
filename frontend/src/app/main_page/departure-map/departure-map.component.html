@@ -39,11 +39,10 @@
 
   <div class="container">
     <div class="row">
-      <div class="col-6" id="mapdiv1">
+      <div class="col-6" id="mapdiv1" [ngClass]="(mapTileTypes.length == 1 || mapTileTypes.length == 3 || mapTileTypes.length == 5) && showMapInCenter == 'District' ? 'gridmap' : 'gridmap-another-class'">
         <div class="map-container">
           <div class="map-frame">
             <div
-              [ngClass]="(mapTileTypes.length == 1 || mapTileTypes.length == 3 || mapTileTypes.length == 5) && showMapInCenter == 'District' ? 'gridmap' : 'gridmap-another-class'"
               id="map"
               style="
                 width: 100%;
@@ -184,11 +183,10 @@
           </div>
         </div>
       </div>
-      <div class="col-6" id="mapdiv2">
+      <div class="col-6" id="mapdiv2" [ngClass]="(mapTileTypes.length == 1 ) && showMapInCenter == 'State' ? 'gridmap' : 'gridmap-another-class'">
         <div class="map-container;">
           <div class="map-frame">
             <div
-              [ngClass]="(mapTileTypes.length == 1 ) && showMapInCenter == 'State' ? 'gridmap' : 'gridmap-another-class'"
               id="map1"
               style="
                 width: 100%;
@@ -329,11 +327,10 @@
           </div>
         </div>
       </div>
-      <div class="col-6" id="mapdiv3">
+      <div class="col-6" id="mapdiv3" [ngClass]="(mapTileTypes.length == 1 || mapTileTypes.length == 3 || mapTileTypes.length == 5) && showMapInCenter == 'SubDivision' ? 'gridmap' : 'gridmap-another-class'">
         <div class="map-container;">
           <div class="map-frame">
             <div
-              [ngClass]="(mapTileTypes.length == 1 || mapTileTypes.length == 3 || mapTileTypes.length == 5) && showMapInCenter == 'SubDivision' ? 'gridmap' : 'gridmap-another-class'"
               id="map2"
               style="
                 width: 100%;
@@ -475,11 +472,10 @@
           </div>
         </div>
       </div>
-      <div class="col-6" id="mapdiv4">
+      <div class="col-6" id="mapdiv4" [ngClass]="(mapTileTypes.length == 1 || mapTileTypes.length == 3 || mapTileTypes.length == 5) && showMapInCenter == 'Homogenous' ? 'gridmap' : 'gridmap-another-class'">
         <div class="map-container;">
           <div class="map-frame">
             <div
-              [ngClass]="(mapTileTypes.length == 1 || mapTileTypes.length == 3 || mapTileTypes.length == 5) && showMapInCenter == 'Homogenous' ? 'gridmap' : 'gridmap-another-class'"
               id="map3"
               style="
                 width: 100%;
@@ -622,11 +618,10 @@
           </div>
         </div>
       </div>
-      <div class="col-6" id="mapdiv5">
+      <div class="col-6" id="mapdiv5" [ngClass]="(mapTileTypes.length == 1 || mapTileTypes.length == 3 || mapTileTypes.length == 5) && showMapInCenter == 'Country' ? 'gridmap' : 'gridmap-another-class'">
         <div class="map-container">
           <div class="map-frame">
             <div
-              [ngClass]="(mapTileTypes.length == 1 || mapTileTypes.length == 3 || mapTileTypes.length == 5) && showMapInCenter == 'Country' ? 'gridmap' : 'gridmap-another-class'"
               id="map4"
               style="
                 width: 100%;
