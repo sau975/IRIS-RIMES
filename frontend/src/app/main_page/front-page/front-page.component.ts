@@ -12,6 +12,7 @@ export class FrontPageComponent implements OnInit{
 
   date: string = String(new Date().getDate());
   month: string = String((new Date().getMonth()+1).toString().length == 1 ? ('0' + (new Date().getMonth()+1)) : (new Date().getMonth()+1));
+  year: string = '2024'
   allDaysInMonth:any[]=[];
 
   constructor(
@@ -24,22 +25,11 @@ export class FrontPageComponent implements OnInit{
 
   ngOnInit(): void {}
 
-  getNormalMap(){
-    this.router.navigate(['front-page/normal']);
-  }
-
-  getDailyMap(){
-    this.router.navigate(['front-page/daily']);
-  }
-
-  getDepartureMap(){
-    this.router.navigate(['front-page/departure']);
-  }
-
-  setDateMonth(){
+  setDateMonthYear(){
     let data = {
       date: this.date,
-      month: this.month
+      month: this.month,
+      year: this.year
     }
     this.dataService.setValue(JSON.stringify(data));
     this.getAllDaysInMonth();

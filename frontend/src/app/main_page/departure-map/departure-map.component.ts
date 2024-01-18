@@ -50,6 +50,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
         let selecteddateAndMonth = JSON.parse(value);
         this.today.setDate(selecteddateAndMonth.date)
         this.today.setMonth(selecteddateAndMonth.month - 1)
+        this.today.setUTCFullYear(selecteddateAndMonth.year)
         this.dateCalculation();
         this.fetchDataFromBackend();
       }
@@ -70,7 +71,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       location.reload();
     });
     this.fetchDataFromBackend();
-  }
+      }
 
   dateCalculation() {
     const yesterday = new Date(this.today);

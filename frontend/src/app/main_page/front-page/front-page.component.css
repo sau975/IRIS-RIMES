@@ -95,7 +95,23 @@ img{
   font-size: 18px;
   font-weight: 600;
 }
-
+#year{
+  background-color: #002467;
+  padding: 10px 10px 10px 20px;
+  margin: 6px;
+  width: 150px;
+  font-size: 15px;
+  font-weight: 600;
+  border-radius: 20px;
+  color: white;
+  box-shadow: 5px 5px 5px 2px rgba(0,0,0,0.8);
+}
+#year_label{
+  color: #002467;
+  font-size: 18px;
+  font-weight: 600;
+  margin-left: 15px;
+}
 
 img{
   width: 60px;
@@ -152,3 +168,9 @@ img{
   background: none;
 }
 
+.active {   background-color: #002467;
+  color: white;
+  border-style: solid;
+  border-width: 2px;
+
+}

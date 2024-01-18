@@ -5,12 +5,12 @@
   <div style="margin: 30px 0px 20px 0px;">
     <div class="values">
       <label for="date" id="date_label">Enter Date : </label>
-      <select id="date" type="text" [(ngModel)]="date" (ngModelChange)="setDateMonth()">
+      <select id="date" type="text" [(ngModel)]="date" (ngModelChange)="setDateMonthYear()">
         <option [value]="dt" *ngFor="let dt of allDaysInMonth">{{dt}}</option>
       </select>
 
       <label for="month" id="month_label"> Enter Month : </label>
-      <select id="month" type="text" [(ngModel)]="month" (ngModelChange)="setDateMonth()">
+      <select id="month" type="text" [(ngModel)]="month" (ngModelChange)="setDateMonthYear()">
         <option value="01">January</option>
         <option value="02">February</option>
         <option value="03">March</option>
@@ -24,9 +24,19 @@
         <option value="11">November</option>
         <option value="12">December</option>
       </select>
-      <button type="button" class="load" (click)="getDepartureMap()">Get Departure Map</button>
-      <button type="button" class="load" (click)="getNormalMap()">Get Normal Map</button>
-      <button type="button" class="load" (click)="getDailyMap()">Get Daily Map</button>
+
+      <label for="year" id="year_label">Enter Year : </label>
+      <select id="year" type="text" [(ngModel)]="year" (ngModelChange)="setDateMonthYear()">
+        <option value="2024">2024</option>
+        <option value="2023">2023</option>
+        <option value="2022">2022</option>
+        <option value="2021">2021</option>
+      </select>
+
+      <button type="button" class="load" routerLinkActive='active' routerLink="/front-page/departure">Get Departure Map</button>
+      <button type="button" class="load" routerLinkActive='active' routerLink="/front-page/normal">Get Normal Map</button>
+      <button type="button" class="load" routerLinkActive='active' routerLink="/front-page/daily">Get Daily Map</button>
+
     </div>
   </div>
 
