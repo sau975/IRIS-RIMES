@@ -935,7 +935,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
   }
 
   downloadMapData(): void {
-    const data = this.districtdatacum;
+    const data = this.districtdatacum.sort((a, b) => a.subdivorder - b.subdivorder);
     const data1 = this.subdivisionfetchedDatadepcum;
     const data2 = this.statefetchedDatadepcum;
     const doc = new jsPDF() as any;
