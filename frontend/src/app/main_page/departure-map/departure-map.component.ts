@@ -917,7 +917,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
   }
 
   async pushDistrict1(item: any, name: string) {
-    if (item.subdivisionname == name) {
+    if (item.subdivname == name) {
       this.sortedDataArray.push(item);
     }
   }
@@ -980,7 +980,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     const sortedData = groupedData.flatMap((group: any) => group.districts);
 
     sortedData.forEach(async (item: any) => {
-      await this.pushDistrict(item, "ANDAMAN & NICOBAR ISLANDS");
+      await this.pushDistrict(item, "ANDAMAN & NICOBAR ISLANDS (UT)");
     })
     sortedData.forEach(async (item: any) => {
       await this.pushDistrict(item, "ARUNACHAL PRADESH");
@@ -1010,7 +1010,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       await this.pushDistrict(item, "WEST BENGAL");
     })
     sortedData.forEach(async (item: any) => {
-      await this.pushDistrict(item, "ORISSA");
+      await this.pushDistrict(item, "ODISHA");
     })
     sortedData.forEach(async (item: any) => {
       await this.pushDistrict(item, "JHARKHAND");
@@ -1052,7 +1052,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       await this.pushDistrict(item, "MADHYA PRADESH");
     })
     sortedData.forEach(async (item: any) => {
-      if (item.subdivisionname !== "SAURASHTRA & KUTCH") {
+      if (item.subdivname == "GUJARAT REGION") {
         await this.pushDistrict(item, "GUJARAT");
       }
     })
@@ -1072,12 +1072,12 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       await this.pushDistrict(item, "CHHATTISGARH");
     })
     sortedData.forEach(async (item: any) => {
-      if (item.subdivisionname !== "TN PUDU and KARAIKAL") {
+      if (item.subdivname == "COASTAL ANDHRA PRADESH & YANAM") {
         await this.pushDistrict(item, "PUDUCHERRY (UT)");
       }
     })
     sortedData.forEach(async (item: any) => {
-      if (item.subdivisionname !== "RAYALASEEMA") {
+      if (item.subdivname !== "RAYALSEEMA") {
         await this.pushDistrict(item, "ANDHRA PRADESH");
       }
     })
@@ -1085,13 +1085,15 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       await this.pushDistrict(item, "TELANGANA");
     })
     sortedData.forEach(async (item: any) => {
-      await this.pushDistrict1(item, "RAYALASEEMA");
+      await this.pushDistrict1(item, "RAYALSEEMA");
     })
     sortedData.forEach(async (item: any) => {
-      await this.pushDistrict(item, "TAMIL NADU");
+      if (item.subdivname == "TAMILNADU & PUDUCHERRY & KARAIKAL") {
+        await this.pushDistrict(item, "TAMILNADU");
+      }
     })
     sortedData.forEach(async (item: any) => {
-      if (item.subdivisionname == "TN PUDU and KARAIKAL") {
+      if (item.subdivname == "TAMILNADU & PUDUCHERRY & KARAIKAL" || item.subdivname == "KERALA & MAHE") {
         await this.pushDistrict(item, "PUDUCHERRY (UT)");
       }
     })
