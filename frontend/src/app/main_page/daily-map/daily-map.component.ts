@@ -73,7 +73,7 @@ export class DailyMapComponent {
     ).subscribe(() => {
       location.reload();
     });
-    this.loadGeoJSON1();
+    // this.loadGeoJSON1();
     this.fetchDataFromBackend();
   }
   dateCalculation(){
