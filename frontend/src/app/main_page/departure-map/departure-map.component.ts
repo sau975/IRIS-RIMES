@@ -92,6 +92,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     this.currentDateNormal = `${currmonth}${this.dd}`;
     this.currentDateNormaly = `${currmonthy}${ddy}`;
     this.currentDateDaily = `${this.dd.padStart(2, '0')}_${currmonth}`;
+    console.log(this.currentDateDaily, "dateeeeee")
   }
   fetchDataFromBackend(): void {
     this.dataService.fetchMasterFile().pipe(
@@ -400,9 +401,22 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     }, {});
 
     this.districtdatacum.forEach((obj: any) => {
+      // if(obj.districtid == '10304018'){
+      //   console.log(array2Map[obj.districtid], "ooo")
+      // }
       if (array2Map.hasOwnProperty(obj.districtid)) {
+        // if(obj.districtid == '10304018'){
+        //   console.log(obj.cummnormal, (Number(array2Map[obj.districtid].toFixed(1)) - obj.cummnormal) / obj.cummnormal * 100, "pppppp")
+        // }
+
         obj.dailyrainfallcum = array2Map[obj.districtid];
-        obj.cumdeparture = (array2Map[obj.districtid] - obj.cummnormal) / obj.cummnormal * 100;
+        obj.cumdeparture = (Number(array2Map[obj.districtid].toFixed(1)) - obj.cummnormal) / obj.cummnormal * 100;
+        // if(obj.cummnormal == 0){
+        //   var cumnor = obj.cummnormal == 0 ? 1 : obj.cummnormal;
+        //   obj.cumdeparture = (array2Map[obj.districtid].toFixed(1) - cumnor) / cumnor * 100;
+        // }else{
+        //   obj.cumdeparture = ((array2Map[obj.districtid].toFixed(1) == 0 ? 0.1 : array2Map[obj.districtid].toFixed(1)) - obj.cummnormal) / obj.cummnormal * 100;
+        // }
       }
     });
   }
@@ -935,6 +949,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
   }
 
   downloadMapData(): void {
+    this.sortedDataArray = [];
     const data = this.districtdatacum.sort((a, b) => a.subdivorder - b.subdivorder);
     const data1 = this.subdivisionfetchedDatadepcum;
     const data2 = this.statefetchedDatadepcum;
@@ -1215,7 +1230,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
             styles: { fillColor: '#dbb5f7' }, // Background color
           },
           {
-            content: String(statedepindistFormatted) == "NaN" ? 0 + "%" : statedepindistFormatted + "%",
+            content: String(statedepindistFormatted) == "NaN" ? 0 + "%" : Math.round(Number(statedepindistFormatted)) + "%",
             styles: { fillColor: '#dbb5f7' }, // Background color
           },
           {
@@ -1231,7 +1246,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
             styles: { fillColor: '#dbb5f7' }, // Background color
           },
           {
-            content: String(statecumdepindistFormatted) == "NaN" ? 0 + "%" : statecumdepindistFormatted + "%",
+            content: String(statecumdepindistFormatted) == "NaN" ? 0 + "%" : Math.round(Number(statecumdepindistFormatted)) + "%",
             styles: { fillColor: '#dbb5f7' }, // Background color
           },
           {
@@ -1245,17 +1260,17 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
           item.districtname,
           item.dailyrainfall !== null && item.dailyrainfall !== undefined && !Number.isNaN(item.dailyrainfall) ? (Math.round(item.dailyrainfall * 10) / 10).toFixed(1) : ' ',
           item.normalrainfall !== null && item.normalrainfall !== undefined && !Number.isNaN(item.normalrainfall) ? item.normalrainfall.toFixed(1) : 'NA',
-          (item.dailyrainfall !== null && item.dailyrainfall !== undefined && !Number.isNaN(item.dailyrainfall) ? item.dailyrainfall.toFixed(1) : ' ') == ' ' ? ' ' : (item.dailydeparturerainfall !== null && item.dailydeparturerainfall !== undefined && !Number.isNaN(item.dailydeparturerainfall) ? Math.round(item.dailydeparturerainfall) + "%" : 'NA'),
+          (item.dailyrainfall !== null && item.dailyrainfall !== undefined && !Number.isNaN(item.dailyrainfall) ? item.dailyrainfall.toFixed(1) : ' ') == ' ' ? ' ' : (item.dailydeparturerainfall !== null && item.dailydeparturerainfall !== undefined && !Number.isNaN(item.dailydeparturerainfall) ? Math.round(item.dailydeparturerainfall) > 10000 ? 10000 + "%" : Math.round(item.dailydeparturerainfall) + "%" : 'NA'),
           {
-            content: this.getCatForRainfall(item.dailydeparturerainfall, item.dailyrainfall !== null && item.dailyrainfall !== undefined && !Number.isNaN(item.dailyrainfall) ? item.dailyrainfall.toFixed(1) : ' '),
-            styles: { fillColor: this.getColorForRainfall(item.dailydeparturerainfall, item.dailyrainfall !== null && item.dailyrainfall !== undefined && !Number.isNaN(item.dailyrainfall) ? item.dailyrainfall.toFixed(1) : ' ') }, // Background color
+            content: this.getCatForRainfall(Math.round(item.dailydeparturerainfall), item.dailyrainfall !== null && item.dailyrainfall !== undefined && !Number.isNaN(item.dailyrainfall) ? item.dailyrainfall.toFixed(1) : ' '),
+            styles: { fillColor: this.getColorForRainfall(Math.round(item.dailydeparturerainfall), item.dailyrainfall !== null && item.dailyrainfall !== undefined && !Number.isNaN(item.dailyrainfall) ? item.dailyrainfall.toFixed(1) : ' ') }, // Background color
           },
-          item.dailyrainfallcum !== null && item.dailyrainfallcum !== undefined && !Number.isNaN(item.dailyrainfallcum) ? item.dailyrainfallcum.toFixed(1) : 'NA',
-          item.cummnormal !== null && item.cummnormal !== undefined && !Number.isNaN(item.cummnormal) ? item.cummnormal.toFixed(1) : 'NA',
-          item.cumdeparture !== null && item.cumdeparture !== undefined && !Number.isNaN(item.cumdeparture) ? Math.round(item.cumdeparture) + "%" : 'NA',
+          item.dailyrainfallcum !== null && item.dailyrainfallcum !== undefined && !Number.isNaN(item.dailyrainfallcum) && !Number.isNaN(item.dailyrainfall) ? item.dailyrainfallcum.toFixed(1) : ' ',
+          item.cummnormal !== null && item.cummnormal !== undefined && !Number.isNaN(item.cummnormal) ? item.cummnormal.toFixed(1) : ' ',
+          item.cumdeparture !== null && item.cumdeparture !== undefined && !Number.isNaN(item.cumdeparture) ? Math.round(item.cumdeparture) + "%" : '-100%',
           {
-            content: this.getCatForRainfall(item.cumdeparture),
-            styles: { fillColor: this.getColorForRainfall(item.cumdeparture) }, // Background color
+            content: this.getCatForRainfall(!Number.isNaN(item.cumdeparture) ? Math.round(item.cumdeparture) : -100, !Number.isNaN(item.dailyrainfall) ? 'notnan' : ' '),
+            styles: { fillColor: this.getColorForRainfall(!Number.isNaN(item.cumdeparture) ? Math.round(item.cumdeparture) : -100, !Number.isNaN(item.dailyrainfall) ? 'notnan' : ' ')}, // Background color
           },
         ]);
       }
@@ -1266,20 +1281,25 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
           item.districtname,
           item.dailyrainfall !== null && item.dailyrainfall !== undefined && !Number.isNaN(item.dailyrainfall) ? (Math.round(item.dailyrainfall * 10) / 10).toFixed(1) : ' ',
           item.normalrainfall !== null && item.normalrainfall !== undefined && !Number.isNaN(item.normalrainfall) ? item.normalrainfall.toFixed(1) : 'NA',
-          (item.dailyrainfall !== null && item.dailyrainfall !== undefined && !Number.isNaN(item.dailyrainfall) ? item.dailyrainfall.toFixed(1) : ' ') == ' ' ? ' ' : (item.dailydeparturerainfall !== null && item.dailydeparturerainfall !== undefined && !Number.isNaN(item.dailydeparturerainfall) ? Math.round(item.dailydeparturerainfall) + "%" : 'NA'),
+          (item.dailyrainfall !== null && item.dailyrainfall !== undefined && !Number.isNaN(item.dailyrainfall) ? item.dailyrainfall.toFixed(1) : ' ') == ' ' ? ' ' : (item.dailydeparturerainfall !== null && item.dailydeparturerainfall !== undefined && !Number.isNaN(item.dailydeparturerainfall) ? Math.round(item.dailydeparturerainfall) > 10000 ? 10000 + "%" : Math.round(item.dailydeparturerainfall) + "%" : 'NA'),
           {
-            content: this.getCatForRainfall(item.dailydeparturerainfall, item.dailyrainfall !== null && item.dailyrainfall !== undefined && !Number.isNaN(item.dailyrainfall) ? item.dailyrainfall.toFixed(1) : ' '),
-            styles: { fillColor: this.getColorForRainfall(item.dailydeparturerainfall, item.dailyrainfall !== null && item.dailyrainfall !== undefined && !Number.isNaN(item.dailyrainfall) ? item.dailyrainfall.toFixed(1) : ' ') }, // Background color
+            content: this.getCatForRainfall(Math.round(item.dailydeparturerainfall), item.dailyrainfall !== null && item.dailyrainfall !== undefined && !Number.isNaN(item.dailyrainfall) ? item.dailyrainfall.toFixed(1) : ' '),
+            styles: { fillColor: this.getColorForRainfall(Math.round(item.dailydeparturerainfall), item.dailyrainfall !== null && item.dailyrainfall !== undefined && !Number.isNaN(item.dailyrainfall) ? item.dailyrainfall.toFixed(1) : ' ') }, // Background color
           },
-          item.dailyrainfallcum !== null && item.dailyrainfallcum !== undefined && !Number.isNaN(item.dailyrainfallcum) ? item.dailyrainfallcum.toFixed(1) : 'NA',
-          item.cummnormal !== null && item.cummnormal !== undefined && !Number.isNaN(item.cummnormal) ? item.cummnormal.toFixed(1) : 'NA',
-          item.cumdeparture !== null && item.cumdeparture !== undefined && !Number.isNaN(item.cumdeparture) ? Math.round(item.cumdeparture) + "%" : 'NA',
+          item.dailyrainfallcum !== null && item.dailyrainfallcum !== undefined && !Number.isNaN(item.dailyrainfallcum) && !Number.isNaN(item.dailyrainfall) ? item.dailyrainfallcum.toFixed(1) : ' ',
+          item.cummnormal !== null && item.cummnormal !== undefined && !Number.isNaN(item.cummnormal) ? item.cummnormal.toFixed(1) : ' ',
+          item.cumdeparture !== null && item.cumdeparture !== undefined && !Number.isNaN(item.cumdeparture) ? Math.round(item.cumdeparture) + "%" : '-100%',
           {
-            content: this.getCatForRainfall(item.cumdeparture),
-            styles: { fillColor: this.getColorForRainfall(item.cumdeparture) }, // Background color
+            content: this.getCatForRainfall(!Number.isNaN(item.cumdeparture) ? Math.round(item.cumdeparture) : -100, !Number.isNaN(item.dailyrainfall) ? 'notnan' : ' '),
+            styles: { fillColor: this.getColorForRainfall(!Number.isNaN(item.cumdeparture) ? Math.round(item.cumdeparture) : -100, !Number.isNaN(item.dailyrainfall) ? 'notnan' : ' ')}, // Background color
           },
         ]);
       }
+      if(item.districtname == 'TAPI'){
+        console.log(item, item.dailyrainfall, item.cumdeparture, "pppp")
+      }
+
+
       previoussubdivName = currentsubdivname;
       previousstateName = currentstatename;
     });
@@ -2404,7 +2424,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     if (actual == ' ') {
       return '#c0c0c0';
     }
-    if (numericId > 60) {
+    if (numericId >= 60) {
       cat = 'LE';
       return '#0096ff';
     }
@@ -2440,7 +2460,10 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
   }
   getCatForRainfall(rainfall: number, actual?: string): string {
     const numericId = rainfall;
-    if (numericId > 60) {
+    if (actual == ' ') {
+      return 'ND';
+    }
+    if (numericId >= 60) {
       return 'LE';
     }
     if (numericId >= 20 && numericId <= 59) {
@@ -2454,9 +2477,6 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     }
     if (numericId >= -99 && numericId <= -60) {
       return 'LD';
-    }
-    if (actual == ' ') {
-      return 'ND';
     }
     if (numericId == -100) {
       return 'NR';
