@@ -51,7 +51,7 @@ export class DailyMapComponent {
         let selecteddateAndMonth = JSON.parse(value);
         this.today.setDate(selecteddateAndMonth.date)
         this.today.setMonth(selecteddateAndMonth.month-1)
-        this.today.setUTCFullYear(selecteddateAndMonth.year)
+        this.today.setFullYear(selecteddateAndMonth.year)
         this.dateCalculation();
         this.fetchDataFromBackend();
       }
@@ -95,8 +95,9 @@ export class DailyMapComponent {
 
     this.currentDateNormal = `${currmonth}${this.dd}`;
     this.currentDateNormaly = `${currmonthy}${ddy}`;
-    this.currentDateDaily = `${this.dd.padStart(2, '0')}_${currmonth}`;
-    console.log(this.currentDateDaily)
+    const selectedYear = String(year).slice(-2);
+    this.currentDateDaily = `${this.dd.padStart(2, '0')}_${currmonth}_${selectedYear}`;
+    console.log(this.currentDateDaily, "dateeeeee")
   }
   fetchDataFromBackend(): void {
     this.dataService.fetchData().subscribe(

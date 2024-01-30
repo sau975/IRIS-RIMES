@@ -50,6 +50,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
         let selecteddateAndMonth = JSON.parse(value);
         this.today.setDate(selecteddateAndMonth.date)
         this.today.setMonth(selecteddateAndMonth.month - 1)
+        this.today.setFullYear(selecteddateAndMonth.year)
         this.dateCalculation();
         this.fetchDataFromBackend();
       }
@@ -91,7 +92,8 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
 
     this.currentDateNormal = `${currmonth}${this.dd}`;
     this.currentDateNormaly = `${currmonthy}${ddy}`;
-    this.currentDateDaily = `${this.dd.padStart(2, '0')}_${currmonth}`;
+    const selectedYear = String(year).slice(-2);
+    this.currentDateDaily = `${this.dd.padStart(2, '0')}_${currmonth}_${selectedYear}`;
     console.log(this.currentDateDaily, "dateeeeee")
   }
   fetchDataFromBackend(): void {
