@@ -401,22 +401,12 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     }, {});
 
     this.districtdatacum.forEach((obj: any) => {
-      // if(obj.districtid == '10304018'){
-      //   console.log(array2Map[obj.districtid], "ooo")
-      // }
       if (array2Map.hasOwnProperty(obj.districtid)) {
-        // if(obj.districtid == '10304018'){
-        //   console.log(obj.cummnormal, (Number(array2Map[obj.districtid].toFixed(1)) - obj.cummnormal) / obj.cummnormal * 100, "pppppp")
-        // }
+        let decimalPlaces = 1;
+        let roundedNumber = Math.round(array2Map[obj.districtid] * Math.pow(10, decimalPlaces)) / Math.pow(10, decimalPlaces);
 
-        obj.dailyrainfallcum = array2Map[obj.districtid];
-        obj.cumdeparture = (Number(array2Map[obj.districtid].toFixed(1)) - obj.cummnormal) / obj.cummnormal * 100;
-        // if(obj.cummnormal == 0){
-        //   var cumnor = obj.cummnormal == 0 ? 1 : obj.cummnormal;
-        //   obj.cumdeparture = (array2Map[obj.districtid].toFixed(1) - cumnor) / cumnor * 100;
-        // }else{
-        //   obj.cumdeparture = ((array2Map[obj.districtid].toFixed(1) == 0 ? 0.1 : array2Map[obj.districtid].toFixed(1)) - obj.cummnormal) / obj.cummnormal * 100;
-        // }
+        obj.dailyrainfallcum = roundedNumber;
+        obj.cumdeparture = (Number(roundedNumber.toFixed(1)) - obj.cummnormal) / obj.cummnormal * 100;
       }
     });
   }
@@ -1182,8 +1172,8 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
             styles: { fillColor: '#4bebfb' }, // Background color
           },
           {
-            content: this.getCatForRainfall(Subdivcumdepindist),
-            styles: { fillColor: this.getColorForRainfall(Subdivcumdepindist) },
+            content: this.getCatForRainfall(Number(SubdivcumdepindistFormatted)),
+            styles: { fillColor: this.getColorForRainfall(SubdivcumdepindistFormatted) },
           },
         ])
       }
@@ -1201,12 +1191,12 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
         });
 
         const statedailyindistFormatted = statedailyindist !== null && statedailyindist !== undefined && !Number.isNaN(statedailyindist) ?
-    (Math.round(statedailyindist * 10) / 10).toFixed(1) : 'NA';
+    (Math.round(statedailyindist * 10) / 10).toFixed(1) : '0.0';
         const statenormalindistFormatted = statenormalindist !== null && statenormalindist !== undefined && !Number.isNaN(statenormalindist) ?
         (Math.round(statenormalindist * 10) / 10).toFixed(1): 'NA';
         const statedepindistFormatted = (Math.round(statedepindist * 10) / 10).toFixed(1);
         const statecumdailyindistFormatted = statecumdailyindist !== null && statecumdailyindist !== undefined && !Number.isNaN(statecumdailyindist) ?
-        (Math.round(statecumdailyindist * 10) / 10).toFixed(1) : 'NA';
+        (Math.round(statecumdailyindist * 10) / 10).toFixed(1) : '0.0';
         const statecumnormalindistFormatted = statecumnormalindist !== null && statecumnormalindist !== undefined && !Number.isNaN(statecumnormalindist) ?
         (Math.round(statecumnormalindist * 10) / 10).toFixed(1): 'NA';
         const statecumdepindistFormatted = (Math.round(statecumdepindist*10)/10).toFixed(1);
@@ -1294,9 +1284,6 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
             styles: { fillColor: this.getColorForRainfall(!Number.isNaN(item.cumdeparture) ? Math.round(item.cumdeparture) : -100, !Number.isNaN(item.dailyrainfall) ? 'notnan' : ' ')}, // Background color
           },
         ]);
-      }
-      if(item.districtname == 'TAPI'){
-        console.log(item, item.dailyrainfall, item.cumdeparture, "pppp")
       }
 
 
