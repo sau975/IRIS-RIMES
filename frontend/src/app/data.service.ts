@@ -8,8 +8,8 @@ import { BehaviorSubject, Observable } from 'rxjs';
 })
 export class DataService {
 
-  // private baseUrl = 'http://203.156.108.107:3000';
-  private baseUrl = 'http://localhost:3000';
+   private baseUrl = 'http://203.156.108.107:3000';
+  //private baseUrl = 'http://localhost:3000';
 
   constructor(private http: HttpClient) {}
   addData(data: any): Observable<any> {
