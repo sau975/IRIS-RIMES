@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
@@ -31,6 +31,7 @@ import { FrontPageComponent } from './main_page/front-page/front-page.component'
 import { HeaderComponent } from './main_page/header/header.component';
 import { NavbarComponent } from './main_page/navbar/navbar.component';
 import { NormalMapComponent } from './main_page/normal-map/normal-map.component';
+import { WeeklyDepartureMapComponent } from './main_page/weekly-departure-map/weekly-departure-map.component';
 
 @NgModule({
   declarations: [
@@ -44,7 +45,8 @@ import { NormalMapComponent } from './main_page/normal-map/normal-map.component'
     DepartureMapComponent,
     DailyMapComponent,
     HeaderComponent,
-    NavbarComponent
+    NavbarComponent,
+    WeeklyDepartureMapComponent
   ],
   imports: [
     HttpClientModule,
@@ -67,7 +69,7 @@ import { NormalMapComponent } from './main_page/normal-map/normal-map.component'
     MatInputModule,
     MatButtonToggleModule
   ],
-  providers: [AuthGuard],
+  providers: [AuthGuard, DatePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

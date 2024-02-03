@@ -8,6 +8,7 @@ import { AuthGuard } from './auth-guard';
 import { DepartureMapComponent } from './main_page/departure-map/departure-map.component';
 import { NormalMapComponent } from './main_page/normal-map/normal-map.component';
 import { DailyMapComponent } from './main_page/daily-map/daily-map.component';
+import { WeeklyDepartureMapComponent } from './main_page/weekly-departure-map/weekly-departure-map.component';
 
 
 const routes: Routes = [
@@ -17,6 +18,7 @@ const routes: Routes = [
   { path: 'front-page', component: FrontPageComponent, canActivate: [AuthGuard], children:
     [
       { path: 'departure', component: DepartureMapComponent },
+      { path: 'weekly-departure', component: WeeklyDepartureMapComponent },
       { path: 'normal', component: NormalMapComponent },
       { path: 'daily', component: DailyMapComponent },
       { path: '', redirectTo: 'departure', pathMatch: 'full' }
