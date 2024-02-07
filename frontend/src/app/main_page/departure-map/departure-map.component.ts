@@ -2204,10 +2204,10 @@ this.weeklyDates.forEach(wd => {
           const normalrainfall = matchedData && !Number.isNaN(matchedData.normalrainfall) ? matchedData.normalrainfall.toFixed(2) : 'NA';
           const textElement = document.createElement('div');
           textElement.innerHTML = `
-          <div style="padding: 5px; font-family: Arial, sans-serif; font-weight: bolder;">
-          <div style="color: #000000;font-weight: bold; font-size: 5px;">${dailyrainfall}(${rainfall}%)</div>
-          <div style="color: #000000;font-weight: bold; font-size: 5px;">${id1}</div>
-          <div style="color: #000000;font-weight: bold; font-size: 5px;">${normalrainfall}</div>
+
+          <div style="color: #000000;font-weight: bold;text-wrap: nowrap;  font-size: 5px;">${dailyrainfall}(${rainfall}%)</div>
+          <div style="color: #000000;font-weight: bold;text-wrap: nowrap; font-size: 5px;">${id1}</div>
+          <div style="color: #000000;font-weight: bold;text-wrap: nowrap; font-size: 5px;">${normalrainfall}</div>
           </div>`;
 
           // Get the bounds of the layer and calculate its center
