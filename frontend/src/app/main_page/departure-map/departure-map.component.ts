@@ -43,7 +43,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
   formatteddate: any;
   dd: any;
   today = new Date();
-  months = [
+months = [
     'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
     'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
   ];
@@ -76,7 +76,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     })
   }
   ngOnInit(): void {
-    if(this.previousWeekWeeklyStartDate && this.previousWeekWeeklyEndDate){
+if(this.previousWeekWeeklyStartDate && this.previousWeekWeeklyEndDate){
       var startDate = new Date(this.previousWeekWeeklyStartDate);
       var endDate = new Date(this.previousWeekWeeklyEndDate);
       var currentDate = new Date(startDate);
@@ -100,6 +100,10 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
   dateCalculation() {
     const yesterday = new Date(this.today);
     yesterday.setDate(this.today.getDate() - 1);
+    const months = [
+      'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+      'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+    ];
     this.dd = String(this.today.getDate());
 
     const mon = String(this.today.getMonth() + 1)
@@ -114,7 +118,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     this.currentDateNormaly = `${currmonthy}${ddy}`;
     const selectedYear = String(year).slice(-2);
     this.currentDateDaily = `${this.dd.padStart(2, '0')}_${currmonth}_${selectedYear}`;
-    this.weeklyDates.push(this.currentDateDaily);
+this.weeklyDates.push(this.currentDateDaily);
     console.log(this.currentDateDaily, "dateeeeee")
   }
   fetchDataFromBackend(): void {
@@ -220,82 +224,82 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     let prevsubdivorder = 0;
     let prevstateorder = 0;
     let prevregionorder = 0;
-    this.weeklyDates.forEach(wd => {
-      for (const item of this.fetchedMasterData) {
-        if (item.district_code == previousdistrictid || previousdistrictid == null) {
-          if (item[wd] != -999.9) {
-            stationrainfallsum = stationrainfallsum + item[wd];
-            numberofstations = numberofstations + 1;
-          }
-          else {
-            stationrainfallsum = stationrainfallsum + 0;
-          }
+this.weeklyDates.forEach(wd => {
+    for (const item of this.fetchedMasterData) {
+      if (item.district_code == previousdistrictid || previousdistrictid == null) {
+        if (item[wd] != -999.9) {
+          stationrainfallsum = stationrainfallsum + item[wd];
+          numberofstations = numberofstations + 1;
         }
         else {
-          this.stationtodistrictdata.push({
-            districtid: previousdistrictid,
-            districtname: previousdistrictname,
-            districtarea: districtarea,
-            subdivweights: subdivweights,
-            numberofstations: numberofstations,
-            stationrainfallsum: stationrainfallsum,
-            dailyrainfall: stationrainfallsum / numberofstations,
-            stateid: previousstateid,
-            statename: previousstatename,
-            stateorder : prevstateorder,
-            subdivid: previoussubdivid,
-            subdivname: previoussubdivname,
-            subdivorder : prevsubdivorder,
-            regionid: previousregionid,
-            regionname: previousregionname,
-            regionorder : prevregionorder,
-            stationrainfallsumcum: districtcumdata,
-            dailyrainfallcum: districtcumdata / numberofstations,
-          });
-          if (item[wd] != -999.9) {
-            stationrainfallsum = item[wd];
-            numberofstations = 1;
-          }
-          else {
-            stationrainfallsum = 0;
-            numberofstations = 0;
-          }
+          stationrainfallsum = stationrainfallsum + 0;
         }
-        previousdistrictid = item.district_code;
-        previousdistrictname = item.district_name;
-        districtarea = item.district_area
-        previousstateid = item.state_code;
-        previousstatename = item.state_name;
-        previoussubdivid = item.subdiv_code;
-        previoussubdivname = item.subdiv_name;
-        subdivweights = item.subdiv_weights
-        previousregionid = item.region_code;
-        previousregionname = item.region_name;
-        prevsubdivorder = item.subdivorder;
-        prevregionorder = item.regionorder;
-        prevstateorder = item.stateorder;
       }
-      this.stationtodistrictdata.push({
-        districtid: previousdistrictid,
-        districtname: previousdistrictname,
-        districtarea: districtarea,
-        subdivweights: subdivweights,
-        numberofstations: numberofstations,
-        stationrainfallsum: stationrainfallsum,
-        dailyrainfall: stationrainfallsum / numberofstations,
-        stateid: previousstateid,
-        statename: previousstatename,
-        stateorder : prevstateorder,
-        subdivid: previoussubdivid,
-        subdivname: previoussubdivname,
-        subdivorder : prevsubdivorder,
-        regionid: previousregionid,
-        regionname: previousregionname,
-        regionorder : prevregionorder,
-        stationrainfallsumcum: districtcumdata,
-        dailyrainfallcum: districtcumdata / numberofstations,
-      });
-    })
+      else {
+        this.stationtodistrictdata.push({
+          districtid: previousdistrictid,
+          districtname: previousdistrictname,
+          districtarea: districtarea,
+          subdivweights: subdivweights,
+          numberofstations: numberofstations,
+          stationrainfallsum: stationrainfallsum,
+          dailyrainfall: stationrainfallsum / numberofstations,
+          stateid: previousstateid,
+          statename: previousstatename,
+          stateorder : prevstateorder,
+          subdivid: previoussubdivid,
+          subdivname: previoussubdivname,
+          subdivorder : prevsubdivorder,
+          regionid: previousregionid,
+          regionname: previousregionname,
+          regionorder : prevregionorder,
+          stationrainfallsumcum: districtcumdata,
+          dailyrainfallcum: districtcumdata / numberofstations,
+        });
+        if (item[wd] != -999.9) {
+          stationrainfallsum = item[wd];
+          numberofstations = 1;
+        }
+        else {
+          stationrainfallsum = 0;
+          numberofstations = 0;
+        }
+      }
+      previousdistrictid = item.district_code;
+      previousdistrictname = item.district_name;
+      districtarea = item.district_area
+      previousstateid = item.state_code;
+      previousstatename = item.state_name;
+      previoussubdivid = item.subdiv_code;
+      previoussubdivname = item.subdiv_name;
+      subdivweights = item.subdiv_weights
+      previousregionid = item.region_code;
+      previousregionname = item.region_name;
+      prevsubdivorder = item.subdivorder;
+      prevregionorder = item.regionorder;
+      prevstateorder = item.stateorder;
+    }
+    this.stationtodistrictdata.push({
+      districtid: previousdistrictid,
+      districtname: previousdistrictname,
+      districtarea: districtarea,
+      subdivweights: subdivweights,
+      numberofstations: numberofstations,
+      stationrainfallsum: stationrainfallsum,
+      dailyrainfall: stationrainfallsum / numberofstations,
+      stateid: previousstateid,
+      statename: previousstatename,
+      stateorder : prevstateorder,
+      subdivid: previoussubdivid,
+      subdivname: previoussubdivname,
+      subdivorder : prevsubdivorder,
+      regionid: previousregionid,
+      regionname: previousregionname,
+      regionorder : prevregionorder,
+      stationrainfallsumcum: districtcumdata,
+      dailyrainfallcum: districtcumdata / numberofstations,
+    });
+  })
 
     // Calculate total daily rainfall for each district
     const result = this.stationtodistrictdata.reduce((acc, current) => {
@@ -954,7 +958,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     return !!(document.fullscreenElement || document.fullscreenElement ||
       document.fullscreenElement || document.fullscreenElement);
   }
-
+  
   public month = this.months[this.today.getMonth()];
   public day = String(this.today.getDate()).padStart(2, '0');
   public sortedDataArray: any[] = [];
@@ -990,7 +994,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     const data1 = this.subdivisionfetchedDatadepcum;
     const data2 = this.statefetchedDatadepcum;
     const doc = new jsPDF() as any;
-    const columns1 = [' ', ' ', { content: 'Day : ' + this.previousWeekWeeklyStartDate != '' && this.previousWeekWeeklyEndDate != '' ? this.datePipe.transform(this.previousWeekWeeklyStartDate, 'dd-MM-yyyy') + ' To ' + this.datePipe.transform(this.previousWeekWeeklyEndDate, 'dd-MM-yyyy') : this.formatteddate, colSpan: 4 }, { content: this.previousWeekWeeklyEndDate != '' ? 'Period:01-01-2024 To ' + this.datePipe.transform(this.previousWeekWeeklyEndDate, 'dd-MM-yyyy') : 'Period:01-01-2024 To ' + this.formatteddate, colSpan: 4 }]
+    const columns1 = [' ', ' ', { content: 'Day : ' + this.formatteddate, colSpan: 4 }, { content: 'Period:01-10-2023 To ' + this.formatteddate, colSpan: 4 }]
     const columns = ['S.No', 'MET.SUBDIVISION/UT/STATE/DISTRICT', 'ACTUAL(mm)', 'NORMAL(mm)', '%DEP.', 'CAT.', 'ACTUAL(mm)', 'NORMAL(mm)', '%DEP.', 'CAT.'];
     const rows: any[][] = [];
     let previousstateName: string;
@@ -1680,7 +1684,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     const data2 = this.countryfetchedDatadepcum;
     const doc = new jsPDF() as any;
 
-    const columns1 = [' ', ' ', { content: 'Day : ' + this.previousWeekWeeklyStartDate != '' && this.previousWeekWeeklyEndDate != '' ? this.datePipe.transform(this.previousWeekWeeklyStartDate, 'dd-MM-yyyy') + ' To ' + this.datePipe.transform(this.previousWeekWeeklyEndDate, 'dd-MM-yyyy') : this.formatteddate, colSpan: 4 }, { content: this.previousWeekWeeklyEndDate != '' ? 'Period:01-01-2024 To ' + this.datePipe.transform(this.previousWeekWeeklyEndDate, 'dd-MM-yyyy') : 'Period:01-01-2024 To ' + this.formatteddate, colSpan: 4 }]
+    const columns1 = [' ', ' ', { content: 'Day : ' + this.formatteddate, colSpan: 4 }, { content: 'Period:01-01-2024 To ' + this.formatteddate, colSpan: 4 }]
     const columns = ['S.No', 'MET.SUBDIVISION/UT/STATE/DISTRICT', 'DAILY', 'NORMAL', 'DEPARTURE', 'CAT', 'DAILY', 'NORMAL', 'DEPARTURE', 'CAT'];
     const rows: any[][] = [];
     let previousregionName: string;
@@ -2200,10 +2204,10 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
           const normalrainfall = matchedData && !Number.isNaN(matchedData.normalrainfall) ? matchedData.normalrainfall.toFixed(2) : 'NA';
           const textElement = document.createElement('div');
           textElement.innerHTML = `
-          <div style="padding: 5px; font-family: Arial, sans-serif; font-weight: bolder;">
-          <div style="color: #000000;font-weight: bold; font-size: 5px;">${dailyrainfall}(${rainfall}%)</div>
-          <div style="color: #000000;font-weight: bold; font-size: 5px;">${id1}</div>
-          <div style="color: #000000;font-weight: bold; font-size: 5px;">${normalrainfall}</div>
+
+          <div style="color: #000000;font-weight: bold;text-wrap: nowrap;  font-size: 5px;">${dailyrainfall}(${rainfall}%)</div>
+          <div style="color: #000000;font-weight: bold;text-wrap: nowrap; font-size: 5px;">${id1}</div>
+          <div style="color: #000000;font-weight: bold;text-wrap: nowrap; font-size: 5px;">${normalrainfall}</div>
           </div>`;
 
           // Get the bounds of the layer and calculate its center
@@ -2380,7 +2384,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
           };
         },
         onEachFeature: (feature: any, layer: any) => {
-          var elementToBeRemoved:any = document.getElementById('countrydiv')/* your reference to the element */;
+var elementToBeRemoved:any = document.getElementById('countrydiv')/* your reference to the element */;
           if(elementToBeRemoved){
             elementToBeRemoved.remove();
           }
@@ -2391,7 +2395,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
           const dailyrainfall = matchedData ? matchedData.dailyrainfall.toFixed(2) : '0.00';
           const normalrainfall = matchedData ? matchedData.normalrainfall.toFixed(2) : '0.00';
           const textElement = document.createElement('div');
-          textElement.id = 'countrydiv';
+textElement.id = 'countrydiv';
           textElement.innerHTML = `
           <div style="padding: 5px; font-family: Arial, sans-serif; font-weight: bolder;">
           <div style="color: #000000;font-weight: bold; font-size: 15px;">${dailyrainfall}(${rainfall}%)</div>
