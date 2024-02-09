@@ -1,19 +1,41 @@
-img{
+img {
   width: 60px;
 
 }
+
+
+
+.datacont {
+  display: flex;
+}
+
+/* .table-container {
+  width: 50%;
+  margin: 10px;
+  border-collapse: collapse;
+}
+
+.table-container th,
+.table-container td {
+  border: 1px solid black;
+  font-size: 8px;
+  padding: 3px;
+  background-color: #32c0f8;
+} */
+
 
 .logo {
   margin: 6px 0 0 51px;
 }
 
-.map_data{
+.map_data {
   text-align: center;
- margin: 2%;
- font-weight: 600;
- font-size: 10px;
+  margin: 2%;
+  font-weight: 600;
+  font-size: 10px;
 }
-#load{
+
+#load {
   background-color: white;
   padding: 10px;
   margin: 6px;
@@ -24,14 +46,16 @@ img{
   border-radius: 20px;
   color: #002467
 }
-#load:hover{
+
+#load:hover {
   background-color: #002467;
   color: white;
   border-style: solid;
   border-width: 2px;
   border-color: white;
 }
-.download{
+
+.download {
   background-color: #002467;
   padding: 8px;
   margin: 6px;
@@ -41,20 +65,23 @@ img{
   border-radius: 20px;
   color: white;
 }
-.download:hover{
+
+.download:hover {
   background-color: white;
   color: #002467;
   border-style: solid;
   border-width: 2px;
   border-color: #002467;
 }
-.values{
+
+.values {
   margin: 20px 70px 20px 70px;
   background-color: white;
   padding: 8px 10px 8px 30px;
   border-radius: 20px;
 }
-#month{
+
+#month {
   background-color: #002467;
   padding: 10px;
   margin: 6px;
@@ -64,13 +91,15 @@ img{
   border-radius: 20px;
   color: white;
 }
-#month_label{
+
+#month_label {
   color: #002467;
   font-size: 18px;
   font-weight: 600;
   margin-left: 15px;
 }
-#date{
+
+#date {
   background-color: #002467;
   padding: 10px 10px 10px 22px;
   margin: 6px;
@@ -80,26 +109,30 @@ img{
   border-radius: 20px;
   color: white;
 }
-#date_label{
+
+#date_label {
   color: #002467;
   font-size: 18px;
   font-weight: 600;
 }
 
-img{
+img {
   width: 60px;
 }
-#myDate{
+
+#myDate {
   margin: 5px 0px 10px 10px;
   font-size: 14px;
 }
-.map_data{
+
+.map_data {
   text-align: center;
- margin: 2%;
- font-weight: 600;
- font-size: 10px;
+  margin: 2%;
+  font-weight: 600;
+  font-size: 10px;
 }
-.download{
+
+.download {
   background-color: #002467;
   padding: 8px;
   margin: 6px;
@@ -109,7 +142,8 @@ img{
   border-radius: 20px;
   color: white;
 }
-.downloadpdf{
+
+.downloadpdf {
   background-color: #002467;
   padding: 8px;
   margin: 6px;
@@ -119,7 +153,8 @@ img{
   border-radius: 20px;
   color: white;
 }
-.downloadpdf:hover{
+
+.downloadpdf:hover {
   background-color: white;
   padding: 8px;
   margin: 6px;
@@ -129,13 +164,15 @@ img{
   border-radius: 20px;
   color: #002467;
 }
-.download:hover{
+
+.download:hover {
   background-color: white;
   color: #002467;
   border-style: solid;
   border-width: 2px;
   border-color: #002467;
 }
+
 .custom-overlay {
   position: absolute;
   background: none;
@@ -143,11 +180,13 @@ img{
 
 .checkbox-container {
   display: inline-block;
-  margin-right: 20px; /* Adjust the margin as needed */
+  margin-right: 20px;
+  /* Adjust the margin as needed */
 }
 
 .checkbox-container input {
-  margin-right: 8px; /* Add space to the right of the checkbox */
+  margin-right: 8px;
+  /* Add space to the right of the checkbox */
 }
 
 .gridmap {
