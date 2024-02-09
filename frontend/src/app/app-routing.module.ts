@@ -9,12 +9,38 @@ import { DepartureMapComponent } from './main_page/departure-map/departure-map.c
 import { NormalMapComponent } from './main_page/normal-map/normal-map.component';
 import { DailyMapComponent } from './main_page/daily-map/daily-map.component';
 import { WeeklyDepartureMapComponent } from './main_page/weekly-departure-map/weekly-departure-map.component';
+import { DailyWeeklyDistrictDepartureMapComponent } from './daily-weekly-district-departure-map/daily-weekly-district-departure-map.component';
+import { DailyWeeklyCountryDepartureMapComponent } from './daily-weekly-country-departure-map/daily-weekly-country-departure-map.component';
+import { DailyWeeklyHomogenousDepartureMapComponent } from './daily-weekly-homogenous-departure-map/daily-weekly-homogenous-departure-map.component';
+import { DailyWeeklySubdivisionDepartureMapComponent } from './daily-weekly-subdivision-departure-map/daily-weekly-subdivision-departure-map.component';
+import { DailyWeeklyStateDepartureMapComponent } from './daily-weekly-state-departure-map/daily-weekly-state-departure-map.component';
+import { DailySubdivisionMapComponent } from './daily-subdivision-map/daily-subdivision-map.component';
+import { DailyStateMapComponent } from './daily-state-map/daily-state-map.component';
+import { DailyHomogenousMapComponent } from './daily-homogenous-map/daily-homogenous-map.component';
+import { DailyDistrictMapComponent } from './daily-district-map/daily-district-map.component';
+import { NormalDistrictMapComponent } from './normal-district-map/normal-district-map.component';
+import { NormalHomogenousMapComponent } from './normal-homogenous-map/normal-homogenous-map.component';
+import { NormalStateMapComponent } from './normal-state-map/normal-state-map.component';
+import { NormalSubdivisionMapComponent } from './normal-subdivision-map/normal-subdivision-map.component';
 
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'data-entry', component: DataentryComponent, canActivate: [AuthGuard] },
   { path: 'station-level-data', component: StationLevelDataComponent, canActivate: [AuthGuard] },
+  { path: 'daily-departure-district-map', component: DailyWeeklyDistrictDepartureMapComponent, canActivate: [AuthGuard] },
+  { path: 'daily-departure-state-map', component: DailyWeeklyStateDepartureMapComponent, canActivate: [AuthGuard] },
+  { path: 'daily-departure-subdivision-map', component: DailyWeeklySubdivisionDepartureMapComponent, canActivate: [AuthGuard] },
+  { path: 'daily-departure-homogenous-map', component: DailyWeeklyHomogenousDepartureMapComponent, canActivate: [AuthGuard] },
+  { path: 'daily-departure-country-map', component: DailyWeeklyCountryDepartureMapComponent, canActivate: [AuthGuard] },
+  { path: 'daily-district-map', component: DailyDistrictMapComponent, canActivate: [AuthGuard] },
+  { path: 'daily-state-map', component: DailyStateMapComponent, canActivate: [AuthGuard] },
+  { path: 'daily-subdivision-map', component: DailySubdivisionMapComponent, canActivate: [AuthGuard] },
+  { path: 'daily-homogenous-map', component: DailyHomogenousMapComponent, canActivate: [AuthGuard] },
+  { path: 'normal-district-map', component: NormalDistrictMapComponent, canActivate: [AuthGuard] },
+  { path: 'normal-state-map', component: NormalStateMapComponent, canActivate: [AuthGuard] },
+  { path: 'normal-subdivision-map', component: NormalSubdivisionMapComponent, canActivate: [AuthGuard] },
+  { path: 'normal-homogenous-map', component: NormalHomogenousMapComponent, canActivate: [AuthGuard] },
   { path: 'front-page', component: FrontPageComponent, canActivate: [AuthGuard], children:
     [
       { path: 'departure', component: DepartureMapComponent },

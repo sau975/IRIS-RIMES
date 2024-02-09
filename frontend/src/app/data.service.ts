@@ -8,7 +8,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 })
 export class DataService {
 
-   //private baseUrl = 'http://203.156.108.107:3000';
+  //  private baseUrl = 'http://203.156.108.107:3000';
   private baseUrl = 'http://localhost:3000';
 
   constructor(private http: HttpClient) {}
@@ -79,5 +79,18 @@ export class DataService {
   setValue(newValue: string) {
     this.valueSubject.next(newValue);
   }
+
+  private downloadPdfSubject = new BehaviorSubject<string>('');
+  public downloadPdf$ = this.downloadPdfSubject.asObservable();
+  setdownloadPdf(newdownloadPdf: string) {
+    this.downloadPdfSubject.next(newdownloadPdf);
+  }
+
+  private weeklyPdfSubject = new BehaviorSubject<string>('');
+  public weeklyPdf$ = this.weeklyPdfSubject.asObservable();
+  setweeklyPdf(newweeklyPdf: string) {
+    this.weeklyPdfSubject.next(newweeklyPdf);
+  }
+
 }
 

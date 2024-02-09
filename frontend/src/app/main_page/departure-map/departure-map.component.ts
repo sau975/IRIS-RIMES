@@ -72,7 +72,55 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
         this.fetchDataFromBackend();
       }
     });
+    this.dataService.downloadPdf$.subscribe((value) => {
+      if (value) {
+        if(value == "District"){
+          this.downloadMapData();
+        }
+        if(value == "State"){
+          this.downloadMapData1();
+        }
+        if(value == "SubDivision"){
+          this.downloadMapData2();
+        }
+        if(value == "Homogenous"){
+          this.downloadMapData3();
+        }
+        if(value == "Country"){
+          this.downloadMapData4();
+        }
+      }
+    });
+
+    this.dataService.weeklyPdf$.subscribe((value) => {
+      if (value) {
+        let localWeekDates:any = localStorage.getItem('weekDates')
+        if(localWeekDates){
+          let weeklyDates = JSON.parse(localWeekDates);
+          this.previousWeekWeeklyStartDate = weeklyDates.previousWeekWeeklyStartDate;
+          this.previousWeekWeeklyEndDate = weeklyDates.previousWeekWeeklyEndDate;
+          this.weeklyDatesCalculation();
+          this.fetchDataFromBackend();
+          if(value == "District"){
+            this.downloadMapData();
+          }
+          if(value == "State"){
+            this.downloadMapData1();
+          }
+          if(value == "SubDivision"){
+            this.downloadMapData2();
+          }
+          if(value == "Homogenous"){
+            this.downloadMapData3();
+          }
+          if(value == "Country"){
+            this.downloadMapData4();
+          }
+        }
+      }
+    });
   }
+
   ngAfterViewInit(): void {
     this.initMap();
     var mapArray = ['mapdiv2', 'mapdiv3', 'mapdiv4', 'mapdiv5'];
@@ -81,8 +129,9 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       hh.style.display = 'none';
     })
   }
-  ngOnInit(): void {
-    if (this.previousWeekWeeklyStartDate && this.previousWeekWeeklyEndDate) {
+
+  weeklyDatesCalculation(){
+    if(this.previousWeekWeeklyStartDate && this.previousWeekWeeklyEndDate){
       var startDate = new Date(this.previousWeekWeeklyStartDate);
       var endDate = new Date(this.previousWeekWeeklyEndDate);
       var currentDate = new Date(startDate);
@@ -95,6 +144,9 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
         currentDate.setDate(currentDate.getDate() + 1);
       }
     }
+  }
+  ngOnInit(): void {
+    this.weeklyDatesCalculation();
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe(() => {

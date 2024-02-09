@@ -32,6 +32,19 @@ import { HeaderComponent } from './main_page/header/header.component';
 import { NavbarComponent } from './main_page/navbar/navbar.component';
 import { NormalMapComponent } from './main_page/normal-map/normal-map.component';
 import { WeeklyDepartureMapComponent } from './main_page/weekly-departure-map/weekly-departure-map.component';
+import { DailyWeeklyDistrictDepartureMapComponent } from './daily-weekly-district-departure-map/daily-weekly-district-departure-map.component';
+import { DailyWeeklyStateDepartureMapComponent } from './daily-weekly-state-departure-map/daily-weekly-state-departure-map.component';
+import { DailyWeeklyCountryDepartureMapComponent } from './daily-weekly-country-departure-map/daily-weekly-country-departure-map.component';
+import { DailyWeeklyHomogenousDepartureMapComponent } from './daily-weekly-homogenous-departure-map/daily-weekly-homogenous-departure-map.component';
+import { DailyWeeklySubdivisionDepartureMapComponent } from './daily-weekly-subdivision-departure-map/daily-weekly-subdivision-departure-map.component';
+import { DailySubdivisionMapComponent } from './daily-subdivision-map/daily-subdivision-map.component';
+import { DailyDistrictMapComponent } from './daily-district-map/daily-district-map.component';
+import { DailyStateMapComponent } from './daily-state-map/daily-state-map.component';
+import { DailyHomogenousMapComponent } from './daily-homogenous-map/daily-homogenous-map.component';
+import { NormalHomogenousMapComponent } from './normal-homogenous-map/normal-homogenous-map.component';
+import { NormalStateMapComponent } from './normal-state-map/normal-state-map.component';
+import { NormalDistrictMapComponent } from './normal-district-map/normal-district-map.component';
+import { NormalSubdivisionMapComponent } from './normal-subdivision-map/normal-subdivision-map.component';
 
 @NgModule({
   declarations: [
@@ -46,7 +59,20 @@ import { WeeklyDepartureMapComponent } from './main_page/weekly-departure-map/we
     DailyMapComponent,
     HeaderComponent,
     NavbarComponent,
-    WeeklyDepartureMapComponent
+    WeeklyDepartureMapComponent,
+    DailyWeeklyDistrictDepartureMapComponent,
+    DailyWeeklyStateDepartureMapComponent,
+    DailyWeeklyCountryDepartureMapComponent,
+    DailyWeeklyHomogenousDepartureMapComponent,
+    DailyWeeklySubdivisionDepartureMapComponent,
+    DailySubdivisionMapComponent,
+    DailyDistrictMapComponent,
+    DailyStateMapComponent,
+    DailyHomogenousMapComponent,
+    NormalHomogenousMapComponent,
+    NormalStateMapComponent,
+    NormalDistrictMapComponent,
+    NormalSubdivisionMapComponent
   ],
   imports: [
     HttpClientModule,
