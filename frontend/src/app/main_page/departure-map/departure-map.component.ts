@@ -2459,7 +2459,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
           <div style="color: #000000; font-weight: bold;text-wrap: nowrap; font-size: 5px; margin-bottom: 3px;">${id1}</div>
           <div style="color: #000000; font-weight: bold;text-wrap: nowrap; font-size: 5px;">${normalrainfall}</div>
           </div>`;
-          // console.log("bounds : ", bounds, "center : ", center, "lat : ", lat, "lng : ", lng)
+          
 
           // Set the position of the custom HTML element on the map
           textElement.classList.add('custom-text-element');
