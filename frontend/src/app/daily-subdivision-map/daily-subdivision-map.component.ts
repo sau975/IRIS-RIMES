@@ -40,17 +40,14 @@ export class DailySubdivisionMapComponent {
     private dataService: DataService,
     private router: Router
     ) {
+    let localDailyDate:any = localStorage.getItem('dailyDate')
+    if(localDailyDate){
+      let dailyDate = JSON.parse(localDailyDate);
+      this.today.setDate(dailyDate.date)
+      this.today.setMonth(dailyDate.month - 1)
+      this.today.setFullYear(dailyDate.year)
+    }
     this.dateCalculation();
-    this.dataService.value$.subscribe((value) => {
-      if(value){
-        let selecteddateAndMonth = JSON.parse(value);
-        this.today.setDate(selecteddateAndMonth.date)
-        this.today.setMonth(selecteddateAndMonth.month-1)
-        this.today.setFullYear(selecteddateAndMonth.year)
-        this.dateCalculation();
-        this.fetchDataFromBackend();
-      }
-    });
   }
 
   ngAfterViewInit(): void {
