@@ -1,0 +1,86 @@
+img{
+  width: 60px;
+
+}
+.logo {
+  margin: 6px 0 0 51px;
+}
+.map_data{
+  text-align: center;
+ margin: 2%;
+ font-weight: 600;
+ font-size: 10px;
+}
+#load{
+  background-color: white;
+  padding: 10px;
+  margin: 6px;
+  margin-left: 15px;
+  width: 150px;
+  font-size: 15px;
+  font-weight: 600;
+  border-radius: 20px;
+  color: #002467
+}
+#load:hover{
+  background-color: #002467;
+  color: white;
+  border-style: solid;
+  border-width: 2px;
+  border-color: white;
+}
+.download{
+  background-color: #002467;
+  padding: 8px;
+  margin: 6px;
+  width: 83px;
+  font-size: 11px;
+  font-weight: 600;
+  border-radius: 20px;
+  color: white;
+}
+.download:hover{
+  background-color: white;
+  color: #002467;
+  border-style: solid;
+  border-width: 2px;
+  border-color: #002467;
+}
+.values{
+  margin: 20px 70px 20px 70px;
+  background-color: white;
+  padding: 8px 10px 8px 30px;
+  border-radius: 20px;
+}
+#month{
+  background-color: #002467;
+  padding: 10px;
+  margin: 6px;
+  width: 150px;
+  font-size: 15px;
+  font-weight: 600;
+  border-radius: 20px;
+  color: white;
+}
+#month_label{
+  color: #002467;
+  font-size: 18px;
+  font-weight: 600;
+  margin-left: 15px;
+}
+#date{
+  background-color: #002467;
+  padding: 10px 10px 10px 22px;
+  margin: 6px;
+  width: 120px;
+  font-size: 15px;
+  font-weight: 600;
+  border-radius: 20px;
+  color: white;
+}
+#date_label{
+  color: #002467;
+  font-size: 18px;
+  font-weight: 600;
+}
+

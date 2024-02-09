@@ -4,23 +4,24 @@
       <a class="main_nav">RAINFALL MAP</a>
       <ul>
         <li>
-          <a>DAILY</a>
+          <a>DAILY DEPARTURE</a>
           <ul>
             <li>
               <a
-                href="https://hydro.imd.gov.in/hydrometweb/(S(42lehs451ue10b45jizja355))/PdfPageImage.aspx?imgUrl=PRODUCTS\Rainfall_Maps\Daily\State_Rainfall_Map\STATE_RAINFALL_MAP_COUNTRY_INDIA_d.JPG&landingpage=landing"
-                >STATE RAINFALL MAP</a
+              (click)="goToDailyDepartureMap('State')"
+              >STATE RAINFALL MAP</a
               >
             </li>
             <li>
               <a
-                href="https://hydro.imd.gov.in/hydrometweb/(S(irsu1yfqsx1kst55l0yrynq0))/PdfPageImage.aspx?imgUrl=PRODUCTS\Rainfall_Maps\Daily\Subdivision_Rainfall_Map\SUBDIVISION_RAINFALL_MAP_COUNTRY_INDIA_d.JPG&landingpage=landing"
-                >SUBDIVISION RAINFALL MAP
+              (click)="goToDailyDepartureMap('SubDivision')"
+              >SUBDIVISION RAINFALL MAP
               </a>
             </li>
             <li>
-              <a>DISTRICT RAINFALL MAP</a>
-              <ul>
+              <a (click)="goToDailyDepartureMap('District')"
+              >DISTRICT RAINFALL MAP</a>
+              <!-- <ul>
                 <li>
                   <a
                     href="https://hydro.imd.gov.in/hydrometweb/(S(buuvdo45ftpebhvfn5x3er55))/PdfPageImage.aspx?imgUrl=PRODUCTS\Rainfall_Maps\Daily\District_Rainfall_Map\DISTRICT_RAINFALL_MAP_COUNTRY_INDIA_d.JPG&landingpage=landing"
@@ -51,7 +52,19 @@
                     >CENTRAL INDIA REGION</a
                   >
                 </li>
-              </ul>
+              </ul> -->
+            </li>
+            <li>
+              <a
+              (click)="goToDailyDepartureMap('Homogenous')"
+              >HOMOGENOUS RAINFALL MAP
+              </a>
+            </li>
+            <li>
+              <a
+              (click)="goToDailyDepartureMap('Country')"
+              >COUNTRY RAINFALL MAP
+              </a>
             </li>
             <li >
               <a style="background-color: orange;"
@@ -63,23 +76,24 @@
         </li>
 
         <li>
-          <a>WEEKLY </a>
+          <a>WEEKLY DEPARTURE</a>
           <ul>
             <li>
               <a
-                href="https://hydro.imd.gov.in/hydrometweb/(S(vulv0n45j0r1lt45zzl5ova4))/landing.aspx#"
+                (click)="goToWeeklyMap('District')"
                 >STATE RAINFALL MAP</a
               >
             </li>
             <li>
               <a
-                href="https://hydro.imd.gov.in/hydrometweb/(S(ukxymoqw4b0r1m55z1ybg255))/PdfPageImage.aspx?imgUrl=PRODUCTS\Rainfall_Maps\Weekly\Subdivision_Rainfall_Map\SUBDIVISION_RAINFALL_MAP_COUNTRY_INDIA_w.JPG&landingpage=landing"
-                >SUBDIVISION RAINFALL MAP
+              (click)="goToWeeklyMap('SubDivision')"
+              >SUBDIVISION RAINFALL MAP
               </a>
             </li>
             <li>
-              <a>DISTRICT RAINFALL MAP</a>
-              <ul>
+              <a (click)="goToWeeklyMap('District')"
+              >DISTRICT RAINFALL MAP</a>
+              <!-- <ul>
                 <li>
                   <a
                     href="https://hydro.imd.gov.in/hydrometweb/(S(ubl3p2aonvukpdmxq1xxaozf))/PdfPageImage.aspx?imgUrl=PRODUCTS\Rainfall_Maps\Weekly\District_Rainfall_Map\DISTRICT_RAINFALL_MAP_COUNTRY_INDIA_w.JPG&landingpage=landing"
@@ -110,7 +124,19 @@
                     >CENTRAL INDIA REGION</a
                   >
                 </li>
-              </ul>
+              </ul> -->
+            </li>
+            <li>
+              <a
+              (click)="goToWeeklyMap('Homogenous')"
+              >HOMOGENOUS RAINFALL MAP
+              </a>
+            </li>
+            <li>
+              <a
+              (click)="goToWeeklyMap('Country')"
+              >COUNTRY RAINFALL MAP
+              </a>
             </li>
             <li>
               <a style="background-color: orange;"
@@ -122,6 +148,40 @@
         </li>
 
         <li>
+          <a>DAILY</a>
+          <ul>
+            <li>
+              <a
+              (click)="goToDailyMap('State')"
+              >STATE RAINFALL MAP</a
+              >
+            </li>
+            <li>
+              <a
+              (click)="goToDailyMap('SubDivision')"
+              >SUBDIVISION RAINFALL MAP
+              </a>
+            </li>
+            <li>
+              <a (click)="goToDailyMap('District')"
+              >DISTRICT RAINFALL MAP</a>
+            </li>
+            <li>
+              <a
+              (click)="goToDailyMap('Homogenous')"
+              >HOMOGENOUS RAINFALL MAP
+              </a>
+            </li>
+            <!-- <li >
+              <a style="background-color: orange;"
+                href="https://hydro.imd.gov.in/hydrometweb/(S(05nzwv55w04fmmbbikdv0f55))/PdfPageImage.aspx?imgUrl=PRODUCTS\Rainfall_Maps\Daily\RiverBasin\RIVERBASIN_RAINFALL_MAP_COUNTRY_INDIA_d.JPG&landingpage=landing"
+                >RIVER BASIN</a
+              >
+            </li> -->
+          </ul>
+        </li>
+
+        <!-- <li>
           <a>CUMULATIVE</a>
           <ul>
             <li>
@@ -178,11 +238,11 @@
               >
             </li>
           </ul>
-        </li>
+        </li> -->
 
         <li>
           <a>NORMAL RAINFALL MAP</a>
-          <ul>
+          <!-- <ul>
             <li>
               <a>WINTER</a>
               <ul>
@@ -298,6 +358,36 @@
                 </li>
               </ul>
             </li>
+          </ul> -->
+          <ul>
+            <li>
+              <a
+              (click)="goToNormalMap('State')"
+              >STATE RAINFALL MAP</a
+              >
+            </li>
+            <li>
+              <a
+              (click)="goToNormalMap('SubDivision')"
+              >SUBDIVISION RAINFALL MAP
+              </a>
+            </li>
+            <li>
+              <a (click)="goToNormalMap('District')"
+              >DISTRICT RAINFALL MAP</a>
+            </li>
+            <li>
+              <a
+              (click)="goToNormalMap('Homogenous')"
+              >HOMOGENOUS RAINFALL MAP
+              </a>
+            </li>
+            <!-- <li >
+              <a style="background-color: orange;"
+                href="https://hydro.imd.gov.in/hydrometweb/(S(05nzwv55w04fmmbbikdv0f55))/PdfPageImage.aspx?imgUrl=PRODUCTS\Rainfall_Maps\Daily\RiverBasin\RIVERBASIN_RAINFALL_MAP_COUNTRY_INDIA_d.JPG&landingpage=landing"
+                >RIVER BASIN</a
+              >
+            </li> -->
           </ul>
         </li>
 
@@ -495,27 +585,31 @@
           <a>DAILY & CUMULATIVE</a>
           <ul>
             <li>
+              <a (click)="downloadPDF('State')">
+                STATE RF DISTRIBUTION</a>
+            </li>
+            <li>
               <a
-                href="https://hydro.imd.gov.in/hydrometweb/(S(50e5xo45hbbdom552wmgsmyu))/PdfReportPage.aspx?ImgUrl=PRODUCTS\Rainfall_Statistics\Cumulative\State_RF_Distribution\STATE_RAINFALL_DISTRIBUTION_COUNTRY_INDIA_cd.PDF"
-                >STATE RF DISTRIBUTION</a
+              (click)="downloadPDF('SubDivision')">
+                SUBDIVISION RF DISTRIBUTION</a
               >
             </li>
             <li>
               <a
-                href="https://hydro.imd.gov.in/hydrometweb/(S(50e5xo45hbbdom552wmgsmyu))/PdfReportPage.aspx?ImgUrl=PRODUCTS\Rainfall_Statistics\Cumulative\Subdivision_RF_Distribution\SUBDIVISION_RAINFALL_DISTRIBUTION_COUNTRY_INDIA_cd.PDF"
-                >SUBDIVISION RF DISTRIBUTION</a
+              (click)="downloadPDF('District')">
+                DISTRICT RF DISTRIBUTION</a
               >
             </li>
             <li>
               <a
-                href="https://hydro.imd.gov.in/hydrometweb/(S(50e5xo45hbbdom552wmgsmyu))/PdfReportPage.aspx?ImgUrl=PRODUCTS\Rainfall_Statistics\Cumulative\District_RF_Distribution\DISTRICT_RAINFALL_DISTRIBUTION_COUNTRY_INDIA_cd.PDF"
-                >DISTRICT RF DISTRIBUTION</a
+              (click)="downloadPDF('Homogenous')">
+                HOMOGENOUS RF DISTRIBUTION</a
               >
             </li>
             <li>
               <a
-                href="https://hydro.imd.gov.in/hydrometweb/(S(50e5xo45hbbdom552wmgsmyu))/PdfReportPage.aspx?ImgUrl=PRODUCTS\Rainfall_Statistics\Cumulative\State_Wise_RF_Distribution_of_Districts\DISTRICT_DISTRIBUTION_STATEWISE_COUNTRY_INDIA_cd.PDF"
-                >CATAGORYWISE DISTRIBUTION OF DISTRICT IN STATES</a
+              (click)="downloadPDF('Country')">
+                COUNTRY RF DISTRIBUTION</a
               >
             </li>
           </ul>
@@ -523,44 +617,56 @@
         <li>
           <a>WEEKLY & CUMULATIVE</a>
           <ul>
-            <li>
+            <!-- <li>
               <a
                 href="https://hydro.imd.gov.in/hydrometweb/(S(50e5xo45hbbdom552wmgsmyu))/PdfReportPage.aspx?ImgUrl=PRODUCTS\Rainfall_Statistics\Cumulative\PERFORMANCE_SHEET.PDF"
                 >PERFORMANCE SHEET</a
               >
-            </li>
+            </li> -->
             <li>
               <a
-                href="https://hydro.imd.gov.in/hydrometweb/(S(50e5xo45hbbdom552wmgsmyu))/PdfReportPage.aspx?ImgUrl=PRODUCTS\Rainfall_Statistics\Cumulative\State_RF_Distribution\STATE_RAINFALL_DISTRIBUTION_COUNTRY_INDIA_c.PDF"
-                >STATE RF DISTRIBUTION</a
+              (click)="downloadWeeklyPDF('State')">
+                STATE RF DISTRIBUTION</a
               >
             </li>
             <li>
               <a
-                href="https://hydro.imd.gov.in/hydrometweb/(S(50e5xo45hbbdom552wmgsmyu))/PdfReportPage.aspx?ImgUrl=PRODUCTS\Rainfall_Statistics\Cumulative\Subdivision_RF_Distribution\SUBDIVISION_RAINFALL_DISTRIBUTION_COUNTRY_INDIA_c.PDF"
-                >SUBDIVISION RF DISTRIBUTION</a
+              (click)="downloadWeeklyPDF('SubDivision')">
+                SUBDIVISION RF DISTRIBUTION</a
               >
             </li>
             <li>
               <a
-                href="https://hydro.imd.gov.in/hydrometweb/(S(50e5xo45hbbdom552wmgsmyu))/PdfReportPage.aspx?ImgUrl=PRODUCTS\Rainfall_Statistics\Cumulative\District_RF_Distribution\DISTRICT_RAINFALL_DISTRIBUTION_COUNTRY_INDIA_c.PDF"
-                >DISTRICT RF DISTRIBUTION</a
+              (click)="downloadWeeklyPDF('District')">
+                DISTRICT RF DISTRIBUTION</a
               >
             </li>
             <li>
+              <a
+              (click)="downloadWeeklyPDF('Homogenous')">
+                HOMOGENOUS RF DISTRIBUTION</a
+              >
+            </li>
+            <li>
+              <a
+              (click)="downloadWeeklyPDF('Country')">
+                COUNTRY RF DISTRIBUTION</a
+              >
+            </li>
+            <!-- <li>
               <a
                 href="https://hydro.imd.gov.in/hydrometweb/(S(50e5xo45hbbdom552wmgsmyu))/PdfReportPage.aspx?ImgUrl=PRODUCTS\Rainfall_Statistics\Cumulative\State_Wise_RF_Distribution_of_Districts\DISTRICT_DISTRIBUTION_STATEWISE_COUNTRY_INDIA_c.PDF"
                 >GATEGORYWISE DISTRIBUTION OF DISTRICTS IN STATES</a
               >
-            </li>
+            </li> -->
           </ul>
         </li>
-        <li>
+        <!-- <li>
           <a
             href="https://hydro.imd.gov.in/hydrometweb/(S(50e5xo45hbbdom552wmgsmyu))/DistrictRaifall.aspx"
             >DISTRICT WISE RAINFALL-LAST 5 YEARS</a
           >
-        </li>
+        </li> -->
       </ul>
     </li>
     <li>
@@ -681,7 +787,7 @@
         </li>
       </ul>
     </li>
-   
+
     <li>
       <a class="main_nav">DESIGN STORM ANALYSIS</a>
       <ul>
@@ -834,6 +940,9 @@
     </li>
     <li>
       <a class="main_nav">DISSEMINATION</a>
+    </li>
+    <li>
+      <a class="main_nav">UPLOAD</a>
     </li>
     <li>
       <a class="main_nav">ABOUT</a>
