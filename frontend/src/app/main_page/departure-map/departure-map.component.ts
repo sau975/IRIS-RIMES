@@ -41,12 +41,19 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
   fetchedData7: any;
   fetchedMasterData: any;
   formatteddate: any;
-  countlargeexcess = 0
-  countexcess = 0
-  countnormal = 0
-  countdeficient = 0
-  countlargedeficient = 0
-  countnorain = 0
+  statecountlargeexcess = 0
+  statecountexcess = 0
+  statecountnormal = 0
+  statecountdeficient = 0
+  statecountlargedeficient = 0
+  statecountnorain = 0
+
+  subdivcountlargeexcess = 0
+  subdivcountexcess = 0
+  subdivcountnormal = 0
+  subdivcountdeficient = 0
+  subdivcountlargedeficient = 0
+  subdivcountnorain = 0
   dd: any;
   today = new Date();
   months = [
@@ -177,7 +184,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     const selectedYear = String(year).slice(-2);
     this.currentDateDaily = `${this.dd.padStart(2, '0')}_${currmonth}_${selectedYear}`;
     this.weeklyDates.push(this.currentDateDaily);
-    console.log(this.currentDateDaily, "dateeeeee")
+    // console.log(this.currentDateDaily, "dateeeeee")
   }
   fetchDataFromBackend(): void {
     this.dataService.fetchMasterFile().pipe(
@@ -494,14 +501,12 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       }
 
       const dailydeparturerainfall = ((matcheddailyrainfall - item1.normalrainfall) / item1.normalrainfall) * 100;
-      if (item1.normalrainfall == 0.01) {
-        //console.log(item1.normalrainfall, matchingItem.districtname,dailydeparturerainfall)
-      }
+
       const cumdeparture = ((matcheddailyrainfallcum - item1.cummnormal) / item1.cummnormal) * 100
       if (matchingItem) {
         this.districtdatacum.push({ ...item1, ...matchingItem, dailydeparturerainfall, cumdeparture });
       } else {
-        // console.log("data not found")
+         console.log("data not found")
       }
     });
 
@@ -624,7 +629,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       if (matchingItem) {
         this.statefetchedDatadepcum.push({ ...item1, ...matchingItem, dailydeparturerainfall, cumdeparture });
       } else {
-        // console.log("data not found")
+         console.log("data not found")
       }
     });
     // console.log(this.statefetchedDatadepcum)
@@ -900,10 +905,10 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       if (matchingItem) {
         this.countryfetchedDatadepcum.push({ ...item1, ...matchingItem, dailydeparturerainfall, cumdeparture });
       } else {
-        // console.log("data not found")
+        console.log("data not found")
       }
     });
-    console.log(this.countryfetchedDatadepcum)
+    // console.log(this.countryfetchedDatadepcum)
   }
 
 
@@ -2163,12 +2168,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
   private addedTextElements: HTMLElement[] = [];
 
   loadGeoJSON(): void {
-    this.countlargeexcess = 0
-    this.countexcess = 0
-    this.countnormal = 0
-    this.countdeficient = 0
-    this.countlargedeficient = 0
-    this.countnorain = 0
+
     this.clearTextElements();
     this.http.get('assets/geojson/INDIA_DISTRICT.json').subscribe((res: any) => {
       L.geoJSON(res, {
@@ -2242,6 +2242,12 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       }).addTo(this.map);
     });
     this.http.get('assets/geojson/INDIA_STATE.json').subscribe((res: any) => {
+    this.statecountlargeexcess = 0
+    this.statecountexcess = 0
+    this.statecountnormal = 0
+    this.statecountdeficient = 0
+    this.statecountlargedeficient = 0
+    this.statecountnorain = 0
       const geoJsonLayer = L.geoJSON(res, {
         style: (feature: any) => {
           const id2 = feature.properties['state_code'];
@@ -2446,14 +2452,14 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
             center.lng = 91.7
           }
 
-          console.log(id1)
+          // console.log(id1)
           textElement.innerHTML = `
           <div style="text-align: center; line-height: 0.4;">
           <div style="color: #000000; font-weight: bold;text-wrap: nowrap; font-size: 5px; margin-bottom: 3px;">${dailyrainfall}(${Math.round(rainfall)})</div>
           <div style="color: #000000; font-weight: bold;text-wrap: nowrap; font-size: 5px; margin-bottom: 3px;">${id1}</div>
           <div style="color: #000000; font-weight: bold;text-wrap: nowrap; font-size: 5px;">${normalrainfall}</div>
           </div>`;
-          console.log("bounds : ", bounds, "center : ", center, "lat : ", lat, "lng : ", lng)
+          // console.log("bounds : ", bounds, "center : ", center, "lat : ", lat, "lng : ", lng)
 
           // Set the position of the custom HTML element on the map
           textElement.classList.add('custom-text-element');
@@ -2475,13 +2481,19 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       geoJsonLayer.addTo(this.map1);
     });
     this.http.get('assets/geojson/INDIA_SUB_DIVISION.json').subscribe((res: any) => {
+      this.subdivcountlargeexcess = 0
+      this.subdivcountexcess = 0
+      this.subdivcountnormal = 0
+      this.subdivcountdeficient = 0
+      this.subdivcountlargedeficient = 0
+      this.subdivcountnorain = 0
       const geoJsonLayer = L.geoJSON(res, {
         style: (feature: any) => {
           const id2 = feature.properties['SubDiv_Cod'];
           const matchedData = this.findMatchingDatasubdiv(id2);
           const rainfall = matchedData ? matchedData.dailydeparturerainfall : -100;
           const actual = matchedData && matchedData.dailyrainfall == null ? ' ' : "notnull";
-          const color = this.getColorForRainfall(rainfall, actual);
+          const color = this.getColorForRainfallsubdiv(rainfall, actual);
           return {
             fillColor: color,
             weight: 0.5,
@@ -2713,32 +2725,78 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       return '#c0c0c0';
     }
     if (numericId >= 60) {
-      this.countlargeexcess = this.countlargeexcess +1
+      this.statecountlargeexcess = this.statecountlargeexcess +1
       cat = 'LE';
       return '#0096ff';
     }
     if (numericId >= 20 && numericId <= 59) {
-      this.countexcess = this.countexcess +1
+      this.statecountexcess = this.statecountexcess +1
       cat = 'E';
       return '#32c0f8';
     }
     if (numericId >= -19 && numericId <= 19) {
-      this.countnormal = this.countnormal +1
+      this.statecountnormal = this.statecountnormal +1
       cat = 'N';
       return '#00cd5b';
     }
     if (numericId >= -59 && numericId <= -20) {
-      this.countdeficient = this.countdeficient + 1
+      this.statecountdeficient = this.statecountdeficient + 1
       cat = 'D';
       return '#ff2700';
     }
     if (numericId >= -99 && numericId <= -60) {
-      this.countlargedeficient  = this.countlargedeficient + 1
+      this.statecountlargedeficient  = this.statecountlargedeficient + 1
       cat = 'LD';
       return '#ffff20';
     }
     if (numericId == -100) {
-      this.countnorain = this.countnorain + 1
+      this.statecountnorain = this.statecountnorain + 1
+      cat = 'NR';
+      return '#ffffff';
+    }
+    if (numericId == ' ') {
+      return '#c0c0c0';
+    }
+
+    else {
+      cat = 'ND';
+      return '#c0c0c0';
+    }
+
+  }
+  getColorForRainfallsubdiv(rainfall: any, actual?: string): string {
+    const numericId = rainfall;
+    let cat = '';
+    if (actual == ' ') {
+      return '#c0c0c0';
+    }
+    if (numericId >= 60) {
+      this.subdivcountlargeexcess = this.subdivcountlargeexcess +1
+      cat = 'LE';
+      return '#0096ff';
+    }
+    if (numericId >= 20 && numericId <= 59) {
+      this.subdivcountexcess = this.subdivcountexcess +1
+      cat = 'E';
+      return '#32c0f8';
+    }
+    if (numericId >= -19 && numericId <= 19) {
+      this.subdivcountnormal = this.subdivcountnormal +1
+      cat = 'N';
+      return '#00cd5b';
+    }
+    if (numericId >= -59 && numericId <= -20) {
+      this.subdivcountdeficient = this.subdivcountdeficient + 1
+      cat = 'D';
+      return '#ff2700';
+    }
+    if (numericId >= -99 && numericId <= -60) {
+      this.subdivcountlargedeficient  = this.subdivcountlargedeficient + 1
+      cat = 'LD';
+      return '#ffff20';
+    }
+    if (numericId == -100) {
+      this.subdivcountnorain = this.subdivcountnorain + 1
       cat = 'NR';
       return '#ffffff';
     }
