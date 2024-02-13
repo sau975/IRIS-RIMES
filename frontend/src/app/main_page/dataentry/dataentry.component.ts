@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef } from '@angular/core';
 import { DataService } from '../../data.service';
 import { response } from 'express';
 
@@ -8,6 +8,8 @@ import { response } from 'express';
   styleUrls: ['./dataentry.component.css']
 })
 export class DataentryComponent {
+  selectedFile: File | null = null;
+  rainFallInMM: number = 0;
   todayDate: string;
   showEditPopup: boolean = false;
   showdeletePopup: boolean = false;
@@ -138,8 +140,31 @@ export class DataentryComponent {
   }
 
 
+  showMessage(elementRef:any){
+    if(Number(elementRef.value) > 400){
+      elementRef.style.background = 'red'
+      alert("Rainfall is greater than 400mm")
+    }else{
+      elementRef.style.background = ''
+    }
+  }
 
+  onFileSelected(event: any) {
+    this.selectedFile = event.target.files[0];
+  }
 
+  uploadFile() {
+    if (this.selectedFile) {
+      this.dataService.uploadFile(this.selectedFile).subscribe(
+        (response:any) => {
+          alert('File uploaded successfully:' + response);
+        },
+        (error:any) => {
+          alert('Error uploading file:' + error);
+        }
+      );
+    }
+  }
 
 
 

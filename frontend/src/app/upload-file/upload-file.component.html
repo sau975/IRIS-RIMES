@@ -1,0 +1,12 @@
+<button routerLink="/front-page/departure" class="btn btn-secondary mt-3 mx-5">Back</button>
+
+<div class="container mt-5">
+  <div class="mb-3 col-6">
+    <label>Section Name</label>
+    <input class="form-control" type="text">
+  </div>
+  <div class="mb-3 col-6">
+    <input class="form-control" type="file" (change)="onFileSelected($event)">
+  </div>
+  <button (click)="uploadFile()" class="btn btn-success">Upload</button>
+</div>

@@ -81,7 +81,17 @@
 
   <div style="text-align: center; padding-top: 40px">
     <div class="dataentry">
-      <h3>STATIONS DATA</h3>
+      <div class="row">
+        <div class="col-9">
+          <h3>STATIONS DATA</h3>
+        </div>
+        <div class="mb-3 col-2">
+          <input class="form-control" type="file" (change)="onFileSelected($event)">
+        </div>
+        <div class="col-1">
+          <button (click)="uploadFile()" class="btn btn-success">Upload</button>
+        </div>
+      </div>
       <br/>
       <form>
         <table
@@ -105,7 +115,7 @@
               <td style="border: 1px solid black">{{ i + 1 }}</td>
               <td style="border: 1px solid black">{{ station.stationname }}</td>
               <td style="border: 1px solid black">{{ station.stationid }}</td>
-              <td style="border: 1px solid black"><input type="number" id="rainfall" name="rainfall" required style="border: none;"></td>
+              <td style="border: 1px solid black"><input type="number" id="rainfall" #rainFallElementRef name="rainfall" required style="border: none;" (input)="showMessage(rainFallElementRef)"></td>
               <td style="border: 1px solid black"><input type="date" [(ngModel)]="todayDate" id="date" name="date" required style="border: none;"></td>
               <td style="border: 1px solid black"><input type="time" id="time" name="time" required style="border: none;"></td>
               <td style="border: 1px solid black">
