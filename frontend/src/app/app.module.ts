@@ -82,7 +82,7 @@ import { UploadFileComponent } from './upload-file/upload-file.component';
     UnderprogressComponent,
     QpfverificationReports2020Component,
     QpfverificationReports2021Component,
-    QpfverificationReports2022Component
+    QpfverificationReports2022Component,
     UploadFileComponent
   ],
   imports: [
