@@ -6,7 +6,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 import { MapContainerComponent } from './main_page/map-container/map-container.component';
-import * as L from 'leaflet';
 import 'leaflet-fullscreen';
 import { HttpClientModule } from '@angular/common/http';
 import { LoginComponent } from './login/login/login.component';
@@ -45,6 +44,13 @@ import { NormalHomogenousMapComponent } from './normal-homogenous-map/normal-hom
 import { NormalStateMapComponent } from './normal-state-map/normal-state-map.component';
 import { NormalDistrictMapComponent } from './normal-district-map/normal-district-map.component';
 import { NormalSubdivisionMapComponent } from './normal-subdivision-map/normal-subdivision-map.component';
+import { UnderprogressComponent } from './underprogress/underprogress.component';
+import { QpfverificationReports2020Component } from './qpfverification_reports/qpfverification-reports2020/qpfverification-reports2020.component';
+import { QpfverificationReports2021Component } from './qpfverification_reports/qpfverification-reports2021/qpfverification-reports2021.component';
+import { QpfverificationReports2022Component } from './qpfverification_reports/qpfverification-reports2022/qpfverification-reports2022.component';
+import { PdfViewerModule } from 'ng2-pdf-viewer';
+ 
+import { UploadFileComponent } from './upload-file/upload-file.component';
 
 @NgModule({
   declarations: [
@@ -72,9 +78,15 @@ import { NormalSubdivisionMapComponent } from './normal-subdivision-map/normal-s
     NormalHomogenousMapComponent,
     NormalStateMapComponent,
     NormalDistrictMapComponent,
-    NormalSubdivisionMapComponent
+    NormalSubdivisionMapComponent,
+    UnderprogressComponent,
+    QpfverificationReports2020Component,
+    QpfverificationReports2021Component,
+    QpfverificationReports2022Component,
+    UploadFileComponent
   ],
   imports: [
+    PdfViewerModule,
     HttpClientModule,
     LeafletModule,
     BrowserModule,
@@ -93,7 +105,8 @@ import { NormalSubdivisionMapComponent } from './normal-subdivision-map/normal-s
     MatSlideToggleModule,
     MatIconModule,
     MatInputModule,
-    MatButtonToggleModule
+    MatButtonToggleModule,
+    
   ],
   providers: [AuthGuard, DatePipe],
   bootstrap: [AppComponent]

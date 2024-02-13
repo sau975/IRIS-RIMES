@@ -22,6 +22,12 @@ import { NormalDistrictMapComponent } from './normal-district-map/normal-distric
 import { NormalHomogenousMapComponent } from './normal-homogenous-map/normal-homogenous-map.component';
 import { NormalStateMapComponent } from './normal-state-map/normal-state-map.component';
 import { NormalSubdivisionMapComponent } from './normal-subdivision-map/normal-subdivision-map.component';
+import { UnderprogressComponent } from './underprogress/underprogress.component';
+import { QpfverificationReports2020Component } from './qpfverification_reports/qpfverification-reports2020/qpfverification-reports2020.component';
+import { QpfverificationReports2021Component } from './qpfverification_reports/qpfverification-reports2021/qpfverification-reports2021.component';
+import { QpfverificationReports2022Component } from './qpfverification_reports/qpfverification-reports2022/qpfverification-reports2022.component';
+
+import { UploadFileComponent } from './upload-file/upload-file.component';
 
 
 const routes: Routes = [
@@ -41,6 +47,11 @@ const routes: Routes = [
   { path: 'normal-state-map', component: NormalStateMapComponent, canActivate: [AuthGuard] },
   { path: 'normal-subdivision-map', component: NormalSubdivisionMapComponent, canActivate: [AuthGuard] },
   { path: 'normal-homogenous-map', component: NormalHomogenousMapComponent, canActivate: [AuthGuard] },
+  { path: 'underprogress', component: UnderprogressComponent , canActivate: [AuthGuard] },
+  { path: 'QpfverificationReports2020', component: QpfverificationReports2020Component , canActivate: [AuthGuard] },
+  { path: 'QpfverificationReports2021', component: QpfverificationReports2021Component , canActivate: [AuthGuard] },
+  { path: 'QpfverificationReports2022', component: QpfverificationReports2022Component , canActivate: [AuthGuard] },
+  { path: 'upload-file', component: UploadFileComponent, canActivate: [AuthGuard] },
   { path: 'front-page', component: FrontPageComponent, canActivate: [AuthGuard], children:
     [
       { path: 'departure', component: DepartureMapComponent },

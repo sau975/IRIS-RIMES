@@ -13,45 +13,56 @@ export class FrontPageComponent implements OnInit{
   date: string = String(new Date().getDate());
   month: string = String((new Date().getMonth()+1).toString().length == 1 ? ('0' + (new Date().getMonth()+1)) : (new Date().getMonth()+1));
   year: string = '2024'
-  allDaysInMonth:any[]=[];
+
+  fromDate: Date = new Date();
+  toDate: Date = new Date();
+  // allDaysInMonth:any[]=[];
 
   constructor(
     private router: Router,
     private dataService: DataService
     ) {
       // this.setDateMonth();
-      this.getAllDaysInMonth();
+      // this.getAllDaysInMonth();
     }
 
   ngOnInit(): void {}
 
-  setDateMonthYear(){
+  setFromAndToDate(){
     let data = {
-      date: this.date,
-      month: this.month,
-      year: this.year
+      fromDate: this.fromDate,
+      toDate: this.toDate
     }
-    localStorage.setItem('dailyDate', JSON.stringify(data));
-    this.dataService.setValue(JSON.stringify(data));
-    this.getAllDaysInMonth();
+    this.dataService.setfromAndToDate(JSON.stringify(data));
+    // this.getAllDaysInMonth();
   }
 
-  getAllDaysInMonth() {
-    this.allDaysInMonth = [];
-    const currentDate = new Date();
-    const currentYear = currentDate.getFullYear();
-    const currentMonth = Number(this.month)-1;
+  validateDateRange() {
+    var fromDate = this.fromDate;
+    var toDate = this.toDate
 
-    // Set the date to the first day of the month
-    const firstDayOfMonth = new Date(currentYear, currentMonth, 1);
-
-    // Get the last day of the month
-    const lastDayOfMonth = new Date(currentYear, currentMonth + 1, 0);
-
-    // Loop through each day of the month
-    for (let day = firstDayOfMonth.getDate(); day <= lastDayOfMonth.getDate(); day++) {
-      this.allDaysInMonth.push(day);
+    if (fromDate > toDate) {
+        alert('From date cannot be greater than To date');
+        this.fromDate = toDate;
     }
   }
+
+  // getAllDaysInMonth() {
+  //   this.allDaysInMonth = [];
+  //   const currentDate = new Date();
+  //   const currentYear = currentDate.getFullYear();
+  //   const currentMonth = Number(this.month)-1;
+
+  //   // Set the date to the first day of the month
+  //   const firstDayOfMonth = new Date(currentYear, currentMonth, 1);
+
+  //   // Get the last day of the month
+  //   const lastDayOfMonth = new Date(currentYear, currentMonth + 1, 0);
+
+  //   // Loop through each day of the month
+  //   for (let day = firstDayOfMonth.getDate(); day <= lastDayOfMonth.getDate(); day++) {
+  //     this.allDaysInMonth.push(day);
+  //   }
+  // }
 
 }

@@ -92,5 +92,16 @@ export class DataService {
     this.weeklyPdfSubject.next(newweeklyPdf);
   }
 
+  private fromAndToDateSubject = new BehaviorSubject<string>('');
+  public fromAndToDate$ = this.fromAndToDateSubject.asObservable();
+  setfromAndToDate(newfromAndToDate: string) {
+    this.fromAndToDateSubject.next(newfromAndToDate);
+  }
+
+  uploadFile(file: File) {
+    const formData: FormData = new FormData();
+    formData.append('file', file, file.name);
+    return this.http.post('/api/upload', formData);
+  }
 }
 

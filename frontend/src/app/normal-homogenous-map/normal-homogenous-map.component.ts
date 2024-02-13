@@ -35,18 +35,14 @@ export class NormalHomogenousMapComponent {
     private dataService: DataService,
     private router: Router
     ) {
-      this.dateCalculation();
-      this.dataService.value$.subscribe((value) => {
-        if(value){
-          let selecteddateAndMonth = JSON.parse(value);
-          this.today.setDate(selecteddateAndMonth.date)
-          this.today.setMonth(selecteddateAndMonth.month-1)
-          console.log(this.today, "iiiiiii")
-          this.dateCalculation();
-          this.fetchDataFromBackend();
-        }
-      });
-
+    let localDailyDate:any = localStorage.getItem('dailyDate')
+    if(localDailyDate){
+      let dailyDate = JSON.parse(localDailyDate);
+      this.today.setDate(dailyDate.date)
+      this.today.setMonth(dailyDate.month - 1)
+      this.today.setFullYear(dailyDate.year)
+    }
+    this.dateCalculation();
   }
 
   ngAfterViewInit(): void {

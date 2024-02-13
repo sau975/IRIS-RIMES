@@ -41,12 +41,19 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
   fetchedData7: any;
   fetchedMasterData: any;
   formatteddate: any;
-  countlargeexcess = 0
-  countexcess = 0
-  countnormal = 0
-  countdeficient = 0
-  countlargedeficient = 0
-  countnorain = 0
+  statecountlargeexcess = 0
+  statecountexcess = 0
+  statecountnormal = 0
+  statecountdeficient = 0
+  statecountlargedeficient = 0
+  statecountnorain = 0
+
+  subdivcountlargeexcess = 0
+  subdivcountexcess = 0
+  subdivcountnormal = 0
+  subdivcountdeficient = 0
+  subdivcountlargedeficient = 0
+  subdivcountnorain = 0
   dd: any;
   today = new Date();
   months = [
@@ -62,13 +69,12 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     private datePipe: DatePipe
   ) {
     this.dateCalculation();
-    this.dataService.value$.subscribe((value) => {
+    this.dataService.fromAndToDate$.subscribe((value) => {
       if (value) {
-        let selecteddateAndMonth = JSON.parse(value);
-        this.today.setDate(selecteddateAndMonth.date)
-        this.today.setMonth(selecteddateAndMonth.month - 1)
-        this.today.setFullYear(selecteddateAndMonth.year)
-        this.dateCalculation();
+        let fromAndToDates = JSON.parse(value);
+        this.previousWeekWeeklyStartDate = fromAndToDates.fromDate;
+        this.previousWeekWeeklyEndDate = fromAndToDates.toDate;
+        this.weeklyDatesCalculation();
         this.fetchDataFromBackend();
       }
     });
@@ -132,6 +138,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
 
   weeklyDatesCalculation(){
     if(this.previousWeekWeeklyStartDate && this.previousWeekWeeklyEndDate){
+      this.weeklyDates = [];
       var startDate = new Date(this.previousWeekWeeklyStartDate);
       var endDate = new Date(this.previousWeekWeeklyEndDate);
       var currentDate = new Date(startDate);
@@ -144,6 +151,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
         currentDate.setDate(currentDate.getDate() + 1);
       }
     }
+    console.log(this.weeklyDates, "iiiiiiii")
   }
   ngOnInit(): void {
     this.weeklyDatesCalculation();
@@ -177,7 +185,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     const selectedYear = String(year).slice(-2);
     this.currentDateDaily = `${this.dd.padStart(2, '0')}_${currmonth}_${selectedYear}`;
     this.weeklyDates.push(this.currentDateDaily);
-    console.log(this.currentDateDaily, "dateeeeee")
+    // console.log(this.currentDateDaily, "dateeeeee")
   }
   fetchDataFromBackend(): void {
     this.dataService.fetchMasterFile().pipe(
@@ -494,14 +502,12 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       }
 
       const dailydeparturerainfall = ((matcheddailyrainfall - item1.normalrainfall) / item1.normalrainfall) * 100;
-      if (item1.normalrainfall == 0.01) {
-        //console.log(item1.normalrainfall, matchingItem.districtname,dailydeparturerainfall)
-      }
+
       const cumdeparture = ((matcheddailyrainfallcum - item1.cummnormal) / item1.cummnormal) * 100
       if (matchingItem) {
         this.districtdatacum.push({ ...item1, ...matchingItem, dailydeparturerainfall, cumdeparture });
       } else {
-        // console.log("data not found")
+         console.log("data not found")
       }
     });
 
@@ -624,7 +630,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       if (matchingItem) {
         this.statefetchedDatadepcum.push({ ...item1, ...matchingItem, dailydeparturerainfall, cumdeparture });
       } else {
-        // console.log("data not found")
+         console.log("data not found")
       }
     });
     // console.log(this.statefetchedDatadepcum)
@@ -900,10 +906,10 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       if (matchingItem) {
         this.countryfetchedDatadepcum.push({ ...item1, ...matchingItem, dailydeparturerainfall, cumdeparture });
       } else {
-        // console.log("data not found")
+        console.log("data not found")
       }
     });
-    console.log(this.countryfetchedDatadepcum)
+    // console.log(this.countryfetchedDatadepcum)
   }
 
 
@@ -2163,12 +2169,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
   private addedTextElements: HTMLElement[] = [];
 
   loadGeoJSON(): void {
-    this.countlargeexcess = 0
-    this.countexcess = 0
-    this.countnormal = 0
-    this.countdeficient = 0
-    this.countlargedeficient = 0
-    this.countnorain = 0
+
     this.clearTextElements();
     this.http.get('assets/geojson/INDIA_DISTRICT.json').subscribe((res: any) => {
       L.geoJSON(res, {
@@ -2242,6 +2243,12 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       }).addTo(this.map);
     });
     this.http.get('assets/geojson/INDIA_STATE.json').subscribe((res: any) => {
+    this.statecountlargeexcess = 0
+    this.statecountexcess = 0
+    this.statecountnormal = 0
+    this.statecountdeficient = 0
+    this.statecountlargedeficient = 0
+    this.statecountnorain = 0
       const geoJsonLayer = L.geoJSON(res, {
         style: (feature: any) => {
           const id2 = feature.properties['state_code'];
@@ -2446,14 +2453,14 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
             center.lng = 91.7
           }
 
-          console.log(id1)
+          // console.log(id1)
           textElement.innerHTML = `
           <div style="text-align: center; line-height: 0.4;">
           <div style="color: #000000; font-weight: bold;text-wrap: nowrap; font-size: 5px; margin-bottom: 3px;">${dailyrainfall}(${Math.round(rainfall)})</div>
           <div style="color: #000000; font-weight: bold;text-wrap: nowrap; font-size: 5px; margin-bottom: 3px;">${id1}</div>
           <div style="color: #000000; font-weight: bold;text-wrap: nowrap; font-size: 5px;">${normalrainfall}</div>
           </div>`;
-          console.log("bounds : ", bounds, "center : ", center, "lat : ", lat, "lng : ", lng)
+
 
           // Set the position of the custom HTML element on the map
           textElement.classList.add('custom-text-element');
@@ -2475,13 +2482,19 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       geoJsonLayer.addTo(this.map1);
     });
     this.http.get('assets/geojson/INDIA_SUB_DIVISION.json').subscribe((res: any) => {
+      this.subdivcountlargeexcess = 0
+      this.subdivcountexcess = 0
+      this.subdivcountnormal = 0
+      this.subdivcountdeficient = 0
+      this.subdivcountlargedeficient = 0
+      this.subdivcountnorain = 0
       const geoJsonLayer = L.geoJSON(res, {
         style: (feature: any) => {
           const id2 = feature.properties['SubDiv_Cod'];
           const matchedData = this.findMatchingDatasubdiv(id2);
           const rainfall = matchedData ? matchedData.dailydeparturerainfall : -100;
           const actual = matchedData && matchedData.dailyrainfall == null ? ' ' : "notnull";
-          const color = this.getColorForRainfall(rainfall, actual);
+          const color = this.getColorForRainfallsubdiv(rainfall, actual);
           return {
             fillColor: color,
             weight: 0.5,
@@ -2491,7 +2504,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
           };
         },
         onEachFeature: (feature: any, layer: any) => {
-          const id1 = feature.properties['subdivisio'];
+          let id1 = feature.properties['subdivisio'];
           const id2 = feature.properties['SubDiv_Cod'];
           const matchedData = this.findMatchingDatasubdiv(id2);
           const rainfall = matchedData ? matchedData.dailydeparturerainfall.toFixed(2) : '0.00';
@@ -2499,7 +2512,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
           const normalrainfall = matchedData ? matchedData.normalrainfall.toFixed(2) : '0.00';
           const textElement = document.createElement('div');
           textElement.innerHTML = `
-          <div> 
+          <div>
           <div style="color: #000000;font-weight: bold; text-wrap: nowrap;font-size: 5px;">${dailyrainfall}(${rainfall}%)</div>
           <div style="color: #000000;font-weight: bold; text-wrap: nowrap; font-size: 5px;">${id1}</div>
           <div style="color: #000000;font-weight: bold;text-wrap: nowrap; font-size: 5px;">${normalrainfall}</div>
@@ -2507,6 +2520,201 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
 
           const bounds = layer.getBounds();
           const center = bounds.getCenter();
+          const lat = center.lat
+          const lng = center.lng
+
+          if (id1 == "ARUNACHAL PRADESH") {
+            id1 = "AR"
+            center.lat = 28
+            center.lng = 96.5
+          }
+          if (id1 == "ASSAM & MEGHALAYA") {
+            id1 = "AS & ML"
+            center.lat = 25.5
+            // center.lng = 91.9
+          }
+          if (id1 == "NMMT") {
+            id1 = "NL & MN & MZ & TR"
+            center.lat = 23.5
+            center.lng = 94
+
+          }
+          if (id1 == "SHWB & SIKKIM") {
+            id1 = "SHWB & SK"
+            center.lat = 27.5
+            center.lng = 89.5
+          }
+
+          if (id1 == "GANGETIC WEST BENGAL") {
+            id1 = "G-WB"
+            center.lat = 22.5
+            center.lng = 89
+          }
+          if (id1 == "JHARKHAND") {
+            id1 = "JH"
+            center.lat = 23
+            center.lng = 86
+          }
+          if (id1 == "BIHAR") {
+            id1 = "BR"
+             center.lat = 25.5
+            center.lng = 87
+          }
+          if (id1 == "EAST UTTAR PRADESH") {
+            id1 = "E-UP"
+            // center.lat = 27.2
+            center.lng = 82.8
+          }
+          if (id1 == "WEST UTTAR PRADESH") {
+            id1 = "W-UP"
+            center.lat = 28
+            center.lng = 80
+          }
+          if (id1 == "UTTARAKHAND") {
+            id1 = "UK"
+            center.lat = 29.8
+            center.lng = 80.3
+          }
+          if (id1 == "DELHI, HARYANA AND CHANDIGARH") {
+            id1 = "DL & HR & CD"
+            center.lat = 28.8
+            center.lng = 77.1
+          }
+          if (id1 == "PUNJAB") {
+            id1 = "PB"
+            center.lat = 30.5
+            center.lng = 76.5
+          }
+          if (id1 == "HIMACHAL PRADESH") {
+            id1 = "HP"
+            // center.lat = 32.7
+            center.lng = 78.3
+          }
+
+          if (id1 == "JAMMU & KASHMIR AND LADAKH") {
+            id1 = "JK & LA"
+            center.lat = 34
+            center.lng = 77.5
+          }
+          if (id1 == "WEST RAJASTHAN") {
+            id1 = "W-RJ"
+            // center.lat = 27
+            center.lng = 74.5
+          }
+          
+          if (id1 == "EAST RAJASTHAN") {
+            id1 = "E-RJ"
+            // center.lat = 27
+            center.lng = 77
+          }
+          if (id1 == "ODISHA") {
+            id1 = "OD"
+            center.lat = 20.5
+            center.lng = 85.7
+          }
+          if (id1 == "WEST MADHYA PRADESH") {
+            id1 = "W-MP"
+            center.lat = 23
+            center.lng = 78.5
+          }
+          if (id1 == "EAST MADHYA PRADESH") {
+            id1 = "E-MP"
+            // center.lat = 23.9
+             center.lng = 81.5
+          }
+          if (id1 == "GUJARAT REGION") {
+            id1 = "GJ"
+            // center.lat = 23.5
+            center.lng = 74.3
+          }
+          if (id1 == "SAURASHTRA & KUTCH") {
+            id1 = "SR & KT"
+            center.lat = 21.5
+            center.lng = 72
+          }
+          if (id1 == "KONKAN & GOA") {
+            id1 = "KN & GA"
+            // center.lat = 19.5
+            // center.lng = 74
+          }
+          if (id1 == "MADHYA MAHARASHTRA") {
+            id1 = "M-MH"
+            center.lat = 17.5
+            center.lng = 76
+          }
+          if (id1 == "MARATHWADA") {
+            id1 = "MT"
+            center.lat = 18.7
+            center.lng = 78
+          }          
+          if (id1 == "VIDARBHA") {
+            id1 = "VD"
+            // center.lat = 15
+             center.lng = 79
+          }
+          if (id1 == "CHHATTISGARH") {
+            id1 = "CG"
+            // center.lat = 22
+             center.lng = 83
+          }
+          if (id1 == "ANDAMAN & NICOBAR ISLANDS") {
+            id1 = "AN"
+            // center.lat = 9.8
+             center.lng = 94
+          }
+          if (id1 == "COASTAL ANDHRA PRADESH & YANAM") {
+            id1 = "C-AP & YN"
+            // center.lat = 15.5
+             center.lng = 82.5
+          }
+          if (id1 == "TELANGANA") {
+            id1 = "TS"
+             center.lat = 17.5
+             center.lng = 80
+          }
+          if (id1 == "RAYALSEEMA") {
+            id1 = "RS"
+            // center.lat = 18
+             center.lng = 79
+          }
+          if (id1 == "TAMILNADU, PUDUCHERRY & KARAIKAL") {
+            id1 = "TN & PY & KR"
+            // center.lat = 11.5
+            center.lng = 80
+          }
+          if (id1 == "COASTAL KARNATAKA") {
+            id1 = "C-KA"
+            // center.lat = 15
+            // center.lng = 74.7
+          }
+          if (id1 == "NORTHERN INTERIOR KARNATAKA") {
+            id1 = "NI-KA"
+            center.lat = 16
+            center.lng = 77
+          }
+          if (id1 == "SOUTHERN INTERIOR KARNATAKA") {
+            id1 = "SI-KA"
+            center.lat = 12.5
+            center.lng = 78
+          }
+          if (id1 == "KERALA & MAHE") {
+            id1 = "KL & ME"
+            center.lat = 10.4
+            center.lng = 77
+          }
+          if (id1 == "LAKSHADWEEP") {
+            id1 = "LD"
+            // center.lat = 10.8
+             center.lng = 73.5
+          }
+          console.log("name : ",id1, "lat : ", lat,"updLAT:", center.lat,"updLNG:", center.lng , "lng : ", lng)
+          // console.log(id1)
+          textElement.innerHTML = `
+          <div style="text-align: center; line-height: 0.4;">
+          <div style="color: #000000; font-weight: bold;text-wrap: nowrap; font-size: 5px; margin-bottom: 3px;">${dailyrainfall}(${Math.round(rainfall)})</div>
+          <div style="color: #000000; font-weight: bold;text-wrap: nowrap; font-size: 5px; margin-bottom: 3px;">${id1}</div>
+          <div style="color: #000000; font-weight: bold;text-wrap: nowrap; font-size: 5px;">${normalrainfall}</div>
+          </div>`;
 
           // Set the position of the custom HTML element on the map
           textElement.classList.add('custom-text-element');
@@ -2580,7 +2788,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
           const normalrainfall = matchedData ? matchedData.normalrainfall.toFixed(2) : '0.00';
           const textElement = document.createElement('div');
           textElement.innerHTML = `
-          <div> 
+          <div>
           <div style="color: #000000;font-weight: bold; text-wrap: nowrap;font-size: 10px;">${dailyrainfall}(${rainfall}%)</div>
           <div style="color: #000000;font-weight: bold; text-wrap: nowrap; font-size: 10px;">${id1}</div>
           <div style="color: #000000;font-weight: bold;text-wrap: nowrap; font-size: 10px;">${normalrainfall}</div>
@@ -2713,32 +2921,78 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       return '#c0c0c0';
     }
     if (numericId >= 60) {
-      this.countlargeexcess = this.countlargeexcess +1
+      this.statecountlargeexcess = this.statecountlargeexcess +1
       cat = 'LE';
       return '#0096ff';
     }
     if (numericId >= 20 && numericId <= 59) {
-      this.countexcess = this.countexcess +1
+      this.statecountexcess = this.statecountexcess +1
       cat = 'E';
       return '#32c0f8';
     }
     if (numericId >= -19 && numericId <= 19) {
-      this.countnormal = this.countnormal +1
+      this.statecountnormal = this.statecountnormal +1
       cat = 'N';
       return '#00cd5b';
     }
     if (numericId >= -59 && numericId <= -20) {
-      this.countdeficient = this.countdeficient + 1
+      this.statecountdeficient = this.statecountdeficient + 1
       cat = 'D';
       return '#ff2700';
     }
     if (numericId >= -99 && numericId <= -60) {
-      this.countlargedeficient  = this.countlargedeficient + 1
+      this.statecountlargedeficient  = this.statecountlargedeficient + 1
       cat = 'LD';
       return '#ffff20';
     }
     if (numericId == -100) {
-      this.countnorain = this.countnorain + 1
+      this.statecountnorain = this.statecountnorain + 1
+      cat = 'NR';
+      return '#ffffff';
+    }
+    if (numericId == ' ') {
+      return '#c0c0c0';
+    }
+
+    else {
+      cat = 'ND';
+      return '#c0c0c0';
+    }
+
+  }
+  getColorForRainfallsubdiv(rainfall: any, actual?: string): string {
+    const numericId = rainfall;
+    let cat = '';
+    if (actual == ' ') {
+      return '#c0c0c0';
+    }
+    if (numericId >= 60) {
+      this.subdivcountlargeexcess = this.subdivcountlargeexcess +1
+      cat = 'LE';
+      return '#0096ff';
+    }
+    if (numericId >= 20 && numericId <= 59) {
+      this.subdivcountexcess = this.subdivcountexcess +1
+      cat = 'E';
+      return '#32c0f8';
+    }
+    if (numericId >= -19 && numericId <= 19) {
+      this.subdivcountnormal = this.subdivcountnormal +1
+      cat = 'N';
+      return '#00cd5b';
+    }
+    if (numericId >= -59 && numericId <= -20) {
+      this.subdivcountdeficient = this.subdivcountdeficient + 1
+      cat = 'D';
+      return '#ff2700';
+    }
+    if (numericId >= -99 && numericId <= -60) {
+      this.subdivcountlargedeficient  = this.subdivcountlargedeficient + 1
+      cat = 'LD';
+      return '#ffff20';
+    }
+    if (numericId == -100) {
+      this.subdivcountnorain = this.subdivcountnorain + 1
       cat = 'NR';
       return '#ffffff';
     }
