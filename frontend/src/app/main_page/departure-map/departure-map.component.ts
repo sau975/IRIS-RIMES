@@ -129,7 +129,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     this.initMap();
-    var mapArray = ['mapdiv2', 'mapdiv1', 'mapdiv4', 'mapdiv5'];
+    var mapArray = ['mapdiv2', 'mapdiv3', 'mapdiv4', 'mapdiv5'];
     mapArray.forEach((m: any) => {
       let hh: any = document.getElementById(m);
       hh.style.display = 'none';
