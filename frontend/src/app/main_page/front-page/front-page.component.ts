@@ -31,7 +31,6 @@ export class FrontPageComponent implements OnInit{
       month: this.month,
       year: this.year
     }
-    localStorage.setItem('dailyDate', JSON.stringify(data));
     this.dataService.setValue(JSON.stringify(data));
     this.getAllDaysInMonth();
   }
