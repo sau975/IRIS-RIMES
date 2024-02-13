@@ -45,6 +45,7 @@ import { NormalHomogenousMapComponent } from './normal-homogenous-map/normal-hom
 import { NormalStateMapComponent } from './normal-state-map/normal-state-map.component';
 import { NormalDistrictMapComponent } from './normal-district-map/normal-district-map.component';
 import { NormalSubdivisionMapComponent } from './normal-subdivision-map/normal-subdivision-map.component';
+import { UploadFileComponent } from './upload-file/upload-file.component';
 
 @NgModule({
   declarations: [
@@ -72,7 +73,8 @@ import { NormalSubdivisionMapComponent } from './normal-subdivision-map/normal-s
     NormalHomogenousMapComponent,
     NormalStateMapComponent,
     NormalDistrictMapComponent,
-    NormalSubdivisionMapComponent
+    NormalSubdivisionMapComponent,
+    UploadFileComponent
   ],
   imports: [
     HttpClientModule,

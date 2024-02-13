@@ -69,13 +69,12 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     private datePipe: DatePipe
   ) {
     this.dateCalculation();
-    this.dataService.value$.subscribe((value) => {
+    this.dataService.fromAndToDate$.subscribe((value) => {
       if (value) {
-        let selecteddateAndMonth = JSON.parse(value);
-        this.today.setDate(selecteddateAndMonth.date)
-        this.today.setMonth(selecteddateAndMonth.month - 1)
-        this.today.setFullYear(selecteddateAndMonth.year)
-        this.dateCalculation();
+        let fromAndToDates = JSON.parse(value);
+        this.previousWeekWeeklyStartDate = fromAndToDates.fromDate;
+        this.previousWeekWeeklyEndDate = fromAndToDates.toDate;
+        this.weeklyDatesCalculation();
         this.fetchDataFromBackend();
       }
     });
@@ -139,6 +138,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
 
   weeklyDatesCalculation(){
     if(this.previousWeekWeeklyStartDate && this.previousWeekWeeklyEndDate){
+      this.weeklyDates = [];
       var startDate = new Date(this.previousWeekWeeklyStartDate);
       var endDate = new Date(this.previousWeekWeeklyEndDate);
       var currentDate = new Date(startDate);
@@ -151,6 +151,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
         currentDate.setDate(currentDate.getDate() + 1);
       }
     }
+    console.log(this.weeklyDates, "iiiiiiii")
   }
   ngOnInit(): void {
     this.weeklyDatesCalculation();
@@ -2459,7 +2460,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
           <div style="color: #000000; font-weight: bold;text-wrap: nowrap; font-size: 5px; margin-bottom: 3px;">${id1}</div>
           <div style="color: #000000; font-weight: bold;text-wrap: nowrap; font-size: 5px;">${normalrainfall}</div>
           </div>`;
-          
+
 
           // Set the position of the custom HTML element on the map
           textElement.classList.add('custom-text-element');
@@ -2511,7 +2512,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
           const normalrainfall = matchedData ? matchedData.normalrainfall.toFixed(2) : '0.00';
           const textElement = document.createElement('div');
           textElement.innerHTML = `
-          <div> 
+          <div>
           <div style="color: #000000;font-weight: bold; text-wrap: nowrap;font-size: 5px;">${dailyrainfall}(${rainfall}%)</div>
           <div style="color: #000000;font-weight: bold; text-wrap: nowrap; font-size: 5px;">${id1}</div>
           <div style="color: #000000;font-weight: bold;text-wrap: nowrap; font-size: 5px;">${normalrainfall}</div>
@@ -2592,7 +2593,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
           const normalrainfall = matchedData ? matchedData.normalrainfall.toFixed(2) : '0.00';
           const textElement = document.createElement('div');
           textElement.innerHTML = `
-          <div> 
+          <div>
           <div style="color: #000000;font-weight: bold; text-wrap: nowrap;font-size: 10px;">${dailyrainfall}(${rainfall}%)</div>
           <div style="color: #000000;font-weight: bold; text-wrap: nowrap; font-size: 10px;">${id1}</div>
           <div style="color: #000000;font-weight: bold;text-wrap: nowrap; font-size: 10px;">${normalrainfall}</div>

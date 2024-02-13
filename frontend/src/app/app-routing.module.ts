@@ -22,6 +22,7 @@ import { NormalDistrictMapComponent } from './normal-district-map/normal-distric
 import { NormalHomogenousMapComponent } from './normal-homogenous-map/normal-homogenous-map.component';
 import { NormalStateMapComponent } from './normal-state-map/normal-state-map.component';
 import { NormalSubdivisionMapComponent } from './normal-subdivision-map/normal-subdivision-map.component';
+import { UploadFileComponent } from './upload-file/upload-file.component';
 
 
 const routes: Routes = [
@@ -41,6 +42,7 @@ const routes: Routes = [
   { path: 'normal-state-map', component: NormalStateMapComponent, canActivate: [AuthGuard] },
   { path: 'normal-subdivision-map', component: NormalSubdivisionMapComponent, canActivate: [AuthGuard] },
   { path: 'normal-homogenous-map', component: NormalHomogenousMapComponent, canActivate: [AuthGuard] },
+  { path: 'upload-file', component: UploadFileComponent, canActivate: [AuthGuard] },
   { path: 'front-page', component: FrontPageComponent, canActivate: [AuthGuard], children:
     [
       { path: 'departure', component: DepartureMapComponent },
