@@ -130,7 +130,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     this.initMap();
-    var mapArray = ['mapdiv2', 'mapdiv3', 'mapdiv4', 'mapdiv5'];
+    var mapArray = ['mapdiv2', 'mapdiv1', 'mapdiv4', 'mapdiv5'];
     mapArray.forEach((m: any) => {
       let hh: any = document.getElementById(m);
       hh.style.display = 'none';
@@ -2503,22 +2503,210 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
           };
         },
         onEachFeature: (feature: any, layer: any) => {
-          const id1 = feature.properties['subdivisio'];
+          let id1 = feature.properties['subdivisio'];
           const id2 = feature.properties['SubDiv_Cod'];
           const matchedData = this.findMatchingDatasubdiv(id2);
           const rainfall = matchedData ? matchedData.dailydeparturerainfall.toFixed(2) : '0.00';
           const dailyrainfall = matchedData ? matchedData.dailyrainfall.toFixed(2) : '0.00';
           const normalrainfall = matchedData ? matchedData.normalrainfall.toFixed(2) : '0.00';
           const textElement = document.createElement('div');
-          textElement.innerHTML = `
-          <div> 
-          <div style="color: #000000;font-weight: bold; text-wrap: nowrap;font-size: 5px;">${dailyrainfall}(${rainfall}%)</div>
-          <div style="color: #000000;font-weight: bold; text-wrap: nowrap; font-size: 5px;">${id1}</div>
-          <div style="color: #000000;font-weight: bold;text-wrap: nowrap; font-size: 5px;">${normalrainfall}</div>
-          </div>`;
-
           const bounds = layer.getBounds();
           const center = bounds.getCenter();
+          const lat = center.lat
+          const lng = center.lng
+
+          if (id1 == "ARUNACHAL PRADESH") {
+            id1 = "AR"
+            center.lat = 28
+            center.lng = 96.5
+          }
+          if (id1 == "ASSAM & MEGHALAYA") {
+            id1 = "AS & ML"
+            center.lat = 25.5
+            // center.lng = 91.9
+          }
+          if (id1 == "NMMT") {
+            id1 = "NL & MN & MZ & TR"
+            center.lat = 23.5
+            center.lng = 94
+
+          }
+          if (id1 == "SHWB & SIKKIM") {
+            id1 = "SHWB & SK"
+            center.lat = 27.5
+            center.lng = 89.5
+          }
+
+          if (id1 == "GANGETIC WEST BENGAL") {
+            id1 = "G-WB"
+            center.lat = 22.5
+            center.lng = 89
+          }
+          if (id1 == "JHARKHAND") {
+            id1 = "JH"
+            center.lat = 23
+            center.lng = 86
+          }
+          if (id1 == "BIHAR") {
+            id1 = "BR"
+             center.lat = 25.5
+            center.lng = 87
+          }
+          if (id1 == "EAST UTTAR PRADESH") {
+            id1 = "E-UP"
+            // center.lat = 27.2
+            center.lng = 82.8
+          }
+          if (id1 == "WEST UTTAR PRADESH") {
+            id1 = "W-UP"
+            center.lat = 28
+            center.lng = 80
+          }
+          if (id1 == "UTTARAKHAND") {
+            id1 = "UK"
+            center.lat = 29.8
+            center.lng = 80.3
+          }
+          if (id1 == "DELHI, HARYANA AND CHANDIGARH") {
+            id1 = "DL & HR & CD"
+            center.lat = 28.8
+            center.lng = 77.1
+          }
+          if (id1 == "PUNJAB") {
+            id1 = "PB"
+            center.lat = 30.5
+            center.lng = 76.5
+          }
+          if (id1 == "HIMACHAL PRADESH") {
+            id1 = "HP"
+            // center.lat = 32.7
+            center.lng = 78.3
+          }
+
+          if (id1 == "JAMMU & KASHMIR AND LADAKH") {
+            id1 = "JK & LA"
+            center.lat = 34
+            center.lng = 77.5
+          }
+          if (id1 == "WEST RAJASTHAN") {
+            id1 = "W-RJ"
+            // center.lat = 27
+            center.lng = 74.5
+          }
+          
+          if (id1 == "EAST RAJASTHAN") {
+            id1 = "E-RJ"
+            // center.lat = 27
+            center.lng = 77
+          }
+          if (id1 == "ODISHA") {
+            id1 = "OD"
+            center.lat = 20.5
+            center.lng = 85.7
+          }
+          if (id1 == "WEST MADHYA PRADESH") {
+            id1 = "W-MP"
+            center.lat = 23
+            center.lng = 78.5
+          }
+          if (id1 == "EAST MADHYA PRADESH") {
+            id1 = "E-MP"
+            // center.lat = 23.9
+             center.lng = 81.5
+          }
+          if (id1 == "GUJARAT REGION") {
+            id1 = "GJ"
+            // center.lat = 23.5
+            center.lng = 74.3
+          }
+          if (id1 == "SAURASHTRA & KUTCH") {
+            id1 = "SR & KT"
+            center.lat = 21.5
+            center.lng = 72
+          }
+          if (id1 == "KONKAN & GOA") {
+            id1 = "KN & GA"
+            // center.lat = 19.5
+            // center.lng = 74
+          }
+          if (id1 == "MADHYA MAHARASHTRA") {
+            id1 = "M-MH"
+            center.lat = 17.5
+            center.lng = 76
+          }
+          if (id1 == "MARATHWADA") {
+            id1 = "MT"
+            center.lat = 18.7
+            center.lng = 78
+          }          
+          if (id1 == "VIDARBHA") {
+            id1 = "VD"
+            // center.lat = 15
+             center.lng = 79
+          }
+          if (id1 == "CHHATTISGARH") {
+            id1 = "CG"
+            // center.lat = 22
+             center.lng = 83
+          }
+          if (id1 == "ANDAMAN & NICOBAR ISLANDS") {
+            id1 = "AN"
+            // center.lat = 9.8
+             center.lng = 94
+          }
+          if (id1 == "COASTAL ANDHRA PRADESH & YANAM") {
+            id1 = "C-AP & YN"
+            // center.lat = 15.5
+             center.lng = 82.5
+          }
+          if (id1 == "TELANGANA") {
+            id1 = "TS"
+             center.lat = 17.5
+             center.lng = 80
+          }
+          if (id1 == "RAYALSEEMA") {
+            id1 = "RS"
+            // center.lat = 18
+             center.lng = 79
+          }
+          if (id1 == "TAMILNADU, PUDUCHERRY & KARAIKAL") {
+            id1 = "TN & PY & KR"
+            // center.lat = 11.5
+            center.lng = 80
+          }
+          if (id1 == "COASTAL KARNATAKA") {
+            id1 = "C-KA"
+            // center.lat = 15
+            // center.lng = 74.7
+          }
+          if (id1 == "NORTHERN INTERIOR KARNATAKA") {
+            id1 = "NI-KA"
+            center.lat = 16
+            center.lng = 77
+          }
+          if (id1 == "SOUTHERN INTERIOR KARNATAKA") {
+            id1 = "SI-KA"
+            center.lat = 12.5
+            center.lng = 78
+          }
+          if (id1 == "KERALA & MAHE") {
+            id1 = "KL & ME"
+            center.lat = 10.4
+            center.lng = 77
+          }
+          if (id1 == "LAKSHADWEEP") {
+            id1 = "LD"
+            // center.lat = 10.8
+             center.lng = 73.5
+          }
+          console.log("name : ",id1, "lat : ", lat,"updLAT:", center.lat,"updLNG:", center.lng , "lng : ", lng)
+          // console.log(id1)
+          textElement.innerHTML = `
+          <div style="text-align: center; line-height: 0.4;">
+          <div style="color: #000000; font-weight: bold;text-wrap: nowrap; font-size: 5px; margin-bottom: 3px;">${dailyrainfall}(${Math.round(rainfall)})</div>
+          <div style="color: #000000; font-weight: bold;text-wrap: nowrap; font-size: 5px; margin-bottom: 3px;">${id1}</div>
+          <div style="color: #000000; font-weight: bold;text-wrap: nowrap; font-size: 5px;">${normalrainfall}</div>
+          </div>`;
 
           // Set the position of the custom HTML element on the map
           textElement.classList.add('custom-text-element');
