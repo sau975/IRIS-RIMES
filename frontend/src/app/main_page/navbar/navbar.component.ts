@@ -2,6 +2,7 @@ import { Router } from '@angular/router';
 import { Component } from '@angular/core';
 import { DataService } from 'src/app/data.service';
 
+
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
@@ -140,34 +141,5 @@ export class NavbarComponent {
       start: previousStartDate,
       end: previousEndDate,
     };
-
-      // // Ensure the input is a valid Date object
-      // const currentDate = new Date(); // You can pass any date you want
-      // if (!(currentDate instanceof Date)) {
-      //   throw new Error('Invalid date');
-      // }
-
-      // // Subtract 7 days to get the previous week
-      // const previousWeekDate = new Date(currentDate);
-      // previousWeekDate.setDate(currentDate.getDate() - 7);
-
-      // // Get the current day of the week for the previous week
-      // const currentDay = previousWeekDate.getDay();
-
-      // // Calculate the difference between the current day and Thursday (4)
-      // const daysUntilThursday = (4 - currentDay + 7) % 7;
-
-      // // Calculate the start date of the previous weekly range (Thursday of the previous week)
-      // const startDate = new Date(previousWeekDate);
-      // startDate.setDate(previousWeekDate.getDate() + daysUntilThursday);
-
-      // // Calculate the end date of the previous weekly range (Wednesday of the current week)
-      // const endDate = new Date(startDate);
-      // endDate.setDate(startDate.getDate() + 6);
-
-      // return {
-      //   start: startDate,
-      //   end: endDate
-      // };
     }
   }
