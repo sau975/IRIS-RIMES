@@ -101,7 +101,7 @@ export class DataService {
   uploadFile(file: File) {
     const formData: FormData = new FormData();
     formData.append('file', file, file.name);
-    return this.http.post('/api/upload', formData);
+    return this.http.post(this.baseUrl + '/upload', formData);
   }
 }
 
