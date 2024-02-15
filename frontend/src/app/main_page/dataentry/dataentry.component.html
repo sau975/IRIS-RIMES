@@ -9,32 +9,26 @@
             <tbody>
               <tr>
                 <td>
-                  <label
-                    style="
+                  <label style="
                       color: white;
                       vertical-align: middle;
                       font-family: Arial;
                       font-weight: bolder;
                       font-size: 20px;
-                    "
-                  >
-                    IMD Rainfall Information System (IRIS)</label
-                  >
+                    ">
+                    IMD Rainfall Information System (IRIS)</label>
                 </td>
               </tr>
               <tr>
                 <td>
-                  <label
-                    style="
+                  <label style="
                       color: white;
                       vertical-align: middle;
                       font-family: Arial;
                       font-weight: bolder;
                       font-size: 18px;
-                    "
-                  >
-                    Hydromet Division</label
-                  >
+                    ">
+                    Hydromet Division</label>
                 </td>
               </tr>
             </tbody>
@@ -42,13 +36,13 @@
         </td>
         <td>
           <div class="button">
-            <button class="Back" (click) = "goBack()">Back</button>
+            <button class="Back" (click)="goBack()">Back</button>
           </div>
         </td>
       </tr>
     </tbody>
   </table>
-  <div class = "navbar">
+  <div class="navbar">
     <label for="region" class="date_label">Select Region :</label>
     <select name="region" id="region">
       <option value="region1">region1</option>
@@ -100,10 +94,9 @@
           <button (click)="uploadFile()" class="btn btn-success">Upload</button>
         </div>
       </div>
-      <br/>
+      <br />
       <form>
-        <table
-          style=" margin: auto; border-collapse: collapse; width: 90%; border: 1px solid black;">
+        <table style=" margin: auto; border-collapse: collapse; width: 90%; border: 1px solid black;">
           <thead>
             <tr>
               <th style="border: 1px solid black">S.NO</th>
@@ -125,14 +118,21 @@
               <td style="border: 1px solid black">{{ i + 1 }}</td>
               <td style="border: 1px solid black">{{ station.stationname }}</td>
               <td style="border: 1px solid black">{{ station.stationid }}</td>
-              <td style="border: 1px solid black"><input type="number" id="rainfall" #rainFallElementRef name="rainfall" required style="border: none;" (input)="showMessage(rainFallElementRef)"></td>
-              <td style="border: 1px solid black"><input type="date" [(ngModel)]="todayDate" id="date" name="date" required style="border: none;"></td>
-              <td style="border: 1px solid black"><input type="time" id="time" name="time" required style="border: none;"></td>
+              <td style="border: 1px solid black">
+                <input type="number" id="rainfall" #rainFallElementRef name="rainfall" required style="border: none;"
+                  step="0.1" (input)="showMessage(rainFallElementRef)">
+              </td>
+              
+              <td style="border: 1px solid black"><input type="date" [(ngModel)]="todayDate" id="date" name="date"
+                  required style="border: none;"></td>
+              <td style="border: 1px solid black"><input type="time" id="time" name="time" required
+                  style="border: none;"></td>
               <td style="border: 1px solid black">
                 <button class="edit" (click)="editStation(i)">Edit</button>
                 <button class="delete" (click)="deleteStationdata(i)">Delete</button>
               </td>
-              <td style="border: 1px solid black"><button value="AWS">AWS</button><button value="ORG" >ORG</button><button value="ARG">ARG</button></td>
+              <td style="border: 1px solid black"><button value="AWS">AWS</button><button
+                  value="ORG">ORG</button><button value="ARG">ARG</button></td>
               <td style="border: 1px solid black"><button>OLD</button><button>NEW</button></td>
               <td style="border: 1px solid black"><input type="number" required style="border: none; width: 50px"></td>
               <td style="border: 1px solid black"><input type="number" required style="border: none; width: 50px"></td>
@@ -149,19 +149,17 @@
       </div>
     </div>
   </div>
-  <div *ngIf="showPopup" class="popup" >
+  <div *ngIf="showPopup" class="popup">
     <button class="close-btn" (click)="cancelAddStation()">X</button>
     <h2>Add New Station Data</h2>
     <form (submit)="addData()">
-      <table
-        style="
+      <table style="
           margin: auto;
           border-collapse: collapse;
           width: 90%;
           border: 1px solid black;
           background-color: white;
-        "
-      >
+        ">
         <thead>
           <tr>
             <th style="border: 1px solid black">S.NO</th>
@@ -173,32 +171,33 @@
           </tr>
         </thead>
         <tbody>
-          <tr >
+          <tr>
             <td style="border: 1px solid black"></td>
-            <td style="border: 1px solid black"><input id="field1" name="field1" [(ngModel)]="data.field1" required style="border: none;"></td>
-            <td style="border: 1px solid black"><input id="field2" name="field2" [(ngModel)]="data.field2" required style="border: none;"></td>
-            <td style="border: 1px solid black"><button value="AWS">AWS</button><button value="ORG" >ORG</button><button value="ARG">ARG</button></td>
+            <td style="border: 1px solid black"><input id="field1" name="field1" [(ngModel)]="data.field1" required
+                style="border: none;"></td>
+            <td style="border: 1px solid black"><input id="field2" name="field2" [(ngModel)]="data.field2" required
+                style="border: none;"></td>
+            <td style="border: 1px solid black"><button value="AWS">AWS</button><button value="ORG">ORG</button><button
+                value="ARG">ARG</button></td>
             <td style="border: 1px solid black"><button>OLD</button><button>NEW</button></td>
             <td style="border: 1px solid black"><input type="date" style="border: none;"></td>
           </tr>
         </tbody>
       </table>
-        <button class="enter" (click)="addData()">Add Station</button>
+      <button class="enter" (click)="addData()">Add Station</button>
     </form>
   </div>
   <div *ngIf="showEditPopup" class="edit-popup">
     <form (submit)="updateData()">
-    <button class="close-btn" (click)="cancelEdit()">X</button>
-    <h2>Edit Station</h2>
-    <table
-        style="
+      <button class="close-btn" (click)="cancelEdit()">X</button>
+      <h2>Edit Station</h2>
+      <table style="
           margin: auto;
           border-collapse: collapse;
           width: 90%;
           border: 1px solid black;
           background-color: white;
-        "
-      >
+        ">
         <thead>
           <tr>
             <th style="border: 1px solid black">STATION NAME</th>
@@ -209,10 +208,13 @@
           </tr>
         </thead>
         <tbody>
-          <tr >
-            <td style="border: 1px solid black"><input type="name" id="stationname" name="stationname" [(ngModel)]="editData.stationname" required></td>
-            <td style="border: 1px solid black"> <input type="number" id="stationid" name="stationid" [(ngModel)]="editData.stationid" required></td>
-            <td style="border: 1px solid black"><button value="AWS">AWS</button><button value="ORG" >ORG</button><button value="ARG">ARG</button></td>
+          <tr>
+            <td style="border: 1px solid black"><input type="name" id="stationname" name="stationname"
+                [(ngModel)]="editData.stationname" required></td>
+            <td style="border: 1px solid black"> <input type="number" id="stationid" name="stationid"
+                [(ngModel)]="editData.stationid" required></td>
+            <td style="border: 1px solid black"><button value="AWS">AWS</button><button value="ORG">ORG</button><button
+                value="ARG">ARG</button></td>
             <td style="border: 1px solid black"><button>OLD</button><button>NEW</button></td>
             <td style="border: 1px solid black"><input type="date" style="border: none;"></td>
           </tr>
