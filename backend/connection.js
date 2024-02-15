@@ -7,8 +7,4 @@ const client = new Client( {
   password: "rimes@123",
   database: "IRIS"
 });
-
-
-
-
 module.exports = client;
