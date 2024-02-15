@@ -2,8 +2,14 @@
 
 <div class="container mt-5">
   <div class="mb-3 col-6">
-    <label>Section Name</label>
-    <input class="form-control" type="text">
+    <label>Select Section</label>
+    <select class="form-control">
+      <option>ATLASES</option>
+      <option>REPORTS</option>
+      <option>RAINFALL STATISTICS</option>
+      <option>QPF VERIFICATION REPORT</option>
+    </select>
+    <!-- <input class="form-control" type="text"> -->
   </div>
   <div class="mb-3 col-6">
     <input class="form-control" type="file" (change)="onFileSelected($event)">

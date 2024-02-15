@@ -18,7 +18,8 @@ export class DailyWeeklyStateDepartureMapComponent implements OnInit, AfterViewI
 
   @Input() previousWeekWeeklyStartDate: string = '';
   @Input() previousWeekWeeklyEndDate: string = '';
-
+  selectedDate: Date = new Date();
+  isDaily: boolean = false;
   private initialZoom = 5;
   private map1: L.Map = {} as L.Map;
   currentDateNormal: string = '';
@@ -55,6 +56,7 @@ export class DailyWeeklyStateDepartureMapComponent implements OnInit, AfterViewI
   ) {
     let localDailyDate:any = localStorage.getItem('dailyDate')
     if(localDailyDate){
+      this.isDaily = true;
       let dailyDate = JSON.parse(localDailyDate);
       this.today.setDate(dailyDate.date)
       this.today.setMonth(dailyDate.month - 1)
@@ -62,6 +64,7 @@ export class DailyWeeklyStateDepartureMapComponent implements OnInit, AfterViewI
     }
     let localWeekDates:any = localStorage.getItem('weekDates')
     if(localWeekDates){
+      this.isDaily = false;
       let weeklyDates = JSON.parse(localWeekDates);
       this.previousWeekWeeklyStartDate = weeklyDates.previousWeekWeeklyStartDate;
       this.previousWeekWeeklyEndDate = weeklyDates.previousWeekWeeklyEndDate;
@@ -93,6 +96,11 @@ export class DailyWeeklyStateDepartureMapComponent implements OnInit, AfterViewI
     this.fetchDataFromBackend();
   }
 
+  dailyDeparture(){
+    this.today = new Date(this.selectedDate);
+    this.dateCalculation()
+    this.fetchDataFromBackend();
+  }
   dateCalculation() {
     const yesterday = new Date(this.today);
     yesterday.setDate(this.today.getDate() - 1);

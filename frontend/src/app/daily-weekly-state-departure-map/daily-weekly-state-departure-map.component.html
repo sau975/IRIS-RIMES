@@ -1,5 +1,31 @@
 <div>
   <button class="download" routerLink="../front-page/departure">Back</button>
+  <div *ngIf="isDaily == false" class="row" style="margin-left: 400px;">
+    <div class="col-3">
+      <label>Select Week</label>
+      <select class="form-control">
+        <option>01 Feb 2024 - 07 Feb 2024</option>
+        <option>01 Feb 2024 - 07 Feb 2024</option>
+        <option>01 Feb 2024 - 07 Feb 2024</option>
+        <option>01 Feb 2024 - 07 Feb 2024</option>
+        <option>01 Feb 2024 - 07 Feb 2024</option>
+      </select>
+    </div>
+    <div class="col-3 mt-4">
+      <button class="btn btn-success">Submit</button>
+    </div>
+  </div>
+
+  <div *ngIf="isDaily == true" class="row" style="margin-left: 400px;">
+    <div class="col-3">
+      <label>Date</label>
+      <input type="date" class="form-control" [(ngModel)]="selectedDate" placeholder="Select date">
+    </div>
+    <div class="col-2">
+      <button type="button" class="btn btn-primary mt-4" (click)="dailyDeparture()">Submit</button>
+    </div>
+  </div>
+
   <div class="container">
     <div class="row">
       <div class="col-10">
