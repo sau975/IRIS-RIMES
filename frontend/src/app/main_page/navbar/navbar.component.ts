@@ -98,11 +98,16 @@ export class NavbarComponent {
   }
 
   dailyMap(){
-    this.dataService.value$.subscribe((value) => {
-      if (value) {
-        localStorage.setItem('dailyDate', value);
-      }
-    });
+    // this.dataService.value$.subscribe((value) => {
+    //   if (value) {
+        var data = {
+          year: '2024',
+          month: '02',
+          date: '15'
+        }
+        localStorage.setItem('dailyDate', JSON.stringify(data));
+    //   }
+    // });
   }
 
   weeklyMap(){

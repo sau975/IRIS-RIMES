@@ -29,6 +29,7 @@ import { QpfverificationReports2022Component } from './qpfverification_reports/q
 
 import { UploadFileComponent } from './upload-file/upload-file.component';
 import { AboutComponent } from './about/about.component';
+import { VerificationPageComponent } from './verification-page/verification-page.component';
 
 
 const routes: Routes = [
@@ -54,6 +55,7 @@ const routes: Routes = [
   { path: 'QpfverificationReports2022', component: QpfverificationReports2022Component , canActivate: [AuthGuard] },
   { path: 'upload-file', component: UploadFileComponent, canActivate: [AuthGuard] },
   { path: 'about', component: AboutComponent, canActivate: [AuthGuard] },
+  { path: 'verification-page', component: VerificationPageComponent, canActivate: [AuthGuard] },
   { path: 'front-page', component: FrontPageComponent, canActivate: [AuthGuard], children:
     [
       { path: 'departure', component: DepartureMapComponent },

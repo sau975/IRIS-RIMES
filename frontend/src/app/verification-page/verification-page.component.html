@@ -1,0 +1,169 @@
+<div class="background-effect">
+  <table style="width: 100%; background: linear-gradient(to top, #09203f 0%, #537895 100%);">
+    <tbody>
+      <tr>
+        <td style="width: 8%; padding: 10px 0px 17px 25px;" align="left">
+        </td>
+        <td style="text-align: center; padding: 20px; width: 90%">
+          <table style="width: 100%">
+            <tbody>
+              <tr>
+                <td>
+                  <label
+                    style="
+                      color: white;
+                      vertical-align: middle;
+                      font-family: Arial;
+                      font-weight: bolder;
+                      font-size: 20px;
+                    "
+                  >
+                    IMD Rainfall Information System (IRIS)</label
+                  >
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <label
+                    style="
+                      color: white;
+                      vertical-align: middle;
+                      font-family: Arial;
+                      font-weight: bolder;
+                      font-size: 18px;
+                    "
+                  >
+                    Hydromet Division</label
+                  >
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </td>
+        <td>
+          <div class="button">
+            <button class="Back" (click)="goBack()">Back</button>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <div class = "navbar">
+    <label for="region" class="date_label">Select Region :</label>
+    <select name="region" id="region">
+      <option value="region1">region1</option>
+      <option value="region2">region2</option>
+      <option value="region3">region3</option>
+      <option value="region4">region4</option>
+    </select>
+    <label for="mcs" class="date_label">Select MC :</label>
+    <select name="mcs" id="mcs">
+      <option value="mc1">RMC/MC</option>
+      <option value="mc2">RMC/MC</option>
+      <option value="mc3">RMC/MC</option>
+      <option value="mc4">RMC/MC</option>
+    </select>
+    <label for="state" class="date_label">Select State :</label>
+    <select name="state" id="state">
+      <option value="state1">state1</option>
+      <option value="state2">state2</option>
+      <option value="state3">state3</option>
+      <option value="state4">state4</option>
+    </select>
+    <label for="district" class="date_label">Select District :</label>
+    <select name="district" id="district">
+      <option value="district1">district1</option>
+      <option value="district2">district2</option>
+      <option value="district3">district3</option>
+      <option value="district4">district4</option>
+    </select>
+    <label for="district" class="date_label">Select Date :</label>
+    <input type="date" class="date_label">
+    <div class="button">
+      <button class="btn btn-success">Submit</button>
+    </div>
+  </div> <br>
+
+  <div class="card">
+    <div style="background-color: aqua; border-radius: 5px; font-weight: bold;">
+        <legend class="text-center">Realtime Rainfall Data</legend>
+    </div>
+    <p-table #dt1 [value]="data" selectionMode="single" [(selection)]="selected" dataKey="id" [tableStyle]="{'min-width': '50rem'}"
+    [rows]="10" [paginator]="true" stateStorage="session" stateKey="statedemo-session">
+        <ng-template pTemplate="header">
+            <tr>
+                <th pSortableColumn="sno">SNo <p-sortIcon field="sno"></p-sortIcon></th>
+                <!-- <th pSortableColumn="id">ID <p-sortIcon field="country.name"></p-sortIcon></th> -->
+                <th pSortableColumn="station">Station <p-sortIcon field="representative.name"></p-sortIcon></th>
+                <th pSortableColumn="district">District <p-sortIcon field="district"></p-sortIcon></th>
+                <!-- <th pSortableColumn="subdivision">Subdivision <p-sortIcon field="subdivision"></p-sortIcon></th>
+                <th pSortableColumn="state">State <p-sortIcon field="state"></p-sortIcon></th>
+                <th pSortableColumn="region">Region <p-sortIcon field="region"></p-sortIcon></th> -->
+                <th pSortableColumn="railfall">Railfall <p-sortIcon field="railfall"></p-sortIcon></th>
+                <th pSortableColumn="updateddate">Updated Date <p-sortIcon field="updateddate"></p-sortIcon></th>
+            </tr>
+            <tr>
+                <th style="width: 5px;">
+                    <input pInputText type="text" class="w-full">
+                </th>
+                <!-- <th>
+                    <input pInputText type="text" placeholder="Search by Country" class="w-full">
+                </th> -->
+                <th>
+                    <input pInputText type="text" class="w-full">
+                </th>
+                <th>
+                    <input pInputText type="text" class="w-full">
+                </th>
+                <th>
+                    <input pInputText type="text" class="w-full">
+                </th>
+                <th>
+                    <input pInputText type="text" class="w-full">
+                </th>
+                <!-- <th>
+                    <input pInputText type="text" placeholder="Search by Representative" class="w-full">
+                </th>
+                <th>
+                    <input pInputText type="text" placeholder="Search by Status" class="w-full">
+                </th>
+                <th>
+                    <input pInputText type="text" placeholder="Search by Status" class="w-full">
+                </th> -->
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-customer>
+            <tr [pSelectableRow]="customer">
+                <td>
+                    <span class="p-column-title">Sno</span>
+                    {{customer.Sno}}
+                </td>
+                <td>
+                    <span class="p-column-title">Station</span>
+                    {{customer.station}}
+                </td>
+                <td>
+                    <span class="p-column-title">District</span>
+                    <span>{{customer.district}}</span>
+                </td>
+                <td>
+                    <span class="p-column-title">RailFall</span>
+                    <span>{{customer.railFall}}</span>
+                </td>
+                <td>
+                    <span class="p-column-title">Updated Date</span>
+                    <span>{{customer.updatedDate}}</span>
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+            <tr>
+                <td colspan="4">No customers found.</td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>
+<div class="button mt-3 pb-3">
+  <button class="btn btn-primary">Verified</button>
+</div>
+</div>

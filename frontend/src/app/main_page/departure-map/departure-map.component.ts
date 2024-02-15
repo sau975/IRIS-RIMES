@@ -446,7 +446,8 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
   }
 
   date() {
-    let currentEndDay = this.previousWeekWeeklyEndDate ? new Date(this.previousWeekWeeklyEndDate).getDate() : this.today.getDate();
+    // let currentEndDay = this.previousWeekWeeklyEndDate ? new Date(this.previousWeekWeeklyEndDate).getDate() : this.today.getDate();
+    let currentEndDay = this.today.getDate();
     let startMonth = this.previousWeekWeeklyEndDate ? this.months[new Date(this.previousWeekWeeklyEndDate).getMonth()] : this.months[this.today.getMonth()];
     let startDay = 1;
     let endDay = currentEndDay.toString().length == 1 ? 0 + currentEndDay : currentEndDay;
@@ -2624,7 +2625,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
             // center.lat = 27
             center.lng = 74.5
           }
-          
+
           if (id1 == "EAST RAJASTHAN") {
             id1 = "E-RJ"
             // center.lat = 27
@@ -2669,7 +2670,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
             id1 = "MT"
             center.lat = 18.7
             center.lng = 78
-          }          
+          }
           if (id1 == "VIDARBHA") {
             id1 = "VD"
             // center.lat = 15

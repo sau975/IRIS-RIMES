@@ -52,6 +52,7 @@ import { PdfViewerModule } from 'ng2-pdf-viewer';
  
 import { UploadFileComponent } from './upload-file/upload-file.component';
 import { AboutComponent } from './about/about.component';
+import { VerificationPageComponent } from './verification-page/verification-page.component';
 
 @NgModule({
   declarations: [
@@ -86,6 +87,7 @@ import { AboutComponent } from './about/about.component';
     QpfverificationReports2022Component,
     UploadFileComponent,
     AboutComponent
+    VerificationPageComponent
   ],
   imports: [
     PdfViewerModule,
