@@ -77,13 +77,18 @@
       <option value="district3">district3</option>
       <option value="district4">district4</option>
     </select>
+    <label for="district" class="date_label">Select Date :</label>
+    <input type="date">
   </div>
 
   <div style="text-align: center; padding-top: 40px">
     <div class="dataentry">
       <div class="row">
-        <div class="col-9">
+        <div class="col-8">
           <h3>STATIONS DATA</h3>
+        </div>
+        <div class="col-1">
+          <button class="btn btn-primary" (click)="exportAsXLSX()">Download</button>
         </div>
         <div class="mb-3 col-2">
           <input class="form-control" type="file" (change)="onFileSelected($event)">
