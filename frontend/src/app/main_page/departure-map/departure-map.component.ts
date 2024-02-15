@@ -913,6 +913,18 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
   }
 
 
+  private updateLegendDetailsPosition(fullscreen: boolean): void {
+    const legendDetailsElement = document.querySelector('.legenddetails') as HTMLElement; // Use type assertion to HTMLElement
+    if (legendDetailsElement) {
+        if (fullscreen) {
+            // Update the right value to 180px when in full screen
+            legendDetailsElement.style.right = '70px';
+        } else {
+            // Reset the right value to 140px when exiting full screen
+            legendDetailsElement.style.right = '140px';
+        }
+    }
+}
 
   private initMap(): void {
     this.map = L.map('map', {
@@ -924,6 +936,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     this.map.on('fullscreenchange', () => {
       if (this.isFullscreen()) {
         this.map.setZoom(this.initialZoom + 1);
+        this.loadGeoJSON();
       } else {
         this.map.setZoom(this.initialZoom);
       }
@@ -937,8 +950,12 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     this.map1.on('fullscreenchange', () => {
       if (this.isFullscreen()) {
         this.map1.setZoom(this.initialZoom + 1);
+        this.loadGeoJSON();
+        this.updateLegendDetailsPosition(true); // Call function to update position
       } else {
         this.map1.setZoom(this.initialZoom);
+        this.updateLegendDetailsPosition(false); // Call function to reset position
+        this.loadGeoJSON();
       }
     });
     this.map2 = L.map('map2', {
@@ -949,8 +966,10 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     this.map2.on('fullscreenchange', () => {
       if (this.isFullscreen()) {
         this.map2.setZoom(this.initialZoom + 1);
+        // this.loadGeoJSON();
       } else {
         this.map2.setZoom(this.initialZoom);
+        // this.loadGeoJSON();
       }
     });
     this.map3 = L.map('map3', {
@@ -961,8 +980,10 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     this.map3.on('fullscreenchange', () => {
       if (this.isFullscreen()) {
         this.map3.setZoom(this.initialZoom + 1);
+        // this.loadGeoJSON();
       } else {
         this.map3.setZoom(this.initialZoom);
+        // this.loadGeoJSON();
       }
     });
     this.map4 = L.map('map4', {
@@ -973,8 +994,10 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     this.map4.on('fullscreenchange', () => {
       if (this.isFullscreen()) {
         this.map4.setZoom(this.initialZoom + 1);
+        this.loadGeoJSON();
       } else {
         this.map4.setZoom(this.initialZoom);
+        this.loadGeoJSON();
       }
     });
     const fullscreenControl = new (L.Control as any).Fullscreen({
@@ -2357,8 +2380,8 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
           }
           if (id1 == "GOA") {
             id1 = "GA"
-            center.lat = 16.5
-            center.lng = 72.7
+            center.lat = 15.6
+            center.lng = 73
           }
           if (id1 == "KARNATAKA") {
             id1 = "KA"
@@ -2873,6 +2896,711 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       geoJsonLayer.addTo(this.map4);
     });
   }
+  // loadGeoJSON1(): void {
+
+  //   this.clearTextElements();
+  //   this.http.get('assets/geojson/INDIA_DISTRICT.json').subscribe((res: any) => {
+  //     L.geoJSON(res, {
+  //       style: (feature: any) => {
+  //         const id2 = feature.properties['district_c'];
+  //         const matchedData = this.findMatchingData(id2);
+
+  //         let rainfall: any;
+
+  //         if (matchedData) {
+
+  //           if (Number.isNaN(matchedData.dailyrainfall)) {
+  //             rainfall = ' ';
+  //           }
+  //           else {
+  //             rainfall = matchedData.dailydeparturerainfall;
+  //           }
+
+  //         }
+  //         else {
+  //           rainfall = -100
+  //         }
+  //         const color = this.getColorForRainfall1(rainfall);
+  //         return {
+  //           fillColor: color,
+  //           weight: 0.5,
+  //           opacity: 2,
+  //           color: 'black',
+  //           fillOpacity: 2
+
+  //         };
+  //       },
+  //       onEachFeature: (feature: any, layer: any) => {
+  //         const id1 = feature.properties['district'];
+  //         const id2 = feature.properties['district_c'];
+  //         const matchedData = this.findMatchingData(id2);
+
+  //         let rainfall: any;
+
+  //         if (matchedData) {
+
+  //           if (Number.isNaN(matchedData.dailyrainfall)) {
+  //             rainfall = "NA";
+  //           }
+  //           else {
+  //             rainfall = matchedData.dailydeparturerainfall;
+  //           }
+
+  //         }
+  //         else {
+  //           rainfall = -100
+  //         }
+  //         const dailyrainfall = matchedData && matchedData.dailyrainfall !== null && matchedData.dailyrainfall != undefined && !Number.isNaN(matchedData.dailyrainfall) ? matchedData.dailyrainfall.toFixed(2) : 'NA';
+  //         const normalrainfall = matchedData && !Number.isNaN(matchedData.normalrainfall) ? matchedData.normalrainfall.toFixed(2) : 'NA';
+  //         const popupContent = `
+  //           <div style="background-color: white; padding: 5px; font-family: Arial, sans-serif;">
+  //             <div style="color: #002467; font-weight: bold; font-size: 10px;">DISTRICT: ${id1}</div>
+  //             <div style="color: #002467; font-weight: bold; font-size: 10px;">DAILY RAINFALL: ${dailyrainfall}</div>
+  //             <div style="color: #002467; font-weight: bold; font-size: 10px;">NORMAL RAINFALL: ${normalrainfall}</div>
+  //             <div style="color: #002467; font-weight: bold; font-size: 10px;">DEPARTURE: ${rainfall}% </div>
+  //           </div>
+  //         `;
+  //         layer.bindPopup(popupContent);
+  //         layer.on('mouseover', () => {
+  //           layer.openPopup();
+  //         });
+  //         layer.on('mouseout', () => {
+  //           layer.closePopup();
+  //         });
+  //       }
+  //     }).addTo(this.map);
+  //   });
+  //   this.http.get('assets/geojson/INDIA_STATE.json').subscribe((res: any) => {
+  //   this.statecountlargeexcess = 0
+  //   this.statecountexcess = 0
+  //   this.statecountnormal = 0
+  //   this.statecountdeficient = 0
+  //   this.statecountlargedeficient = 0
+  //   this.statecountnorain = 0
+  //     const geoJsonLayer = L.geoJSON(res, {
+  //       style: (feature: any) => {
+  //         const id2 = feature.properties['state_code'];
+  //         const matchedData = this.findMatchingDatastate(id2);
+  //         const rainfall = matchedData ? matchedData.dailydeparturerainfall : -100;
+  //         const actual = matchedData && matchedData.dailyrainfall == null ? ' ' : "notnull";
+  //         const color = this.getColorForRainfallstate(rainfall, actual);
+  //         return {
+  //           fillColor: color,
+  //           weight: 0.5,
+  //           opacity: 2,
+  //           color: 'black',
+  //           fillOpacity: 2
+  //         };
+  //       },
+  //       onEachFeature: (feature: any, layer: any) => {
+  //         let id1 = feature.properties['state_name'];
+  //         const id2 = feature.properties['state_code'];
+  //         const matchedData = this.findMatchingDatastate(id2);
+  //         const rainfall = matchedData && matchedData.dailydeparturerainfall !== null && matchedData.dailydeparturerainfall !== undefined && !Number.isNaN(matchedData.dailydeparturerainfall) ? matchedData.dailydeparturerainfall.toFixed(2) : 'NA';
+  //         const dailyrainfall = matchedData && matchedData.dailyrainfall !== null && matchedData.dailyrainfall != undefined && !Number.isNaN(matchedData.dailyrainfall) ? Math.round(matchedData.dailyrainfall * 10) / 10 : 'NA';
+  //         const normalrainfall = matchedData && !Number.isNaN(matchedData.normalrainfall) ? matchedData.normalrainfall.toFixed(2) : 'NA';
+  //         const textElement = document.createElement('div');
+  //         const bounds = layer.getBounds();
+  //         const center = bounds.getCenter();
+  //         const lat = center.lat
+  //         const lng = center.lng
+  //         if (id1 == "ARUNACHAL PRADESH") {
+  //           id1 = "AR"
+  //           center.lat = 29
+  //           center.lng = 94.2
+  //         }
+  //         if (id1 == "LADAKH (UT)") {
+  //           id1 = "LA"
+  //           center.lat = 35.3
+  //           center.lng = 76
+  //         }
+  //         if (id1 == "JAMMU & KASHMIR (UT)") {
+  //           id1 = "JK"
+  //           center.lat = 34.5
+  //           center.lng = 73.2
+  //         }
+  //         if (id1 == "HIMACHAL PRADESH") {
+  //           id1 = "HP"
+  //           center.lat = 32.7
+  //           center.lng = 76
+  //         }
+  //         if (id1 == "PUNJAB") {
+  //           id1 = "PB"
+  //           center.lat = 31.5
+  //           center.lng = 73.8
+  //         }
+  //         if (id1 == "CHANDIGARH (UT)") {
+  //           id1 = "CH"
+  //           center.lat = 30.8
+  //           center.lng = 76
+  //         }
+  //         if (id1 == "UTTARAKHAND") {
+  //           id1 = "UK"
+  //           center.lat = 30.2
+  //           center.lng = 78.5
+  //         }
+  //         if (id1 == "HARYANA") {
+  //           id1 = "HR"
+  //           center.lat = 29.5
+  //           center.lng = 75
+  //         }
+  //         if (id1 == "DELHI (UT)") {
+  //           id1 = "DL"
+  //           center.lng = 77.1
+  //         }
+  //         if (id1 == "UTTAR PRADESH") {
+  //           id1 = "UP"
+  //           center.lat = 27.2
+  //           center.lng = 79.2
+  //         }
+  //         if (id1 == "RAJASTHAN") {
+  //           id1 = "RJ"
+  //           center.lat = 27
+  //           center.lng = 72
+  //         }
+  //         if (id1 == "GUJARAT") {
+  //           id1 = "GJ"
+  //           center.lat = 23.5
+  //           center.lng = 71
+  //         }
+  //         if (id1 == "MADHYA PRADESH") {
+  //           id1 = "MP"
+  //           center.lat = 23.9
+  //           center.lng = 76.5
+  //         }
+  //         if (id1 == "DADRA & NAGAR HAVELI AND DAMAN & DIU (UT)") {
+  //           id1 = "DH & DD"
+  //           center.lat = 21.5
+  //           center.lng = 72
+  //         }
+  //         if (id1 == "MAHARASHTRA") {
+  //           id1 = "MH"
+  //           center.lat = 19.5
+  //           center.lng = 74
+  //         }
+  //         if (id1 == "TELANGANA") {
+  //           id1 = "TS"
+  //           center.lat = 18
+  //           center.lng = 77.7
+  //         }
+  //         if (id1 == "GOA") {
+  //           id1 = "GA"
+  //           center.lat = 16.5
+  //           center.lng = 72.7
+  //         }
+  //         if (id1 == "KARNATAKA") {
+  //           id1 = "KA"
+  //           center.lat = 15
+  //           center.lng = 74.7
+  //         }
+  //         if (id1 == "ANDHRA PRADESH") {
+  //           id1 = "AP"
+  //           center.lat = 15.5
+  //           center.lng = 78
+  //         }
+  //         if (id1 == "TAMILNADU") {
+  //           id1 = "TN"
+  //           center.lat = 11.5
+  //           center.lng = 77.5
+  //         }
+  //         if (id1 == "LAKSHADWEEP (UT)") {
+  //           id1 = "LD"
+  //           center.lat = 10.8
+  //           center.lng = 71.5
+  //         }
+  //         if (id1 == "KERALA") {
+  //           id1 = "KL"
+  //           center.lat = 10.5
+  //           center.lng = 75.5
+  //         }
+  //         if (id1 == "PUDUCHERRY (UT)") {
+  //           id1 = "PY"
+  //           center.lat = 11.5
+  //           center.lng = 79.5
+  //         }
+  //         if (id1 == "CHHATTISGARH") {
+  //           id1 = "CG"
+  //           center.lat = 22
+  //           center.lng = 81
+  //         }
+  //         if (id1 == "ODISHA") {
+  //           id1 = "OD"
+  //           center.lat = 20.8
+  //           center.lng = 83.3
+  //         }
+  //         if (id1 == "JHARKHAND") {
+  //           id1 = "JH"
+  //           center.lng = 84
+  //         }
+  //         if (id1 == "WEST BENGAL") {
+  //           id1 = "WB"
+  //           center.lat = 23.7
+  //           center.lng = 86.8
+  //         }
+  //         if (id1 == "BIHAR") {
+  //           id1 = "BR"
+  //           center.lat = 26
+  //           center.lng = 85.3
+  //         }
+  //         if (id1 == "SIKKIM") {
+  //           id1 = "SK"
+  //           center.lat = 28.5
+  //           center.lng = 88
+  //         }
+
+  //         if (id1 == "ASSAM") {
+  //           id1 = "AS"
+  //           center.lat = 26.8
+  //           center.lng = 91.9
+  //         }
+  //         if (id1 == "MEGHALAYA") {
+  //           id1 = "ML"
+  //           center.lat = 25.7
+  //           center.lng = 90.5
+  //         }
+  //         if (id1 == "TRIPURA") {
+  //           id1 = "TR"
+  //           center.lat = 23.5
+  //           center.lng = 90.5
+  //         }
+  //         if (id1 == "NAGALAND") {
+  //           id1 = "NL"
+
+  //         }
+  //         if (id1 == "MIZORAM") {
+  //           id1 = "MZ"
+
+  //         }
+  //         if (id1 == "MANIPUR") {
+  //           id1 = "MN"
+
+  //         }
+  //         if (id1 == "ANDAMAN & NICOBAR ISLANDS (UT)") {
+  //           id1 = "AN"
+  //           center.lat = 9.8
+  //           center.lng = 91.7
+  //         }
+
+  //         // console.log(id1)
+  //         textElement.innerHTML = `
+  //         <div style="text-align: center; line-height: 0.4;">
+  //         <div style="color: #000000; font-weight: bold;text-wrap: nowrap; font-size: 5px; margin-bottom: 3px;">${dailyrainfall}(${Math.round(rainfall)})</div>
+  //         <div style="color: #000000; font-weight: bold;text-wrap: nowrap; font-size: 5px; margin-bottom: 3px;">${id1}</div>
+  //         <div style="color: #000000; font-weight: bold;text-wrap: nowrap; font-size: 5px;">${normalrainfall}</div>
+  //         </div>`;
+
+
+  //         // Set the position of the custom HTML element on the map
+  //         textElement.classList.add('custom-text-element');
+  //         textElement.style.position = 'absolute';
+  //         textElement.style.left = `${this.map1.latLngToLayerPoint(center).x}px`;
+  //         textElement.style.top = `${this.map1.latLngToLayerPoint(center).y}px`;
+
+
+  //         // Set a higher z-index to ensure the text appears on top of the map
+  //         textElement.style.zIndex = '1000';
+
+
+  //         // Append the custom HTML element to the map container
+  //         this.map1.getPanes().overlayPane.appendChild(textElement);
+  //         this.addedTextElements.push(textElement);
+  //       }
+  //     });
+  //     // Add the geoJsonLayer to the map
+  //     geoJsonLayer.addTo(this.map1);
+  //   });
+  //   this.http.get('assets/geojson/INDIA_SUB_DIVISION.json').subscribe((res: any) => {
+  //     this.subdivcountlargeexcess = 0
+  //     this.subdivcountexcess = 0
+  //     this.subdivcountnormal = 0
+  //     this.subdivcountdeficient = 0
+  //     this.subdivcountlargedeficient = 0
+  //     this.subdivcountnorain = 0
+  //     const geoJsonLayer = L.geoJSON(res, {
+  //       style: (feature: any) => {
+  //         const id2 = feature.properties['SubDiv_Cod'];
+  //         const matchedData = this.findMatchingDatasubdiv(id2);
+  //         const rainfall = matchedData ? matchedData.dailydeparturerainfall : -100;
+  //         const actual = matchedData && matchedData.dailyrainfall == null ? ' ' : "notnull";
+  //         const color = this.getColorForRainfallsubdiv(rainfall, actual);
+  //         return {
+  //           fillColor: color,
+  //           weight: 0.5,
+  //           opacity: 2,
+  //           color: 'black',
+  //           fillOpacity: 2
+  //         };
+  //       },
+  //       onEachFeature: (feature: any, layer: any) => {
+  //         let id1 = feature.properties['subdivisio'];
+  //         const id2 = feature.properties['SubDiv_Cod'];
+  //         const matchedData = this.findMatchingDatasubdiv(id2);
+  //         const rainfall = matchedData ? matchedData.dailydeparturerainfall.toFixed(2) : '0.00';
+  //         const dailyrainfall = matchedData ? matchedData.dailyrainfall.toFixed(2) : '0.00';
+  //         const normalrainfall = matchedData ? matchedData.normalrainfall.toFixed(2) : '0.00';
+  //         const textElement = document.createElement('div');
+  //         textElement.innerHTML = `
+  //         <div>
+  //         <div style="color: #000000;font-weight: bold; text-wrap: nowrap;font-size: 5px;">${dailyrainfall}(${rainfall}%)</div>
+  //         <div style="color: #000000;font-weight: bold; text-wrap: nowrap; font-size: 5px;">${id1}</div>
+  //         <div style="color: #000000;font-weight: bold;text-wrap: nowrap; font-size: 5px;">${normalrainfall}</div>
+  //         </div>`;
+
+  //         const bounds = layer.getBounds();
+  //         const center = bounds.getCenter();
+  //         const lat = center.lat
+  //         const lng = center.lng
+
+  //         if (id1 == "ARUNACHAL PRADESH") {
+  //           id1 = "AR"
+  //           center.lat = 28
+  //           center.lng = 96.5
+  //         }
+  //         if (id1 == "ASSAM & MEGHALAYA") {
+  //           id1 = "AS & ML"
+  //           center.lat = 25.5
+  //           // center.lng = 91.9
+  //         }
+  //         if (id1 == "NMMT") {
+  //           id1 = "NL & MN & MZ & TR"
+  //           center.lat = 23.5
+  //           center.lng = 94
+
+  //         }
+  //         if (id1 == "SHWB & SIKKIM") {
+  //           id1 = "SHWB & SK"
+  //           center.lat = 27.5
+  //           center.lng = 89.5
+  //         }
+
+  //         if (id1 == "GANGETIC WEST BENGAL") {
+  //           id1 = "G-WB"
+  //           center.lat = 22.5
+  //           center.lng = 89
+  //         }
+  //         if (id1 == "JHARKHAND") {
+  //           id1 = "JH"
+  //           center.lat = 23
+  //           center.lng = 86
+  //         }
+  //         if (id1 == "BIHAR") {
+  //           id1 = "BR"
+  //            center.lat = 25.5
+  //           center.lng = 87
+  //         }
+  //         if (id1 == "EAST UTTAR PRADESH") {
+  //           id1 = "E-UP"
+  //           // center.lat = 27.2
+  //           center.lng = 82.8
+  //         }
+  //         if (id1 == "WEST UTTAR PRADESH") {
+  //           id1 = "W-UP"
+  //           center.lat = 28
+  //           center.lng = 80
+  //         }
+  //         if (id1 == "UTTARAKHAND") {
+  //           id1 = "UK"
+  //           center.lat = 29.8
+  //           center.lng = 80.3
+  //         }
+  //         if (id1 == "DELHI, HARYANA AND CHANDIGARH") {
+  //           id1 = "DL & HR & CD"
+  //           center.lat = 28.8
+  //           center.lng = 77.1
+  //         }
+  //         if (id1 == "PUNJAB") {
+  //           id1 = "PB"
+  //           center.lat = 30.5
+  //           center.lng = 76.5
+  //         }
+  //         if (id1 == "HIMACHAL PRADESH") {
+  //           id1 = "HP"
+  //           // center.lat = 32.7
+  //           center.lng = 78.3
+  //         }
+
+  //         if (id1 == "JAMMU & KASHMIR AND LADAKH") {
+  //           id1 = "JK & LA"
+  //           center.lat = 34
+  //           center.lng = 77.5
+  //         }
+  //         if (id1 == "WEST RAJASTHAN") {
+  //           id1 = "W-RJ"
+  //           // center.lat = 27
+  //           center.lng = 74.5
+  //         }
+          
+  //         if (id1 == "EAST RAJASTHAN") {
+  //           id1 = "E-RJ"
+  //           // center.lat = 27
+  //           center.lng = 77
+  //         }
+  //         if (id1 == "ODISHA") {
+  //           id1 = "OD"
+  //           center.lat = 20.5
+  //           center.lng = 85.7
+  //         }
+  //         if (id1 == "WEST MADHYA PRADESH") {
+  //           id1 = "W-MP"
+  //           center.lat = 23
+  //           center.lng = 78.5
+  //         }
+  //         if (id1 == "EAST MADHYA PRADESH") {
+  //           id1 = "E-MP"
+  //           // center.lat = 23.9
+  //            center.lng = 81.5
+  //         }
+  //         if (id1 == "GUJARAT REGION") {
+  //           id1 = "GJ"
+  //           // center.lat = 23.5
+  //           center.lng = 74.3
+  //         }
+  //         if (id1 == "SAURASHTRA & KUTCH") {
+  //           id1 = "SR & KT"
+  //           center.lat = 21.5
+  //           center.lng = 72
+  //         }
+  //         if (id1 == "KONKAN & GOA") {
+  //           id1 = "KN & GA"
+  //           // center.lat = 19.5
+  //           // center.lng = 74
+  //         }
+  //         if (id1 == "MADHYA MAHARASHTRA") {
+  //           id1 = "M-MH"
+  //           center.lat = 17.5
+  //           center.lng = 76
+  //         }
+  //         if (id1 == "MARATHWADA") {
+  //           id1 = "MT"
+  //           center.lat = 18.7
+  //           center.lng = 78
+  //         }          
+  //         if (id1 == "VIDARBHA") {
+  //           id1 = "VD"
+  //           // center.lat = 15
+  //            center.lng = 79
+  //         }
+  //         if (id1 == "CHHATTISGARH") {
+  //           id1 = "CG"
+  //           // center.lat = 22
+  //            center.lng = 83
+  //         }
+  //         if (id1 == "ANDAMAN & NICOBAR ISLANDS") {
+  //           id1 = "AN"
+  //           // center.lat = 9.8
+  //            center.lng = 94
+  //         }
+  //         if (id1 == "COASTAL ANDHRA PRADESH & YANAM") {
+  //           id1 = "C-AP & YN"
+  //           // center.lat = 15.5
+  //            center.lng = 82.5
+  //         }
+  //         if (id1 == "TELANGANA") {
+  //           id1 = "TS"
+  //            center.lat = 17.5
+  //            center.lng = 80
+  //         }
+  //         if (id1 == "RAYALSEEMA") {
+  //           id1 = "RS"
+  //           // center.lat = 18
+  //            center.lng = 79
+  //         }
+  //         if (id1 == "TAMILNADU, PUDUCHERRY & KARAIKAL") {
+  //           id1 = "TN & PY & KR"
+  //           // center.lat = 11.5
+  //           center.lng = 80
+  //         }
+  //         if (id1 == "COASTAL KARNATAKA") {
+  //           id1 = "C-KA"
+  //           // center.lat = 15
+  //           // center.lng = 74.7
+  //         }
+  //         if (id1 == "NORTHERN INTERIOR KARNATAKA") {
+  //           id1 = "NI-KA"
+  //           center.lat = 16
+  //           center.lng = 77
+  //         }
+  //         if (id1 == "SOUTHERN INTERIOR KARNATAKA") {
+  //           id1 = "SI-KA"
+  //           center.lat = 12.5
+  //           center.lng = 78
+  //         }
+  //         if (id1 == "KERALA & MAHE") {
+  //           id1 = "KL & ME"
+  //           center.lat = 10.4
+  //           center.lng = 77
+  //         }
+  //         if (id1 == "LAKSHADWEEP") {
+  //           id1 = "LD"
+  //           // center.lat = 10.8
+  //            center.lng = 73.5
+  //         }
+  //         console.log("name : ",id1, "lat : ", lat,"updLAT:", center.lat,"updLNG:", center.lng , "lng : ", lng)
+  //         // console.log(id1)
+  //         textElement.innerHTML = `
+  //         <div style="text-align: center; line-height: 0.4;">
+  //         <div style="color: #000000; font-weight: bold;text-wrap: nowrap; font-size: 5px; margin-bottom: 3px;">${dailyrainfall}(${Math.round(rainfall)})</div>
+  //         <div style="color: #000000; font-weight: bold;text-wrap: nowrap; font-size: 5px; margin-bottom: 3px;">${id1}</div>
+  //         <div style="color: #000000; font-weight: bold;text-wrap: nowrap; font-size: 5px;">${normalrainfall}</div>
+  //         </div>`;
+
+  //         // Set the position of the custom HTML element on the map
+  //         textElement.classList.add('custom-text-element');
+  //         textElement.style.position = 'absolute';
+  //         textElement.style.left = `${this.map2.latLngToLayerPoint(center).x - 25}px`;
+  //         textElement.style.top = `${this.map2.latLngToLayerPoint(center).y - 10}px`;
+  //         // Set a higher z-index to ensure the text appears on top of the map
+  //         textElement.style.zIndex = '1000';
+
+  //         // Append the custom HTML element to the map container
+  //         this.map2.getPanes().overlayPane.appendChild(textElement);
+  //         this.addedTextElements.push(textElement);
+
+  //       }
+
+  //     });
+  //     // Add the geoJsonLayer to the map
+  //     geoJsonLayer.addTo(this.map2);
+  //   });
+  //   this.http.get('assets/geojson/INDIA_REGIONS.json').subscribe((res: any) => {
+  //     const geoJsonLayer = L.geoJSON(res, {
+  //       style: (feature: any) => {
+  //         const id2 = feature.properties['region_cod'];
+  //         const matchedData = this.findMatchingDataregion(id2);
+  //         const rainfall = matchedData ? matchedData.dailydeparturerainfall : -100;
+  //         const actual = matchedData && matchedData.dailyrainfall == null ? ' ' : "notnull";
+  //         const color = this.getColorForRainfall(rainfall, actual);
+  //         return {
+  //           fillColor: color,
+  //           weight: 0.5,
+  //           opacity: 2,
+  //           color: 'black',
+  //           fillOpacity: 2
+  //         };
+  //       },
+
+
+
+  //       //   onEachFeature: (feature: any, layer: any) => {
+  //       //     const id1 = feature.properties['region_nam'];
+  //       //     const id2 = feature.properties['region_cod'];
+  //       //     const matchedData = this.findMatchingDataregion(id2);
+  //       //     const rainfall = matchedData ? matchedData.dailydeparturerainfall.toFixed(2) : '-100.00';
+  //       //     const dailyrainfall = matchedData ? matchedData.dailyrainfall.toFixed(2) : '0.00';
+  //       //     const normalrainfall = matchedData ? matchedData.normalrainfall.toFixed(2) : '0.00';
+  //       //     const popupContent = `
+  //       //     <div style="background-color: white; padding: 5px; font-family: Arial, sans-serif;">
+  //       //       <div style="color: #002467; font-weight: bold; font-size: 10px;">REGION: ${id1}</div>
+  //       //       <div style="color: #002467; font-weight: bold; font-size: 10px;">DAILY RAINFALL: ${dailyrainfall}</div>
+  //       //       <div style="color: #002467; font-weight: bold; font-size: 10px;">NORMAL RAINFALL: ${normalrainfall}</div>
+  //       //       <div style="color: #002467; font-weight: bold; font-size: 10px;">DEPARTURE: ${rainfall}% </div>
+  //       //     </div>
+  //       //   `;
+  //       //     layer.bindPopup(popupContent);
+  //       //     layer.on('mouseover', () => {
+  //       //       layer.openPopup();
+  //       //     });
+  //       //     layer.on('mouseout', () => {
+  //       //       layer.closePopup();
+  //       //     });
+  //       //   }
+  //       // }).addTo(this.map3);
+
+
+  //       onEachFeature: (feature: any, layer: any) => {
+  //         const id1 = feature.properties['region_nam'];
+  //         const id2 = feature.properties['region_cod'];
+  //         const matchedData = this.findMatchingDataregion(id2);
+  //         const rainfall = matchedData ? matchedData.dailydeparturerainfall.toFixed(2) : '-100.00';
+  //         const dailyrainfall = matchedData ? matchedData.dailyrainfall.toFixed(2) : '0.00';
+  //         const normalrainfall = matchedData ? matchedData.normalrainfall.toFixed(2) : '0.00';
+  //         const textElement = document.createElement('div');
+  //         textElement.innerHTML = `
+  //         <div>
+  //         <div style="color: #000000;font-weight: bold; text-wrap: nowrap;font-size: 10px;">${dailyrainfall}(${rainfall}%)</div>
+  //         <div style="color: #000000;font-weight: bold; text-wrap: nowrap; font-size: 10px;">${id1}</div>
+  //         <div style="color: #000000;font-weight: bold;text-wrap: nowrap; font-size: 10px;">${normalrainfall}</div>
+  //         </div>`;
+
+  //         const bounds = layer.getBounds();
+  //         const center = bounds.getCenter();
+
+  //         // Set the position of the custom HTML element on the map
+  //         textElement.classList.add('custom-text-element');
+  //         textElement.style.position = 'absolute';
+  //         textElement.style.left = `${this.map3.latLngToLayerPoint(center).x - 25}px`;
+  //         textElement.style.top = `${this.map3.latLngToLayerPoint(center).y - 10}px`;
+  //         // Set a higher z-index to ensure the text appears on top of the map
+  //         textElement.style.zIndex = '1000';
+
+  //         // Append the custom HTML element to the map container
+  //         this.map3.getPanes().overlayPane.appendChild(textElement);
+  //         this.addedTextElements.push(textElement);
+
+  //       }
+
+  //     });
+
+  //     // Add the geoJsonLayer to the map
+  //     geoJsonLayer.addTo(this.map3);
+
+
+
+
+  //   });
+  //   this.http.get('assets/geojson/INDIA_COUNTRY.json').subscribe((res: any) => {
+  //     const geoJsonLayer = L.geoJSON(res, {
+  //       style: (feature: any) => {
+  //         const id2 = feature.properties['ID'];
+  //         const matchedData = this.findMatchingDataregion(id2);
+  //         const rainfall = matchedData ? matchedData.dailydeparturerainfall : -100;
+  //         const actual = matchedData && matchedData.dailyrainfall == null ? ' ' : "notnull";
+  //         const color = this.getColorForRainfall(rainfall, actual);
+  //         return {
+  //           fillColor: color,
+  //           weight: 0.5,
+  //           opacity: 2,
+  //           color: 'black',
+  //           fillOpacity: 2
+  //         };
+  //       },
+  //       onEachFeature: (feature: any, layer: any) => {
+  //         var elementToBeRemoved: any = document.getElementById('countrydiv')/* your reference to the element */;
+  //         if (elementToBeRemoved) {
+  //           elementToBeRemoved.remove();
+  //         }
+  //         const id1 = feature.properties['country'];
+  //         const id2 = feature.properties['ID'];
+  //         const matchedData = this.findMatchingDatacountry(id2);
+  //         const rainfall = matchedData ? matchedData.dailydeparturerainfall.toFixed(2) : '-100.00';
+  //         const dailyrainfall = matchedData ? matchedData.dailyrainfall.toFixed(2) : '0.00';
+  //         const normalrainfall = matchedData ? matchedData.normalrainfall.toFixed(2) : '0.00';
+  //         const textElement = document.createElement('div');
+  //         textElement.id = 'countrydiv';
+  //         textElement.innerHTML = `
+  //         <div style="padding: 5px; font-family: Arial, sans-serif; font-weight: bolder;">
+  //         <div style="color: #000000;font-weight: bold; font-size: 15px;">${dailyrainfall}(${rainfall}%)</div>
+  //         <div style="color: #000000;font-weight: bold; font-size: 15px;">${id1}</div>
+  //         <div style="color: #000000;font-weight: bold; font-size: 15px;">${normalrainfall}</div>
+  //         </div>`;
+
+  //         const bounds = layer.getBounds();
+  //         const center = bounds.getCenter();
+
+  //         textElement.style.position = 'absolute';
+  //         textElement.style.left = `${this.map4.latLngToLayerPoint(center).x - 95}px`;
+  //         textElement.style.top = `${this.map4.latLngToLayerPoint(center).y - 45}px`;
+
+  //         textElement.style.zIndex = '1000';
+
+  //         this.map4.getPanes().overlayPane.appendChild(textElement);
+
+  //       }
+
+  //     });
+  //     geoJsonLayer.addTo(this.map4);
+  //   });
+  // }
 
   getColorForRainfall1(rainfall: any): string {
     const numericId = rainfall;

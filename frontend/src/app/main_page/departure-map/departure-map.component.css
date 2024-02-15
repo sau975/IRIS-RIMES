@@ -2,6 +2,12 @@ img {
   width: 60px;
 
 }
+.legenddetails{
+position: absolute; 
+right: 140px;  
+bottom: 80px;  
+width: 20%;
+}
 
 
 
