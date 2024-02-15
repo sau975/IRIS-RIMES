@@ -914,13 +914,11 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
 
 
   private updateLegendDetailsPosition(fullscreen: boolean): void {
-    const legendDetailsElement = document.querySelector('.legenddetails') as HTMLElement; // Use type assertion to HTMLElement
+    const legendDetailsElement = document.querySelector('.legenddetailsstate') as HTMLElement; // Use type assertion to HTMLElement
     if (legendDetailsElement) {
         if (fullscreen) {
-            // Update the right value to 180px when in full screen
-            legendDetailsElement.style.right = '70px';
+            legendDetailsElement.style.right = '50px';
         } else {
-            // Reset the right value to 140px when exiting full screen
             legendDetailsElement.style.right = '140px';
         }
     }
@@ -950,11 +948,11 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     this.map1.on('fullscreenchange', () => {
       if (this.isFullscreen()) {
         this.map1.setZoom(this.initialZoom + 1);
+        this.updateLegendDetailsPosition(true);
         this.loadGeoJSON();
-        this.updateLegendDetailsPosition(true); // Call function to update position
       } else {
         this.map1.setZoom(this.initialZoom);
-        this.updateLegendDetailsPosition(false); // Call function to reset position
+        this.updateLegendDetailsPosition(false); 
         this.loadGeoJSON();
       }
     });
@@ -966,10 +964,12 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     this.map2.on('fullscreenchange', () => {
       if (this.isFullscreen()) {
         this.map2.setZoom(this.initialZoom + 1);
-        // this.loadGeoJSON();
+        this.updateLegendDetailsPosition(true);
+        //  this.loadGeoJSON();
       } else {
         this.map2.setZoom(this.initialZoom);
-        // this.loadGeoJSON();
+        this.updateLegendDetailsPosition(false); 
+        //  this.loadGeoJSON();
       }
     });
     this.map3 = L.map('map3', {
