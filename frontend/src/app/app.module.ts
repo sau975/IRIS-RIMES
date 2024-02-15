@@ -49,7 +49,7 @@ import { QpfverificationReports2020Component } from './qpfverification_reports/q
 import { QpfverificationReports2021Component } from './qpfverification_reports/qpfverification-reports2021/qpfverification-reports2021.component';
 import { QpfverificationReports2022Component } from './qpfverification_reports/qpfverification-reports2022/qpfverification-reports2022.component';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
- 
+
 import { UploadFileComponent } from './upload-file/upload-file.component';
 import { AboutComponent } from './about/about.component';
 import { VerificationPageComponent } from './verification-page/verification-page.component';
@@ -86,7 +86,7 @@ import { VerificationPageComponent } from './verification-page/verification-page
     QpfverificationReports2021Component,
     QpfverificationReports2022Component,
     UploadFileComponent,
-    AboutComponent
+    AboutComponent,
     VerificationPageComponent
   ],
   imports: [
@@ -110,7 +110,7 @@ import { VerificationPageComponent } from './verification-page/verification-page
     MatIconModule,
     MatInputModule,
     MatButtonToggleModule,
-    
+
   ],
   providers: [AuthGuard, DatePipe],
   bootstrap: [AppComponent]
