@@ -5,6 +5,7 @@ const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const multer = require('multer');
 // const cron = require('node-cron');
 
 // cron.schedule('0 14 * * *', () => {
@@ -181,6 +182,27 @@ app.post("/login", (req, res) => {
     }
   );
 });
+
+// Multer configuration for file upload
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
+
+// Endpoint for file upload
+app.post('/upload', upload.single('file'), async (req, res) => {
+  try {
+    const fileBuffer = req.file.buffer;
+    const fileName = req.file.originalname;
+
+    // Insert file into database
+    const result = await pool.query('INSERT INTO files (name, data) VALUES ($1, $2) RETURNING id', [fileName, fileBuffer]);
+
+    res.status(200).json({ fileId: result.rows[0].id, message: 'File uploaded successfully' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 
 app.listen(3000, () => {
   console.log("Server has been ready");
