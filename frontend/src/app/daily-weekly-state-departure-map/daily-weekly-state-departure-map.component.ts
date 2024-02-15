@@ -19,6 +19,7 @@ export class DailyWeeklyStateDepartureMapComponent implements OnInit, AfterViewI
   @Input() previousWeekWeeklyStartDate: string = '';
   @Input() previousWeekWeeklyEndDate: string = '';
   selectedDate: Date = new Date();
+  selectedWeek: string = '2024-02-01T00:00:00.999Z&2024-02-07T00:00:00.999Z';
   isDaily: boolean = false;
   private initialZoom = 5;
   private map1: L.Map = {} as L.Map;
@@ -75,6 +76,16 @@ export class DailyWeeklyStateDepartureMapComponent implements OnInit, AfterViewI
     this.initMap();
   }
   ngOnInit(): void {
+    this.weeklyDatesCalculation();
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe(() => {
+      location.reload();
+    });
+    this.fetchDataFromBackend();
+  }
+
+  weeklyDatesCalculation(){
     if(this.previousWeekWeeklyStartDate && this.previousWeekWeeklyEndDate){
       var startDate = new Date(this.previousWeekWeeklyStartDate);
       var endDate = new Date(this.previousWeekWeeklyEndDate);
@@ -88,12 +99,6 @@ export class DailyWeeklyStateDepartureMapComponent implements OnInit, AfterViewI
         currentDate.setDate(currentDate.getDate() + 1);
       }
     }
-    this.router.events.pipe(
-      filter(event => event instanceof NavigationEnd)
-    ).subscribe(() => {
-      location.reload();
-    });
-    this.fetchDataFromBackend();
   }
 
   dailyDeparture(){
@@ -101,6 +106,14 @@ export class DailyWeeklyStateDepartureMapComponent implements OnInit, AfterViewI
     this.dateCalculation()
     this.fetchDataFromBackend();
   }
+  weeklyDeparture(){
+    var splitedDate = this.selectedWeek.split('&');
+    this.previousWeekWeeklyStartDate = splitedDate[0];
+    this.previousWeekWeeklyEndDate = splitedDate[1];
+    this.weeklyDatesCalculation();
+    this.fetchDataFromBackend();
+  }
+
   dateCalculation() {
     const yesterday = new Date(this.today);
     yesterday.setDate(this.today.getDate() - 1);
