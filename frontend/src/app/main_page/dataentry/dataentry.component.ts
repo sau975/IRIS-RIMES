@@ -55,6 +55,7 @@ export class DataentryComponent {
     goBack() {
       window.history.back();
     }
+    
 
   fetchDataFromBackend(): void {
     this.dataService.existingstationdata().subscribe({
@@ -64,6 +65,8 @@ export class DataentryComponent {
       error: err => console.error('Error fetching data:', err)
     });
   }
+
+  
   editStation(index: number) {
     this.showEditPopup = true;
     this.editData = { ...this.existingstationdata[index] };
@@ -141,15 +144,33 @@ export class DataentryComponent {
   this.showPopup = false;
   }
 
-
-  showMessage(elementRef:any){
-    if(Number(elementRef.value) > 400){
-      elementRef.style.background = 'red'
-      alert("Rainfall is greater than 400mm")
-    }else{
-      elementRef.style.background = ''
+  showMessage(elementRef: any) {
+    const value = elementRef.value.trim(); 
+    const regex = /^\d+(\.\d)?$|^\d+(\.\d)?$/; 
+    if (regex.test(value)) {
+      elementRef.style.background = '';
+    } else {
+      elementRef.style.background = 'red';
+      alert("Please enter a valid number with only one decimal place");
     }
+
+    if(Number(elementRef.value) > 400){
+          elementRef.style.background = 'red'
+          alert("Rainfall is greater than 400mm")
+        }else{
+          elementRef.style.background = ''
+        }
   }
+  
+  
+  // showMessage(elementRef:any){
+  //   if(Number(elementRef.value) > 400){
+  //     elementRef.style.background = 'red'
+  //     alert("Rainfall is greater than 400mm")
+  //   }else{
+  //     elementRef.style.background = ''
+  //   }
+  // }
 
   onFileSelected(event: any) {
     this.selectedFile = event.target.files[0];
@@ -188,97 +209,6 @@ export class DataentryComponent {
     });
     FileSaver.saveAs(data, fileName + '_export_' + new Date().getTime() + EXCEL_EXTENSION);
   }
-
-
-
-
-
-
-  // existingstationdata
-
-
-
-  // stations: any[] = [{}];
-  // isPopupVisible = false;
-
-  // popupField1!: string; // Add more variables for other fields in the popup
-
-
-  // data = {
-  //   field1: '',
-  //   field2: '',
-  //   field3: '',
-  //   field4: '',
-  //   field5: '',
-  // };
-  // message: string | null = null;
-
-  // formattedDate: string;
-  // formattedTime : string
-
-
-
-  // constructor(private dataService: DataService,) {
-  //   // Get the current date
-  //   const today = new Date();
-
-  //   // Format the date as per your requirement (e.g., "DD-MM-YY")
-  //   this.formattedDate = today.toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: '2-digit' });
-  //   const hours = this.padZero(today.getHours());
-  //   const minutes = this.padZero(today.getMinutes());
-  //   const seconds = this.padZero(today.getSeconds());
-  //   this.formattedTime = `${hours}:${minutes}:${seconds}`;
-  // }
-  // private padZero(value: number): string {
-  //   return value < 10 ? `0${value}` : `${value}`;
-  // }
-
-
-
-
-  // fetchDataFromBackend(): void {
-  //   this.dataService.fetchData().subscribe({
-  //     next: value => {
-  //       this.fetchedData = value;
-  //       this.processFetchedData();
-  //     },
-  //     error: err => console.error('Error fetching data:', err)
-  //   });
-
-
-
-
-
-  // openNewWindow() {
-  //   // Open a new window with the specified URL
-  //   const newWindow = window.open('./main_page/popup.html', '_blank', 'width=500,height=500');
-
-  //   // Ensure that the new window is not null
-  //   if (newWindow) {
-  //     // Focus the new window
-  //     newWindow.focus();
-  //   }
-  // }
-
-
-  // addData() {
-  //   this.dataService.addData(this.stations).subscribe({
-  //     next: response => {
-  //       this.message = response.message;
-  //     },
-  //     error: err => console.error('Error adding data. Please check the console for details.', err)
-
-  // });
-  // }
-  // editStation(index: number) {
-  //   // Implement your logic for editing a station
-  //   console.log('Editing station at index:', index);
-  // }
-
-  // deleteStation(index: number) {
-  //   // Implement your logic for deleting a station
-  //   console.log('Deleting station at index:', index);
-  // }
 }
 
 

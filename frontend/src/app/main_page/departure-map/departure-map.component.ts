@@ -2294,7 +2294,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
           const matchedData = this.findMatchingDatastate(id2);
           const rainfall = matchedData && matchedData.dailydeparturerainfall !== null && matchedData.dailydeparturerainfall !== undefined && !Number.isNaN(matchedData.dailydeparturerainfall) ? matchedData.dailydeparturerainfall.toFixed(2) : 'NA';
           const dailyrainfall = matchedData && matchedData.dailyrainfall !== null && matchedData.dailyrainfall != undefined && !Number.isNaN(matchedData.dailyrainfall) ? Math.round(matchedData.dailyrainfall * 10) / 10 : 'NA';
-          const normalrainfall = matchedData && !Number.isNaN(matchedData.normalrainfall) ? matchedData.normalrainfall.toFixed(2) : 'NA';
+          const normalrainfall = matchedData && !Number.isNaN(matchedData.normalrainfall) ? Math.round(matchedData.normalrainfall*10)/10 : 'NA';
           const textElement = document.createElement('div');
           const bounds = layer.getBounds();
           const center = bounds.getCenter();
