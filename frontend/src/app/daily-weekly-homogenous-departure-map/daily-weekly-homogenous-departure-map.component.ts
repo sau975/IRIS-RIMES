@@ -18,7 +18,9 @@ export class DailyWeeklyHomogenousDepartureMapComponent implements OnInit, After
 
   @Input() previousWeekWeeklyStartDate: string = '';
   @Input() previousWeekWeeklyEndDate: string = '';
-
+  selectedDate: Date = new Date();
+  selectedWeek: string = '2024-02-01T00:00:00.999Z&2024-02-07T00:00:00.999Z';
+  isDaily: boolean = false;
   private initialZoom = 5;
   private map3: L.Map = {} as L.Map;
   currentDateNormal: string = '';
@@ -49,6 +51,7 @@ export class DailyWeeklyHomogenousDepartureMapComponent implements OnInit, After
   ) {
     let localDailyDate:any = localStorage.getItem('dailyDate')
     if(localDailyDate){
+      this.isDaily = true;
       let dailyDate = JSON.parse(localDailyDate);
       this.today.setDate(dailyDate.date)
       this.today.setMonth(dailyDate.month - 1)
@@ -56,6 +59,7 @@ export class DailyWeeklyHomogenousDepartureMapComponent implements OnInit, After
     }
     let localWeekDates:any = localStorage.getItem('weekDates')
     if(localWeekDates){
+      this.isDaily = false;
       let weeklyDates = JSON.parse(localWeekDates);
       this.previousWeekWeeklyStartDate = weeklyDates.previousWeekWeeklyStartDate;
       this.previousWeekWeeklyEndDate = weeklyDates.previousWeekWeeklyEndDate;
@@ -66,6 +70,16 @@ export class DailyWeeklyHomogenousDepartureMapComponent implements OnInit, After
     this.initMap();
   }
   ngOnInit(): void {
+    this.weeklyDatesCalculation();
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe(() => {
+      location.reload();
+    });
+    this.fetchDataFromBackend();
+  }
+
+  weeklyDatesCalculation(){
     if(this.previousWeekWeeklyStartDate && this.previousWeekWeeklyEndDate){
       var startDate = new Date(this.previousWeekWeeklyStartDate);
       var endDate = new Date(this.previousWeekWeeklyEndDate);
@@ -79,11 +93,18 @@ export class DailyWeeklyHomogenousDepartureMapComponent implements OnInit, After
         currentDate.setDate(currentDate.getDate() + 1);
       }
     }
-    this.router.events.pipe(
-      filter(event => event instanceof NavigationEnd)
-    ).subscribe(() => {
-      location.reload();
-    });
+  }
+
+  dailyDeparture(){
+    this.today = new Date(this.selectedDate);
+    this.dateCalculation()
+    this.fetchDataFromBackend();
+  }
+  weeklyDeparture(){
+    var splitedDate = this.selectedWeek.split('&');
+    this.previousWeekWeeklyStartDate = splitedDate[0];
+    this.previousWeekWeeklyEndDate = splitedDate[1];
+    this.weeklyDatesCalculation();
     this.fetchDataFromBackend();
   }
 

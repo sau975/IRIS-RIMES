@@ -98,16 +98,13 @@ export class NavbarComponent {
   }
 
   dailyMap(){
-    // this.dataService.value$.subscribe((value) => {
-    //   if (value) {
-        var data = {
-          year: '2024',
-          month: '02',
-          date: '15'
-        }
-        localStorage.setItem('dailyDate', JSON.stringify(data));
-    //   }
-    // });
+    let date = new Date();
+    var data = {
+      year: date.getFullYear(),
+      month: date.getMonth() + 1,
+      date: date.getDate()
+    }
+    localStorage.setItem('dailyDate', JSON.stringify(data));
   }
 
   weeklyMap(){
