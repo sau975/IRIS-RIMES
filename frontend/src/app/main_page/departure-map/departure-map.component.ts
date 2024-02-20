@@ -945,7 +945,9 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       zoom: this.initialZoom,
       scrollWheelZoom: false,
     });
-
+  //   this.map1.on('zoomend', () => {
+  //     this.loadGeoJSON();
+  // });
     this.map1.on('fullscreenchange', () => {
       if (this.isFullscreen()) {
         this.map1.setZoom(this.initialZoom + 1);
