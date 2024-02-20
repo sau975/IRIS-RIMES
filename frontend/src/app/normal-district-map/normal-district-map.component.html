@@ -1,5 +1,19 @@
 <div>
   <button class="download" routerLink="../front-page/departure">Back</button>
+  <div class="row" style="margin-left: 400px;">
+    <div class="col-3">
+      <label>From Date</label>
+      <input type="date" class="form-control" [(ngModel)]="fromDate" (ngModelChange)="validateDateRange()" placeholder="Select date">
+    </div>
+    <div class="col-3">
+      <label>To Date</label>
+      <input type="date" class="form-control" [(ngModel)]="toDate" (ngModelChange)="validateDateRange()" placeholder="Select date">
+    </div>
+    <div class="col-2">
+      <button type="button" class="btn btn-primary mt-4" (click)="weeklyDatesCalculation()">Submit</button>
+    </div>
+  </div>
+
   <div class="container">
     <div class="row">
       <div class="col-10">
@@ -48,18 +62,29 @@
                           </tr>
                           <tr>
                             <td>
-                              <label
-                                style="
-                                  color: black;
-                                  vertical-align: middle;
-                                  font-family: Arial;
-                                  font-weight: bolder;
-                                  font-size: 14px;
-                                "
-                                >Date : {{ formatteddate }}
-                              </label>
-                            </td>
-                          </tr>
+
+                              <label *ngIf="!fromDate && !toDate"
+                                     style="
+                                       color: black;
+                                       vertical-align: middle;
+                                       font-family: Arial;
+                                       font-weight: bolder;
+                                       font-size: 14px;
+                                     "
+                                     >Date : {{formatteddate}}
+                                   </label>
+                                   <label *ngIf="fromDate && toDate"
+                                   style="
+                                     color: black;
+                                     vertical-align: middle;
+                                     font-family: Arial;
+                                     font-weight: bolder;
+                                     font-size: 14px;
+                                   "
+                                   >Date : {{fromDate | date: 'dd-MM-yyyy'}} to {{toDate | date: 'dd-MM-yyyy'}}
+                                 </label>
+
+                                 </td>                               </tr>
 
                           <tr>
                             <td>

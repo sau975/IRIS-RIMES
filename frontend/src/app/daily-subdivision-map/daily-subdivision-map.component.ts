@@ -13,6 +13,7 @@ import { DataService } from '../data.service';
   styleUrls: ['./daily-subdivision-map.component.css']
 })
 export class DailySubdivisionMapComponent {
+  selectedDate: Date = new Date();
   inputValue: string = '';
   inputValue1: string = '';
   private initialZoom = 5;
@@ -63,6 +64,13 @@ export class DailySubdivisionMapComponent {
     // this.loadGeoJSON1();
     this.fetchDataFromBackend();
   }
+
+  dailyDeparture(){
+    this.today = new Date(this.selectedDate);
+    this.dateCalculation()
+    this.fetchDataFromBackend();
+  }
+
   dateCalculation(){
     const yesterday = new Date(this.today);
     yesterday.setDate(this.today.getDate() - 1);
