@@ -106,5 +106,12 @@ export class DataService {
     formData.append('file', file, file.name);
     return this.http.post(this.baseUrl + '/upload', formData);
   }
+
+  uploadRainFallDataFile(file: File) {
+    const formData: FormData = new FormData();
+    formData.append('file', file, file.name);
+    return this.http.post(this.baseUrl + '/uploadrainfalldata', formData);
+  }
+
 }
 

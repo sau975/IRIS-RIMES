@@ -1,4 +1,4 @@
-import { Component, ElementRef } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { DataService } from '../../data.service';
 import { response } from 'express';
 import * as XLSX from 'xlsx';
@@ -10,6 +10,7 @@ import * as FileSaver from 'file-saver';
   styleUrls: ['./dataentry.component.css']
 })
 export class DataentryComponent {
+  @ViewChild('fileInput') fileInput!: ElementRef;
   selectedDate: Date = new Date();
   selectedFile: File | null = null;
   rainFallInMM: number = 0;
@@ -215,14 +216,22 @@ export class DataentryComponent {
 
   uploadFile() {
     if (this.selectedFile) {
-      this.dataService.uploadFile(this.selectedFile).subscribe(
+      this.dataService.uploadRainFallDataFile(this.selectedFile).subscribe(
         (response:any) => {
-          alert('File uploaded successfully:' + response);
+          alert('File uploaded successfully');
+          this.clearFileInput();
         },
         (error:any) => {
           alert('Error uploading file:' + error);
         }
       );
+    }
+  }
+
+  clearFileInput(): void {
+    // Reset the value of the file input element
+    if (this.fileInput) {
+      this.fileInput.nativeElement.value = '';
     }
   }
 

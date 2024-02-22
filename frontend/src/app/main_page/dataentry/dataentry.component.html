@@ -88,7 +88,7 @@
           <button class="btn btn-primary" (click)="exportAsXLSX()">Download</button>
         </div>
         <div class="mb-3 col-2">
-          <input class="form-control" type="file" (change)="onFileSelected($event)">
+          <input class="form-control" type="file" #fileInput (change)="onFileSelected($event)">
         </div>
         <div class="col-1">
           <button (click)="uploadFile()" class="btn btn-success">Upload</button>
@@ -262,5 +262,5 @@
     <button class="close-btn" (click)="canceldelete()">X</button>
     <h2>DELETE THE {{ deleteData.stationname }} STATION</h2>
     <button class="enter" (click)="deletestation()">DELETE</button>
-  </div>
+  </div> <br>
 </div>

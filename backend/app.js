@@ -6,6 +6,7 @@ const crypto = require('crypto');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const multer = require('multer');
+const xlsx = require('xlsx');
 // const cron = require('node-cron');
 
 // cron.schedule('0 14 * * *', () => {
@@ -208,6 +209,47 @@ app.post('/upload', upload.single('file'), async (req, res) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 });
+
+app.post('/uploadrainfalldata', upload.single('file'), async (req, res) => {
+  try {
+    const workbook = xlsx.read(req.file.buffer, { type: 'buffer' });
+    const sheetName = workbook.SheetNames[0];
+    const sheetData = xlsx.utils.sheet_to_json(workbook.Sheets[sheetName]);
+
+    // const client = new Client(dbConfig);
+    // await client.connect();
+
+    // Replace with your PostgreSQL table name
+    const tableName = 'existingstationdata';
+
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS ${tableName} (
+        stationname character varying COLLATE pg_catalog."default",
+        stationid numeric,
+        datetime character varying COLLATE pg_catalog."default",
+        stationtype character varying COLLATE pg_catalog."default",
+        neworold character varying COLLATE pg_catalog."default",
+        lat character varying COLLATE pg_catalog."default",
+        lng character varying COLLATE pg_catalog."default",
+        activationdate character varying COLLATE pg_catalog."default"
+      );`
+    );
+
+    for (const row of sheetData) {
+      const values = Object.values(row)
+        .map(value => `'${value}'`)
+        .join(', ');
+      await client.query(`INSERT INTO ${tableName} VALUES (${values});`);
+    }
+
+    // await client.end();
+    res.status(200).json({ message: 'Data uploaded successfully' });
+  } catch (error) {
+    console.error('Error uploading data:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
 
 app.put("/updaterainfall", (req, res) => {
   const data = req.body.data;
