@@ -1,18 +1,13 @@
-<button routerLink="/front-page/departure" class="btn btn-secondary mt-3 mx-5">Back</button>
-
-<div class="container mt-5">
-  <div class="mb-3 col-6">
+<div class="container mt-2">
+  <div class="mb-3">
     <label>Select Section</label>
-    <select class="form-control">
-      <option>ATLASES</option>
-      <option>REPORTS</option>
-      <option>RAINFALL STATISTICS</option>
-      <option>QPF VERIFICATION REPORT</option>
+    <select class="form-control" [(ngModel)]="selectedSection">
+      <option value="QPF VERIFICATION REPORT">QPF VERIFICATION REPORT</option>
+      <option value="RAINFALL REPORTS">RAINFALL REPORTS</option>
     </select>
-    <!-- <input class="form-control" type="text"> -->
   </div>
-  <div class="mb-3 col-6">
-    <input class="form-control" type="file" (change)="onFileSelected($event)">
+  <div class="mb-3">
+    <input class="form-control" #fileInput type="file" (change)="onFileSelected($event)">
   </div>
   <button (click)="uploadFile()" class="btn btn-success">Upload</button>
 </div>

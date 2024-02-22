@@ -19,7 +19,7 @@ export class DailyWeeklyStateDepartureMapComponent implements OnInit, AfterViewI
   @Input() previousWeekWeeklyStartDate: string = '';
   @Input() previousWeekWeeklyEndDate: string = '';
   selectedDate: Date = new Date();
-  selectedWeek: string = '2024-02-01T00:00:00.999Z&2024-02-07T00:00:00.999Z';
+  selectedWeek: string = '';
   isDaily: boolean = false;
   private initialZoom = 5;
   private map1: L.Map = {} as L.Map;

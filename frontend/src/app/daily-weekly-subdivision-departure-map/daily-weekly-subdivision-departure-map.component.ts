@@ -19,7 +19,7 @@ export class DailyWeeklySubdivisionDepartureMapComponent implements OnInit, Afte
   @Input() previousWeekWeeklyStartDate: string = '';
   @Input() previousWeekWeeklyEndDate: string = '';
   selectedDate: Date = new Date();
-  selectedWeek: string = '2024-02-01T00:00:00.999Z&2024-02-07T00:00:00.999Z';
+  selectedWeek: string = '';
   isDaily: boolean = false;
   private initialZoom = 5;
   private map2: L.Map = {} as L.Map;
@@ -65,6 +65,8 @@ export class DailyWeeklySubdivisionDepartureMapComponent implements OnInit, Afte
       this.previousWeekWeeklyEndDate = weeklyDates.previousWeekWeeklyEndDate;
     }
     this.dateCalculation();
+    // this.selectedWeek = new Date(new Date(this.previousWeekWeeklyStartDate).setHours(0,0,0,0)).toISOString() +'&'+ new Date(new Date(this.previousWeekWeeklyEndDate).setHours(0,0,0)).toISOString();
+    // console.log(this.selectedWeek, "-------")
   }
   ngAfterViewInit(): void {
     this.initMap();

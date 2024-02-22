@@ -13,6 +13,7 @@ import { DataService } from '../data.service';
   styleUrls: ['./daily-district-map.component.css']
 })
 export class DailyDistrictMapComponent {
+  selectedDate: Date = new Date();
   inputValue: string = '';
   inputValue1: string = '';
   private initialZoom = 5;
@@ -63,6 +64,13 @@ export class DailyDistrictMapComponent {
     // this.loadGeoJSON1();
     this.fetchDataFromBackend();
   }
+
+  dailyDeparture(){
+    this.today = new Date(this.selectedDate);
+    this.dateCalculation()
+    this.fetchDataFromBackend();
+  }
+
   dateCalculation(){
     const yesterday = new Date(this.today);
     yesterday.setDate(this.today.getDate() - 1);

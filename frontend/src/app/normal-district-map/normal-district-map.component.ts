@@ -30,6 +30,9 @@ export class NormalDistrictMapComponent {
   currentDateNormal: string = '';
   currentDateDaily: string = '';
   currentDateNormaly: string = '';;
+  fromDate: Date = new Date();
+  toDate: Date = new Date();
+  weeklyDates:any[]=[];
 
   constructor(private http: HttpClient,
     private dataService: DataService,
@@ -54,6 +57,32 @@ export class NormalDistrictMapComponent {
     ).subscribe(() => {
       location.reload();
     });
+    this.fetchDataFromBackend();
+  }
+
+  validateDateRange() {
+    var fromDate = this.fromDate;
+    var toDate = this.toDate
+
+    if (fromDate > toDate) {
+        alert('From date cannot be greater than To date');
+        this.fromDate = toDate;
+    }
+  }
+
+  weeklyDatesCalculation(){
+    this.weeklyDates = [];
+    if(this.fromDate && this.toDate){
+      var startDate = new Date(this.fromDate);
+      var endDate = new Date(this.toDate);
+      var currentDate = new Date(startDate);
+      while (currentDate <= endDate) {
+        var dd = String(currentDate.getDate());
+        const currmonth = this.months[currentDate.getMonth()];
+        this.weeklyDates.push(`${currmonth}${dd}`);
+        currentDate.setDate(currentDate.getDate() + 1);
+      }
+    }
     this.fetchDataFromBackend();
   }
 
@@ -189,8 +218,34 @@ export class NormalDistrictMapComponent {
     }
   }
   processFetchedData(): void {
-
-      this.processedData = [];
+    this.processedData = [];
+    if(this.weeklyDates.length){
+      this.weeklyDates.forEach(wd => {
+        this.processedData = [];
+        var mmmm = wd.substring(0,3);
+        var dddd = wd.slice(3);
+        const yesterday = new Date(this.today);
+        yesterday.setDate(dddd - 1);
+        yesterday.setMonth(this.months.indexOf(mmmm));
+        const ddy = String(yesterday.getDate());
+        const currmonthy = this.months[yesterday.getMonth()];
+        var currentDateNormaly = `${currmonthy}${ddy}`;
+        for (const item of this.fetchedData) {
+          let normal: number
+          if(wd === 'Jan1' || wd === 'Mar1' ||wd === 'Jun1' ||wd === 'Oct1'){
+            normal = item[wd]
+          }
+          else{
+            normal = (item[wd] - item[currentDateNormaly])
+          }
+          let den = item[this.currentDateDaily];
+          if (item[this.currentDateDaily] == 0) {
+            den = 1;
+          }
+          this.processedData.push({ districtID: item.district_code, Rainfall: normal });
+        }
+      })
+    }else{
       for (const item of this.fetchedData) {
         let normal: number
         if(this.currentDateNormal === 'Jan1' || this.currentDateNormal === 'Mar1' ||this.currentDateNormal === 'Jun1' ||this.currentDateNormal === 'Oct1'){
@@ -206,6 +261,29 @@ export class NormalDistrictMapComponent {
         this.processedData.push({ districtID: item.district_code, Rainfall: normal });
       }
     }
+
+    // Calculate total daily rainfall for each district
+    const result = this.processedData.reduce((acc, current) => {
+      const { districtID, Rainfall } = current;
+
+      // If the districtID is already in the accumulator, add the Rainfall to the existing total
+      if (acc[districtID]) {
+        acc[districtID] += Rainfall;
+      } else {
+        // If the districtID is not in the accumulator, create a new entry
+        acc[districtID] = Rainfall;
+      }
+
+      return acc;
+    }, {});
+
+    this.processedData.forEach((obj: any) => {
+      if (result.hasOwnProperty(obj.districtID)) {
+        obj.Rainfall = result[obj.districtID];
+      }
+    });
+
+  }
 
   private initMap(): void {
     this.map = L.map('map', {

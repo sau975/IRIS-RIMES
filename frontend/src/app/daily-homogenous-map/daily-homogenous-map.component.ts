@@ -326,7 +326,7 @@ export class DailyHomogenousMapComponent {
 
   private initMap(): void {
     this.map3 = L.map('map3', {
-      center: [23, 79.9629],
+      center: [23, 76.9629],
       zoom: this.initialZoom,
       scrollWheelZoom: false
     });

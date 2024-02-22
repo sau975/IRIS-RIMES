@@ -523,6 +523,7 @@
         <li>
           <a style="background-color: orange;" routerLink="../underprogress">QPF VERIFICATION REPORT 2022</a>
         </li>
+        <li *ngFor="let file of qpfReports;"><a (click)="downloadFile(file.id)">{{file.file_name}}</a></li>
       </ul>
     </li>
 
@@ -611,6 +612,7 @@
         <li>
           <a style="background-color: orange;" routerLink="../underprogress">RAINFALL STATISTICS OF INDIA - 2012</a>
         </li>
+        <li *ngFor="let file of rainFallReports;"><a (click)="downloadFile(file.id)">{{file.file_name}}</a></li>
       </ul>
     </li>
     <li>
@@ -623,6 +625,9 @@
       <a class="main_nav">DISSEMINATION</a>
     </li>
 
+    <li>
+      <a class="main_nav" (click)="uploadPopUp()">UPLOAD</a>
+    </li>
     <li>
       <a class="main_nav" routerLink="../verification-page">VERIFICATION</a>
     </li>
@@ -646,3 +651,10 @@
 
   </ul>
 </nav>
+</nav>
+
+
+<div *ngIf="showPopup" class="popup">
+  <button class="close-btn" (click)="cancel()">X</button>
+  <app-upload-file></app-upload-file>
+</div>

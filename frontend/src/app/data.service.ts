@@ -17,10 +17,13 @@ export class DataService {
   }
 
   updateData(data: any): Observable<any> {
-    return this.http.put<any>(this.baseUrl+'/existingstationdata', {data});
+    return this.http.put<any>(this.baseUrl+'/updateexistingstationdata', {data});
+  }
+  updateRainFallData(data: any): Observable<any> {
+    return this.http.put<any>(this.baseUrl+'/updaterainfall', {data});
   }
   deletestation(stationId: string): Observable<any> {
-    const url = `${this.baseUrl}/existingstationdata`;
+    const url = `${this.baseUrl}/deleteexistingstationdata`;
     return this.http.delete<any>(url, { body: { data: stationId } });
   }
   existingstationdata(): Observable<any> {
@@ -98,10 +101,23 @@ export class DataService {
     this.fromAndToDateSubject.next(newfromAndToDate);
   }
 
-  uploadFile(file: File) {
+  uploadFile(file: File, sectionName: string) {
     const formData: FormData = new FormData();
     formData.append('file', file, file.name);
+    formData.append('sectionName', sectionName);
     return this.http.post(this.baseUrl + '/upload', formData);
   }
+
+  uploadRainFallDataFile(file: File) {
+    const formData: FormData = new FormData();
+    formData.append('file', file, file.name);
+    return this.http.post(this.baseUrl + '/uploadrainfalldata', formData);
+  }
+
+  getUploadFiles(): Observable<any> {
+    const url = `${this.baseUrl}`+'/uploadedfiles';
+    return this.http.get(url);
+  }
+
 }
 

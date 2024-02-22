@@ -6,6 +6,7 @@ const crypto = require('crypto');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const multer = require('multer');
+const xlsx = require('xlsx');
 // const cron = require('node-cron');
 
 // cron.schedule('0 14 * * *', () => {
@@ -30,7 +31,7 @@ app.use((req, res, next) => {
 
 app.post('/addData', (req, res) => {
   const data = req.body.data; 
-  client.query('INSERT INTO existingstationdata(stationname, stationid) VALUES($1, $2)', [data.field1, data.field2])
+  client.query('INSERT INTO existingstationdata(stationname, stationid, datetime, stationtype, neworold, lat, lng, activationdate) VALUES($1, $2, $3, $4, $5, $6, $7, $8)', [data.stationName, data.stationId, data.dateTime, data.stationType, data.newOrOld, data.lat, data.lng, data.activationDate])
     .then(() => {
       res.status(200).json({ message: 'Data inserted successfully' });
     })
@@ -41,12 +42,18 @@ app.post('/addData', (req, res) => {
 });
 
 
-app.put("/existingstationdata", (req, res) => {
+app.put("/updateexistingstationdata", (req, res) => {
   const data = req.body.data;
-  client.query('UPDATE existingstationdata SET stationname = $1, stationid = $2 WHERE stationid = $3', [
+  client.query('UPDATE existingstationdata SET stationname = $1, stationid = $2, datetime = $3, stationtype = $4, neworold = $5, lat = $6, lng = $7, activationdate = $8 WHERE stationid = $9', [
       data.stationname,
       data.stationid,
-      data.previousstationid,
+      data.dateTime, 
+      data.stationType, 
+      data.newOrOld, 
+      data.lat, 
+      data.lng, 
+      data.activationDate,
+      data.previousstationid
     ])
     .then(() => {
       res.status(200).json({ message: `Row with ID ${data.previousstationid} updated successfully` });
@@ -56,7 +63,7 @@ app.put("/existingstationdata", (req, res) => {
       res.status(500).json({ error: 'Internal server error' });
     });
 });
-app.delete("/existingstationdata", (req, res) => {
+app.delete("/deleteexistingstationdata", (req, res) => {
   const data = req.body.data; 
   client
     .query('DELETE FROM existingstationdata WHERE stationid = $1', [data])
@@ -71,12 +78,13 @@ app.delete("/existingstationdata", (req, res) => {
 
 app.get("/existingstationdata", (req, res) => {
   client.query(
-    "SELECT * FROM existingstationdata ORDER BY stationid",
+    "SELECT * FROM existingstationdata JOIN stationdatadaily ON existingstationdata.stationid = stationdatadaily.station_id ORDER BY station_id",
     (err, result) => {
-      if (err) {
+      if (!err) {
+        res.send(result.rows);
+      }else{
         res.send(err);
       }
-      res.send(result.rows);
     }
   );
 });
@@ -183,25 +191,121 @@ app.post("/login", (req, res) => {
   );
 });
 
-// Multer configuration for file upload
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
-// Endpoint for file upload
 app.post('/upload', upload.single('file'), async (req, res) => {
+    try {
+        const { originalname, buffer } = req.file;
+        const sectionName = req.body.sectionName;
+        const result = await client.query(
+            'INSERT INTO pdf_files (file_name, file_data, section_name) VALUES ($1, $2, $3) RETURNING id',
+            [originalname, buffer, sectionName]
+        );
+        res.json({ success: true, fileId: result.rows[0].id });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ success: false, error: 'Internal Server Error' });
+    }
+});
+
+app.get("/uploadedfiles", (req, res) => {
+  client.query(
+    "SELECT * FROM pdf_files",
+    (err, result) => {
+      if (err) {
+        res.send(err);
+      }
+      res.send(result.rows);
+    }
+  );
+});
+
+app.get('/download/:id', async (req, res) => {
   try {
-    const fileBuffer = req.file.buffer;
-    const fileName = req.file.originalname;
+      const fileId = req.params.id;
+      const result = await client.query('SELECT * FROM pdf_files WHERE id = $1', [fileId]);
 
-    // Insert file into database
-    const result = await pool.query('INSERT INTO files (name, data) VALUES ($1, $2) RETURNING id', [fileName, fileBuffer]);
+      if (result.rows.length === 0) {
+          res.status(404).json({ success: false, error: 'File not found' });
+          return;
+      }
 
-    res.status(200).json({ fileId: result.rows[0].id, message: 'File uploaded successfully' });
+      const { file_name, file_data } = result.rows[0];
+      res.setHeader('Content-Disposition', `attachment; filename=${file_name}`);
+      res.setHeader('Content-Type', 'application/pdf');
+      res.send(file_data);
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Internal server error' });
+      console.error(error);
+      res.status(500).json({ success: false, error: 'Internal Server Error' });
   }
 });
+
+app.post('/uploadrainfalldata', upload.single('file'), async (req, res) => {
+  try {
+    const workbook = xlsx.read(req.file.buffer, { type: 'buffer' });
+    const sheetName = workbook.SheetNames[0];
+    const sheetData = xlsx.utils.sheet_to_json(workbook.Sheets[sheetName]);
+
+    // const client = new Client(dbConfig);
+    // await client.connect();
+
+    // Replace with your PostgreSQL table name
+    const tableName = 'existingstationdata';
+
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS ${tableName} (
+        stationname character varying COLLATE pg_catalog."default",
+        stationid numeric,
+        datetime character varying COLLATE pg_catalog."default",
+        stationtype character varying COLLATE pg_catalog."default",
+        neworold character varying COLLATE pg_catalog."default",
+        lat character varying COLLATE pg_catalog."default",
+        lng character varying COLLATE pg_catalog."default",
+        activationdate character varying COLLATE pg_catalog."default"
+      );`
+    );
+
+    for (const row of sheetData) {
+      const values = Object.values(row)
+        .map(value => `'${value}'`)
+        .join(', ');
+      await client.query(`INSERT INTO ${tableName} VALUES (${values});`);
+    }
+
+    // await client.end();
+    res.status(200).json({ message: 'Data uploaded successfully' });
+  } catch (error) {
+    console.error('Error uploading data:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+
+app.put("/updaterainfall", (req, res) => {
+  const data = req.body.data;
+  try {
+    // Begin a transaction
+    client.query('BEGIN');
+    // Loop through each object and insert into the database
+    for (const element of data.updatedstationdata) {
+      const queryText = `UPDATE stationdatadaily SET "${data.date}" = ${element.RainFall} WHERE station_id = ${element.stationid}`;
+      // Execute the query
+      client.query(queryText);
+    }
+    // Commit the transaction
+    client.query('COMMIT');
+    res.status(200).json({ message: `Updated successfully`});
+    console.log('Data inserted successfully!');
+  }
+   catch (error) {
+    // Rollback the transaction in case of an error
+    client.query('ROLLBACK');
+    res.status(500).json({ error: 'Internal server error' });
+    console.error('Error inserting data:', error);
+  }
+});
+
 
 
 app.listen(3000, () => {

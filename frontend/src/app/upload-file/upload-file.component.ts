@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { DataService } from '../data.service';
 
 @Component({
@@ -8,6 +8,8 @@ import { DataService } from '../data.service';
 })
 export class UploadFileComponent {
   selectedFile: File | null = null;
+  selectedSection: string = 'QPF VERIFICATION REPORT';
+  @ViewChild('fileInput') fileInput!: ElementRef;
 
   constructor(private dataService: DataService) { }
 
@@ -17,9 +19,10 @@ export class UploadFileComponent {
 
   uploadFile() {
     if (this.selectedFile) {
-      this.dataService.uploadFile(this.selectedFile).subscribe(
+      this.dataService.uploadFile(this.selectedFile, this.selectedSection).subscribe(
         (response:any) => {
-          alert('File uploaded successfully:' + response);
+          alert('File uploaded successfully');
+          this.clearFileInput();
         },
         (error:any) => {
           alert('Error uploading file:' + error);
@@ -27,4 +30,12 @@ export class UploadFileComponent {
       );
     }
   }
+
+  clearFileInput(): void {
+    // Reset the value of the file input element
+    if (this.fileInput) {
+      this.fileInput.nativeElement.value = '';
+    }
+  }
+
 }
