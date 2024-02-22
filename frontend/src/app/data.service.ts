@@ -17,10 +17,13 @@ export class DataService {
   }
 
   updateData(data: any): Observable<any> {
-    return this.http.put<any>(this.baseUrl+'/existingstationdata', {data});
+    return this.http.put<any>(this.baseUrl+'/updateexistingstationdata', {data});
+  }
+  updateRainFallData(data: any): Observable<any> {
+    return this.http.put<any>(this.baseUrl+'/updaterainfall', {data});
   }
   deletestation(stationId: string): Observable<any> {
-    const url = `${this.baseUrl}/existingstationdata`;
+    const url = `${this.baseUrl}/deleteexistingstationdata`;
     return this.http.delete<any>(url, { body: { data: stationId } });
   }
   existingstationdata(): Observable<any> {

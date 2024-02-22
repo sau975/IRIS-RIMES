@@ -30,7 +30,7 @@ app.use((req, res, next) => {
 
 app.post('/addData', (req, res) => {
   const data = req.body.data; 
-  client.query('INSERT INTO existingstationdata(stationname, stationid) VALUES($1, $2)', [data.field1, data.field2])
+  client.query('INSERT INTO existingstationdata(stationname, stationid, datetime, stationtype, neworold, lat, lng, activationdate) VALUES($1, $2, $3, $4, $5, $6, $7, $8)', [data.stationName, data.stationId, data.dateTime, data.stationType, data.newOrOld, data.lat, data.lng, data.activationDate])
     .then(() => {
       res.status(200).json({ message: 'Data inserted successfully' });
     })
@@ -41,12 +41,18 @@ app.post('/addData', (req, res) => {
 });
 
 
-app.put("/existingstationdata", (req, res) => {
+app.put("/updateexistingstationdata", (req, res) => {
   const data = req.body.data;
-  client.query('UPDATE existingstationdata SET stationname = $1, stationid = $2 WHERE stationid = $3', [
+  client.query('UPDATE existingstationdata SET stationname = $1, stationid = $2, datetime = $3, stationtype = $4, neworold = $5, lat = $6, lng = $7, activationdate = $8 WHERE stationid = $9', [
       data.stationname,
       data.stationid,
-      data.previousstationid,
+      data.dateTime, 
+      data.stationType, 
+      data.newOrOld, 
+      data.lat, 
+      data.lng, 
+      data.activationDate,
+      data.previousstationid
     ])
     .then(() => {
       res.status(200).json({ message: `Row with ID ${data.previousstationid} updated successfully` });
@@ -56,7 +62,7 @@ app.put("/existingstationdata", (req, res) => {
       res.status(500).json({ error: 'Internal server error' });
     });
 });
-app.delete("/existingstationdata", (req, res) => {
+app.delete("/deleteexistingstationdata", (req, res) => {
   const data = req.body.data; 
   client
     .query('DELETE FROM existingstationdata WHERE stationid = $1', [data])
@@ -71,7 +77,7 @@ app.delete("/existingstationdata", (req, res) => {
 
 app.get("/existingstationdata", (req, res) => {
   client.query(
-    "SELECT * FROM existingstationdata ORDER BY stationid",
+    "SELECT * FROM existingstationdata JOIN stationdatadaily ON existingstationdata.stationid = stationdatadaily.station_id ORDER BY station_id",
     (err, result) => {
       if (err) {
         res.send(err);
@@ -202,6 +208,31 @@ app.post('/upload', upload.single('file'), async (req, res) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 });
+
+app.put("/updaterainfall", (req, res) => {
+  const data = req.body.data;
+  try {
+    // Begin a transaction
+    client.query('BEGIN');
+    // Loop through each object and insert into the database
+    for (const element of data.updatedstationdata) {
+      const queryText = `UPDATE stationdatadaily SET "${data.date}" = ${element.RainFall} WHERE station_id = ${element.stationid}`;
+      // Execute the query
+      client.query(queryText);
+    }
+    // Commit the transaction
+    client.query('COMMIT');
+    res.status(200).json({ message: `Updated successfully`});
+    console.log('Data inserted successfully!');
+  }
+   catch (error) {
+    // Rollback the transaction in case of an error
+    client.query('ROLLBACK');
+    res.status(500).json({ error: 'Internal server error' });
+    console.error('Error inserting data:', error);
+  }
+});
+
 
 
 app.listen(3000, () => {
