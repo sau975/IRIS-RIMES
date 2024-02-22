@@ -789,7 +789,7 @@
             >QPF VERIFICATION REPORT 2022</a
           >
         </li>
-        <li *ngFor="let file of pdfFiles;"><a (click)="downloadFile(file.id)">{{file.file_name}}</a></li>
+        <li *ngFor="let file of qpfReports;"><a (click)="downloadFile(file.id)">{{file.file_name}}</a></li>
       </ul>
     </li>
 
@@ -935,6 +935,7 @@
             >RAINFALL STATISTICS OF INDIA - 2012</a
           >
         </li>
+        <li *ngFor="let file of rainFallReports;"><a (click)="downloadFile(file.id)">{{file.file_name}}</a></li>
       </ul>
     </li>
     <li>

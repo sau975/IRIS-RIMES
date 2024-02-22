@@ -197,9 +197,10 @@ const upload = multer({ storage: storage });
 app.post('/upload', upload.single('file'), async (req, res) => {
     try {
         const { originalname, buffer } = req.file;
+        const sectionName = req.body.sectionName;
         const result = await client.query(
-            'INSERT INTO pdf_files (file_name, file_data) VALUES ($1, $2) RETURNING id',
-            [originalname, buffer]
+            'INSERT INTO pdf_files (file_name, file_data, section_name) VALUES ($1, $2, $3) RETURNING id',
+            [originalname, buffer, sectionName]
         );
         res.json({ success: true, fileId: result.rows[0].id });
     } catch (error) {

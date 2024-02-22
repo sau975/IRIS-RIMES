@@ -1,3 +1,4 @@
+import { filter } from 'rxjs';
 import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { DataService } from 'src/app/data.service';
@@ -10,7 +11,8 @@ import { DataService } from 'src/app/data.service';
 })
 export class NavbarComponent implements OnInit {
   showPopup: boolean = false;
-  pdfFiles: any[]=[];
+  qpfReports: any[]=[];
+  rainFallReports: any[]=[];
 
   constructor(
     private router: Router,
@@ -20,7 +22,8 @@ export class NavbarComponent implements OnInit {
 
   ngOnInit(): void {
     this.dataService.getUploadFiles().subscribe(res => {
-      this.pdfFiles = res;
+      this.qpfReports = res.filter((r:any) => r.section_name == "QPF VERIFICATION REPORT");
+      this.rainFallReports = res.filter((r:any) => r.section_name == "RAINFALL REPORTS");
     })
   }
 

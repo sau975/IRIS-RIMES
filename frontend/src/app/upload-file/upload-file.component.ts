@@ -8,6 +8,7 @@ import { DataService } from '../data.service';
 })
 export class UploadFileComponent {
   selectedFile: File | null = null;
+  selectedSection: string = 'QPF VERIFICATION REPORT';
   @ViewChild('fileInput') fileInput!: ElementRef;
 
   constructor(private dataService: DataService) { }
@@ -18,7 +19,7 @@ export class UploadFileComponent {
 
   uploadFile() {
     if (this.selectedFile) {
-      this.dataService.uploadFile(this.selectedFile).subscribe(
+      this.dataService.uploadFile(this.selectedFile, this.selectedSection).subscribe(
         (response:any) => {
           alert('File uploaded successfully');
           this.clearFileInput();
