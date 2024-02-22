@@ -80,10 +80,11 @@ app.get("/existingstationdata", (req, res) => {
   client.query(
     "SELECT * FROM existingstationdata JOIN stationdatadaily ON existingstationdata.stationid = stationdatadaily.station_id ORDER BY station_id",
     (err, result) => {
-      if (err) {
+      if (!err) {
+        res.send(result.rows);
+      }else{
         res.send(err);
       }
-      res.send(result.rows);
     }
   );
 });

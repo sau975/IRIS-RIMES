@@ -220,6 +220,7 @@ export class DataentryComponent {
         (response:any) => {
           alert('File uploaded successfully');
           this.clearFileInput();
+          this.filterByDate();
         },
         (error:any) => {
           alert('Error uploading file:' + error);
