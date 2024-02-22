@@ -39,9 +39,9 @@ export class DailyHomogenousMapComponent {
     private http: HttpClient,
     private dataService: DataService,
     private router: Router
-    ) {
-    let localDailyDate:any = localStorage.getItem('dailyDate')
-    if(localDailyDate){
+  ) {
+    let localDailyDate: any = localStorage.getItem('dailyDate')
+    if (localDailyDate) {
       let dailyDate = JSON.parse(localDailyDate);
       this.today.setDate(dailyDate.date)
       this.today.setMonth(dailyDate.month - 1)
@@ -63,7 +63,7 @@ export class DailyHomogenousMapComponent {
     // this.loadGeoJSON1();
     this.fetchDataFromBackend();
   }
-  dateCalculation(){
+  dateCalculation() {
     const yesterday = new Date(this.today);
     yesterday.setDate(this.today.getDate() - 1);
     const months = [
@@ -139,7 +139,7 @@ export class DailyHomogenousMapComponent {
     return matchedData || null;
   }
   findMatchingDatastate(id: string): any | null {
-    const matchedData = this.statefetchedDatadaily.find((data: any) => data.statedailyid === id );
+    const matchedData = this.statefetchedDatadaily.find((data: any) => data.statedailyid === id);
     console.log(matchedData, "gggg")
     return matchedData || null;
   }
@@ -163,8 +163,8 @@ export class DailyHomogenousMapComponent {
     let product = 1;
     let sum = 0;
     let previousregionID = null;
-      for (const item of this.fetchedData3) {
-      if ( previousregionID=== item['regionid']) {
+    for (const item of this.fetchedData3) {
+      if (previousregionID === item['regionid']) {
         product += item['imdarea_squarekm'] * item[this.currentDateDaily];
         sum += item['imdarea_squarekm'];
       }
@@ -172,19 +172,21 @@ export class DailyHomogenousMapComponent {
         if (previousregionID !== null) {
           this.regionfetchedDatadaily.push({
             regiondailyid: previousregionID,
-            regiondailyrainfall : product/sum
+            regiondailyrainfall: product / sum
           });
-        }}
-        product = item['imdarea_squarekm'] * item[this.currentDateDaily];
-        sum = item['imdarea_squarekm'];
+        }
+      }
+      product = item['imdarea_squarekm'] * item[this.currentDateDaily];
+      sum = item['imdarea_squarekm'];
       previousregionID = item['regionid'];
-    }}
-   processFetchedDatasubdivdaily(): void {
+    }
+  }
+  processFetchedDatasubdivdaily(): void {
     let product = 1;
     let sum = 0;
     let previoussubdivId = null;
-      for (const item of this.fetchedData2) {
-      if ( previoussubdivId === item['subdivid']) {
+    for (const item of this.fetchedData2) {
+      if (previoussubdivId === item['subdivid']) {
         product += item['imdarea_squarekm'] * item[this.currentDateDaily];
         sum += item['imdarea_squarekm'];
       }
@@ -192,12 +194,12 @@ export class DailyHomogenousMapComponent {
         if (previoussubdivId !== null) {
           this.subdivisionfetchedDatadaily.push({
             subdivdailyid: previoussubdivId,
-            subdivdailyrainfall : product/sum
+            subdivdailyrainfall: product / sum
           });
         }
       }
-        product = item['imdarea_squarekm'] * item[this.currentDateDaily];
-        sum = item['imdarea_squarekm'];
+      product = item['imdarea_squarekm'] * item[this.currentDateDaily];
+      sum = item['imdarea_squarekm'];
 
       previoussubdivId = item['subdivid'];
     }
@@ -206,8 +208,8 @@ export class DailyHomogenousMapComponent {
     let product = 1;
     let sum = 0;
     let previousStateId = null;
-      for (const item of this.fetchedMasterData) {
-      if ( previousStateId === item['state_code']) {
+    for (const item of this.fetchedMasterData) {
+      if (previousStateId === item['state_code']) {
         product += item['imdarea_squarekm'] * item[this.currentDateDaily];
         sum += item['imdarea_squarekm'];
       }
@@ -215,11 +217,12 @@ export class DailyHomogenousMapComponent {
         if (previousStateId !== null) {
           this.statefetchedDatadaily.push({
             statedailyid: previousStateId,
-            statedailyrainfall : product/sum,
+            statedailyrainfall: product / sum,
           });
-        }}
-        product = item['imdarea_squarekm'] * item[this.currentDateDaily];
-        sum = item['imdarea_squarekm'];
+        }
+      }
+      product = item['imdarea_squarekm'] * item[this.currentDateDaily];
+      sum = item['imdarea_squarekm'];
       previousStateId = item['state_code'];
     }
   }
@@ -310,17 +313,20 @@ export class DailyHomogenousMapComponent {
     if (this.inputValue && this.inputValue1) {
       this.processedData = [];
       for (const item of this.fetchedData) {
-        this.processedData.push({ districtdailyID: item.districtid, districtdailyRainfall: item[this.inputDateDaily]});
-      }}
-      else {
-        this.processedData = [];
+        this.processedData.push({ districtdailyID: item.districtid, districtdailyRainfall: item[this.inputDateDaily] });
+      }
+    }
+    else {
+      this.processedData = [];
       for (const item of this.fetchedData) {
-        this.processedData.push({ districtdailyID: item.districtid, districtdailyRainfall: item[this.currentDateDaily]});
-      }}}
+        this.processedData.push({ districtdailyID: item.districtid, districtdailyRainfall: item[this.currentDateDaily] });
+      }
+    }
+  }
 
   private initMap(): void {
     this.map3 = L.map('map3', {
-      center: [26, 76.9629],
+      center: [23, 79.9629],
       zoom: this.initialZoom,
       scrollWheelZoom: false
     });
@@ -352,10 +358,17 @@ export class DailyHomogenousMapComponent {
 
   public month = this.months[this.today.getMonth()];
   public day = String(this.today.getDate()).padStart(2, '0');
-
-  private loadGeoJSON(): void {
+  private clearTextElements(): void {
+    for (const textElement of this.addedTextElements) {
+      textElement.remove();
+    }
+    this.addedTextElements = [];
+  }
+  private addedTextElements: HTMLElement[] = [];
+  loadGeoJSON(): void {
+    this.clearTextElements();
     this.http.get('assets/geojson/INDIA_REGIONS.json').subscribe((res: any) => {
-      L.geoJSON(res, {
+      const geoJsonLayer = L.geoJSON(res, {
         style: (feature: any) => {
           const id2 = feature.properties['region_cod'];
           const matchedData = this.findMatchingDataregion(id2);
@@ -374,27 +387,37 @@ export class DailyHomogenousMapComponent {
           const id2 = feature.properties['region_cod'];
           const matchedData = this.findMatchingDataregion(id2);
           const rainfall = matchedData ? matchedData.regiondailyrainfall.toFixed(2) : '0.00';;
-          const popupContent = `
-            <div style="background-color: white; padding: 5px; font-family: Arial, sans-serif;">
-              <div style="color: #002467; font-weight: bold; font-size: 10px;">DISTRICT: ${id1}</div>
-              <div style="color: #002467; font-weight: bold; font-size: 10px;">DAILY RAINFALL: ${rainfall}mm </div>
-            </div>
-          `;
-          layer.bindPopup(popupContent);
-          layer.on('mouseover', () => {
-            layer.openPopup();
-          });
-          layer.on('mouseout', () => {
-            layer.closePopup();
-          });
+          const textElement = document.createElement('div');
+
+          textElement.innerHTML = `
+        <div>
+        <div style="color: #000000;font-weight: bold; text-wrap: nowrap; font-size: 10px;">${id1}</div>
+        <div style="color: #000000;font-weight: bold;text-wrap: nowrap; font-size: 10px;">${rainfall}mm</div>
+        </div>`;
+
+          const bounds = layer.getBounds();
+          const center = bounds.getCenter();
+
+          // Set the position of the custom HTML element on the map
+          textElement.classList.add('custom-text-element');
+          textElement.style.position = 'absolute';
+          textElement.style.left = `${this.map3.latLngToLayerPoint(center).x - 25}px`;
+          textElement.style.top = `${this.map3.latLngToLayerPoint(center).y - 10}px`;
+          // Set a higher z-index to ensure the text appears on top of the map
+          textElement.style.zIndex = '1000';
+
+          // Append the custom HTML element to the map container
+          this.map3.getPanes().overlayPane.appendChild(textElement);
+          this.addedTextElements.push(textElement);
         }
-      }).addTo(this.map3);
+      });
+      geoJsonLayer.addTo(this.map3);
     });
   }
 
   getColorForRainfall(rainfall: number): string {
     const numericId = rainfall;
-    if (numericId == 0 ) {
+    if (numericId == 0) {
       return '#808080';
     }
     if (numericId >= 0.1 && numericId <= 2.4) {

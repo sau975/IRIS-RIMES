@@ -9,6 +9,11 @@ import { DataService } from 'src/app/data.service';
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent {
+  isNavbarOpen = false;
+
+  toggleNavbar() {
+    this.isNavbarOpen = !this.isNavbarOpen;
+  }
 
   constructor(
     private router: Router,

@@ -118,12 +118,17 @@
                         </tbody>
                       </table>
                     </td>
-                    <td style="width: 30%">
-
-                      <button class="download" (click)="downloadMapImage()">
-                        Download
-                      </button>
-                      <button class="downloadpdf" (click)="downloadMapData()">Download PDF</button>
+                    <td style="width: 30%;">
+                      <div style="display: flex; flex-direction: column; margin-right: 10px; text-align: left;">
+                        <div style="display: flex; flex-direction: row;">
+                          <button style="margin-right: 5px;" class="download"  (click)="downloadMapImage()">IMG</button>
+                          <button class="download"  (click)="downloadMapImage()">PDF</button>
+                        </div>
+                        <div style="margin-top: 5px; text-align: left;">
+                          <button class="downloadpdf" 
+                            (click)="downloadMapData()">Statistics</button>
+                        </div>
+                      </div>
                     </td>
                   </tr>
                   <tr>
@@ -134,7 +139,7 @@
                   </tr>
                 </tbody>
               </table>
-              <div class="leaflet-bottom leaflet-right">
+              <div class="leaflet-bottom leaflet-left">
                 <table class="info_legend leaflet-control" style="width: 98%; height: 30px; margin-bottom: 20px">
                   <tbody>
                     <tr align="center">
@@ -258,11 +263,17 @@
                       <img style="margin: 15px 0 0 7px; width: 50px; height: 50px;"
                         src="../../assets/images/—Pngtree—compass_6028609.png" alt="">
                     </td>
-                    <td style="width: 30%">
-                      <button class="download" (click)="downloadMapImage1()">
-                        Download
-                      </button>
-                      <button class="downloadpdf" (click)="downloadMapData1()">Download PDF</button>
+                    <td style="width: 30%;">
+                      <div style="display: flex; flex-direction: column; margin-right: 10px; text-align: left;">
+                        <div style="display: flex; flex-direction: row;">
+                          <button style="margin-right: 5px;" class="download"  (click)="downloadMapImage1()">IMG</button>
+                          <button class="download"  (click)="downloadMapImage1()">PDF</button>
+                        </div>
+                        <div style="margin-top: 5px; text-align: left;">
+                          <button class="downloadpdf" 
+                            (click)="downloadMapData1()">Statistics</button>
+                        </div>
+                      </div>
                     </td>
                   </tr>
                   <!-- <tr>
@@ -479,7 +490,8 @@
                     </tr>
                     <tr>
                       <td style="border: 1px solid black; font-size: 4px; padding: 2px;">LARGE DEFICIENT</td>
-                      <td style="border: 1px solid black; font-size: 4px; padding: 2px;">{{statecountlargedeficient}}</td>
+                      <td style="border: 1px solid black; font-size: 4px; padding: 2px;">{{statecountlargedeficient}}
+                      </td>
                     </tr>
                     <tr>
                       <td style="border: 1px solid black; font-size: 4px; padding: 2px;">NO RAIN</td>
@@ -488,7 +500,7 @@
                   </tbody>
                 </table>
               </div>
-              <div class="leaflet-bottom leaflet-right">
+              <div class="leaflet-bottom leaflet-left">
                 <table class="info_legend leaflet-control" style="width: 98%; height: 30px; margin-bottom: 20px">
                   <tbody>
                     <tr align="center">
@@ -613,11 +625,17 @@
                       <img style="margin: 15px 0 0 7px; width: 50px; height: 50px;"
                         src="../../assets/images/—Pngtree—compass_6028609.png" alt="">
                     </td>
-                    <td style="width: 30%">
-                      <button class="download" (click)="downloadMapImage2()">
-                        Download
-                      </button>
-                      <button class="downloadpdf" (click)="downloadMapData2()">Download PDF</button>
+                    <td style="width: 30%;">
+                      <div style="display: flex; flex-direction: column; margin-right: 10px; text-align: left;">
+                        <div style="display: flex; flex-direction: row;">
+                          <button style="margin-right: 5px;" class="download"  (click)="downloadMapImage2()">IMG</button>
+                          <button class="download"  (click)="downloadMapImage2()">PDF</button>
+                        </div>
+                        <div style="margin-top: 5px; text-align: left;">
+                          <button class="downloadpdf" 
+                            (click)="downloadMapData2()">Statistics</button>
+                        </div>
+                      </div>
                     </td>
                   </tr>
                   <!-- <tr>
@@ -630,7 +648,7 @@
               </table>
               <div class="datacont" style="width: 20%;">
                 <div class="table-container">
-                  <table style="width: 50%; margin: 10px;margin-top: 20px; border-collapse: collapse;">
+                  <table style="width: 85%; margin: 10px;margin-top: 20px; border-collapse: collapse;">
                     <thead>
                       <tr>
                         <th style="border: 1px solid black; font-size: 8px; background-color:#32c0f8; padding: 3px;">
@@ -682,7 +700,8 @@
                       </tr>
                       <tr>
                         <td style="border: 1px solid black; font-size: 6px; padding: 2px;">DL & HR & CH</td>
-                        <td style="border: 1px solid black; font-size: 6px; padding: 2px;">DELHI, HARYANA AND CHANDIGARH</td>
+                        <td style="border: 1px solid black; font-size: 6px; padding: 2px;">DELHI, HARYANA AND CHANDIGARH
+                        </td>
                       </tr>
                       <tr>
                         <td style="border: 1px solid black; font-size: 6px; padding: 2px;">PB</td>
@@ -694,7 +713,8 @@
                       </tr>
                       <tr>
                         <td style="border: 1px solid black; font-size: 6px; padding: 2px;">JK & LA</td>
-                        <td style="border: 1px solid black; font-size: 6px; padding: 2px;">JAMMU & KASHMIR AND LADAKH</td>
+                        <td style="border: 1px solid black; font-size: 6px; padding: 2px;">JAMMU & KASHMIR AND LADAKH
+                        </td>
                       </tr>
                       <tr>
                         <td style="border: 1px solid black; font-size: 6px; padding: 2px;">W-RJ</td>
@@ -721,7 +741,7 @@
                   </table>
                 </div>
                 <div class="table-container">
-                  <table style="width: 50%; margin-top: 20px; border-collapse: collapse;">
+                  <table style="width: 80%; margin-top: 20px; border-collapse: collapse;">
                     <thead>
                       <tr>
                         <th style="border: 1px solid black; font-size: 8px; background-color:#32c0f8; padding: 3px;">
@@ -767,7 +787,8 @@
                       </tr>
                       <tr>
                         <td style="border: 1px solid black; font-size: 6px; padding: 2px;">C-AP & YN</td>
-                        <td style="border: 1px solid black; font-size: 6px; padding: 2px;">COASTAL ANDHRA PRADESH & YANAM</td>
+                        <td style="border: 1px solid black; font-size: 6px; padding: 2px;">COASTAL ANDHRA PRADESH &
+                          YANAM</td>
                       </tr>
                       <tr>
                         <td style="border: 1px solid black; font-size: 6px; padding: 2px;">TS</td>
@@ -779,7 +800,8 @@
                       </tr>
                       <tr>
                         <td style="border: 1px solid black; font-size: 6px; padding: 2px;">TN & PY & KR</td>
-                        <td style="border: 1px solid black; font-size: 6px; padding: 2px;">TAMILNADU, PUDUCHERRY & KARAIKAL</td>
+                        <td style="border: 1px solid black; font-size: 6px; padding: 2px;">TAMILNADU, PUDUCHERRY &
+                          KARAIKAL</td>
                       </tr>
                       <tr>
                         <td style="border: 1px solid black; font-size: 6px; padding: 2px;">C-KA</td>
@@ -788,11 +810,13 @@
 
                       <tr>
                         <td style="border: 1px solid black; font-size: 6px; padding: 2px;">NI-KA</td>
-                        <td style="border: 1px solid black; font-size: 6px; padding: 2px;">NORTHERN INTERIOR KARNATAKA</td>
+                        <td style="border: 1px solid black; font-size: 6px; padding: 2px;">NORTHERN INTERIOR KARNATAKA
+                        </td>
                       </tr>
                       <tr>
                         <td style="border: 1px solid black; font-size: 6px; padding: 2px;">SI-KA</td>
-                        <td style="border: 1px solid black; font-size: 6px; padding: 2px;">SOUTHERN INTERIOR KARNATAKA</td>
+                        <td style="border: 1px solid black; font-size: 6px; padding: 2px;">SOUTHERN INTERIOR KARNATAKA
+                        </td>
                       </tr>
                       <tr>
                         <td style="border: 1px solid black; font-size: 6px; padding: 2px;">KL & ME</td>
@@ -835,7 +859,8 @@
                     </tr>
                     <tr>
                       <td style="border: 1px solid black; font-size: 4px; padding: 2px;">LARGE DEFICIENT</td>
-                      <td style="border: 1px solid black; font-size: 4px; padding: 2px;">{{subdivcountlargedeficient}}</td>
+                      <td style="border: 1px solid black; font-size: 4px; padding: 2px;">{{subdivcountlargedeficient}}
+                      </td>
                     </tr>
                     <tr>
                       <td style="border: 1px solid black; font-size: 4px; padding: 2px;">NO RAIN</td>
@@ -844,7 +869,7 @@
                   </tbody>
                 </table>
               </div>
-              <div class="leaflet-bottom leaflet-right">
+              <div class="leaflet-bottom leaflet-left">
                 <table class="info_legend leaflet-control" style="width: 98%; height: 30px; margin-bottom: 20px">
                   <tbody>
                     <tr align="center">
@@ -966,14 +991,20 @@
                         </tbody>
                       </table>
                     </td>
-                    <td style="width: 30%">
-
-                      <button class="download" (click)="downloadMapImage3()">
-                        Download
-                      </button>
-                      <button class="downloadpdf" (click)="downloadMapData3()">Download PDF</button>
-
+                    <td style="width: 30%;">
+                      <div style="display: flex; flex-direction: column; margin-right: 10px; text-align: left;">
+                        <div style="display: flex; flex-direction: row;">
+                          <button style="margin-right: 5px;" class="download"  (click)="downloadMapImage3()">IMG</button>
+                          <button class="download"  (click)="downloadMapImage3()">PDF</button>
+                        </div>
+                        <div style="margin-top: 5px; text-align: left;">
+                          <button class="downloadpdf" 
+                            (click)="downloadMapData3()">Statistics</button>
+                        </div>
+                      </div>
                     </td>
+
+
                   </tr>
                   <tr>
                     <td>
@@ -983,7 +1014,7 @@
                   </tr>
                 </tbody>
               </table>
-              <div class="leaflet-bottom leaflet-right">
+              <div class="leaflet-bottom leaflet-left">
                 <table class="info_legend leaflet-control" style="width: 98%; height: 30px; margin-bottom: 20px">
                   <tbody>
                     <tr align="center">
@@ -1114,13 +1145,17 @@
                         </tbody>
                       </table>
                     </td>
-                    <td style="width: 30%">
-
-                      <button class="download" (click)="downloadMapImage4()">
-                        Download
-                      </button>
-                      <button class="downloadpdf" (click)="downloadMapData4()">Download PDF</button>
-
+                    <td style="width: 30%;">
+                      <div style="display: flex; flex-direction: column; margin-right: 10px; text-align: left;">
+                        <div style="display: flex; flex-direction: row;">
+                          <button style="margin-right: 5px;" class="download"  (click)="downloadMapImage4()">IMG</button>
+                          <button class="download"  (click)="downloadMapImage4()">PDF</button>
+                        </div>
+                        <div style="margin-top: 5px; text-align: left;">
+                          <button class="downloadpdf" 
+                            (click)="downloadMapData4()">Statistics</button>
+                        </div>
+                      </div>
                     </td>
                   </tr>
                   <tr>
@@ -1132,7 +1167,7 @@
                 </tbody>
               </table>
               <!-- <div id="mainmap" style="height: 80vh; width: 80%;"></div> -->
-              <div class="leaflet-bottom leaflet-right">
+              <div class="leaflet-bottom leaflet-left">
                 <table class="info_legend leaflet-control" style="width: 98%; height: 30px; margin-bottom: 20px">
                   <tbody>
                     <tr align="center">

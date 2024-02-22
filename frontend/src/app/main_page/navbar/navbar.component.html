@@ -1,5 +1,12 @@
+<mat-toolbar color="primary" class="custom-toolbar">
+  <button mat-icon-button (click)="toggleNavbar()">
+    <mat-icon>menu</mat-icon> 
+  </button>
+  <span>IRIS PRODUCTS</span>
+</mat-toolbar>
 
-<nav class="top">
+
+<nav [ngClass]="{'open': isNavbarOpen}" class="top">
   <ul class="nav">
     <li>
       <a class="main_nav">RAINFALL MAP</a>
@@ -8,70 +15,43 @@
           <a>DAILY DEPARTURE</a>
           <ul>
             <li>
-              <a
-              (click)="goToDailyDepartureMap('State')"
-              >STATE RAINFALL MAP</a
-              >
+              <a (click)="goToDailyDepartureMap('State')">STATE RAINFALL MAP</a>
             </li>
             <li>
-              <a
-              (click)="goToDailyDepartureMap('SubDivision')"
-              >SUBDIVISION RAINFALL MAP
+              <a (click)="goToDailyDepartureMap('SubDivision')">SUBDIVISION RAINFALL MAP
               </a>
             </li>
             <li>
-              <a (click)="goToDailyDepartureMap('District')"
-              >DISTRICT RAINFALL MAP</a>
-              <!-- <ul>
+              <a>DISTRICT RAINFALL MAP</a>
+              <ul>
                 <li>
-                  <a
-                    href="https://hydro.imd.gov.in/hydrometweb/(S(buuvdo45ftpebhvfn5x3er55))/PdfPageImage.aspx?imgUrl=PRODUCTS\Rainfall_Maps\Daily\District_Rainfall_Map\DISTRICT_RAINFALL_MAP_COUNTRY_INDIA_d.JPG&landingpage=landing"
-                    >PAN INDIA</a
-                  >
+                  <a (click)="goToDailyDepartureMap('District')">PAN INDIA</a>
                 </li>
                 <li>
-                  <a
-                    href="https://hydro.imd.gov.in/hydrometweb/(S(hv5xdj45rmjdre55ww2q3s55))/PdfPageImage.aspx?imgUrl=PRODUCTS\Rainfall_Maps\Daily\District_Rainfall_Map\DISTRICT_RAINFALL_MAP_REGION_CODE_EAST%20AND%20NORTH%20EAST%20INDIA_d.JPG&landingpage=landing"
-                    >EAST AND NORT-EAST REGION
+                  <a style="background-color: orange;" routerLink="../underprogress">EAST AND NORT-EAST REGION
                   </a>
                 </li>
                 <li>
-                  <a
-                    href="https://hydro.imd.gov.in/hydrometweb/(S(5wmzdpaxbyzxvr55vyojpyz0))/PdfPageImage.aspx?imgUrl=PRODUCTS\Rainfall_Maps\Daily\District_Rainfall_Map\DISTRICT_RAINFALL_MAP_REGION_CODE_NORTH%20WEST%20INDIA_d.JPG&landingpage=landing"
-                    >NORTH-WEST REGION</a
-                  >
+                  <a style="background-color: orange;" routerLink="../underprogress">NORTH-WEST REGION</a>
                 </li>
                 <li>
-                  <a
-                    href="https://hydro.imd.gov.in/hydrometweb/(S(eslqis451ato3k554ctzqfay))/PdfPageImage.aspx?imgUrl=PRODUCTS\Rainfall_Maps\Daily\District_Rainfall_Map\DISTRICT_RAINFALL_MAP_REGION_CODE_SOUTH%20PENINSULA_d.JPG&landingpage=landing"
-                    >SOUTH PENINSULURA REGION</a
-                  >
+                  <a style="background-color: orange;" routerLink="../underprogress">SOUTH PENINSULURA REGION</a>
                 </li>
                 <li>
-                  <a
-                    href="https://hydro.imd.gov.in/hydrometweb/(S(qhcmjvvk343lwm2pwsv0vh45))/PdfPageImage.aspx?imgUrl=PRODUCTS\Rainfall_Maps\Daily\District_Rainfall_Map\DISTRICT_RAINFALL_MAP_REGION_CODE_CENTRAL%20INDIA_d.JPG&landingpage=landing"
-                    >CENTRAL INDIA REGION</a
-                  >
+                  <a style="background-color: orange;" routerLink="../underprogress">CENTRAL INDIA REGION</a>
                 </li>
-              </ul> -->
+              </ul>
             </li>
             <li>
-              <a
-              (click)="goToDailyDepartureMap('Homogenous')"
-              >HOMOGENOUS RAINFALL MAP
+              <a (click)="goToDailyDepartureMap('Homogenous')">HOMOGENOUS RAINFALL MAP
               </a>
             </li>
             <li>
-              <a
-              (click)="goToDailyDepartureMap('Country')"
-              >COUNTRY RAINFALL MAP
+              <a (click)="goToDailyDepartureMap('Country')">COUNTRY RAINFALL MAP
               </a>
             </li>
-            <li >
-              <a style="background-color: orange;"
-              routerLink="../underprogress"
-                >RIVER BASIN</a
-              >
+            <li>
+              <a style="background-color: orange;" routerLink="../underprogress">RIVER BASIN</a>
             </li>
           </ul>
         </li>
@@ -80,70 +60,43 @@
           <a>WEEKLY DEPARTURE</a>
           <ul>
             <li>
-              <a
-                (click)="goToWeeklyMap('State')"
-                >STATE RAINFALL MAP</a
-              >
+              <a (click)="goToWeeklyMap('State')">STATE RAINFALL MAP</a>
             </li>
             <li>
-              <a
-              (click)="goToWeeklyMap('SubDivision')"
-              >SUBDIVISION RAINFALL MAP
+              <a>SUBDIVISION RAINFALL MAP
               </a>
             </li>
             <li>
-              <a (click)="goToWeeklyMap('District')"
-              >DISTRICT RAINFALL MAP</a>
-              <!-- <ul>
+              <a>DISTRICT RAINFALL MAP</a>
+              <ul>
                 <li>
-                  <a
-                    href="https://hydro.imd.gov.in/hydrometweb/(S(ubl3p2aonvukpdmxq1xxaozf))/PdfPageImage.aspx?imgUrl=PRODUCTS\Rainfall_Maps\Weekly\District_Rainfall_Map\DISTRICT_RAINFALL_MAP_COUNTRY_INDIA_w.JPG&landingpage=landing"
-                    >PAN INDIA</a
-                  >
+                  <a (click)="goToWeeklyMap('SubDivision')">PAN INDIA</a>
                 </li>
                 <li>
-                  <a
-                    href="https://hydro.imd.gov.in/hydrometweb/(S(ey1mhbjipqnqljvo54x55x45))/PdfPageImage.aspx?imgUrl=PRODUCTS\Rainfall_Maps\Weekly\District_Rainfall_Map\DISTRICT_RAINFALL_MAP_REGION_CODE_EAST%20AND%20NORTH%20EAST%20INDIA_w.JPG&landingpage=landing"
-                    >EAST AND NORT-EAST REGION
+                  <a style="background-color: orange;" routerLink="../underprogress">EAST AND NORT-EAST REGION
                   </a>
                 </li>
                 <li>
-                  <a
-                    href="https://hydro.imd.gov.in/hydrometweb/(S(t31fxx55pk5wopqmqxph4xbz))/PdfPageImage.aspx?imgUrl=PRODUCTS\Rainfall_Maps\Weekly\District_Rainfall_Map\DISTRICT_RAINFALL_MAP_REGION_CODE_NORTH%20WEST%20INDIA_w.JPG&landingpage=landing"
-                    >NORTH-WEST REGION</a
-                  >
+                  <a style="background-color: orange;" routerLink="../underprogress">NORTH-WEST REGION</a>
                 </li>
                 <li>
-                  <a
-                    href="https://hydro.imd.gov.in/hydrometweb/(S(sxrjyumxopldgmbtahesyp45))/PdfPageImage.aspx?imgUrl=PRODUCTS\Rainfall_Maps\Weekly\District_Rainfall_Map\DISTRICT_RAINFALL_MAP_REGION_CODE_SOUTH%20PENINSULA_w.JPG&landingpage=landing"
-                    >SOUTH PENINSULURA REGION</a
-                  >
+                  <a style="background-color: orange;" routerLink="../underprogress">SOUTH PENINSULURA REGION</a>
                 </li>
                 <li>
-                  <a
-                    href="https://hydro.imd.gov.in/hydrometweb/(S(d43w40453kiczp45eckuo055))/PdfPageImage.aspx?imgUrl=PRODUCTS\Rainfall_Maps\Weekly\District_Rainfall_Map\DISTRICT_RAINFALL_MAP_REGION_CODE_CENTRAL%20INDIA_w.JPG&landingpage=landing"
-                    >CENTRAL INDIA REGION</a
-                  >
+                  <a style="background-color: orange;" routerLink="../underprogress">CENTRAL INDIA REGION</a>
                 </li>
-              </ul> -->
+              </ul>
             </li>
             <li>
-              <a
-              (click)="goToWeeklyMap('Homogenous')"
-              >HOMOGENOUS RAINFALL MAP
+              <a (click)="goToWeeklyMap('Homogenous')">HOMOGENOUS RAINFALL MAP
               </a>
             </li>
             <li>
-              <a
-              (click)="goToWeeklyMap('Country')"
-              >COUNTRY RAINFALL MAP
+              <a (click)="goToWeeklyMap('Country')">COUNTRY RAINFALL MAP
               </a>
             </li>
-            <li >
-              <a style="background-color: orange;"
-              routerLink="../underprogress"
-                >RIVER BASIN</a
-              >
+            <li>
+              <a style="background-color: orange;" routerLink="../underprogress">RIVER BASIN</a>
             </li>
           </ul>
         </li>
@@ -152,25 +105,17 @@
           <a>DAILY</a>
           <ul>
             <li>
-              <a
-              (click)="goToDailyMap('State')"
-              >STATE RAINFALL MAP</a
-              >
+              <a (click)="goToDailyMap('State')">STATE RAINFALL MAP</a>
             </li>
             <li>
-              <a
-              (click)="goToDailyMap('SubDivision')"
-              >SUBDIVISION RAINFALL MAP
+              <a (click)="goToDailyMap('SubDivision')">SUBDIVISION RAINFALL MAP
               </a>
             </li>
             <li>
-              <a (click)="goToDailyMap('District')"
-              >DISTRICT RAINFALL MAP</a>
+              <a (click)="goToDailyMap('District')">DISTRICT RAINFALL MAP</a>
             </li>
             <li>
-              <a
-              (click)="goToDailyMap('Homogenous')"
-              >HOMOGENOUS RAINFALL MAP
+              <a (click)="goToDailyMap('Homogenous')">HOMOGENOUS RAINFALL MAP
               </a>
             </li>
             <!-- <li >
@@ -182,88 +127,80 @@
           </ul>
         </li>
 
-        <!-- <li>
+        <li>
           <a>CUMULATIVE</a>
           <ul>
             <li>
-              <a
-                href="https://hydro.imd.gov.in/hydrometweb/(S(p5strg45ecd01e45vlzknm55))/PdfPageImage.aspx?imgUrl=PRODUCTS\Rainfall_Maps\Cumulative\State_Rainfall_Map\STATE_RAINFALL_MAP_COUNTRY_INDIA_cd.JPG&landingpage=landing"
-                >STATE RAINFALL MAP</a
-              >
+              <a style="background-color: orange;" routerLink="../underprogress">STATE RAINFALL MAP</a>
             </li>
             <li>
-              <a
-                href="https://hydro.imd.gov.in/hydrometweb/(S(cszsa3mrxnjdk1nkcsyjlg55))/PdfPageImage.aspx?imgUrl=PRODUCTS\Rainfall_Maps\Cumulative\Subdivision_Rainfall_Map\SUBDIVISION_RAINFALL_MAP_COUNTRY_INDIA_cd.JPG&landingpage=landing"
-                >SUBDIVISION RAINFALL MAP
+              <a style="background-color: orange;" routerLink="../underprogress">SUBDIVISION RAINFALL MAP
               </a>
             </li>
             <li>
-              <a>DISTRICT RAINFALL MAP</a>
+              <a style="background-color: orange;" routerLink="../underprogress">DISTRICT RAINFALL MAP</a>
               <ul>
                 <li>
-                  <a
-                    href="https://hydro.imd.gov.in/hydrometweb/(S(0qaxrp55o2pq3p450qlpbuiw))/PdfPageImage.aspx?imgUrl=PRODUCTS\Rainfall_Maps\Cumulative\District_Rainfall_Map\DISTRICT_RAINFALL_MAP_COUNTRY_INDIA_CD.JPG&landingpage=landing"
-                    >PAN INDIA</a
-                  >
+                  <a style="background-color: orange;" routerLink="../underprogress">PAN INDIA</a>
                 </li>
                 <li>
-                  <a
-                    href="https://hydro.imd.gov.in/hydrometweb/(S(5guehdfc5dnqh145lbjy2e45))/PdfPageImage.aspx?imgUrl=PRODUCTS\Rainfall_Maps\Cumulative\District_Rainfall_Map\DISTRICT_RAINFALL_MAP_REGION_CODE_EAST%20AND%20NORTH%20EAST%20INDIA_CD.JPG&landingpage=landing"
-                    >EAST AND NORT-EAST REGION
+                  <a style="background-color: orange;" routerLink="../underprogress">EAST AND NORT-EAST REGION
                   </a>
                 </li>
                 <li>
-                  <a
-                    href="https://hydro.imd.gov.in/hydrometweb/(S(rnkbgfif5dbpe255zv2aoerb))/PdfPageImage.aspx?imgUrl=PRODUCTS\Rainfall_Maps\Cumulative\District_Rainfall_Map\DISTRICT_RAINFALL_MAP_REGION_CODE_NORTH%20WEST%20INDIA_CD.JPG&landingpage=landing"
-                    >NORTH-WEST REGION</a
-                  >
+                  <a style="background-color: orange;" routerLink="../underprogress">NORTH-WEST REGION</a>
                 </li>
                 <li>
-                  <a
-                    href="https://hydro.imd.gov.in/hydrometweb/(S(dhdk1smv2yogrp45rurmgoma))/PdfPageImage.aspx?imgUrl=PRODUCTS\Rainfall_Maps\Cumulative\District_Rainfall_Map\DISTRICT_RAINFALL_MAP_REGION_CODE_SOUTH%20PENINSULA_CD.JPG&landingpage=landing"
-                    >SOUTH PENINSULURA REGION</a
-                  >
+                  <a style="background-color: orange;" routerLink="../underprogress">SOUTH PENINSULURA REGION</a>
                 </li>
                 <li>
-                  <a
-                    href="https://hydro.imd.gov.in/hydrometweb/(S(ayhxspnu0wim3u45u4onx345))/PdfPageImage.aspx?imgUrl=PRODUCTS\Rainfall_Maps\Cumulative\District_Rainfall_Map\DISTRICT_RAINFALL_MAP_REGION_CODE_CENTRAL%20INDIA_CD.JPG&landingpage=landing"
-                    >CENTRAL INDIA REGION</a
-                  >
+                  <a style="background-color: orange;" routerLink="../underprogress">CENTRAL INDIA REGION</a>
                 </li>
               </ul>
             </li>
             <li>
-              <a style="background-color: orange;"
-                href="https://hydro.imd.gov.in/hydrometweb/(S(a4gemn453kmhll2nj3sm2x55))/PdfPageImage.aspx?imgUrl=PRODUCTS\Rainfall_Maps\Cumulative\RiverBasin\RIVERBASIN_RAINFALL_MAP_COUNTRY_INDIA_cd.JPG&landingpage=landing"
-                >RIVER BASIN</a
-              >
+              <a style="background-color: orange;" routerLink="../underprogress">RIVER BASIN</a>
             </li>
           </ul>
-        </li> -->
+        </li>
 
         <li>
           <a>NORMAL RAINFALL MAP</a>
-          <!-- <ul>
+          <ul>
+            <li>
+              <a>ANNUAL</a>
+              <ul>
+                <li>
+                  <a (click)="goToNormalMap('State')">STATE RAINFALL MAP</a>
+                </li>
+                <li>
+                  <a (click)="goToNormalMap('SubDivision')">SUBDIVISION RAINFALL MAP
+                  </a>
+                </li>
+                <li>
+                  <a (click)="goToNormalMap('District')">DISTRICT RAINFALL MAP</a>
+                </li>
+                <li>
+                  <a (click)="goToNormalMap('Homogenous')">HOMOGENOUS RAINFALL MAP
+                  </a>
+                </li>
+                <li>
+                  <a style="background-color: orange;" routerLink="../underprogress">RIVER BASIN</a>
+                </li>
+              </ul>
+            </li>
             <li>
               <a>WINTER</a>
               <ul>
                 <li>
-                  <a
-                    href="https://hydro.imd.gov.in/hydrometweb/(S(54kt2cjm5xammorlx3b4ruje))/PdfPageImage.aspx?imgUrl=PRODUCTS\Rainfall_Maps\Normal_Rainfall_Maps\Winter\State\Winter_STATE_NORMAL_RAINFALLMAP_COUNTRY_INDIA_c.JPG&landingpage=landing"
-                    >STATE WISE</a
-                  >
+                  <a style="background-color: orange;" routerLink="../underprogress">STATE WISE</a>
                 </li>
                 <li>
-                  <a
-                    href="https://hydro.imd.gov.in/hydrometweb/(S(wxs03j45otrkb0zcinvl3v3e))/PdfPageImage.aspx?imgUrl=PRODUCTS\Rainfall_Maps\Normal_Rainfall_Maps\Winter\Subdivision\Winter_SUBDIVISION_NORMAL_RAINFALLMAP_COUNTRY_INDIA_c.JPG&landingpage=landing"
-                    >SUBDIVISION WISE
+                  <a style="background-color: orange;" routerLink="../underprogress">SUBDIVISION WISE
                   </a>
                 </li>
                 <li>
-                  <a style="background-color: orange;"
-                    href="https://hydro.imd.gov.in/hydrometweb/(S(kot5uiaa2ibtrffhm1qebn55))/PdfPageImage.aspx?imgUrl=PRODUCTS\Rainfall_Maps\Normal_Rainfall_Maps\Winter\Riverbasin\Winter_Riverbasin.JPG&landingpage=landing"
-                    >RIVER BASIN</a
-                  >
+                  <a style="background-color: orange;" routerLink="../underprogress">RIVER BASIN</a>
                 </li>
               </ul>
             </li>
@@ -271,22 +208,14 @@
               <a>PRE-MONSOON </a>
               <ul>
                 <li>
-                  <a
-                    href="https://hydro.imd.gov.in/hydrometweb/(S(uj1klu55fzfx5rv2dtqwr0at))/PdfPageImage.aspx?imgUrl=PRODUCTS\Rainfall_Maps\Normal_Rainfall_Maps\Pre_Monsoon\State\Pre-Monsoon_STATE_NORMAL_RAINFALLMAP_COUNTRY_INDIA_c.JPG&landingpage=landing"
-                    >STATE WISE</a
-                  >
+                  <a style="background-color: orange;" routerLink="../underprogress">STATE WISE</a>
                 </li>
                 <li>
-                  <a
-                    href="https://hydro.imd.gov.in/hydrometweb/(S(wjl1dorqqfzkiaexrx1r5355))/PdfPageImage.aspx?imgUrl=PRODUCTS\Rainfall_Maps\Normal_Rainfall_Maps\Pre_Monsoon\Subdivision\Pre-Monsoon_SUBDIVISION_NORMAL_RAINFALLMAP_COUNTRY_INDIA_c.JPG&landingpage=landing"
-                    >SUBDIVISION WISE
+                  <a style="background-color: orange;" routerLink="../underprogress">SUBDIVISION WISE
                   </a>
                 </li>
                 <li>
-                  <a style="background-color: orange;"
-                    href="https://hydro.imd.gov.in/hydrometweb/(S(hbn20y45yy4ay455edvivsqt))/PdfPageImage.aspx?imgUrl=PRODUCTS\Rainfall_Maps\Normal_Rainfall_Maps\Post_Monsoon\Riverbasin\Post-Monsoon_RiverBasin.JPG&landingpage=landing"
-                    >RIVER BASIN</a
-                  >
+                  <a style="background-color: orange;" routerLink="../underprogress">RIVER BASIN</a>
                 </li>
               </ul>
             </li>
@@ -294,22 +223,14 @@
               <a>MONSOON</a>
               <ul>
                 <li>
-                  <a
-                    href="https://hydro.imd.gov.in/hydrometweb/(S(ridpb4454ojzojnalemoy4ql))/PdfPageImage.aspx?imgUrl=PRODUCTS\Rainfall_Maps\Normal_Rainfall_Maps\Monsoon\State\Monsoon_STATE_NORMAL_RAINFALLMAP_COUNTRY_INDIA_c.JPG&landingpage=landing"
-                    >STATE WISE</a
-                  >
+                  <a style="background-color: orange;" routerLink="../underprogress">STATE WISE</a>
                 </li>
                 <li>
-                  <a
-                    href="https://hydro.imd.gov.in/hydrometweb/(S(mj2c0r45o0a4z555ecxcturc))/PdfPageImage.aspx?imgUrl=PRODUCTS\Rainfall_Maps\Normal_Rainfall_Maps\Monsoon\Subdivision\Monsoon_SUBDIVISION_NORMAL_RAINFALLMAP_COUNTRY_INDIA_c.JPG&landingpage=landing"
-                    >SUBDIVISION WISE
+                  <a style="background-color: orange;" routerLink="../underprogress">SUBDIVISION WISE
                   </a>
                 </li>
                 <li>
-                  <a style="background-color: orange;"
-                    href="https://hydro.imd.gov.in/hydrometweb/(S(jfg14t45a0bcxmun5paqtb55))/PdfPageImage.aspx?imgUrl=PRODUCTS\Rainfall_Maps\Normal_Rainfall_Maps\Monsoon\Riverbasin\Monsoon_RiverBasin.JPG&landingpage=landing"
-                    >RIVER BASIN</a
-                  >
+                  <a style="background-color: orange;" routerLink="../underprogress">RIVER BASIN</a>
                 </li>
               </ul>
             </li>
@@ -317,101 +238,33 @@
               <a>POST-MONSOON</a>
               <ul>
                 <li>
-                  <a
-                    href="https://hydro.imd.gov.in/hydrometweb/(S(sh20qrmtlzlzza45gfquou45))/PdfPageImage.aspx?imgUrl=PRODUCTS\Rainfall_Maps\Normal_Rainfall_Maps\Post_Monsoon\State\Post%20Monsoon_STATE_NORMAL_RAINFALLMAP_COUNTRY_INDIA_c.JPG&landingpage=landing"
-                    >STATE WISE</a
-                  >
+                  <a style="background-color: orange;" routerLink="../underprogress">STATE WISE</a>
                 </li>
                 <li>
-                  <a
-                    href="https://hydro.imd.gov.in/hydrometweb/(S(hy0g55jy4csiy545qqbmkh45))/PdfPageImage.aspx?imgUrl=PRODUCTS\Rainfall_Maps\Normal_Rainfall_Maps\Post_Monsoon\Subdivision\Post%20Monsoon_SUBDIVISION_NORMAL_RAINFALLMAP_COUNTRY_INDIA_c.JPG&landingpage=landing"
-                    >SUBDIVISION WISE
+                  <a style="background-color: orange;" routerLink="../underprogress">SUBDIVISION WISE
                   </a>
                 </li>
                 <li>
-                  <a style="background-color: orange;"
-                    href="https://hydro.imd.gov.in/hydrometweb/(S(ju3tjg55xodgfx451f0qr3by))/PdfPageImage.aspx?imgUrl=PRODUCTS\Rainfall_Maps\Normal_Rainfall_Maps\Post_Monsoon\Riverbasin\Post-Monsoon_RiverBasin.JPG&landingpage=landing"
-                    >RIVER BASIN</a
-                  >
+                  <a style="background-color: orange;" routerLink="../underprogress">RIVER BASIN</a>
                 </li>
               </ul>
             </li>
-            <li>
-              <a>ANNUAL</a>
-              <ul>
-                <li>
-                  <a
-                    href="https://hydro.imd.gov.in/hydrometweb/(S(em4tyaf41ov5whe4150zyvvh))/PdfPageImage.aspx?imgUrl=PRODUCTS\Rainfall_Maps\Normal_Rainfall_Maps\Annual\State\annual_STATE_NORMAL_RAINFALLMAP_COUNTRY_INDIA_c.JPG&landingpage=landing"
-                    >STATE WISE</a
-                  >
-                </li>
-                <li>
-                  <a
-                    href="https://hydro.imd.gov.in/hydrometweb/(S(41lt1s553dprle55jajivt45))/PdfPageImage.aspx?imgUrl=PRODUCTS\Rainfall_Maps\Normal_Rainfall_Maps\Annual\Subdivision\annual_SUBDIVISION_NORMAL_RAINFALLMAP_COUNTRY_INDIA_c.JPG&landingpage=landing"
-                    >SUBDIVISION WISE
-                  </a>
-                </li>
-                <li>
-                  <a style="background-color: orange;"
-                    href="https://hydro.imd.gov.in/hydrometweb/(S(dgomvp45vz4nov45q1cogfno))/PdfPageImage.aspx?imgUrl=PRODUCTS\Rainfall_Maps\Normal_Rainfall_Maps\Annual\Riverbasin\Annual_RiverBasin.JPG&landingpage=landing"
-                    >RIVER BASIN</a
-                  >
-                </li>
-              </ul>
-            </li>
-          </ul> -->
-          <ul>
-            <li>
-              <a
-              (click)="goToNormalMap('State')"
-              >STATE RAINFALL MAP</a
-              >
-            </li>
-            <li>
-              <a
-              (click)="goToNormalMap('SubDivision')"
-              >SUBDIVISION RAINFALL MAP
-              </a>
-            </li>
-            <li>
-              <a (click)="goToNormalMap('District')"
-              >DISTRICT RAINFALL MAP</a>
-            </li>
-            <li>
-              <a
-              (click)="goToNormalMap('Homogenous')"
-              >HOMOGENOUS RAINFALL MAP
-              </a>
-            </li>
-            <!-- <li >
-              <a style="background-color: orange;"
-                href="https://hydro.imd.gov.in/hydrometweb/(S(05nzwv55w04fmmbbikdv0f55))/PdfPageImage.aspx?imgUrl=PRODUCTS\Rainfall_Maps\Daily\RiverBasin\RIVERBASIN_RAINFALL_MAP_COUNTRY_INDIA_d.JPG&landingpage=landing"
-                >RIVER BASIN</a
-              >
-            </li> -->
           </ul>
-        </li>
 
-        <!-- <li>
-          <a
-            href="https://hydro.imd.gov.in/hydrometweb/(S(haso5qietmwizzbi3wstssby))/Statewise.aspx"
-            >STATE WISE DISTRICT RAINFALL MAP</a
-          >
         </li>
 
         <li>
-          <a
-            href="https://hydro.imd.gov.in/hydrometweb/(S(prfsgv55vgr5k45531yewe45))/Rainfallmaps.aspx"
-            >REAL TIME/UPDATED PAST RAINFALL MAP</a
-          >
+          <a style="background-color: orange;" routerLink="../underprogress">STATE WISE DISTRICT RAINFALL MAP</a>
         </li>
 
         <li>
-          <a
-            href="https://hydro.imd.gov.in/hydrometweb/(S(00uv5cy2ogmkns552un5o4uw))/Argaws.aspx"
-            >ARG/AWS CUMULATIVE RAINFALL REAL TIME STATION</a
-          >
-        </li> -->
+          <a style="background-color: orange;" routerLink="../underprogress">REAL TIME/UPDATED PAST RAINFALL MAP</a>
+        </li>
+
+        <li>
+          <a style="background-color: orange;" routerLink="../underprogress">ARG/AWS CUMULATIVE RAINFALL REAL TIME
+            STATION</a>
+        </li>
       </ul>
     </li>
 
@@ -424,35 +277,20 @@
           <a>WINTER</a>
           <ul>
             <li>
-              <a
-              style="background-color: orange;"
-              routerLink="../underprogress"
-                >PAN INDIA</a
-              >
+              <a style="background-color: orange;" routerLink="../underprogress">PAN INDIA</a>
             </li>
             <li>
-              <a style="background-color: orange;"
-              routerLink="../underprogress"
-                >EAST AND NORT-EAST REGION
+              <a style="background-color: orange;" routerLink="../underprogress">EAST AND NORT-EAST REGION
               </a>
             </li>
             <li>
-              <a style="background-color: orange;"
-              routerLink="../underprogress"
-                >NORTH-WEST REGION</a
-              >
+              <a style="background-color: orange;" routerLink="../underprogress">NORTH-WEST REGION</a>
             </li>
             <li>
-              <a style="background-color: orange;"
-              routerLink="../underprogress"
-                >SOUTH PENINSULURA REGION</a
-              >
+              <a style="background-color: orange;" routerLink="../underprogress">SOUTH PENINSULURA REGION</a>
             </li>
             <li>
-              <a style="background-color: orange;"
-              routerLink="../underprogress"
-                >CENTRAL INDIA REGION</a
-              >
+              <a style="background-color: orange;" routerLink="../underprogress">CENTRAL INDIA REGION</a>
             </li>
           </ul>
         </li>
@@ -460,34 +298,20 @@
           <a>PRE-MONSOON</a>
           <ul>
             <li>
-              <a style="background-color: orange;"
-              routerLink="../underprogress"
-                >PAN INDIA</a
-              >
+              <a style="background-color: orange;" routerLink="../underprogress">PAN INDIA</a>
             </li>
             <li>
-              <a style="background-color: orange;"
-              routerLink="../underprogress"
-                >EAST AND NORT-EAST REGION
+              <a style="background-color: orange;" routerLink="../underprogress">EAST AND NORT-EAST REGION
               </a>
             </li>
             <li>
-              <a style="background-color: orange;"
-              routerLink="../underprogress"
-                >NORTH-WEST REGION</a
-              >
+              <a style="background-color: orange;" routerLink="../underprogress">NORTH-WEST REGION</a>
             </li>
             <li>
-              <a style="background-color: orange;"
-              routerLink="../underprogress"
-                >SOUTH PENINSULURA REGION</a
-              >
+              <a style="background-color: orange;" routerLink="../underprogress">SOUTH PENINSULURA REGION</a>
             </li>
             <li>
-              <a style="background-color: orange;"
-              routerLink="../underprogress"
-                >CENTRAL INDIA REGION</a
-              >
+              <a style="background-color: orange;" routerLink="../underprogress">CENTRAL INDIA REGION</a>
             </li>
           </ul>
         </li>
@@ -495,34 +319,20 @@
           <a>MONSOON</a>
           <ul>
             <li>
-              <a style="background-color: orange;"
-              routerLink="../underprogress"
-                >PAN INDIA</a
-              >
+              <a style="background-color: orange;" routerLink="../underprogress">PAN INDIA</a>
             </li>
             <li>
-              <a style="background-color: orange;"
-              routerLink="../underprogress"
-                >EAST AND NORT-EAST REGION
+              <a style="background-color: orange;" routerLink="../underprogress">EAST AND NORT-EAST REGION
               </a>
             </li>
             <li>
-              <a style="background-color: orange;"
-              routerLink="../underprogress"
-                >NORTH-WEST REGION</a
-              >
+              <a style="background-color: orange;" routerLink="../underprogress">NORTH-WEST REGION</a>
             </li>
             <li>
-              <a style="background-color: orange;"
-              routerLink="../underprogress"
-                >SOUTH PENINSULURA REGION</a
-              >
+              <a style="background-color: orange;" routerLink="../underprogress">SOUTH PENINSULURA REGION</a>
             </li>
             <li>
-              <a style="background-color: orange;"
-              routerLink="../underprogress"
-                >CENTRAL INDIA REGION</a
-              >
+              <a style="background-color: orange;" routerLink="../underprogress">CENTRAL INDIA REGION</a>
             </li>
           </ul>
         </li>
@@ -530,34 +340,20 @@
           <a>POST-MONSOON</a>
           <ul>
             <li>
-              <a style="background-color: orange;"
-              routerLink="../underprogress"
-                >PAN INDIA</a
-              >
+              <a style="background-color: orange;" routerLink="../underprogress">PAN INDIA</a>
             </li>
             <li>
-              <a style="background-color: orange;"
-              routerLink="../underprogress"
-                >EAST AND NORT-EAST REGION
+              <a style="background-color: orange;" routerLink="../underprogress">EAST AND NORT-EAST REGION
               </a>
             </li>
             <li>
-              <a style="background-color: orange;"
-              routerLink="../underprogress"
-                >NORTH-WEST REGION</a
-              >
+              <a style="background-color: orange;" routerLink="../underprogress">NORTH-WEST REGION</a>
             </li>
             <li>
-              <a style="background-color: orange;"
-              routerLink="../underprogress"
-                >SOUTH PENINSULURA REGION</a
-              >
+              <a style="background-color: orange;" routerLink="../underprogress">SOUTH PENINSULURA REGION</a>
             </li>
             <li>
-              <a style="background-color: orange;"
-              routerLink="../underprogress"
-                >CENTRAL INDIA REGION</a
-              >
+              <a style="background-color: orange;" routerLink="../underprogress">CENTRAL INDIA REGION</a>
             </li>
           </ul>
         </li>
@@ -570,10 +366,7 @@
       <a class="main_nav">NWP RAINFALL PRODUCTS</a>
       <ul>
         <li>
-          <a style="background-color: orange;"
-          routerLink="../underprogress"
-            >QPF-WRF/MME/GFS/NCUM PQPF-GEFS/NEFS</a
-          >
+          <a style="background-color: orange;" routerLink="../underprogress">QPF-WRF/MME/GFS/NCUM PQPF-GEFS/NEFS</a>
         </li>
       </ul>
     </li>
@@ -581,7 +374,7 @@
     <!-- nav -->
 
     <li>
-      <a class="main_nav" >RAINFALL STATISTICS</a>
+      <a class="main_nav">RAINFALL STATISTICS</a>
       <ul>
         <li>
           <a>DAILY & CUMULATIVE</a>
@@ -591,104 +384,75 @@
                 STATE RF DISTRIBUTION</a>
             </li>
             <li>
-              <a
-              (click)="downloadPDF('SubDivision')">
-                SUBDIVISION RF DISTRIBUTION</a
-              >
+              <a (click)="downloadPDF('SubDivision')">
+                SUBDIVISION RF DISTRIBUTION</a>
             </li>
             <li>
-              <a
-              (click)="downloadPDF('District')">
-                DISTRICT RF DISTRIBUTION</a
-              >
+              <a (click)="downloadPDF('District')">
+                DISTRICT RF DISTRIBUTION</a>
             </li>
             <li>
-              <a
-              (click)="downloadPDF('Homogenous')">
-                HOMOGENOUS RF DISTRIBUTION</a
-              >
+              <a (click)="downloadPDF('Homogenous')">
+                HOMOGENOUS RF DISTRIBUTION</a>
             </li>
             <li>
-              <a
-              (click)="downloadPDF('Country')">
-                COUNTRY RF DISTRIBUTION</a
-              >
+              <a (click)="downloadPDF('Country')">
+                COUNTRY RF DISTRIBUTION</a>
+            </li>
+            <li>
+              <a style="background-color: orange;" routerLink="../underprogress">GATEGORYWISE DISTRIBUTION OF DISTRICTS
+                IN STATES</a>
             </li>
           </ul>
         </li>
         <li>
           <a>WEEKLY & CUMULATIVE</a>
           <ul>
-            <!-- <li>
-              <a
-                href="https://hydro.imd.gov.in/hydrometweb/(S(50e5xo45hbbdom552wmgsmyu))/PdfReportPage.aspx?ImgUrl=PRODUCTS\Rainfall_Statistics\Cumulative\PERFORMANCE_SHEET.PDF"
-                >PERFORMANCE SHEET</a
-              >
-            </li> -->
             <li>
-              <a
-              (click)="downloadWeeklyPDF('State')">
-                STATE RF DISTRIBUTION</a
-              >
+              <a style="background-color: orange;" routerLink="../underprogress">PERFORMANCE SHEET</a>
             </li>
             <li>
-              <a
-              (click)="downloadWeeklyPDF('SubDivision')">
-                SUBDIVISION RF DISTRIBUTION</a
-              >
+              <a (click)="downloadWeeklyPDF('State')">
+                STATE RF DISTRIBUTION</a>
             </li>
             <li>
-              <a
-              (click)="downloadWeeklyPDF('District')">
-                DISTRICT RF DISTRIBUTION</a
-              >
+              <a (click)="downloadWeeklyPDF('SubDivision')">
+                SUBDIVISION RF DISTRIBUTION</a>
             </li>
             <li>
-              <a
-              (click)="downloadWeeklyPDF('Homogenous')">
-                HOMOGENOUS RF DISTRIBUTION</a
-              >
+              <a (click)="downloadWeeklyPDF('District')">
+                DISTRICT RF DISTRIBUTION</a>
             </li>
             <li>
-              <a
-              (click)="downloadWeeklyPDF('Country')">
-                COUNTRY RF DISTRIBUTION</a
-              >
+              <a (click)="downloadWeeklyPDF('Homogenous')">
+                HOMOGENOUS RF DISTRIBUTION</a>
             </li>
-            <!-- <li>
-              <a
-                href="https://hydro.imd.gov.in/hydrometweb/(S(50e5xo45hbbdom552wmgsmyu))/PdfReportPage.aspx?ImgUrl=PRODUCTS\Rainfall_Statistics\Cumulative\State_Wise_RF_Distribution_of_Districts\DISTRICT_DISTRIBUTION_STATEWISE_COUNTRY_INDIA_c.PDF"
-                >GATEGORYWISE DISTRIBUTION OF DISTRICTS IN STATES</a
-              >
-            </li> -->
+            <li>
+              <a (click)="downloadWeeklyPDF('Country')">
+                COUNTRY RF DISTRIBUTION</a>
+            </li>
+            <li>
+              <a style="background-color: orange;" routerLink="../underprogress">GATEGORYWISE DISTRIBUTION OF DISTRICTS
+                IN STATES</a>
+            </li>
           </ul>
         </li>
         <li>
-          <a
-          style="background-color: orange;"
-          routerLink="../underprogress"
-            >DISTRICT WISE RAINFALL-LAST 5 YEARS</a
-          >
+          <a style="background-color: orange;" routerLink="../underprogress">DISTRICT WISE RAINFALL-LAST 5 YEARS</a>
         </li>
       </ul>
     </li>
-    <!-- <li>
+    <li>
       <a class="main_nav">RAINFALL DEPARTURES</a>
       <ul>
         <li>
           <a>WEEKLY</a>
           <ul>
             <li>
-              <a
-                href="https://hydro.imd.gov.in/hydrometweb/(S(50e5xo45hbbdom552wmgsmyu))/PdfReportPage.aspx?ImgUrl=PRODUCTS\Rainfall_Departures\Weekly\Subdivision\SUBDIVISION_RAINFALL_DEPARTUREWEEKLY_COUNTRY_INDIA_c.PDF"
-                >SUBDIVISION</a
-              >
+              <a style="background-color: orange;" routerLink="../underprogress">SUBDIVISION</a>
             </li>
             <li>
-              <a
-                href="https://hydro.imd.gov.in/hydrometweb/(S(50e5xo45hbbdom552wmgsmyu))/PdfReportPage.aspx?ImgUrl=PRODUCTS\Rainfall_Departures\Weekly\District\DISTRICT_RAINFALL_DEPARTUREWEEKLY_COUNTRY_INDIA_c.PDF"
-                >DISTRICT</a
-              >
+              <a style="background-color: orange;" routerLink="../underprogress">DISTRICT</a>
             </li>
           </ul>
         </li>
@@ -696,21 +460,15 @@
           <a>CUMULATIVE</a>
           <ul>
             <li>
-              <a
-                href="https://hydro.imd.gov.in/hydrometweb/(S(50e5xo45hbbdom552wmgsmyu))/PdfReportPage.aspx?ImgUrl=PRODUCTS\Rainfall_Departures\Cumulative\Subdivision\SUBDIVISION_RAINFALL_DEPARTURECUMULATIVE__COUNTRY_INDIA_c.PDF"
-                >SUBDIVISION</a
-              >
+              <a style="background-color: orange;" routerLink="../underprogress">SUBDIVISION</a>
             </li>
             <li>
-              <a
-                href="https://hydro.imd.gov.in/hydrometweb/(S(50e5xo45hbbdom552wmgsmyu))/PdfReportPage.aspx?ImgUrl=PRODUCTS\Rainfall_Departures\Cumulative\District\DISTRICT_RAINFALL_DEPARTURECUMULATIVE_COUNTRY_INDIA_c.PDF"
-                >DISTRICT</a
-              >
+              <a style="background-color: orange;" routerLink="../underprogress">DISTRICT</a>
             </li>
           </ul>
         </li>
       </ul>
-    </li> -->
+    </li>
 
     <li>
       <a class="main_nav">SPATIAL ANALYSIS</a>
@@ -719,16 +477,10 @@
           <a>DAILY</a>
           <ul>
             <li>
-              <a style="background-color: orange;"
-              routerLink="../underprogress"
-                >DISTRICT</a
-              >
+              <a style="background-color: orange;" routerLink="../underprogress">DISTRICT</a>
             </li>
-            <li >
-              <a style="background-color: orange;"
-              routerLink="../underprogress"
-                >RIVER BASIN</a
-              >
+            <li>
+              <a style="background-color: orange;" routerLink="../underprogress">RIVER BASIN</a>
             </li>
           </ul>
         </li>
@@ -736,16 +488,10 @@
           <a>WEEKLY</a>
           <ul>
             <li>
-              <a style="background-color: orange;"
-              routerLink="../underprogress"
-                >DISTRICT</a
-              >
+              <a style="background-color: orange;" routerLink="../underprogress">DISTRICT</a>
             </li>
-            <li >
-              <a style="background-color: orange;"
-              routerLink="../underprogress"
-                >RIVER BASIN</a
-              >
+            <li>
+              <a style="background-color: orange;" routerLink="../underprogress">RIVER BASIN</a>
             </li>
           </ul>
         </li>
@@ -753,41 +499,29 @@
           <a>CUMULATIVE</a>
           <ul>
             <li>
-              <a style="background-color: orange;"
-              routerLink="../underprogress"
-                >DISTRICT</a
-              >
+              <a style="background-color: orange;" routerLink="../underprogress">DISTRICT</a>
             </li>
-            <li >
-              <a style="background-color: orange;"
-              routerLink="../underprogress"
-                >RIVER BASIN</a
-              >
+            <li>
+              <a style="background-color: orange;" routerLink="../underprogress">RIVER BASIN</a>
             </li>
           </ul>
         </li>
       </ul>
     </li>
     <li>
+      <a class="main_nav" routerLink="../upload-file">UPLOAD</a>
+    </li>
+    <li>
       <a class="main_nav">QPF VERIFICATION REPORT</a>
       <ul>
         <li>
-          <a style="background-color: orange;"
-          routerLink="../underprogress"
-            >QPF VERIFICATION REPORT 2020</a
-          >
+          <a style="background-color: orange;" routerLink="../underprogress">QPF VERIFICATION REPORT 2020</a>
         </li>
         <li>
-          <a style="background-color: orange;"
-          routerLink="../underprogress"
-            >QPF VERIFICATION REPORT 2021</a
-          >
+          <a style="background-color: orange;" routerLink="../underprogress">QPF VERIFICATION REPORT 2021</a>
         </li>
         <li>
-          <a style="background-color: orange;"
-          routerLink="../underprogress"
-            >QPF VERIFICATION REPORT 2022</a
-          >
+          <a style="background-color: orange;" routerLink="../underprogress">QPF VERIFICATION REPORT 2022</a>
         </li>
       </ul>
     </li>
@@ -802,16 +536,10 @@
               <a>KRISHNA BASIN PMP ATLAS</a>
               <ul>
                 <li>
-                  <a style="background-color: orange;"
-                  routerLink="../underprogress"
-                    >PART-1</a
-                  >
+                  <a style="background-color: orange;" routerLink="../underprogress">PART-1</a>
                 </li>
                 <li>
-                  <a style="background-color: orange;"
-                  routerLink="../underprogress"
-                    >PART-2</a
-                  >
+                  <a style="background-color: orange;" routerLink="../underprogress">PART-2</a>
                 </li>
               </ul>
             </li>
@@ -819,16 +547,10 @@
               <a>INDUS BASIN PMP ATLAS</a>
               <ul>
                 <li>
-                  <a style="background-color: orange;"
-                  routerLink="../underprogress"
-                    >PART-1</a
-                  >
+                  <a style="background-color: orange;" routerLink="../underprogress">PART-1</a>
                 </li>
                 <li>
-                  <a style="background-color: orange;"
-                  routerLink="../underprogress"
-                    >PART-2</a
-                  >
+                  <a style="background-color: orange;" routerLink="../underprogress">PART-2</a>
                 </li>
               </ul>
             </li>
@@ -838,34 +560,19 @@
           <a>REPORTS</a>
           <ul>
             <li>
-              <a style="background-color: orange;"
-              routerLink="../underprogress"
-                >DESIGN STORMS STUDIES DURING 2018</a
-              >
+              <a style="background-color: orange;" routerLink="../underprogress">DESIGN STORMS STUDIES DURING 2018</a>
             </li>
             <li>
-              <a style="background-color: orange;"
-              routerLink="../underprogress"
-                >DESIGN STORMS STUDIES DURING 2019</a
-              >
+              <a style="background-color: orange;" routerLink="../underprogress">DESIGN STORMS STUDIES DURING 2019</a>
             </li>
             <li>
-              <a style="background-color: orange;"
-              routerLink="../underprogress"
-                >DESIGN STORMS STUDIES DURING 2020</a
-              >
+              <a style="background-color: orange;" routerLink="../underprogress">DESIGN STORMS STUDIES DURING 2020</a>
             </li>
             <li>
-              <a style="background-color: orange;"
-              routerLink="../underprogress"
-                >DESIGN STORMS STUDIES DURING 2021</a
-              >
+              <a style="background-color: orange;" routerLink="../underprogress">DESIGN STORMS STUDIES DURING 2021</a>
             </li>
             <li>
-              <a style="background-color: orange;"
-              routerLink="../underprogress"
-                >DESIGN STORMS STUDIES DURING 2022</a
-              >
+              <a style="background-color: orange;" routerLink="../underprogress">DESIGN STORMS STUDIES DURING 2022</a>
             </li>
           </ul>
         </li>
@@ -875,64 +582,34 @@
       <a class="main_nav">RAINFALL REPORTS</a>
       <ul>
         <li>
-          <a style="background-color: orange;"
-          routerLink="../underprogress"
-            >RAINFALL STATISTICS OF INDIA - 2021</a
-          >
+          <a style="background-color: orange;" routerLink="../underprogress">RAINFALL STATISTICS OF INDIA - 2021</a>
         </li>
         <li>
-          <a style="background-color: orange;"
-          routerLink="../underprogress"
-            >RAINFALL STATISTICS OF INDIA - 2020</a
-          >
+          <a style="background-color: orange;" routerLink="../underprogress">RAINFALL STATISTICS OF INDIA - 2020</a>
         </li>
         <li>
-          <a style="background-color: orange;"
-          routerLink="../underprogress"
-            >RAINFALL STATISTICS OF INDIA - 2019</a
-          >
+          <a style="background-color: orange;" routerLink="../underprogress">RAINFALL STATISTICS OF INDIA - 2019</a>
         </li>
         <li>
-          <a style="background-color: orange;"
-          routerLink="../underprogress"
-            >RAINFALL STATISTICS OF INDIA - 2018</a
-          >
+          <a style="background-color: orange;" routerLink="../underprogress">RAINFALL STATISTICS OF INDIA - 2018</a>
         </li>
         <li>
-          <a style="background-color: orange;"
-          routerLink="../underprogress"
-            >RAINFALL STATISTICS OF INDIA - 2017</a
-          >
+          <a style="background-color: orange;" routerLink="../underprogress">RAINFALL STATISTICS OF INDIA - 2017</a>
         </li>
         <li>
-          <a style="background-color: orange;"
-          routerLink="../underprogress"
-            >RAINFALL STATISTICS OF INDIA - 2016</a
-          >
+          <a style="background-color: orange;" routerLink="../underprogress">RAINFALL STATISTICS OF INDIA - 2016</a>
         </li>
         <li>
-          <a style="background-color: orange;"
-          routerLink="../underprogress"
-            >RAINFALL STATISTICS OF INDIA - 2015</a
-          >
+          <a style="background-color: orange;" routerLink="../underprogress">RAINFALL STATISTICS OF INDIA - 2015</a>
         </li>
         <li>
-          <a style="background-color: orange;"
-          routerLink="../underprogress"
-            >RAINFALL STATISTICS OF INDIA - 2014</a
-          >
+          <a style="background-color: orange;" routerLink="../underprogress">RAINFALL STATISTICS OF INDIA - 2014</a>
         </li>
         <li>
-          <a style="background-color: orange;"
-          routerLink="../underprogress"
-            >RAINFALL STATISTICS OF INDIA - 2013</a
-          >
+          <a style="background-color: orange;" routerLink="../underprogress">RAINFALL STATISTICS OF INDIA - 2013</a>
         </li>
         <li>
-          <a style="background-color: orange;"
-          routerLink="../underprogress"
-            >RAINFALL STATISTICS OF INDIA - 2012</a
-          >
+          <a style="background-color: orange;" routerLink="../underprogress">RAINFALL STATISTICS OF INDIA - 2012</a>
         </li>
       </ul>
     </li>
@@ -945,9 +622,7 @@
     <li>
       <a class="main_nav">DISSEMINATION</a>
     </li>
-    <li>
-      <a class="main_nav" routerLink="../upload-file">UPLOAD</a>
-    </li>
+
     <li>
       <a class="main_nav" routerLink="../verification-page">VERIFICATION</a>
     </li>
@@ -955,28 +630,16 @@
       <a class="main_nav">ABOUT</a>
       <ul>
         <li>
-          <a style="background-color: orange;"
-          routerLink="../underprogress"
-            >HYDROMET SERVICES</a
-          >
+          <a style="background-color: orange;" routerLink="../underprogress">HYDROMET SERVICES</a>
         </li>
         <li>
-          <a style="background-color: orange;"
-          routerLink="../underprogress"
-            >HELP INDEX</a
-          >
+          <a style="background-color: orange;" routerLink="../underprogress">HELP INDEX</a>
         </li>
         <li>
-          <a style="background-color: orange;"
-          routerLink="../underprogress"
-            >SITE MAP</a
-          >
+          <a style="background-color: orange;" routerLink="../underprogress">SITE MAP</a>
         </li>
         <li>
-          <a style="background-color: orange;"
-          routerLink="../underprogress"
-            >CONTACT US</a
-          >
+          <a style="background-color: orange;" routerLink="../underprogress">CONTACT US</a>
         </li>
       </ul>
     </li>

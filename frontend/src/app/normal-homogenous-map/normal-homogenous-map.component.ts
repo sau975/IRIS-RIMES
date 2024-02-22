@@ -209,7 +209,7 @@ export class NormalHomogenousMapComponent {
 
   private initMap(): void {
     this.map3 = L.map('map3', {
-      center: [26, 76.9629],
+      center: [23, 79.9629],
       zoom: this.initialZoom,
       scrollWheelZoom: false
     });
@@ -244,9 +244,17 @@ export class NormalHomogenousMapComponent {
   public day = String(this.today.getDate()).padStart(2, '0');
 
 
-  private loadGeoJSON(): void {
+  private clearTextElements(): void {
+    for (const textElement of this.addedTextElements) {
+      textElement.remove();
+    }
+    this.addedTextElements = [];
+  }
+  private addedTextElements: HTMLElement[] = [];
+  loadGeoJSON(): void {
+    this.clearTextElements();
     this.http.get('assets/geojson/INDIA_REGIONS.json').subscribe((res: any) => {
-      L.geoJSON(res, {
+      const geoJsonLayer = L.geoJSON(res, {
         style: (feature: any) => {
           const id2 = feature.properties['region_cod'];
           const matchedData = this.findMatchingDataregion(id2);
@@ -265,21 +273,31 @@ export class NormalHomogenousMapComponent {
           const id2 = feature.properties['region_cod'];
           const matchedData = this.findMatchingDataregion(id2);
           const rainfall = matchedData ? matchedData.regionnormalrainfall.toFixed(2) : '0.00';;
-          const popupContent = `
-            <div style="background-color: white; padding: 5px; font-family: Arial, sans-serif;">
-              <div style="color: #002467; font-weight: bold; font-size: 10px;">DISTRICT: ${id1}</div>
-              <div style="color: #002467; font-weight: bold; font-size: 10px;">NORMAL RAINFALL: ${rainfall}mm </div>
-            </div>
-          `;
-          layer.bindPopup(popupContent);
-          layer.on('mouseover', () => {
-            layer.openPopup();
-          });
-          layer.on('mouseout', () => {
-            layer.closePopup();
-          });
+          const textElement = document.createElement('div');
+
+          textElement.innerHTML = `
+        <div>
+        <div style="color: #000000;font-weight: bold; text-wrap: nowrap; font-size: 10px;">${id1}</div>
+        <div style="color: #000000;font-weight: bold;text-wrap: nowrap; font-size: 10px;">${rainfall}mm</div>
+        </div>`;
+
+          const bounds = layer.getBounds();
+          const center = bounds.getCenter();
+
+          // Set the position of the custom HTML element on the map
+          textElement.classList.add('custom-text-element');
+          textElement.style.position = 'absolute';
+          textElement.style.left = `${this.map3.latLngToLayerPoint(center).x - 25}px`;
+          textElement.style.top = `${this.map3.latLngToLayerPoint(center).y - 10}px`;
+          // Set a higher z-index to ensure the text appears on top of the map
+          textElement.style.zIndex = '1000';
+
+          // Append the custom HTML element to the map container
+          this.map3.getPanes().overlayPane.appendChild(textElement);
+          this.addedTextElements.push(textElement);
         }
-      }).addTo(this.map3);
+      });
+      geoJsonLayer.addTo(this.map3);
     });
   }
   getColorForRainfall(rainfall: number): string {
