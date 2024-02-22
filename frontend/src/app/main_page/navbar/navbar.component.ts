@@ -1,5 +1,5 @@
 import { Router } from '@angular/router';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { DataService } from 'src/app/data.service';
 
 
@@ -8,12 +8,21 @@ import { DataService } from 'src/app/data.service';
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css']
 })
-export class NavbarComponent {
+export class NavbarComponent implements OnInit {
+  showPopup: boolean = false;
+  pdfFiles: any[]=[];
 
   constructor(
     private router: Router,
     private dataService: DataService
     ){}
+
+
+  ngOnInit(): void {
+    this.dataService.getUploadFiles().subscribe(res => {
+      this.pdfFiles = res;
+    })
+  }
 
   downloadPDF(name:string){
     localStorage.removeItem('weekDates');
@@ -143,5 +152,17 @@ export class NavbarComponent {
       start: previousStartDate,
       end: previousEndDate,
     };
-    }
   }
+
+  uploadPopUp(){
+    this.showPopup = true;
+  }
+
+  cancel() {
+    this.showPopup = false;
+  }
+
+  downloadFile(fileId:any): void {
+    window.open(`http://localhost:3000/download/${fileId}`, '_blank');
+  }
+}

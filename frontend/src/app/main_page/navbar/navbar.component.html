@@ -789,6 +789,7 @@
             >QPF VERIFICATION REPORT 2022</a
           >
         </li>
+        <li *ngFor="let file of pdfFiles;"><a (click)="downloadFile(file.id)">{{file.file_name}}</a></li>
       </ul>
     </li>
 
@@ -946,7 +947,7 @@
       <a class="main_nav">DISSEMINATION</a>
     </li>
     <li>
-      <a class="main_nav" routerLink="../upload-file">UPLOAD</a>
+      <a class="main_nav" (click)="uploadPopUp()">UPLOAD</a>
     </li>
     <li>
       <a class="main_nav" routerLink="../verification-page">VERIFICATION</a>
@@ -983,3 +984,9 @@
 
   </ul>
 </nav>
+
+
+<div *ngIf="showPopup" class="popup">
+  <button class="close-btn" (click)="cancel()">X</button>
+  <app-upload-file></app-upload-file>
+</div>

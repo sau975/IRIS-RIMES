@@ -203,8 +203,6 @@
       </table>
       <button class="enter" (click)="addData()">Add Station</button>
     </form>
-
-    <pre>{{data | json}}</pre>
   </div>
   <div *ngIf="showEditPopup" class="edit-popup">
     <form (submit)="updateData()">
@@ -255,7 +253,6 @@
         </tbody>
       </table>
     </form>
-    <pre>{{editData | json}}</pre>
     <button class="enter" (click)="updateData()">Update</button>
   </div>
   <div *ngIf="showdeletePopup" class="delete-popup">

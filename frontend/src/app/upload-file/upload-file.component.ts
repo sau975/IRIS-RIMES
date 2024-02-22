@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { DataService } from '../data.service';
 
 @Component({
@@ -8,6 +8,7 @@ import { DataService } from '../data.service';
 })
 export class UploadFileComponent {
   selectedFile: File | null = null;
+  @ViewChild('fileInput') fileInput!: ElementRef;
 
   constructor(private dataService: DataService) { }
 
@@ -19,7 +20,8 @@ export class UploadFileComponent {
     if (this.selectedFile) {
       this.dataService.uploadFile(this.selectedFile).subscribe(
         (response:any) => {
-          alert('File uploaded successfully:' + response);
+          alert('File uploaded successfully');
+          this.clearFileInput();
         },
         (error:any) => {
           alert('Error uploading file:' + error);
@@ -27,4 +29,12 @@ export class UploadFileComponent {
       );
     }
   }
+
+  clearFileInput(): void {
+    // Reset the value of the file input element
+    if (this.fileInput) {
+      this.fileInput.nativeElement.value = '';
+    }
+  }
+
 }

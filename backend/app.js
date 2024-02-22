@@ -191,23 +191,52 @@ app.post("/login", (req, res) => {
   );
 });
 
-// Multer configuration for file upload
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
-// Endpoint for file upload
 app.post('/upload', upload.single('file'), async (req, res) => {
+    try {
+        const { originalname, buffer } = req.file;
+        const result = await client.query(
+            'INSERT INTO pdf_files (file_name, file_data) VALUES ($1, $2) RETURNING id',
+            [originalname, buffer]
+        );
+        res.json({ success: true, fileId: result.rows[0].id });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ success: false, error: 'Internal Server Error' });
+    }
+});
+
+app.get("/uploadedfiles", (req, res) => {
+  client.query(
+    "SELECT * FROM pdf_files",
+    (err, result) => {
+      if (err) {
+        res.send(err);
+      }
+      res.send(result.rows);
+    }
+  );
+});
+
+app.get('/download/:id', async (req, res) => {
   try {
-    const fileBuffer = req.file.buffer;
-    const fileName = req.file.originalname;
+      const fileId = req.params.id;
+      const result = await client.query('SELECT * FROM pdf_files WHERE id = $1', [fileId]);
 
-    // Insert file into database
-    const result = await pool.query('INSERT INTO files (name, data) VALUES ($1, $2) RETURNING id', [fileName, fileBuffer]);
+      if (result.rows.length === 0) {
+          res.status(404).json({ success: false, error: 'File not found' });
+          return;
+      }
 
-    res.status(200).json({ fileId: result.rows[0].id, message: 'File uploaded successfully' });
+      const { file_name, file_data } = result.rows[0];
+      res.setHeader('Content-Disposition', `attachment; filename=${file_name}`);
+      res.setHeader('Content-Type', 'application/pdf');
+      res.send(file_data);
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Internal server error' });
+      console.error(error);
+      res.status(500).json({ success: false, error: 'Internal Server Error' });
   }
 });
 

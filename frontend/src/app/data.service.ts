@@ -113,5 +113,10 @@ export class DataService {
     return this.http.post(this.baseUrl + '/uploadrainfalldata', formData);
   }
 
+  getUploadFiles(): Observable<any> {
+    const url = `${this.baseUrl}`+'/uploadedfiles';
+    return this.http.get(url);
+  }
+
 }
 
