@@ -181,7 +181,7 @@ app.post("/login", (req, res) => {
             password:  req.body.password
           }
           jwt.sign({ user }, secretKey, { expiresIn: '300s' }, (err, token) => {
-            res.json({message: "Login successful", token: token})
+            res.json({message: "Login successful", token: token, data: result.rows})
           })
         }else{
           res.send({message: "Username and Passwrod are Invalid"});
