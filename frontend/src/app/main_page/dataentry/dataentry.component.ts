@@ -11,6 +11,13 @@ import * as FileSaver from 'file-saver';
 })
 export class DataentryComponent {
   @ViewChild('fileInput') fileInput!: ElementRef;
+  selectedRegion: string = '';
+  selectedState: string = '';
+  selectedDistrict: string = '';
+  regionList:any[]=[];
+  filteredStates:any[]=[];
+  filteredDistricts:any[]=[];
+  filteredStations:any[]=[];
   selectedDate: Date = new Date();
   selectedFile: File | null = null;
   rainFallInMM: number = 0;
@@ -21,12 +28,12 @@ export class DataentryComponent {
   editData:any = {
     stationname: '',
     stationid: '',
-    dateTime: this.selectedDate,
+    dateTime: '',
     stationType: '',
     newOrOld: '',
     lat: '',
     lng: '',
-    activationDate: this.selectedDate,
+    activationDate: '',
     editIndex : null,
     previousstationid: null
   };
@@ -43,7 +50,7 @@ export class DataentryComponent {
   data = {
     stationName: '',
     stationId: '',
-    dateTime: this.selectedDate,
+    dateTime: new Date(),
     stationType: 'aws',
     newOrOld: 'new',
     lat: '',
@@ -66,6 +73,19 @@ export class DataentryComponent {
     this.todayDate = yyyy + '-' + mm + '-' + dd;
     }
 
+    onChangeRegion(){
+      let tempStates = this.existingstationdata.filter(s => s.region == this.selectedRegion);
+      this.filteredStates = Array.from(new Set(tempStates.map(a => a.state)));
+      this.selectedState = ''
+      this.selectedDistrict = ''
+    }
+
+    onChangeState(){
+      let tempDistricts = this.existingstationdata.filter(d => d.state == this.selectedState);
+      this.filteredDistricts = Array.from(new Set(tempDistricts.map(a => a.district)));
+      this.selectedDistrict = ''
+    }
+
     goBack() {
       window.history.back();
     }
@@ -86,6 +106,7 @@ export class DataentryComponent {
     this.dataService.existingstationdata().subscribe({
       next: value => {
         this.existingstationdata = value;
+        this.regionList = Array.from(new Set(this.existingstationdata.map(a => a.region)));
         this.filterByDate();
       },
       error: err => console.error('Error fetching data:', err)
@@ -93,7 +114,8 @@ export class DataentryComponent {
   }
 
   filterByDate(){
-    this.existingstationdata.map(x => {
+    this.filteredStations = this.existingstationdata.filter(s => s.district == this.selectedDistrict);
+    this.filteredStations.map(x => {
       return x.RainFall = x[this.dateCalculation()];
     })
   }
@@ -203,10 +225,11 @@ export class DataentryComponent {
   submit(){
     let data = {
       date: this.dateCalculation(),
-      updatedstationdata: this.existingstationdata
+      updatedstationdata: this.filteredStations
     }
     this.dataService.updateRainFallData(data).subscribe(res => {
       alert("Updated")
+      this.fetchDataFromBackend();
     })
   }
 

@@ -42,6 +42,43 @@
       </tr>
     </tbody>
   </table>
+  <div class="navbar row">
+    <div class="col-2">
+    <label for="region">Select Region :</label>
+    <select name="region" class="form-control" id="region" [(ngModel)]="selectedRegion" (change)="onChangeRegion()">
+      <option *ngFor="let region of regionList" [value]="region">{{region}}</option>
+    </select>
+  </div>
+  <div class="col-2">
+    <label for="mcs">Select MC :</label>
+    <select name="mcs" class="form-control" id="mcs">
+      <option value="mc1">RMC/MC</option>
+      <option value="mc2">RMC/MC</option>
+      <option value="mc3">RMC/MC</option>
+      <option value="mc4">RMC/MC</option>
+    </select>
+  </div>
+  <div class="col-2">
+    <label for="state">Select State :</label>
+    <select name="state" class="form-control" id="state" [(ngModel)]="selectedState" (change)="onChangeState()">
+      <option *ngFor="let state of filteredStates" [value]="state">{{state}}</option>
+    </select>
+  </div>
+  <div class="col-2">
+    <label for="district">Select District :</label>
+    <select name="district" class="form-control" id="district" [(ngModel)]="selectedDistrict">
+      <option *ngFor="let district of filteredDistricts" [value]="district">{{district}}</option>
+    </select>
+  </div>
+  <div class="col-2">
+    <label for="district">Select Date :</label>
+    <input type="date" class="form-control" [ngModel] ="selectedDate | date:'yyyy-MM-dd'" (ngModelChange)="selectedDate = $event">
+  </div>
+    <div class="col-1 mt-3">
+      <button class="btn btn-success" type="button" (click)="filterByDate()">Submit</button>
+    </div>
+  </div>
+<!--
   <div class="navbar">
     <label for="region" class="date_label">Select Region :</label>
     <select name="region" id="region">
@@ -76,7 +113,7 @@
     <div class="button">
       <button class="btn btn-success" (click)="filterByDate()">Submit</button>
     </div>
-  </div>
+  </div> -->
 
   <div style="text-align: center; padding-top: 40px">
     <div class="dataentry">
@@ -113,8 +150,8 @@
               <th style="border: 1px solid black">YEAR OF ACTIVATION</th>
             </tr>
           </thead>
-          <tbody *ngIf="existingstationdata && existingstationdata.length > 0">
-            <tr *ngFor="let station of existingstationdata; let i = index">
+          <tbody *ngIf="filteredStations && filteredStations.length > 0">
+            <tr *ngFor="let station of filteredStations; let i = index">
               <td style="border: 1px solid black">{{ i + 1 }}</td>
               <td style="border: 1px solid black">{{ station.stationname }}</td>
               <td style="border: 1px solid black">{{ station.stationid }}</td>

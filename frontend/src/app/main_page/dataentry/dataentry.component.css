@@ -3,6 +3,7 @@
   background-repeat: no-repeat;
   background-size: cover;
   width: 100%;
+  height: 100vh;
 }
 .date_label{
   color: black;
@@ -15,23 +16,24 @@ h3{
   font-weight: 600;
 }
 .navbar{
-  margin: 20px 90px 0px 20px;
+  margin: 20px 20px 0px 20px;
+  height: 90px;
   background-color: white;
   text-align: center;
-  padding: 8px 120px 8px 120px;
+  padding: 10px;
   border-radius: 20px;
 }
 body{
   display: flex;
 }
-#region, #mcs, #state, #district{
+/* #region, #mcs, #state, #district{
   background-color: #002467;
   color: white;
   padding: 10px;
   margin: 10px 20px 10px 10px;
   border-radius: 10px;
   box-shadow: 5px 5px 10px 2px rgba(0,0,0,.8);
-}
+} */
 #region:hover, #mcs:hover, #state:hover, #district:hover{
   color: #002467;
   font-weight: 600;
@@ -88,7 +90,7 @@ h2 {
 .dataentry {
   text-align: center;
   background-color: white;
-  margin: 10px 15px;
+  margin: 0px 15px;
   border-color: black;
   border-width: 2px;
   border-style: solid;
