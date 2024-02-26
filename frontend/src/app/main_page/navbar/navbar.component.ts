@@ -9,7 +9,14 @@ import { DataService } from 'src/app/data.service';
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css']
 })
+
+
 export class NavbarComponent implements OnInit {
+  isNavbarOpen = false;
+
+  toggleNavbar() {
+    this.isNavbarOpen = !this.isNavbarOpen;
+  }
   showPopup: boolean = false;
   qpfReports: any[]=[];
   rainFallReports: any[]=[];

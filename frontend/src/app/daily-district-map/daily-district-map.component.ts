@@ -328,7 +328,7 @@ export class DailyDistrictMapComponent {
 
   private initMap(): void {
     this.map = L.map('map', {
-      center: [26, 76.9629],
+      center: [23, 76.9629],
       zoom: this.initialZoom,
       scrollWheelZoom: false
     });

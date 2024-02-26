@@ -29,6 +29,12 @@ export class DailyStateMapComponent {
   fetchedData5: any;
   fetchedData6: any;
   fetchedMasterData: any;
+  statecountlargeexcess = 0
+  statecountexcess = 0
+  statecountnormal = 0
+  statecountdeficient = 0
+  statecountlargedeficient = 0
+  statecountnorain = 0
 
   formatteddate: any;
   dd: any;
@@ -328,7 +334,7 @@ export class DailyStateMapComponent {
 
   private initMap(): void {
     this.map1 = L.map('map1', {
-      center: [26, 76.9629],
+      center: [23, 76.9629],
       zoom: this.initialZoom,
       scrollWheelZoom: false
     });
@@ -360,81 +366,297 @@ export class DailyStateMapComponent {
 
   public month = this.months[this.today.getMonth()];
   public day = String(this.today.getDate()).padStart(2, '0');
-
-  private loadGeoJSON(): void {
+  private clearTextElements(): void {
+    for (const textElement of this.addedTextElements) {
+      textElement.remove();
+    }
+    this.addedTextElements = [];
+  }
+  private addedTextElements: HTMLElement[] = [];
+ loadGeoJSON(): void {
+  this.clearTextElements();
     this.http.get('assets/geojson/INDIA_STATE.json').subscribe((res: any) => {
-      L.geoJSON(res, {
-        style: (feature: any) => {
-          const id2 = feature.properties['state_code'];
-          const matchedData = this.findMatchingDatastate(id2);
-          const rainfall = matchedData ? matchedData.statedailyrainfall: 0;
-          const color = this.getColorForRainfall(rainfall);
-          return {
-            fillColor: color,
-            weight: 0.5,
-            opacity: 2,
-            color: 'black',
-            fillOpacity: 0.7
-          };
-        },
-        onEachFeature: (feature: any, layer: any) => {
-          const id1 = feature.properties['state_name'];
-          const id2 = feature.properties['state_code'];
-          const matchedData = this.findMatchingDatastate(id2);
-          const rainfall = matchedData ? matchedData.statedailyrainfall.toFixed(2) : '0.00';
-          const popupContent = `
-            <div style="background-color: white; padding: 5px; font-family: Arial, sans-serif;">
-              <div style="color: #002467; font-weight: bold; font-size: 10px;">DISTRICT: ${id1}</div>
-              <div style="color: #002467; font-weight: bold; font-size: 10px;">DAILY RAINFALL: ${rainfall}mm </div>
-            </div>
-          `;
-          layer.bindPopup(popupContent);
-          layer.on('mouseover', () => {
-            layer.openPopup();
-          });
-          layer.on('mouseout', () => {
-            layer.closePopup();
-          });
-        }
-      }).addTo(this.map1);
-  });
+      this.statecountlargeexcess = 0
+      this.statecountexcess = 0
+      this.statecountnormal = 0
+      this.statecountdeficient = 0
+      this.statecountlargedeficient = 0
+      this.statecountnorain = 0
+        const geoJsonLayer = L.geoJSON(res, {
+          style: (feature: any) => {
+            const id2 = feature.properties['state_code'];
+            const matchedData = this.findMatchingDatastate(id2);
+            const rainfall = matchedData ? matchedData.statedailyrainfall: 0;
+            const color = this.getColorForRainfallstate(rainfall);
+            return {
+              fillColor: color,
+              weight: 0.5,
+              opacity: 2,
+              color: 'black',
+              fillOpacity: 2
+            };
+          },
+          onEachFeature: (feature: any, layer: any) => {
+            let id1 = feature.properties['state_name'];
+            const id2 = feature.properties['state_code'];
+            const matchedData = this.findMatchingDatastate(id2);
+            const rainfall = matchedData ? matchedData.statedailyrainfall.toFixed(2) : '0.00';
+            const textElement = document.createElement('div');
+            const bounds = layer.getBounds();
+            const center = bounds.getCenter();
+            const lat = center.lat
+            const lng = center.lng
+            if (id1 == "ARUNACHAL PRADESH") {
+              id1 = "AR"
+              center.lat = 29
+              center.lng = 94.2
+            }
+            if (id1 == "LADAKH (UT)") {
+              id1 = "LA"
+              center.lat = 35.3
+              center.lng = 76
+            }
+            if (id1 == "JAMMU & KASHMIR (UT)") {
+              id1 = "JK"
+              center.lat = 34.5
+              center.lng = 73.2
+            }
+            if (id1 == "HIMACHAL PRADESH") {
+              id1 = "HP"
+              center.lat = 32.7
+              center.lng = 76
+            }
+            if (id1 == "PUNJAB") {
+              id1 = "PB"
+              center.lat = 31.5
+              center.lng = 73.8
+            }
+            if (id1 == "CHANDIGARH (UT)") {
+              id1 = "CH"
+              center.lat = 30.8
+              center.lng = 76
+            }
+            if (id1 == "UTTARAKHAND") {
+              id1 = "UK"
+              center.lat = 30.2
+              center.lng = 78.5
+            }
+            if (id1 == "HARYANA") {
+              id1 = "HR"
+              center.lat = 29.5
+              center.lng = 75
+            }
+            if (id1 == "DELHI (UT)") {
+              id1 = "DL"
+              center.lng = 77.1
+            }
+            if (id1 == "UTTAR PRADESH") {
+              id1 = "UP"
+              center.lat = 27.2
+              center.lng = 79.2
+            }
+            if (id1 == "RAJASTHAN") {
+              id1 = "RJ"
+              center.lat = 27
+              center.lng = 72
+            }
+            if (id1 == "GUJARAT") {
+              id1 = "GJ"
+              center.lat = 23.5
+              center.lng = 71
+            }
+            if (id1 == "MADHYA PRADESH") {
+              id1 = "MP"
+              center.lat = 23.9
+              center.lng = 76.5
+            }
+            if (id1 == "DADRA & NAGAR HAVELI AND DAMAN & DIU (UT)") {
+              id1 = "DH & DD"
+              center.lat = 21.5
+              center.lng = 72
+            }
+            if (id1 == "MAHARASHTRA") {
+              id1 = "MH"
+              center.lat = 19.5
+              center.lng = 74
+            }
+            if (id1 == "TELANGANA") {
+              id1 = "TS"
+              center.lat = 18
+              center.lng = 77.7
+            }
+            if (id1 == "GOA") {
+              id1 = "GA"
+              center.lat = 15.6
+              center.lng = 73
+            }
+            if (id1 == "KARNATAKA") {
+              id1 = "KA"
+              center.lat = 15
+              center.lng = 74.7
+            }
+            if (id1 == "ANDHRA PRADESH") {
+              id1 = "AP"
+              center.lat = 15.5
+              center.lng = 78
+            }
+            if (id1 == "TAMILNADU") {
+              id1 = "TN"
+              center.lat = 11.5
+              center.lng = 77.5
+            }
+            if (id1 == "LAKSHADWEEP (UT)") {
+              id1 = "LD"
+              center.lat = 10.8
+              center.lng = 71.5
+            }
+            if (id1 == "KERALA") {
+              id1 = "KL"
+              center.lat = 10.5
+              center.lng = 75.5
+            }
+            if (id1 == "PUDUCHERRY (UT)") {
+              id1 = "PY"
+              center.lat = 11.5
+              center.lng = 79.5
+            }
+            if (id1 == "CHHATTISGARH") {
+              id1 = "CG"
+              center.lat = 22
+              center.lng = 81
+            }
+            if (id1 == "ODISHA") {
+              id1 = "OD"
+              center.lat = 20.8
+              center.lng = 83.3
+            }
+            if (id1 == "JHARKHAND") {
+              id1 = "JH"
+              center.lng = 84
+            }
+            if (id1 == "WEST BENGAL") {
+              id1 = "WB"
+              center.lat = 23.7
+              center.lng = 86.8
+            }
+            if (id1 == "BIHAR") {
+              id1 = "BR"
+              center.lat = 26
+              center.lng = 85.3
+            }
+            if (id1 == "SIKKIM") {
+              id1 = "SK"
+              center.lat = 28.5
+              center.lng = 88
+            }
+  
+            if (id1 == "ASSAM") {
+              id1 = "AS"
+              center.lat = 26.8
+              center.lng = 91.9
+            }
+            if (id1 == "MEGHALAYA") {
+              id1 = "ML"
+              center.lat = 25.7
+              center.lng = 90.5
+            }
+            if (id1 == "TRIPURA") {
+              id1 = "TR"
+              center.lat = 23.5
+              center.lng = 90.5
+            }
+            if (id1 == "NAGALAND") {
+              id1 = "NL"
+  
+            }
+            if (id1 == "MIZORAM") {
+              id1 = "MZ"
+  
+            }
+            if (id1 == "MANIPUR") {
+              id1 = "MN"
+  
+            }
+            if (id1 == "ANDAMAN & NICOBAR ISLANDS (UT)") {
+              id1 = "AN"
+              center.lat = 9.8
+              center.lng = 91.7
+            }
+  
+            // console.log(id1)
+            textElement.innerHTML = `
+            <div style="text-align: center; line-height: 0.4;">
+            <div style="color: #000000; font-weight: bold;text-wrap: nowrap; font-size: 9px; margin-bottom: 3px;">${id1}</div>
+            <div style="color: #000000; font-weight: bold;text-wrap: nowrap; font-size: 9px; margin-bottom: 3px;">${Math.round(rainfall)}</div>
+            </div>`;
+  
+  
+            // Set the position of the custom HTML element on the map
+            textElement.classList.add('custom-text-element');
+            textElement.style.position = 'absolute';
+            textElement.style.left = `${this.map1.latLngToLayerPoint(center).x}px`;
+            textElement.style.top = `${this.map1.latLngToLayerPoint(center).y}px`;
+  
+  
+            // Set a higher z-index to ensure the text appears on top of the map
+            textElement.style.zIndex = '1000';
+  
+  
+            // Append the custom HTML element to the map container
+            this.map1.getPanes().overlayPane.appendChild(textElement);
+            this.addedTextElements.push(textElement);
+          }
+        });
+        // Add the geoJsonLayer to the map
+        geoJsonLayer.addTo(this.map1);
+      });
   }
 
-  getColorForRainfall(rainfall: number): string {
+  getColorForRainfallstate(rainfall: any, actual?: string): string {
     const numericId = rainfall;
-    if (numericId == 0 ) {
-      return '#808080';
-    }
-    if (numericId >= 0.1 && numericId <= 2.4) {
-      return '#90ee90';
-    }
-    if (numericId >= 2.5 && numericId <= 7.5) {
-      return '#008000';
-    }
-    if (numericId >= 7.6 && numericId <= 20.4) {
-      return '#add8e6';
-    }
-    if (numericId >= 20.5 && numericId <= 35.5) {
-      return '#0000ff';
-    }
-    if (numericId >= 35.6 && numericId <= 64.4) {
-      return '#ffff00';
-    }
-    if (numericId >= 64.5 && numericId <= 124.4) {
-      return '#ffd700';
-    }
-    if (numericId >= 124.5 && numericId <= 150.4) {
-      return '#ff8c00';
-    }
-    if (numericId >= 150.5 && numericId <= 204.4) {
-      return '#ff0000';
-    }
-    if (numericId > 204.4) {
-      return '#800000';
-    }
-    else {
+    let cat = '';
+    if (actual == ' ') {
       return '#c0c0c0';
     }
+    if (numericId >= 60) {
+      this.statecountlargeexcess = this.statecountlargeexcess +1
+      cat = 'LE';
+      return '#0096ff';
+    }
+    if (numericId >= 20 && numericId <= 59) {
+      this.statecountexcess = this.statecountexcess +1
+      cat = 'E';
+      return '#32c0f8';
+    }
+    if (numericId >= -19 && numericId <= 19) {
+      this.statecountnormal = this.statecountnormal +1
+      cat = 'N';
+      return '#00cd5b';
+    }
+    if (numericId >= -59 && numericId <= -20) {
+      this.statecountdeficient = this.statecountdeficient + 1
+      cat = 'D';
+      return '#ff2700';
+    }
+    if (numericId >= -99 && numericId <= -60) {
+      this.statecountlargedeficient  = this.statecountlargedeficient + 1
+      cat = 'LD';
+      return '#ffff20';
+    }
+    if (numericId == -100) {
+      this.statecountnorain = this.statecountnorain + 1
+      cat = 'NR';
+      return '#ffffff';
+    }
+    if (numericId == ' ') {
+      return '#c0c0c0';
+    }
+
+    else {
+      cat = 'ND';
+      return '#c0c0c0';
+    }
+
   }
 
   filter = (node: HTMLElement) => {
