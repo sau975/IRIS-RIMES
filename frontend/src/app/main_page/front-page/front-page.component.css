@@ -58,8 +58,9 @@ img{
 .values{
   margin: 20px 70px 20px 70px;
   background-color: white;
-  padding: 8px 10px 8px 30px;
+  padding: 8px 15px 8px 30px;
   border-radius: 20px;
+  width: 50%;
 }
 #month{
   background-color: #002467;

@@ -920,7 +920,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
   }
 
 
-  private updateLegendDetailsPosition(fullscreen: boolean): void {
+  private updateLegendDetailsPositionstate(fullscreen: boolean): void {
     const legendDetailsElement = document.querySelector('.legenddetailsstate') as HTMLElement; // Use type assertion to HTMLElement
     if (legendDetailsElement) {
         if (fullscreen) {
@@ -929,6 +929,16 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
             legendDetailsElement.style.right = '140px';
         }
     }
+}
+private updateLegendDetailsPositionsubdiv(fullscreen: boolean): void {
+  const legendDetailsElement = document.querySelector('.legenddetailssubdiv') as HTMLElement; // Use type assertion to HTMLElement
+  if (legendDetailsElement) {
+      if (fullscreen) {
+          legendDetailsElement.style.right = '50px';
+      } else {
+          legendDetailsElement.style.right = '140px';
+      }
+  }
 }
 
   private initMap(): void {
@@ -962,11 +972,11 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     this.map1.on('fullscreenchange', () => {
       if (this.isFullscreen()) {
         this.map1.setZoom(this.initialZoom + 1);
-        this.updateLegendDetailsPosition(true);
+        this.updateLegendDetailsPositionstate(true);
         this.loadGeoJSON1();
       } else {
         this.map1.setZoom(this.initialZoom);
-        this.updateLegendDetailsPosition(false); 
+        this.updateLegendDetailsPositionstate(false); 
         this.loadGeoJSON();
       }
     });
@@ -987,11 +997,11 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     this.map2.on('fullscreenchange', () => {
       if (this.isFullscreen()) {
         this.map2.setZoom(this.initialZoom + 1);
-        this.updateLegendDetailsPosition(true);
+        this.updateLegendDetailsPositionsubdiv(true);
         this.loadGeoJSON1();
       } else {
         this.map2.setZoom(this.initialZoom);
-        this.updateLegendDetailsPosition(false); 
+        this.updateLegendDetailsPositionsubdiv(false); 
          this.loadGeoJSON();
       }
     });
@@ -3427,16 +3437,12 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
           textElement.style.top = `${this.map3.latLngToLayerPoint(center).y - 10}px`;
           // Set a higher z-index to ensure the text appears on top of the map
           textElement.style.zIndex = '1000';
-
-          // Append the custom HTML element to the map container
           this.map3.getPanes().overlayPane.appendChild(textElement);
           this.addedTextElements.push(textElement);
 
         }
 
       });
-
-      // Add the geoJsonLayer to the map
       geoJsonLayer.addTo(this.map3);
 
 

@@ -3,14 +3,14 @@
   <div style="text-align: center; background-color: blanchedalmond; color: red; font-weight: bolder;">IRIS System is in experimental mode!</div>
   <app-navbar></app-navbar>
 
-  <div style="margin: 30px 0px 20px 0px;">
+  <div style="margin: 30px 0px 20px 400px;">
     <div class="values">
-      <div class="row">
-        <div class="col-3">
+      <div class="row" style="padding: 0px 20px 10px 0px;">
+        <div class="col-5">
           <label>From Date</label>
           <input type="date" class="form-control" [(ngModel)]="fromDate" (ngModelChange)="validateDateRange()" placeholder="Select date">
         </div>
-        <div class="col-3">
+        <div class="col-5">
           <label>To Date</label>
           <input type="date" class="form-control" [(ngModel)]="toDate" (ngModelChange)="validateDateRange()" placeholder="Select date">
         </div>
