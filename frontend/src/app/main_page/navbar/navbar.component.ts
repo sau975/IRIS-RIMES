@@ -13,6 +13,7 @@ import { DataService } from 'src/app/data.service';
 
 export class NavbarComponent implements OnInit {
   isNavbarOpen = false;
+  loggedInUser:any;
 
   toggleNavbar() {
     this.isNavbarOpen = !this.isNavbarOpen;
@@ -28,6 +29,8 @@ export class NavbarComponent implements OnInit {
 
 
   ngOnInit(): void {
+    let loggedInUser:any = localStorage.getItem("isAuthorised");
+    this.loggedInUser = JSON.parse(loggedInUser);
     this.dataService.getUploadFiles().subscribe(res => {
       this.qpfReports = res.filter((r:any) => r.section_name == "QPF VERIFICATION REPORT");
       this.rainFallReports = res.filter((r:any) => r.section_name == "RAINFALL REPORTS");

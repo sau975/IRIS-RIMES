@@ -1,6 +1,6 @@
 <mat-toolbar color="primary" class="custom-toolbar">
   <button mat-icon-button (click)="toggleNavbar()">
-    <mat-icon>menu</mat-icon> 
+    <mat-icon>menu</mat-icon>
   </button>
   <span>IRIS PRODUCTS</span>
 </mat-toolbar>
@@ -508,10 +508,7 @@
         </li>
       </ul>
     </li>
-    <li>
-      <a class="main_nav" routerLink="../upload-file">UPLOAD</a>
-    </li>
-    <li>
+    <li *ngIf="loggedInUser.data[0].mcorhq == 'hq'">
       <a class="main_nav">QPF VERIFICATION REPORT</a>
       <ul>
         <li>
@@ -579,7 +576,7 @@
         </li>
       </ul>
     </li>
-    <li>
+    <li *ngIf="loggedInUser.data[0].mcorhq == 'hq'">
       <a class="main_nav">RAINFALL REPORTS</a>
       <ul>
         <li>
@@ -621,14 +618,14 @@
     <!-- <li>
       <a routerLink="../station-level-data" class="main_nav">STATION LEVEL DATA</a>
     </li> -->
-    <li>
+    <li *ngIf="loggedInUser.data[0].mcorhq == 'hq'">
       <a class="main_nav">DISSEMINATION</a>
     </li>
 
-    <li>
+    <li *ngIf="loggedInUser.data[0].mcorhq == 'hq'">
       <a class="main_nav" (click)="uploadPopUp()">UPLOAD</a>
     </li>
-    <li>
+    <li *ngIf="loggedInUser.data[0].mcorhq == 'hq'">
       <a class="main_nav" routerLink="../verification-page">VERIFICATION</a>
     </li>
     <li>
