@@ -276,7 +276,7 @@ export class DataentryComponent {
 
   uploadRainFallFile() {
     if (this.selectedRainfallFile) {
-      this.dataService.uploadRainFallDataFile(this.selectedRainfallFile).subscribe(
+      this.dataService.uploadRainFallDataFile(this.selectedRainfallFile, this.dateCalculation()).subscribe(
         (response:any) => {
           alert('File uploaded successfully');
           this.clearRainfallFileInput();

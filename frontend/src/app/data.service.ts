@@ -114,9 +114,10 @@ export class DataService {
     return this.http.post(this.baseUrl + '/uploadstationdata', formData);
   }
 
-  uploadRainFallDataFile(file: File) {
+  uploadRainFallDataFile(file: File, date:string) {
     const formData: FormData = new FormData();
     formData.append('file', file, file.name);
+    formData.append('date', date);
     return this.http.post(this.baseUrl + '/uploadrainfalldata', formData);
   }
 
