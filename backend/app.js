@@ -41,6 +41,29 @@ app.post('/addData', (req, res) => {
     });
 });
 
+app.post('/deletedstationlog', (req, res) => {
+  const data = req.body.data; 
+  client.query('INSERT INTO deletedstationlog(stationname, stationid, datetime, username) VALUES($1, $2, $3, $4)', [data.stationName, data.stationId, data.dateTime, data.userName])
+    .then(() => {
+      res.status(200).json({ message: 'Data inserted successfully' });
+    })
+    .catch(error => {
+      console.error('Error inserting data:', error);
+      res.status(500).json({ error: 'Internal server error' });
+    });
+});
+
+app.get("/deletedstationlog", (req, res) => {
+  client.query(
+    "SELECT * FROM deletedstationlog ORDER BY id ASC",
+    (err, result) => {
+      if (err) {
+        res.send(err);
+      }
+      res.send(result.rows);
+    }
+  );
+});
 
 app.put("/updateexistingstationdata", (req, res) => {
   const data = req.body.data;

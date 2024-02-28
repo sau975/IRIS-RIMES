@@ -1,0 +1,74 @@
+<div class="background-effect">
+  <table style="width: 100%; background: linear-gradient(to top, #09203f 0%, #537895 100%);">
+    <tbody>
+      <tr>
+        <td style="width: 8%; padding: 10px 0px 17px 25px;" align="left">
+        </td>
+        <td style="text-align: center; padding: 20px; width: 90%">
+          <table style="width: 100%">
+            <tbody>
+              <tr>
+                <td>
+                  <label style="
+                      color: white;
+                      vertical-align: middle;
+                      font-family: Arial;
+                      font-weight: bolder;
+                      font-size: 20px;
+                    ">
+                    IMD Rainfall Information System (IRIS)</label>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <label style="
+                      color: white;
+                      vertical-align: middle;
+                      font-family: Arial;
+                      font-weight: bolder;
+                      font-size: 18px;
+                    ">
+                    Hydromet Division</label>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </td>
+        <td>
+          <div class="button">
+            <button class="Back" (click)="goBack()">Back</button>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div style="text-align: center; padding-top: 40px">
+    <div class="dataentry">
+      <div class="row">
+        <div class="col-12">
+          <h3>DELETED STATIONS DATA</h3>
+        </div>
+      </div>
+      <br />
+        <table style=" margin: auto; border-collapse: collapse; width: 90%; border: 1px solid black;">
+          <thead>
+            <tr>
+              <th style="border: 1px solid black">StationId</th>
+              <th style="border: 1px solid black">Station</th>
+              <th style="border: 1px solid black">User</th>
+              <th style="border: 1px solid black">Date Time</th>
+            </tr>
+          </thead>
+          <tbody *ngIf="deletedStationLogs && deletedStationLogs.length > 0">
+            <tr *ngFor="let delstation of deletedStationLogs; let i = index">
+              <td>{{delstation.stationid}}</td>
+              <td>{{delstation.stationname}}</td>
+              <td>{{delstation.username}}</td>
+              <td>{{delstation.datetime | date: 'dd-MM-yyy hh:mm:ss'}}</td>
+            </tr>
+          </tbody>
+        </table>
+    </div>
+  </div>
+</div>

@@ -159,12 +159,22 @@ export class DataentryComponent {
     };
       this.dataService.deletestation(this.deleteData.stationid).subscribe({
         next: response => {
+          let loggedInUser:any = localStorage.getItem("isAuthorised");
+          let parseloggedInUser = JSON.parse(loggedInUser);
+          let data = {
+            stationName: this.deleteData.stationname,
+            stationId: this.deleteData.stationid,
+            dateTime: new Date(),
+            userName: parseloggedInUser.data[0].name
+          }
+          this.dataService.addDeletedStationLogData(data).subscribe(res => {
+            console.log('Log created successfully:', response);
+          })
           console.log('Data deleted successfully:', response);
         },
         error: err => console.error('Error deleted data. Please check the console for details.', err)
       });
       this.showdeletePopup = false;
-      window.location.reload();
   }
 
   cancelEdit() {

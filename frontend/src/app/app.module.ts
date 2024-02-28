@@ -53,6 +53,7 @@ import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { UploadFileComponent } from './upload-file/upload-file.component';
 import { AboutComponent } from './about/about.component';
 import { VerificationPageComponent } from './verification-page/verification-page.component';
+import { DeletedStationLogComponent } from './deleted-station-log/deleted-station-log.component';
 
 @NgModule({
   declarations: [
@@ -87,7 +88,8 @@ import { VerificationPageComponent } from './verification-page/verification-page
     QpfverificationReports2022Component,
     UploadFileComponent,
     AboutComponent,
-    VerificationPageComponent
+    VerificationPageComponent,
+    DeletedStationLogComponent
   ],
   imports: [
     PdfViewerModule,

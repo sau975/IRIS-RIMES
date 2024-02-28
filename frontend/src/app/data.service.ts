@@ -125,5 +125,14 @@ export class DataService {
     return this.http.get(url);
   }
 
+  addDeletedStationLogData(data: any): Observable<any> {
+    return this.http.post<any>(this.baseUrl+'/deletedstationlog', {data});
+  }
+
+  getDeletedStationLog(): Observable<any> {
+    const url = `${this.baseUrl}`+'/deletedstationlog';
+    return this.http.get(url);
+  }
+
 }
 
