@@ -108,6 +108,12 @@ export class DataService {
     return this.http.post(this.baseUrl + '/upload', formData);
   }
 
+  uploadStationDataFile(file: File) {
+    const formData: FormData = new FormData();
+    formData.append('file', file, file.name);
+    return this.http.post(this.baseUrl + '/uploadstationdata', formData);
+  }
+
   uploadRainFallDataFile(file: File) {
     const formData: FormData = new FormData();
     formData.append('file', file, file.name);
