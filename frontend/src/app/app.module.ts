@@ -54,6 +54,7 @@ import { UploadFileComponent } from './upload-file/upload-file.component';
 import { AboutComponent } from './about/about.component';
 import { VerificationPageComponent } from './verification-page/verification-page.component';
 import { DeletedStationLogComponent } from './deleted-station-log/deleted-station-log.component';
+import { LastFiveYearDataComponent } from './last-five-year-data/last-five-year-data.component';
 
 @NgModule({
   declarations: [
@@ -89,7 +90,8 @@ import { DeletedStationLogComponent } from './deleted-station-log/deleted-statio
     UploadFileComponent,
     AboutComponent,
     VerificationPageComponent,
-    DeletedStationLogComponent
+    DeletedStationLogComponent,
+    LastFiveYearDataComponent
   ],
   imports: [
     PdfViewerModule,

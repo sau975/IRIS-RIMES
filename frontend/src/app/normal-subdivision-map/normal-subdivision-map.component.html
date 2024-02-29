@@ -1,5 +1,19 @@
 <div>
   <button class="download" routerLink="../front-page/departure">Back</button>
+  <div class="row" style="margin-left: 400px;">
+    <div class="col-3">
+      <label>From Date</label>
+      <input type="date" class="form-control" [(ngModel)]="fromDate" (ngModelChange)="validateDateRange()" placeholder="Select date">
+    </div>
+    <div class="col-3">
+      <label>To Date</label>
+      <input type="date" class="form-control" [(ngModel)]="toDate" (ngModelChange)="validateDateRange()" placeholder="Select date">
+    </div>
+    <div class="col-2">
+      <button type="button" class="btn btn-primary mt-4" (click)="weeklyDatesCalculation()">Submit</button>
+    </div>
+  </div>
+
   <div class="container">
     <div class="row">
       <div class="col-10">
