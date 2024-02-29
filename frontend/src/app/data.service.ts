@@ -108,14 +108,30 @@ export class DataService {
     return this.http.post(this.baseUrl + '/upload', formData);
   }
 
-  uploadRainFallDataFile(file: File) {
+  uploadStationDataFile(file: File) {
     const formData: FormData = new FormData();
     formData.append('file', file, file.name);
+    return this.http.post(this.baseUrl + '/uploadstationdata', formData);
+  }
+
+  uploadRainFallDataFile(file: File, date:string) {
+    const formData: FormData = new FormData();
+    formData.append('file', file, file.name);
+    formData.append('date', date);
     return this.http.post(this.baseUrl + '/uploadrainfalldata', formData);
   }
 
   getUploadFiles(): Observable<any> {
     const url = `${this.baseUrl}`+'/uploadedfiles';
+    return this.http.get(url);
+  }
+
+  addDeletedStationLogData(data: any): Observable<any> {
+    return this.http.post<any>(this.baseUrl+'/deletedstationlog', {data});
+  }
+
+  getDeletedStationLog(): Observable<any> {
+    const url = `${this.baseUrl}`+'/deletedstationlog';
     return this.http.get(url);
   }
 

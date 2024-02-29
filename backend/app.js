@@ -41,6 +41,29 @@ app.post('/addData', (req, res) => {
     });
 });
 
+app.post('/deletedstationlog', (req, res) => {
+  const data = req.body.data; 
+  client.query('INSERT INTO deletedstationlog(stationname, stationid, datetime, username) VALUES($1, $2, $3, $4)', [data.stationName, data.stationId, data.dateTime, data.userName])
+    .then(() => {
+      res.status(200).json({ message: 'Data inserted successfully' });
+    })
+    .catch(error => {
+      console.error('Error inserting data:', error);
+      res.status(500).json({ error: 'Internal server error' });
+    });
+});
+
+app.get("/deletedstationlog", (req, res) => {
+  client.query(
+    "SELECT * FROM deletedstationlog ORDER BY id ASC",
+    (err, result) => {
+      if (err) {
+        res.send(err);
+      }
+      res.send(result.rows);
+    }
+  );
+});
 
 app.put("/updateexistingstationdata", (req, res) => {
   const data = req.body.data;
@@ -241,7 +264,7 @@ app.get('/download/:id', async (req, res) => {
   }
 });
 
-app.post('/uploadrainfalldata', upload.single('file'), async (req, res) => {
+app.post('/uploadstationdata', upload.single('file'), async (req, res) => {
   try {
     const workbook = xlsx.read(req.file.buffer, { type: 'buffer' });
     const sheetName = workbook.SheetNames[0];
@@ -281,6 +304,33 @@ app.post('/uploadrainfalldata', upload.single('file'), async (req, res) => {
   }
 });
 
+app.post('/uploadrainfalldata', upload.single('file'), async (req, res) => {
+  try {
+    const workbook = xlsx.read(req.file.buffer, { type: 'buffer' });
+    const sheetName = workbook.SheetNames[0];
+    const sheetData = xlsx.utils.sheet_to_json(workbook.Sheets[sheetName]);
+    const date = req.body.date;
+
+    // Begin a transaction
+    client.query('BEGIN');
+    // Loop through each object and insert into the database
+    for (const element of sheetData) {
+      const queryText = `UPDATE stationdatadaily SET "${date}" = ${element[date]} WHERE station_id = ${element.stationid}`;
+      // Execute the query
+      client.query(queryText);
+    }
+    // Commit the transaction
+    client.query('COMMIT');
+    res.status(200).json({ message: `Updated successfully`});
+    console.log('Data inserted successfully!');
+  }
+    catch (error) {
+    // Rollback the transaction in case of an error
+    client.query('ROLLBACK');
+    res.status(500).json({ error: 'Internal server error' });
+    console.error('Error inserting data:', error);
+  }
+});
 
 app.put("/updaterainfall", (req, res) => {
   const data = req.body.data;

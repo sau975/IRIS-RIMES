@@ -11,6 +11,7 @@ import * as FileSaver from 'file-saver';
 })
 export class DataentryComponent {
   @ViewChild('fileInput') fileInput!: ElementRef;
+  @ViewChild('rainfallFileInput') rainfallFileInput!: ElementRef;
   selectedRegion: string = '';
   selectedState: string = '';
   selectedDistrict: string = '';
@@ -20,6 +21,7 @@ export class DataentryComponent {
   filteredStations:any[]=[];
   selectedDate: Date = new Date();
   selectedFile: File | null = null;
+  selectedRainfallFile: File | null = null;
   rainFallInMM: number = 0;
   todayDate: string;
   showEditPopup: boolean = false;
@@ -157,12 +159,22 @@ export class DataentryComponent {
     };
       this.dataService.deletestation(this.deleteData.stationid).subscribe({
         next: response => {
+          let loggedInUser:any = localStorage.getItem("isAuthorised");
+          let parseloggedInUser = JSON.parse(loggedInUser);
+          let data = {
+            stationName: this.deleteData.stationname,
+            stationId: this.deleteData.stationid,
+            dateTime: new Date(),
+            userName: parseloggedInUser.data[0].name
+          }
+          this.dataService.addDeletedStationLogData(data).subscribe(res => {
+            console.log('Log created successfully:', response);
+          })
           console.log('Data deleted successfully:', response);
         },
         error: err => console.error('Error deleted data. Please check the console for details.', err)
       });
       this.showdeletePopup = false;
-      window.location.reload();
   }
 
   cancelEdit() {
@@ -238,7 +250,7 @@ export class DataentryComponent {
 
   uploadFile() {
     if (this.selectedFile) {
-      this.dataService.uploadRainFallDataFile(this.selectedFile).subscribe(
+      this.dataService.uploadStationDataFile(this.selectedFile).subscribe(
         (response:any) => {
           alert('File uploaded successfully');
           this.clearFileInput();
@@ -257,6 +269,33 @@ export class DataentryComponent {
       this.fileInput.nativeElement.value = '';
     }
   }
+
+  onRainfallFileSelected(event: any) {
+    this.selectedRainfallFile = event.target.files[0];
+  }
+
+  uploadRainFallFile() {
+    if (this.selectedRainfallFile) {
+      this.dataService.uploadRainFallDataFile(this.selectedRainfallFile, this.dateCalculation()).subscribe(
+        (response:any) => {
+          alert('File uploaded successfully');
+          this.clearRainfallFileInput();
+          this.filterByDate();
+        },
+        (error:any) => {
+          alert('Error uploading file:' + error);
+        }
+      );
+    }
+  }
+
+  clearRainfallFileInput(): void {
+    // Reset the value of the file input element
+    if (this.rainfallFileInput) {
+      this.rainfallFileInput.nativeElement.value = '';
+    }
+  }
+
 
   exportAsXLSX():void {
     this.exportAsExcelFile(this.existingstationdata, 'export-to-excel');
