@@ -30,6 +30,9 @@ export class NormalHomogenousMapComponent {
   currentDateNormal: string = '';
   currentDateDaily: string = '';
   currentDateNormaly: string = '';;
+  fromDate: Date = new Date();
+  toDate: Date = new Date();
+  weeklyDates:any[]=[];
 
   constructor(private http: HttpClient,
     private dataService: DataService,
@@ -54,6 +57,32 @@ export class NormalHomogenousMapComponent {
     ).subscribe(() => {
       location.reload();
     });
+    this.fetchDataFromBackend();
+  }
+
+  validateDateRange() {
+    var fromDate = this.fromDate;
+    var toDate = this.toDate
+
+    if (fromDate > toDate) {
+        alert('From date cannot be greater than To date');
+        this.fromDate = toDate;
+    }
+  }
+
+  weeklyDatesCalculation(){
+    this.weeklyDates = [];
+    if(this.fromDate && this.toDate){
+      var startDate = new Date(this.fromDate);
+      var endDate = new Date(this.toDate);
+      var currentDate = new Date(startDate);
+      while (currentDate <= endDate) {
+        var dd = String(currentDate.getDate());
+        const currmonth = this.months[currentDate.getMonth()];
+        this.weeklyDates.push(`${currmonth}${dd}`);
+        currentDate.setDate(currentDate.getDate() + 1);
+      }
+    }
     this.fetchDataFromBackend();
   }
 

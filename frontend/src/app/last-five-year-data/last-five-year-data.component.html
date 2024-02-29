@@ -1,0 +1,256 @@
+<div class="background-effect">
+  <table style="width: 100%; background: linear-gradient(to top, #09203f 0%, #537895 100%);">
+    <tbody>
+      <tr>
+        <td style="width: 8%; padding: 10px 0px 17px 25px;" align="left">
+        </td>
+        <td style="text-align: center; padding: 20px; width: 90%">
+          <table style="width: 100%">
+            <tbody>
+              <tr>
+                <td>
+                  <label style="
+                      color: white;
+                      vertical-align: middle;
+                      font-family: Arial;
+                      font-weight: bolder;
+                      font-size: 20px;
+                    ">
+                    IMD Rainfall Information System (IRIS)</label>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <label style="
+                      color: white;
+                      vertical-align: middle;
+                      font-family: Arial;
+                      font-weight: bolder;
+                      font-size: 18px;
+                    ">
+                    Hydromet Division</label>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </td>
+        <td>
+          <div class="button">
+            <button class="Back" (click)="goBack()">Back</button>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="navbar row">
+    <div class="col-5">
+    <label for="state">Choose the States/UTs </label>
+    <select name="state" class="form-control">
+      <option value="mc1">Bihar</option>
+      <option value="mc2">Assam</option>
+      <option value="mc3">Delhi</option>
+      <option value="mc4">Goa</option>
+    </select>
+  </div>
+  <div class="col-5">
+    <label for="mcs">Select District</label>
+    <select name="district" class="form-control">
+      <option value="mc1">Gaya</option>
+      <option value="mc2">Nalanda</option>
+      <option value="mc3">Patna</option>
+      <option value="mc4">Bhojpur</option>
+    </select>
+  </div>
+    <div class="col-2 mt-3">
+      <button class="btn btn-success" type="button" (click)="submit()">Go</button>
+    </div>
+  </div>
+
+  <div style="text-align: center; padding-top: 40px">
+    <div class="dataentry">
+      <table style=" margin: auto; border-collapse: collapse; width: 90%; border: 1px solid black;">
+        <thead>
+          <tr style="background-color: greenyellow;">
+            <th style="border: 1px solid black">YEAR</th>
+            <th colspan="2" style="border: 1px solid black">JAN</th>
+            <th colspan="2" style="border: 1px solid black">FEB</th>
+            <th colspan="2" style="border: 1px solid black">MAR</th>
+            <th colspan="2" style="border: 1px solid black">APR</th>
+            <th colspan="2" style="border: 1px solid black">MAY</th>
+            <th colspan="2" style="border: 1px solid black">JUN</th>
+            <th colspan="2" style="border: 1px solid black">JUL</th>
+            <th colspan="2" style="border: 1px solid black">AUG</th>
+            <th colspan="2" style="border: 1px solid black">SEP</th>
+            <th colspan="2" style="border: 1px solid black">OCT</th>
+            <th colspan="2" style="border: 1px solid black">NOV</th>
+            <th colspan="2" style="border: 1px solid black">DEC</th>
+          </tr>
+          <tr>
+            <th style="border: 1px solid black"></th>
+            <th style="border: 1px solid black">R/F</th>
+            <th style="border: 1px solid black">%DEP</th>
+            <th style="border: 1px solid black">R/F</th>
+            <th style="border: 1px solid black">%DEP</th>
+            <th style="border: 1px solid black">R/F</th>
+            <th style="border: 1px solid black">%DEP</th>
+            <th style="border: 1px solid black">R/F</th>
+            <th style="border: 1px solid black">%DEP</th>
+            <th style="border: 1px solid black">R/F</th>
+            <th style="border: 1px solid black">%DEP</th>
+            <th style="border: 1px solid black">R/F</th>
+            <th style="border: 1px solid black">%DEP</th>
+            <th style="border: 1px solid black">R/F</th>
+            <th style="border: 1px solid black">%DEP</th>
+            <th style="border: 1px solid black">R/F</th>
+            <th style="border: 1px solid black">%DEP</th>
+            <th style="border: 1px solid black">R/F</th>
+            <th style="border: 1px solid black">%DEP</th>
+            <th style="border: 1px solid black">R/F</th>
+            <th style="border: 1px solid black">%DEP</th>
+            <th style="border: 1px solid black">R/F</th>
+            <th style="border: 1px solid black">%DEP</th>
+            <th style="border: 1px solid black">R/F</th>
+            <th style="border: 1px solid black">%DEP</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="border: 1px solid black">2018</td>
+            <td style="border: 1px solid black">0</td>
+            <td style="border: 1px solid black">0</td>
+            <td style="border: 1px solid black">0</td>
+            <td style="border: 1px solid black">0</td>
+            <td style="border: 1px solid black">0</td>
+            <td style="border: 1px solid black">0</td>
+            <td style="border: 1px solid black">0</td>
+            <td style="border: 1px solid black">0</td>
+            <td style="border: 1px solid black">0</td>
+            <td style="border: 1px solid black">0</td>
+            <td style="border: 1px solid black">0</td>
+            <td style="border: 1px solid black">0</td>
+            <td style="border: 1px solid black">0</td>
+            <td style="border: 1px solid black">0</td>
+            <td style="border: 1px solid black">0</td>
+            <td style="border: 1px solid black">0</td>
+            <td style="border: 1px solid black">0</td>
+            <td style="border: 1px solid black">0</td>
+            <td style="border: 1px solid black">0</td>
+            <td style="border: 1px solid black">0</td>
+            <td style="border: 1px solid black">0</td>
+            <td style="border: 1px solid black">0</td>
+            <td style="border: 1px solid black">0</td>
+            <td style="border: 1px solid black">0</td>
+          </tr>
+          <tr>
+            <td style="border: 1px solid black">2019</td>
+            <td style="border: 1px solid black">0</td>
+            <td style="border: 1px solid black">0</td>
+            <td style="border: 1px solid black">0</td>
+            <td style="border: 1px solid black">0</td>
+            <td style="border: 1px solid black">0</td>
+            <td style="border: 1px solid black">0</td>
+            <td style="border: 1px solid black">0</td>
+            <td style="border: 1px solid black">0</td>
+            <td style="border: 1px solid black">0</td>
+            <td style="border: 1px solid black">0</td>
+            <td style="border: 1px solid black">0</td>
+            <td style="border: 1px solid black">0</td>
+            <td style="border: 1px solid black">0</td>
+            <td style="border: 1px solid black">0</td>
+            <td style="border: 1px solid black">0</td>
+            <td style="border: 1px solid black">0</td>
+            <td style="border: 1px solid black">0</td>
+            <td style="border: 1px solid black">0</td>
+            <td style="border: 1px solid black">0</td>
+            <td style="border: 1px solid black">0</td>
+            <td style="border: 1px solid black">0</td>
+            <td style="border: 1px solid black">0</td>
+            <td style="border: 1px solid black">0</td>
+            <td style="border: 1px solid black">0</td>
+          </tr>
+          <tr>
+            <td style="border: 1px solid black">2020</td>
+            <td style="border: 1px solid black">0</td>
+            <td style="border: 1px solid black">0</td>
+            <td style="border: 1px solid black">0</td>
+            <td style="border: 1px solid black">0</td>
+            <td style="border: 1px solid black">0</td>
+            <td style="border: 1px solid black">0</td>
+            <td style="border: 1px solid black">0</td>
+            <td style="border: 1px solid black">0</td>
+            <td style="border: 1px solid black">0</td>
+            <td style="border: 1px solid black">0</td>
+            <td style="border: 1px solid black">0</td>
+            <td style="border: 1px solid black">0</td>
+            <td style="border: 1px solid black">0</td>
+            <td style="border: 1px solid black">0</td>
+            <td style="border: 1px solid black">0</td>
+            <td style="border: 1px solid black">0</td>
+            <td style="border: 1px solid black">0</td>
+            <td style="border: 1px solid black">0</td>
+            <td style="border: 1px solid black">0</td>
+            <td style="border: 1px solid black">0</td>
+            <td style="border: 1px solid black">0</td>
+            <td style="border: 1px solid black">0</td>
+            <td style="border: 1px solid black">0</td>
+            <td style="border: 1px solid black">0</td>
+          </tr>
+          <tr>
+            <td style="border: 1px solid black">2021</td>
+            <td style="border: 1px solid black">0</td>
+            <td style="border: 1px solid black">0</td>
+            <td style="border: 1px solid black">0</td>
+            <td style="border: 1px solid black">0</td>
+            <td style="border: 1px solid black">0</td>
+            <td style="border: 1px solid black">0</td>
+            <td style="border: 1px solid black">0</td>
+            <td style="border: 1px solid black">0</td>
+            <td style="border: 1px solid black">0</td>
+            <td style="border: 1px solid black">0</td>
+            <td style="border: 1px solid black">0</td>
+            <td style="border: 1px solid black">0</td>
+            <td style="border: 1px solid black">0</td>
+            <td style="border: 1px solid black">0</td>
+            <td style="border: 1px solid black">0</td>
+            <td style="border: 1px solid black">0</td>
+            <td style="border: 1px solid black">0</td>
+            <td style="border: 1px solid black">0</td>
+            <td style="border: 1px solid black">0</td>
+            <td style="border: 1px solid black">0</td>
+            <td style="border: 1px solid black">0</td>
+            <td style="border: 1px solid black">0</td>
+            <td style="border: 1px solid black">0</td>
+            <td style="border: 1px solid black">0</td>
+          </tr>
+          <tr>
+            <td style="border: 1px solid black">2022</td>
+            <td style="border: 1px solid black">0</td>
+            <td style="border: 1px solid black">0</td>
+            <td style="border: 1px solid black">0</td>
+            <td style="border: 1px solid black">0</td>
+            <td style="border: 1px solid black">0</td>
+            <td style="border: 1px solid black">0</td>
+            <td style="border: 1px solid black">0</td>
+            <td style="border: 1px solid black">0</td>
+            <td style="border: 1px solid black">0</td>
+            <td style="border: 1px solid black">0</td>
+            <td style="border: 1px solid black">0</td>
+            <td style="border: 1px solid black">0</td>
+            <td style="border: 1px solid black">0</td>
+            <td style="border: 1px solid black">0</td>
+            <td style="border: 1px solid black">0</td>
+            <td style="border: 1px solid black">0</td>
+            <td style="border: 1px solid black">0</td>
+            <td style="border: 1px solid black">0</td>
+            <td style="border: 1px solid black">0</td>
+            <td style="border: 1px solid black">0</td>
+            <td style="border: 1px solid black">0</td>
+            <td style="border: 1px solid black">0</td>
+            <td style="border: 1px solid black">0</td>
+            <td style="border: 1px solid black">0</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
