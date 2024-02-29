@@ -2242,28 +2242,23 @@ private updateLegendDetailsPositionsubdiv(fullscreen: boolean): void {
 
   loadGeoJSON(): void {
     this.clearTextElements();
-    // this.http.get('assets/geojson/INDIA_STATE.json').subscribe((stateRes: any) => {
-    //   const stateLayer = L.geoJSON(stateRes, {
-    //     style: {
-    //       weight: 1.5,
-    //       opacity: 2,
-    //       color: 'black',
-    //       fillOpacity: 0
-    //     }
-    //   }).addTo(this.map);
     this.http.get('assets/geojson/INDIA_DISTRICT.json').subscribe((res: any) => {
-      const districtLayer = L.geoJSON(res, {
+      L.geoJSON(res, {
         style: (feature: any) => {
           const id2 = feature.properties['district_c'];
           const matchedData = this.findMatchingData(id2);
+
           let rainfall: any;
+
           if (matchedData) {
+
             if (Number.isNaN(matchedData.dailyrainfall)) {
               rainfall = ' ';
             }
             else {
               rainfall = matchedData.dailydeparturerainfall;
             }
+
           }
           else {
             rainfall = -100
@@ -2271,24 +2266,29 @@ private updateLegendDetailsPositionsubdiv(fullscreen: boolean): void {
           const color = this.getColorForRainfall1(rainfall);
           return {
             fillColor: color,
-            weight: 0.3,
-            opacity: 1.5,
+            weight: 0.5,
+            opacity: 2,
             color: 'black',
-            fillOpacity: 0.5
+            fillOpacity: 2
+
           };
         },
         onEachFeature: (feature: any, layer: any) => {
           const id1 = feature.properties['district'];
           const id2 = feature.properties['district_c'];
           const matchedData = this.findMatchingData(id2);
+
           let rainfall: any;
+
           if (matchedData) {
+
             if (Number.isNaN(matchedData.dailyrainfall)) {
               rainfall = "NA";
             }
             else {
               rainfall = matchedData.dailydeparturerainfall;
             }
+
           }
           else {
             rainfall = -100
@@ -2313,6 +2313,77 @@ private updateLegendDetailsPositionsubdiv(fullscreen: boolean): void {
         }
       }).addTo(this.map);
     });
+    // this.http.get('assets/geojson/INDIA_STATE.json').subscribe((stateRes: any) => {
+    //   const stateLayer = L.geoJSON(stateRes, {
+    //     style: {
+    //       weight: 1.5,
+    //       opacity: 2,
+    //       color: 'black',
+    //       fillOpacity: 0
+    //     }
+    //   }).addTo(this.map);
+    // this.http.get('assets/geojson/INDIA_DISTRICT.json').subscribe((res: any) => {
+    //   const districtLayer = L.geoJSON(res, {
+    //     style: (feature: any) => {
+    //       const id2 = feature.properties['district_c'];
+    //       const matchedData = this.findMatchingData(id2);
+    //       let rainfall: any;
+    //       if (matchedData) {
+    //         if (Number.isNaN(matchedData.dailyrainfall)) {
+    //           rainfall = ' ';
+    //         }
+    //         else {
+    //           rainfall = matchedData.dailydeparturerainfall;
+    //         }
+    //       }
+    //       else {
+    //         rainfall = -100
+    //       }
+    //       const color = this.getColorForRainfall1(rainfall);
+    //       return {
+    //         fillColor: color,
+    //         weight: 0.3,
+    //         opacity: 1.5,
+    //         color: 'black',
+    //         fillOpacity: 0.5
+    //       };
+    //     },
+    //     onEachFeature: (feature: any, layer: any) => {
+    //       const id1 = feature.properties['district'];
+    //       const id2 = feature.properties['district_c'];
+    //       const matchedData = this.findMatchingData(id2);
+    //       let rainfall: any;
+    //       if (matchedData) {
+    //         if (Number.isNaN(matchedData.dailyrainfall)) {
+    //           rainfall = "NA";
+    //         }
+    //         else {
+    //           rainfall = matchedData.dailydeparturerainfall;
+    //         }
+    //       }
+    //       else {
+    //         rainfall = -100
+    //       }
+    //       const dailyrainfall = matchedData && matchedData.dailyrainfall !== null && matchedData.dailyrainfall != undefined && !Number.isNaN(matchedData.dailyrainfall) ? matchedData.dailyrainfall.toFixed(2) : 'NA';
+    //       const normalrainfall = matchedData && !Number.isNaN(matchedData.normalrainfall) ? matchedData.normalrainfall.toFixed(2) : 'NA';
+    //       const popupContent = `
+    //         <div style="background-color: white; padding: 5px; font-family: Arial, sans-serif;">
+    //           <div style="color: #002467; font-weight: bold; font-size: 10px;">DISTRICT: ${id1}</div>
+    //           <div style="color: #002467; font-weight: bold; font-size: 10px;">DAILY RAINFALL: ${dailyrainfall}</div>
+    //           <div style="color: #002467; font-weight: bold; font-size: 10px;">NORMAL RAINFALL: ${normalrainfall}</div>
+    //           <div style="color: #002467; font-weight: bold; font-size: 10px;">DEPARTURE: ${rainfall}% </div>
+    //         </div>
+    //       `;
+    //       layer.bindPopup(popupContent);
+    //       layer.on('mouseover', () => {
+    //         layer.openPopup();
+    //       });
+    //       layer.on('mouseout', () => {
+    //         layer.closePopup();
+    //       });
+    //     }
+    //   }).addTo(this.map);
+    // });
 
     // });
     this.http.get('assets/geojson/INDIA_STATE.json').subscribe((res: any) => {
