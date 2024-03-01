@@ -1,0 +1,271 @@
+app-weather-alert {
+  .legends-container {
+    display: flex;
+    justify-content: space-evenly;
+    width: 80%;
+    z-index: 999;
+    position: absolute;
+    left: 0.3%;
+    top: 96%;
+    background-color: #fff;
+    border-radius: 20px;
+    box-shadow: 11px 10px 5px 0px rgba(0, 0, 0, 0.3);
+    border: 1px solid #212529;
+  }
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+}
+
+.fcst-controls {
+  margin-left: 10px;
+  position: absolute;
+  top: 12px;
+  z-index: 1000;
+}
+
+.mat-mdc-menu-content .mat-mdc-menu-item .mat-mdc-menu-item-text{
+  display: flex !important;
+}
+
+
+.main-container {
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+.first-sub-container {
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+.map-container {
+  flex-grow: 1;
+  transition: flex-grow 0.3s ease-in-out;
+
+  position: relative;
+  z-index:0;
+
+  /* Custom position for zoom controls */
+  .leaflet-control-zoom {
+    position: absolute;
+    bottom: 70px;
+  }
+
+  .data-bars{
+    background-color:#4050b5;
+    color:white;
+    border-radius:4em;
+  }
+
+  .selected-parameter-icon{
+    background-color: #4050b5;
+    color: white;
+    border-radius: 50%;
+    margin: auto;
+    padding: 3px 4px;
+  }
+
+  .data-bars-container{
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap:0.5em;
+    position: absolute;
+    flex-wrap:wrap;
+    z-index:401;
+    margin: 1em 0 0 1em;
+    width: 98%;
+  }
+
+  .temperature-data-container{
+    bottom: 1em;
+    right:1em;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    background-color: #F8F9FA;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+}
+
+.full-width {
+  flex-grow: 1;
+  width: 100%;
+}
+
+.full-height {
+  flex-grow: 1;
+  height: 100%;
+}
+
+.weather-data-list-container {
+  width: 0;
+  overflow-x: hidden;
+  transition: width 0.3s ease-in-out;
+  position: relative;
+}
+
+.side-nav-visible {
+  width: 16%;
+}
+
+.side-nav-hidden{
+  width: 5%;
+}
+
+.custom-bg {
+  background-color: #fbf9f9;
+}
+
+.recent-forecast-data-side-nav-container {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  padding-right: 20px;
+  margin: 10px;
+
+  .side-nav-title {
+    font-size: 18px;
+    font-weight: 900;
+    line-height: 1.33334;
+  }
+
+  .close-button {
+    color: gray;
+    background-color: #e7e1e1;
+    cursor: pointer;
+  }
+}
+
+table {
+  width: 100%;
+}
+
+
+.main-drawer-container{
+padding-top: 1em;
+padding-left: 0.5em;
+}
+
+.drawer-fields{
+display: flex;
+flex-direction: row;
+align-items: center;
+justify-content: space-between;
+padding:0.5em;
+}
+
+.drawer-fields:hover{
+background-color: #f0efef;
+}
+
+.drawer-fields button{
+gap: 1.2em;
+}
+
+.timeMenu div{
+padding-left: 1em !important;
+}
+
+.time-bg{
+color: #efefef;
+border-radius: 50%;
+padding: 2px;
+width: 1.22em;
+height:1.12em;
+margin-left: -0.4em;
+}
+
+.bg-light-green{
+background-color: #4caf50;
+}
+
+.bg-orange{
+background-color: #ff9800;
+}
+
+.text-light-green{
+color: #4caf50;
+}
+
+.text-orange{
+color: #ff9800;
+}
+
+.rotate-180 {
+transform: rotate(-180deg);
+transition: transform 0.3s ease-in-out;
+}
+
+.hidden{
+display: none;
+}
+
+.nav-heading {
+display: flex;
+justify-content: space-between;
+align-items: end;
+padding: 0 1em;
+}
+
+.station-data-container{
+position:absolute;
+z-index:1;
+bottom:0;
+background-color:white;
+width:84%;
+height: 53%;
+overflow: hidden;
+}
+
+.station-data-table{
+color: #000000;
+border-bottom: 1px solid rgb(197, 194, 194);
+}
+
+.station-data-options{
+display:flex;
+flex-direction: row;
+justify-content: center;
+align-items: baseline;
+font-size: 15px;
+border: 1px solid #eae7e7;
+width: 38%;
+margin: 0 auto;
+}
+
+.station-data-sub-options:not(:last-child) {
+border-right: 1px solid #eae7e7;
+}
+
+.station-data-sub-options.clicked {
+background-color: #4050b5;
+color: white;
+}
+
+.station-data-sub-options:hover{
+background-color: #daddf1;
+cursor: pointer;
+}
+
+.selected {
+color:#4050b5;
+cursor: pointer;
+}
+
+.chart-container div{
+width: 650px;
+}
