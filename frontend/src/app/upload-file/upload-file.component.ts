@@ -11,23 +11,39 @@ export class UploadFileComponent {
   selectedSection: string = 'QPF VERIFICATION REPORT';
   @ViewChild('fileInput') fileInput!: ElementRef;
 
-  constructor(private dataService: DataService) { }
+  constructor(private dataService: DataService) {}
 
   onFileSelected(event: any) {
     this.selectedFile = event.target.files[0];
+    if (this.selectedFile) {
+      const reader:any = new FileReader();
+      reader.onload = function (e:any) {
+        const base64String = btoa(reader.result);
+        localStorage.setItem("base64String", base64String)
+      };
+      reader.readAsBinaryString(this.selectedFile);
+    }
   }
 
   uploadFile() {
     if (this.selectedFile) {
-      this.dataService.uploadFile(this.selectedFile, this.selectedSection).subscribe(
-        (response:any) => {
-          alert('File uploaded successfully');
-          this.clearFileInput();
-        },
-        (error:any) => {
-          alert('Error uploading file:' + error);
-        }
-      );
+      let data = {
+        fileName: this.selectedFile.name,
+        fileData: localStorage.getItem("base64String"),
+        sectionName: this.selectedSection
+      }
+      this.dataService
+        .uploadFile(data)
+        .subscribe(
+          (response: any) => {
+            alert('File uploaded successfully');
+            this.clearFileInput();
+            localStorage.removeItem("base64String");
+          },
+          (error: any) => {
+            alert('Error uploading file:' + error);
+          }
+        );
     }
   }
 

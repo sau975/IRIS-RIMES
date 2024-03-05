@@ -175,7 +175,13 @@ export class NavbarComponent implements OnInit {
     this.showPopup = false;
   }
 
-  downloadFile(fileId:any): void {
-    window.open(`http://localhost:3000/download/${fileId}`, '_blank');
+  downloadFile(data:any): void {
+    var windo:any = window.open("", "");
+    var objbuilder = '';
+    objbuilder += ('<embed width=\'100%\' height=\'100%\'  src="data:application/pdf;base64,');
+    objbuilder += (data);
+    objbuilder += ('" type="application/pdf" />');
+    windo.document.write(objbuilder);
+    // window.open(`http://localhost:3000/download/${fileId}`, '_blank');
   }
 }

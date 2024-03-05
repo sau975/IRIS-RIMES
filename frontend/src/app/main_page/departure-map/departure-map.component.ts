@@ -2846,7 +2846,7 @@ private updateLegendDetailsPositionsubdiv(fullscreen: boolean): void {
             // center.lat = 10.8
              center.lng = 73.5
           }
-          console.log("name : ",id1, "lat : ", lat,"updLAT:", center.lat,"updLNG:", center.lng , "lng : ", lng)
+          // console.log("name : ",id1, "lat : ", lat,"updLAT:", center.lat,"updLNG:", center.lng , "lng : ", lng)
           // console.log(id1)
           textElement.innerHTML = `
           <div style="text-align: center; line-height: 0.4;">
