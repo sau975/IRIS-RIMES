@@ -559,7 +559,7 @@
         <li>
           <a style="background-color: orange;" routerLink="../underprogress">QPF VERIFICATION REPORT 2022</a>
         </li>
-        <li *ngFor="let file of qpfReports;"><a (click)="downloadFile(file.file_data)">{{file.file_name}}</a></li>
+        <li *ngFor="let file of qpfReports;"><a (click)="downloadFile(file.file_data)">{{file.file_name | uppercase}}</a></li>
       </ul>
     </li>
 
