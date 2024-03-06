@@ -67,6 +67,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
   ];
   weeklyDates: any[] = [];
+  renderer: any;
 
   constructor(
     private http: HttpClient,
@@ -922,6 +923,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
 
   private updateLegendDetailsPositionstate(fullscreen: boolean): void {
     const legendDetailsElement = document.querySelector('.legenddetailsstate') as HTMLElement; // Use type assertion to HTMLElement
+    //const datacontElement = document.querySelector('.datacont') as HTMLElement;
     if (legendDetailsElement) {
         if (fullscreen) {
             legendDetailsElement.style.right = '50px';
@@ -940,6 +942,7 @@ private updateLegendDetailsPositionsubdiv(fullscreen: boolean): void {
       }
   }
 }
+
 
   private initMap(): void {
     this.map = L.map('map', {
@@ -970,16 +973,26 @@ private updateLegendDetailsPositionsubdiv(fullscreen: boolean): void {
       }
     });
     this.map1.on('fullscreenchange', () => {
-      if (this.isFullscreen()) {
-        this.map1.setZoom(this.initialZoom + 1);
-        this.updateLegendDetailsPositionstate(true);
-        this.loadGeoJSON1();
-      } else {
-        this.map1.setZoom(this.initialZoom);
-        this.updateLegendDetailsPositionstate(false); 
-        this.loadGeoJSON();
+      const element = document.querySelector('.statedatacont') as HTMLElement;
+      if (element) {
+          if (this.isFullscreen()) {
+              this.map1.setZoom(this.initialZoom + 1);
+              this.updateLegendDetailsPositionstate(true);
+              element.style.display = 'block'; // Change display to block to stack tables vertically
+              element.style.flexDirection = 'column'; // Change flex direction to column
+              this.loadGeoJSON1();
+          } else {
+              this.map1.setZoom(this.initialZoom);
+              this.updateLegendDetailsPositionstate(false); 
+              element.style.display = 'flex'; // Revert back to flex when exiting fullscreen
+              element.style.flexDirection = 'row'; // Revert back to row direction
+              this.loadGeoJSON();
+          }
       }
-    });
+  });
+  
+  
+  
     
     this.map2 = L.map('map2', {
       center: [24, 76.9629],
@@ -994,17 +1007,37 @@ private updateLegendDetailsPositionsubdiv(fullscreen: boolean): void {
         this.loadGeoJSON();
       }
     });
+    // this.map2.on('fullscreenchange', () => {
+    //   if (this.isFullscreen()) {
+    //     this.map2.setZoom(this.initialZoom + 1);
+    //     this.updateLegendDetailsPositionsubdiv(true);
+    //     this.loadGeoJSON1();
+    //   } else {
+    //     this.map2.setZoom(this.initialZoom);
+    //     this.updateLegendDetailsPositionsubdiv(false); 
+    //      this.loadGeoJSON();
+    //   }
+    // });
+
     this.map2.on('fullscreenchange', () => {
-      if (this.isFullscreen()) {
-        this.map2.setZoom(this.initialZoom + 1);
-        this.updateLegendDetailsPositionsubdiv(true);
-        this.loadGeoJSON1();
-      } else {
-        this.map2.setZoom(this.initialZoom);
-        this.updateLegendDetailsPositionsubdiv(false); 
-         this.loadGeoJSON();
+      const element = document.querySelector('.subdivdatacont') as HTMLElement;
+      if (element) {
+          if (this.isFullscreen()) {
+              this.map2.setZoom(this.initialZoom + 1);
+              this.updateLegendDetailsPositionsubdiv(true);
+              element.style.display = 'block'; // Change display to block to stack tables vertically
+              element.style.flexDirection = 'column'; // Change flex direction to column
+              this.loadGeoJSON1();
+          } else {
+              this.map2.setZoom(this.initialZoom);
+              this.updateLegendDetailsPositionsubdiv(false); 
+              element.style.display = 'flex'; // Revert back to flex when exiting fullscreen
+              element.style.flexDirection = 'row'; // Revert back to row direction
+              this.loadGeoJSON();
+          }
       }
-    });
+  });
+  
     this.map3 = L.map('map3', {
       center: [24, 76.9629],
       zoom: this.initialZoom,
@@ -1487,8 +1520,14 @@ private updateLegendDetailsPositionsubdiv(fullscreen: boolean): void {
       startY: marginTop,
       margin: { left: marginLeft },
     };
-    const imgData = '/assets/images/IMDlogo_Ipart.png'; // Replace with the actual image path
-    doc.addImage(imgData, 'PNG', marginLeft, marginTop, 15, 20); // Adjust image dimensions as needed
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const imgWidth = 15; 
+    const imgMargin = 10; 
+    const imgX = pageWidth - imgWidth - imgMargin;
+    const imgData150 = '/assets/images/IMD150(BGR).png'; 
+    doc.addImage(imgData150, 'PNG', imgX, marginTop, 15, 20);
+    const imgData = '/assets/images/IMDlogo_Ipart.png'; 
+    doc.addImage(imgData, 'PNG', marginLeft, marginTop, 15, 20); 
     doc.setFontSize(12);
     doc.setTextColor(0, 0, 0); // Set font color to black
     const headingText = 'India Meteorological Department\nHydromet Division, New Delhi';
@@ -1755,8 +1794,14 @@ private updateLegendDetailsPositionsubdiv(fullscreen: boolean): void {
     };
 
 
-    const imgData = '/assets/images/IMDlogo_Ipart.png'; // Replace with the actual image path
-    doc.addImage(imgData, 'PNG', marginLeft, marginTop, 15, 20); // Adjust image dimensions as needed
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const imgWidth = 15; 
+    const imgMargin = 10; 
+    const imgX = pageWidth - imgWidth - imgMargin;
+    const imgData150 = '/assets/images/IMD150(BGR).png'; 
+    doc.addImage(imgData150, 'PNG', imgX, marginTop, 15, 20);
+    const imgData = '/assets/images/IMDlogo_Ipart.png'; 
+    doc.addImage(imgData, 'PNG', marginLeft, marginTop, 15, 20); 
     doc.setFontSize(12);
     doc.setTextColor(0, 0, 0); // Set font color to black
     const headingText = 'India Meteorological Department\nHydromet Division, New Delhi';
@@ -1989,8 +2034,14 @@ private updateLegendDetailsPositionsubdiv(fullscreen: boolean): void {
       startY: marginTop,
       margin: { left: marginLeft },
     };
-    const imgData = '/assets/images/IMDlogo_Ipart.png'; // Replace with the actual image path
-    doc.addImage(imgData, 'PNG', marginLeft, marginTop, 15, 20); // Adjust image dimensions as needed
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const imgWidth = 15; 
+    const imgMargin = 10; 
+    const imgX = pageWidth - imgWidth - imgMargin;
+    const imgData150 = '/assets/images/IMD150(BGR).png'; 
+    doc.addImage(imgData150, 'PNG', imgX, marginTop, 15, 20);
+    const imgData = '/assets/images/IMDlogo_Ipart.png'; 
+    doc.addImage(imgData, 'PNG', marginLeft, marginTop, 15, 20); 
     doc.setFontSize(12);
     doc.setTextColor(0, 0, 0); // Set font color to black
     const headingText = 'India Meteorological Department\nHydromet Division, New Delhi';
@@ -2086,8 +2137,14 @@ private updateLegendDetailsPositionsubdiv(fullscreen: boolean): void {
       startY: marginTop,
       margin: { left: marginLeft },
     };
-    const imgData = '/assets/images/IMDlogo_Ipart.png'; // Replace with the actual image path
-    doc.addImage(imgData, 'PNG', marginLeft, marginTop, 15, 20); // Adjust image dimensions as needed
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const imgWidth = 15; 
+    const imgMargin = 10; 
+    const imgX = pageWidth - imgWidth - imgMargin;
+    const imgData150 = '/assets/images/IMD150(BGR).png'; 
+    doc.addImage(imgData150, 'PNG', imgX, marginTop, 15, 20);
+    const imgData = '/assets/images/IMDlogo_Ipart.png'; 
+    doc.addImage(imgData, 'PNG', marginLeft, marginTop, 15, 20); 
     doc.setFontSize(12);
     doc.setTextColor(0, 0, 0); // Set font color to black
     const headingText = 'India Meteorological Department\nHydromet Division, New Delhi';
@@ -2179,8 +2236,14 @@ private updateLegendDetailsPositionsubdiv(fullscreen: boolean): void {
       startY: marginTop,
       margin: { left: marginLeft },
     };
-    const imgData = '/assets/images/IMDlogo_Ipart.png'; // Replace with the actual image path
-    doc.addImage(imgData, 'PNG', marginLeft, marginTop, 15, 20); // Adjust image dimensions as needed
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const imgWidth = 15; 
+    const imgMargin = 10; 
+    const imgX = pageWidth - imgWidth - imgMargin;
+    const imgData150 = '/assets/images/IMD150(BGR).png'; 
+    doc.addImage(imgData150, 'PNG', imgX, marginTop, 15, 20);
+    const imgData = '/assets/images/IMDlogo_Ipart.png'; 
+    doc.addImage(imgData, 'PNG', marginLeft, marginTop, 15, 20); 
     doc.setFontSize(12);
     doc.setTextColor(0, 0, 0); // Set font color to black
     const headingText = 'India Meteorological Department\nHydromet Division, New Delhi';
@@ -2242,53 +2305,57 @@ private updateLegendDetailsPositionsubdiv(fullscreen: boolean): void {
 
   loadGeoJSON(): void {
     this.clearTextElements();
+    this.http.get('assets/geojson/INDIA_STATE.json').subscribe((stateRes: any) => {
+      const stateLayer = L.geoJSON(stateRes, {
+        style: {
+          weight: 2,
+          opacity: 1,
+          color: 'blue',
+          fillOpacity: 0
+        }
+        
+      }).addTo(this.map);
+
     this.http.get('assets/geojson/INDIA_DISTRICT.json').subscribe((res: any) => {
-      L.geoJSON(res, {
+      const districtLayer = L.geoJSON(res, {
         style: (feature: any) => {
           const id2 = feature.properties['district_c'];
           const matchedData = this.findMatchingData(id2);
-
           let rainfall: any;
-
           if (matchedData) {
-
             if (Number.isNaN(matchedData.dailyrainfall)) {
               rainfall = ' ';
             }
             else {
               rainfall = matchedData.dailydeparturerainfall;
             }
-
           }
           else {
             rainfall = -100
           }
           const color = this.getColorForRainfall1(rainfall);
+    
           return {
             fillColor: color,
-            weight: 0.5,
-            opacity: 2,
+            weight: 0.3,
+            opacity: 1.5,
             color: 'black',
-            fillOpacity: 2
-
+            fillOpacity: 0.5
           };
+
         },
         onEachFeature: (feature: any, layer: any) => {
           const id1 = feature.properties['district'];
           const id2 = feature.properties['district_c'];
           const matchedData = this.findMatchingData(id2);
-
           let rainfall: any;
-
           if (matchedData) {
-
             if (Number.isNaN(matchedData.dailyrainfall)) {
               rainfall = "NA";
             }
             else {
               rainfall = matchedData.dailydeparturerainfall;
             }
-
           }
           else {
             rainfall = -100
@@ -2313,79 +2380,18 @@ private updateLegendDetailsPositionsubdiv(fullscreen: boolean): void {
         }
       }).addTo(this.map);
     });
-    // this.http.get('assets/geojson/INDIA_STATE.json').subscribe((stateRes: any) => {
-    //   const stateLayer = L.geoJSON(stateRes, {
-    //     style: {
-    //       weight: 1.5,
-    //       opacity: 2,
-    //       color: 'black',
-    //       fillOpacity: 0
-    //     }
-    //   }).addTo(this.map);
-    // this.http.get('assets/geojson/INDIA_DISTRICT.json').subscribe((res: any) => {
-    //   const districtLayer = L.geoJSON(res, {
-    //     style: (feature: any) => {
-    //       const id2 = feature.properties['district_c'];
-    //       const matchedData = this.findMatchingData(id2);
-    //       let rainfall: any;
-    //       if (matchedData) {
-    //         if (Number.isNaN(matchedData.dailyrainfall)) {
-    //           rainfall = ' ';
-    //         }
-    //         else {
-    //           rainfall = matchedData.dailydeparturerainfall;
-    //         }
-    //       }
-    //       else {
-    //         rainfall = -100
-    //       }
-    //       const color = this.getColorForRainfall1(rainfall);
-    //       return {
-    //         fillColor: color,
-    //         weight: 0.3,
-    //         opacity: 1.5,
-    //         color: 'black',
-    //         fillOpacity: 0.5
-    //       };
-    //     },
-    //     onEachFeature: (feature: any, layer: any) => {
-    //       const id1 = feature.properties['district'];
-    //       const id2 = feature.properties['district_c'];
-    //       const matchedData = this.findMatchingData(id2);
-    //       let rainfall: any;
-    //       if (matchedData) {
-    //         if (Number.isNaN(matchedData.dailyrainfall)) {
-    //           rainfall = "NA";
-    //         }
-    //         else {
-    //           rainfall = matchedData.dailydeparturerainfall;
-    //         }
-    //       }
-    //       else {
-    //         rainfall = -100
-    //       }
-    //       const dailyrainfall = matchedData && matchedData.dailyrainfall !== null && matchedData.dailyrainfall != undefined && !Number.isNaN(matchedData.dailyrainfall) ? matchedData.dailyrainfall.toFixed(2) : 'NA';
-    //       const normalrainfall = matchedData && !Number.isNaN(matchedData.normalrainfall) ? matchedData.normalrainfall.toFixed(2) : 'NA';
-    //       const popupContent = `
-    //         <div style="background-color: white; padding: 5px; font-family: Arial, sans-serif;">
-    //           <div style="color: #002467; font-weight: bold; font-size: 10px;">DISTRICT: ${id1}</div>
-    //           <div style="color: #002467; font-weight: bold; font-size: 10px;">DAILY RAINFALL: ${dailyrainfall}</div>
-    //           <div style="color: #002467; font-weight: bold; font-size: 10px;">NORMAL RAINFALL: ${normalrainfall}</div>
-    //           <div style="color: #002467; font-weight: bold; font-size: 10px;">DEPARTURE: ${rainfall}% </div>
-    //         </div>
-    //       `;
-    //       layer.bindPopup(popupContent);
-    //       layer.on('mouseover', () => {
-    //         layer.openPopup();
-    //       });
-    //       layer.on('mouseout', () => {
-    //         layer.closePopup();
-    //       });
-    //     }
-    //   }).addTo(this.map);
-    // });
 
-    // });
+    });
+    this.http.get('assets/geojson/INDIA_REGIONS.json').subscribe((regionres: any) => {
+      const regionLayer = L.geoJSON(regionres, {
+        style: {
+          weight: 2,
+          opacity: 1,
+          color: 'blue',
+          fillOpacity: 0
+        }
+      }).addTo(this.map1);
+      
     this.http.get('assets/geojson/INDIA_STATE.json').subscribe((res: any) => {
     this.statecountlargeexcess = 0
     this.statecountexcess = 0
@@ -2402,10 +2408,10 @@ private updateLegendDetailsPositionsubdiv(fullscreen: boolean): void {
           const color = this.getColorForRainfallstate(rainfall, actual);
           return {
             fillColor: color,
-            weight: 0.5,
-            opacity: 2,
+            weight: 0.3,
+            opacity: 1.5,
             color: 'black',
-            fillOpacity: 2
+            fillOpacity: 0.5
           };
         },
         onEachFeature: (feature: any, layer: any) => {
@@ -2625,6 +2631,16 @@ private updateLegendDetailsPositionsubdiv(fullscreen: boolean): void {
       // Add the geoJsonLayer to the map
       geoJsonLayer.addTo(this.map1);
     });
+  });
+  this.http.get('assets/geojson/INDIA_REGIONS.json').subscribe((regionres: any) => {
+    const regionLayer = L.geoJSON(regionres, {
+      style: {
+        weight: 2,
+        opacity: 1,
+        color: 'blue',
+        fillOpacity: 0
+      }
+    }).addTo(this.map2);
     this.http.get('assets/geojson/INDIA_SUB_DIVISION.json').subscribe((res: any) => {
       this.subdivcountlargeexcess = 0
       this.subdivcountexcess = 0
@@ -2641,10 +2657,10 @@ private updateLegendDetailsPositionsubdiv(fullscreen: boolean): void {
           const color = this.getColorForRainfallsubdiv(rainfall, actual);
           return {
             fillColor: color,
-            weight: 0.5,
-            opacity: 2,
+            weight: 0.3,
+            opacity: 1.5,
             color: 'black',
-            fillOpacity: 2
+            fillOpacity: 0.5
           };
         },
         onEachFeature: (feature: any, layer: any) => {
@@ -2860,17 +2876,15 @@ private updateLegendDetailsPositionsubdiv(fullscreen: boolean): void {
           textElement.style.top = `${this.map2.latLngToLayerPoint(center).y - 10}px`;
           // Set a higher z-index to ensure the text appears on top of the map
           textElement.style.zIndex = '1000';
-
-          // Append the custom HTML element to the map container
           this.map2.getPanes().overlayPane.appendChild(textElement);
           this.addedTextElements.push(textElement);
 
         }
 
       });
-      // Add the geoJsonLayer to the map
       geoJsonLayer.addTo(this.map2);
     });
+  });
     
     this.http.get('assets/geojson/INDIA_REGIONS.json').subscribe((res: any) => {
       const geoJsonLayer = L.geoJSON(res, {
@@ -2979,6 +2993,16 @@ private updateLegendDetailsPositionsubdiv(fullscreen: boolean): void {
   }
   loadGeoJSON1(): void {
     this.clearTextElements();
+    this.http.get('assets/geojson/INDIA_REGIONS.json').subscribe((regionres: any) => {
+      const regionLayer = L.geoJSON(regionres, {
+        style: {
+          weight: 2,
+          opacity: 1,
+          color: 'blue',
+          fillOpacity: 0
+        }
+        
+      }).addTo(this.map1);
     this.http.get('assets/geojson/INDIA_STATE.json').subscribe((res: any) => {
     this.statecountlargeexcess = 0
     this.statecountexcess = 0
@@ -2993,13 +3017,21 @@ private updateLegendDetailsPositionsubdiv(fullscreen: boolean): void {
           const rainfall = matchedData ? matchedData.dailydeparturerainfall : -100;
           const actual = matchedData && matchedData.dailyrainfall == null ? ' ' : "notnull";
           const color = this.getColorForRainfallstate(rainfall, actual);
+
           return {
             fillColor: color,
-            weight: 0.5,
-            opacity: 2,
+            weight: 0.3,
+            opacity: 1.5,
             color: 'black',
-            fillOpacity: 2
+            fillOpacity: 0.5
           };
+          // return {
+          //   fillColor: color,
+          //   weight: 1,
+          //   opacity: 0.5,
+          //   color: 'black',
+          //   fillOpacity: 0.3
+          // };
         },
         onEachFeature: (feature: any, layer: any) => {
           let id1 = feature.properties['state_name'];
@@ -3218,6 +3250,17 @@ private updateLegendDetailsPositionsubdiv(fullscreen: boolean): void {
       // Add the geoJsonLayer to the map
       geoJsonLayer.addTo(this.map1);
     });
+  });
+
+  this.http.get('assets/geojson/INDIA_REGIONS.json').subscribe((regionres: any) => {
+    const regionLayer = L.geoJSON(regionres, {
+      style: {
+        weight: 2,
+        opacity: 1,
+        color: 'blue',
+        fillOpacity: 0
+      }
+    }).addTo(this.map2);
     this.http.get('assets/geojson/INDIA_SUB_DIVISION.json').subscribe((res: any) => {
       this.subdivcountlargeexcess = 0
       this.subdivcountexcess = 0
@@ -3232,12 +3275,19 @@ private updateLegendDetailsPositionsubdiv(fullscreen: boolean): void {
           const rainfall = matchedData ? matchedData.dailydeparturerainfall : -100;
           const actual = matchedData && matchedData.dailyrainfall == null ? ' ' : "notnull";
           const color = this.getColorForRainfallsubdiv(rainfall, actual);
+          // return {
+          //   fillColor: color,
+          //   weight: 0.5,
+          //   opacity: 2,
+          //   color: 'black',
+          //   fillOpacity: 2
+          // };
           return {
             fillColor: color,
-            weight: 0.5,
-            opacity: 2,
+            weight: 0.3,
+            opacity: 1.5,
             color: 'black',
-            fillOpacity: 2
+            fillOpacity: 0.5
           };
         },
         onEachFeature: (feature: any, layer: any) => {
@@ -3464,6 +3514,7 @@ private updateLegendDetailsPositionsubdiv(fullscreen: boolean): void {
       // Add the geoJsonLayer to the map
       geoJsonLayer.addTo(this.map2);
     });
+  });
     this.http.get('assets/geojson/INDIA_REGIONS.json').subscribe((res: any) => {
       const geoJsonLayer = L.geoJSON(res, {
         style: (feature: any) => {

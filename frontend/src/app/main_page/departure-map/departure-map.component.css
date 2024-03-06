@@ -3,7 +3,10 @@ img {
 
 }
 
-.datacont {
+.subdivdatacont {
+  display: flex;
+}
+.statedatacont {
   display: flex;
 }
 
