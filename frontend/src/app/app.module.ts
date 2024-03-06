@@ -55,6 +55,11 @@ import { AboutComponent } from './about/about.component';
 import { VerificationPageComponent } from './verification-page/verification-page.component';
 import { DeletedStationLogComponent } from './deleted-station-log/deleted-station-log.component';
 import { LastFiveYearDataComponent } from './last-five-year-data/last-five-year-data.component';
+import { StationStatisticsComponent } from './station-statistics/station-statistics.component';
+import { MatMenuModule} from '@angular/material/menu';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core'
+import { ChartModule } from 'angular-highcharts';
 
 @NgModule({
   declarations: [
@@ -91,7 +96,8 @@ import { LastFiveYearDataComponent } from './last-five-year-data/last-five-year-
     AboutComponent,
     VerificationPageComponent,
     DeletedStationLogComponent,
-    LastFiveYearDataComponent
+    LastFiveYearDataComponent,
+    StationStatisticsComponent
   ],
   imports: [
     PdfViewerModule,
@@ -114,7 +120,10 @@ import { LastFiveYearDataComponent } from './last-five-year-data/last-five-year-
     MatIconModule,
     MatInputModule,
     MatButtonToggleModule,
-
+    MatMenuModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    ChartModule
   ],
   providers: [AuthGuard, DatePipe],
   bootstrap: [AppComponent]

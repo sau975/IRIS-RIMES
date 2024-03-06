@@ -101,11 +101,8 @@ export class DataService {
     this.fromAndToDateSubject.next(newfromAndToDate);
   }
 
-  uploadFile(file: File, sectionName: string) {
-    const formData: FormData = new FormData();
-    formData.append('file', file, file.name);
-    formData.append('sectionName', sectionName);
-    return this.http.post(this.baseUrl + '/upload', formData);
+  uploadFile(data:any) {
+    return this.http.post(this.baseUrl + '/upload', data);
   }
 
   uploadStationDataFile(file: File) {

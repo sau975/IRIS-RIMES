@@ -13,8 +13,8 @@ const xlsx = require('xlsx');
 // });
 
 app.use(cors());
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
+app.use(bodyParser.json({ limit: '10mb' }));
+app.use(bodyParser.urlencoded({ extended: true, limit: '10mb' }));
 
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
@@ -217,19 +217,18 @@ app.post("/login", (req, res) => {
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
-app.post('/upload', upload.single('file'), async (req, res) => {
-    try {
-        const { originalname, buffer } = req.file;
-        const sectionName = req.body.sectionName;
-        const result = await client.query(
-            'INSERT INTO pdf_files (file_name, file_data, section_name) VALUES ($1, $2, $3) RETURNING id',
-            [originalname, buffer, sectionName]
-        );
-        res.json({ success: true, fileId: result.rows[0].id });
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ success: false, error: 'Internal Server Error' });
-    }
+app.post('/upload', async (req, res) => {
+  try {
+      const data = req.body;
+      const result = await client.query(
+          'INSERT INTO pdf_files (file_name, file_data, section_name) VALUES ($1, $2, $3) RETURNING id',
+          [data.fileName, data.fileData, data.sectionName]
+      );
+      res.json({ success: true, fileId: result.rows[0].id });
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({ success: false, error: 'Internal Server Error' });
+  }
 });
 
 app.get("/uploadedfiles", (req, res) => {

@@ -82,6 +82,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
         this.previousWeekWeeklyStartDate = fromAndToDates.fromDate;
         this.previousWeekWeeklyEndDate = fromAndToDates.toDate;
         this.weeklyDatesCalculation();
+        this.dateCalculation();
         this.fetchDataFromBackend();
       }
     });
@@ -157,6 +158,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
         this.weeklyDates.push(`${dd.padStart(2, '0')}_${currmonth}_${selectedYear}`);
         currentDate.setDate(currentDate.getDate() + 1);
       }
+      this.today.setDate(new Date(this.previousWeekWeeklyStartDate).getDate());
     }
     console.log(this.weeklyDates, "iiiiiiii")
   }
@@ -990,10 +992,8 @@ private updateLegendDetailsPositionsubdiv(fullscreen: boolean): void {
           }
       }
   });
-  
-  
-  
-    
+
+
     this.map2 = L.map('map2', {
       center: [24, 76.9629],
       zoom: this.initialZoom,
@@ -2860,7 +2860,7 @@ private updateLegendDetailsPositionsubdiv(fullscreen: boolean): void {
             // center.lat = 10.8
              center.lng = 73.5
           }
-          console.log("name : ",id1, "lat : ", lat,"updLAT:", center.lat,"updLNG:", center.lng , "lng : ", lng)
+          // console.log("name : ",id1, "lat : ", lat,"updLAT:", center.lat,"updLNG:", center.lng , "lng : ", lng)
           // console.log(id1)
           textElement.innerHTML = `
           <div style="text-align: center; line-height: 0.4;">
@@ -2886,6 +2886,7 @@ private updateLegendDetailsPositionsubdiv(fullscreen: boolean): void {
     });
   });
     
+
     this.http.get('assets/geojson/INDIA_REGIONS.json').subscribe((res: any) => {
       const geoJsonLayer = L.geoJSON(res, {
         style: (feature: any) => {
@@ -3843,32 +3844,32 @@ private updateLegendDetailsPositionsubdiv(fullscreen: boolean): void {
         this.convertImageToPdf(dataUrl);
       });
   }
-  
+
   convertImageToPdf(dataUrl: string): void {
     const pdf = new jsPDF();
     const img = new Image();
-    
+
     img.onload = function() {
       const canvas = document.createElement('canvas');
       const ctx = canvas.getContext('2d');
-      
+
       if (ctx) { // Check if ctx is not null
         canvas.width = img.width;
         canvas.height = img.height;
         ctx.drawImage(img, 0, 0, img.width, img.height);
-        
+
         // Calculate aspect ratio and adjust image size to fit page width
         const aspectRatio = img.height / img.width;
         const imgWidth = 210; // A4 size
         const imgHeight = imgWidth * aspectRatio;
-        
+
         pdf.addImage(canvas.toDataURL('image/jpeg', 1.0), 'JPEG', 0, 0, imgWidth, imgHeight);
         pdf.save('District_dep.pdf');
       } else {
         console.error('Failed to get 2D context from canvas');
       }
     };
-    
+
     img.src = dataUrl;
   }
   downloadMapImage1(): void {
@@ -3886,32 +3887,32 @@ private updateLegendDetailsPositionsubdiv(fullscreen: boolean): void {
         this.convertImageToPdf1(dataUrl);
       });
   }
-  
+
   convertImageToPdf1(dataUrl: string): void {
     const pdf = new jsPDF();
     const img = new Image();
-    
+
     img.onload = function() {
       const canvas = document.createElement('canvas');
       const ctx = canvas.getContext('2d');
-      
+
       if (ctx) { // Check if ctx is not null
         canvas.width = img.width;
         canvas.height = img.height;
         ctx.drawImage(img, 0, 0, img.width, img.height);
-        
+
         // Calculate aspect ratio and adjust image size to fit page width
         const aspectRatio = img.height / img.width;
         const imgWidth = 210; // A4 size
         const imgHeight = imgWidth * aspectRatio;
-        
+
         pdf.addImage(canvas.toDataURL('image/jpeg', 1.0), 'JPEG', 0, 0, imgWidth, imgHeight);
         pdf.save('state_dep.pdf');
       } else {
         console.error('Failed to get 2D context from canvas');
       }
     };
-    
+
     img.src = dataUrl;
   }
   downloadMapImage2(): void {
@@ -3929,32 +3930,32 @@ private updateLegendDetailsPositionsubdiv(fullscreen: boolean): void {
         this.convertImageToPdf2(dataUrl);
       });
   }
-  
+
   convertImageToPdf2(dataUrl: string): void {
     const pdf = new jsPDF();
     const img = new Image();
-    
+
     img.onload = function() {
       const canvas = document.createElement('canvas');
       const ctx = canvas.getContext('2d');
-      
+
       if (ctx) { // Check if ctx is not null
         canvas.width = img.width;
         canvas.height = img.height;
         ctx.drawImage(img, 0, 0, img.width, img.height);
-        
+
         // Calculate aspect ratio and adjust image size to fit page width
         const aspectRatio = img.height / img.width;
         const imgWidth = 210; // A4 size
         const imgHeight = imgWidth * aspectRatio;
-        
+
         pdf.addImage(canvas.toDataURL('image/jpeg', 1.0), 'JPEG', 0, 0, imgWidth, imgHeight);
         pdf.save('sub-division_dep.pdf');
       } else {
         console.error('Failed to get 2D context from canvas');
       }
     };
-    
+
     img.src = dataUrl;
   }
   downloadMapImage3(): void {
@@ -3972,35 +3973,35 @@ private updateLegendDetailsPositionsubdiv(fullscreen: boolean): void {
         this.convertImageToPdf3(dataUrl);
       });
   }
-  
+
   convertImageToPdf3(dataUrl: string): void {
     const pdf = new jsPDF();
     const img = new Image();
-    
+
     img.onload = function() {
       const canvas = document.createElement('canvas');
       const ctx = canvas.getContext('2d');
-      
+
       if (ctx) { // Check if ctx is not null
         canvas.width = img.width;
         canvas.height = img.height;
         ctx.drawImage(img, 0, 0, img.width, img.height);
-        
+
         // Calculate aspect ratio and adjust image size to fit page width
         const aspectRatio = img.height / img.width;
         const imgWidth = 210; // A4 size
         const imgHeight = imgWidth * aspectRatio;
-        
+
         pdf.addImage(canvas.toDataURL('image/jpeg', 1.0), 'JPEG', 0, 0, imgWidth, imgHeight);
         pdf.save('region_dep.pdf');
       } else {
         console.error('Failed to get 2D context from canvas');
       }
     };
-    
+
     img.src = dataUrl;
   }
-  
+
   downloadMapImage4(): void {
     htmlToImage.toJpeg(document.getElementById('map4') as HTMLElement, { quality: 0.95, filter: this.filter })
       .then(function (dataUrl) {
@@ -4016,32 +4017,32 @@ private updateLegendDetailsPositionsubdiv(fullscreen: boolean): void {
         this.convertImageToPdf4(dataUrl);
       });
   }
-  
+
   convertImageToPdf4(dataUrl: string): void {
     const pdf = new jsPDF();
     const img = new Image();
-    
+
     img.onload = function() {
       const canvas = document.createElement('canvas');
       const ctx = canvas.getContext('2d');
-      
+
       if (ctx) { // Check if ctx is not null
         canvas.width = img.width;
         canvas.height = img.height;
         ctx.drawImage(img, 0, 0, img.width, img.height);
-        
+
         // Calculate aspect ratio and adjust image size to fit page width
         const aspectRatio = img.height / img.width;
         const imgWidth = 210; // A4 size
         const imgHeight = imgWidth * aspectRatio;
-        
+
         pdf.addImage(canvas.toDataURL('image/jpeg', 1.0), 'JPEG', 0, 0, imgWidth, imgHeight);
         pdf.save('country_dep.pdf');
       } else {
         console.error('Failed to get 2D context from canvas');
       }
     };
-    
+
     img.src = dataUrl;
   }
   getNormalMap() {
