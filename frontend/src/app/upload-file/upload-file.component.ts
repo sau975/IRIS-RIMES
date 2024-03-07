@@ -16,6 +16,11 @@ export class UploadFileComponent {
   onFileSelected(event: any) {
     this.selectedFile = event.target.files[0];
     if (this.selectedFile) {
+      var maxSize = 1024 * 1024; // 1 MB
+      if (this.selectedFile.size > maxSize) {
+        alert('File size exceeds the allowed limit. Please choose a smaller file.');
+        this.clearFileInput();
+      }
       const reader:any = new FileReader();
       reader.onload = function (e:any) {
         const base64String = btoa(reader.result);
