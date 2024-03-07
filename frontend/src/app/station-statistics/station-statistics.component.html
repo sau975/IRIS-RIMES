@@ -47,12 +47,12 @@
 			<h2 class="mb-3 pr-2"
 				[class.hidden]="!isSideNavOpen">Explore</h2>
 
-			<button (click)="toggleSideNav()"
+			<!-- <button (click)="toggleSideNav()"
 				class="close-button sidebar-btn"
 				style="background-color: #e7e1e1;"
 				mat-icon-button>
 				<mat-icon class="">keyboard_arrow_right</mat-icon>
-			</button>
+			</button> -->
 		</div>
 
 		<!-- <mat-divider></mat-divider> -->
@@ -184,10 +184,42 @@
 				</button>
 			</div>
 
-			<mat-icon [class.hidden]="!isSideNavOpen">more_vert</mat-icon>
+			<!-- <mat-icon [class.hidden]="!isSideNavOpen">more_vert</mat-icon> -->
 		  </div>
 
 		  <mat-divider></mat-divider>
+
+      <div style="padding: 10px;">
+        <div>
+        <label for="region">Select Region :</label>
+        <select name="region" class="form-control" id="region" [(ngModel)]="selectedRegion" (change)="onChangeRegion()">
+          <option *ngFor="let region of regionList" [value]="region">{{region}}</option>
+        </select>
+      </div> <br>
+      <div>
+        <label for="mcs">Select RMC/MC :</label>
+        <select name="mcs" class="form-control" id="mcs">
+          <option value="mc1">RMC/MC</option>
+          <option value="mc2">RMC/MC</option>
+          <option value="mc3">RMC/MC</option>
+          <option value="mc4">RMC/MC</option>
+        </select>
+      </div><br>
+      <div>
+        <label for="state">Select State :</label>
+        <select name="state" class="form-control" id="state" [(ngModel)]="selectedState" (change)="onChangeState()">
+          <option *ngFor="let state of filteredStates" [value]="state">{{state}}</option>
+        </select>
+      </div><br>
+      <div>
+        <label for="district">Select District :</label>
+        <select name="district" class="form-control" id="district" [(ngModel)]="selectedDistrict">
+          <option *ngFor="let district of filteredDistricts" [value]="district">{{district}}</option>
+        </select>
+      </div>
+      </div>
+
+      <mat-divider></mat-divider>
 
 		  <div class="my-3 d-flex justify-content-center">
 				<button mat-button
@@ -226,11 +258,26 @@
 				</div>
 				<div style="overflow-y:scroll; width:100%; padding:1em;">
 
-					<div class="py-2 d-flex justify-content-between station-data-table w-100"
-						*ngFor="let weatherData of stationWeatherParameters">
-								<span>{{ weatherData.text }}</span>
-								<span>{{ weatherData.data[0].value }} {{ weatherData.data[0].unit }}</span>
+          <div class="py-2 d-flex justify-content-between station-data-table w-100">
+            <span>Total Stations</span>
+            <span>{{ totalstations }}</span>
+      </div>
+
+					<div class="py-2 d-flex justify-content-between station-data-table w-100">
+								<span>Received Data</span>
+								<span>{{ receivedata }}</span>
 					</div>
+          <div class="py-2 d-flex justify-content-between station-data-table w-100">
+            <span>Not Received Data</span>
+            <span>{{ notreceivedata }}</span>
+
+      </div>
+
+          <div class="py-2 d-flex justify-content-between station-data-table w-100"
+          *ngFor="let weatherData of stationWeatherParameters">
+              <span>{{ weatherData.text }}</span>
+              <span>{{ weatherData.data[0].value }} {{ weatherData.data[0].unit }}</span>
+        </div>
 				</div>
 			</div>
 

@@ -175,6 +175,10 @@ export class NavbarComponent implements OnInit {
     this.showPopup = false;
   }
 
+  openFile(fileName:any) {
+    window.open("assets/" + fileName);
+  }
+
   downloadFile(data:any): void {
     var windo:any = window.open("", "");
     var objbuilder = '';
