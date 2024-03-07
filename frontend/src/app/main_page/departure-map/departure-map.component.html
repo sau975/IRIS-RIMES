@@ -118,24 +118,24 @@
                         </tbody>
                       </table>
                     </td>
+                    <td>
+                      <img style="margin: 15px 0 0 7px; width: 50px; height: 50px;"
+                        src="../../assets/images/—Pngtree—compass_6028609.png" alt="">
+                    </td>
                     <td style="width: 30%;">
                       <div style="display: flex; flex-direction: column; margin-right: 10px; text-align: left;">
                         <div style="display: flex; flex-direction: row;">
-                          <button style="margin-right: 5px;" class="download"  (click)="downloadMapImage()">IMG</button>
-                          <button class="download"  (click)="downloadMappdf()">PDF</button>
+                          <button style="margin-right: 5px;" class="download" (click)="downloadMapImage()">IMG</button>
+                          <button class="download" (click)="downloadMappdf()">PDF</button>
                         </div>
                         <div style="margin-top: 5px; text-align: left;">
-                          <button class="downloadpdf" 
-                            (click)="downloadMapData()">Statistics</button>
+                          <button class="downloadpdf" (click)="downloadMapData()">Statistics</button>
                         </div>
                       </div>
                     </td>
                   </tr>
                   <tr>
-                    <td>
-                      <img style="margin-top: 7px; width: 80px; height: 80px;"
-                        src="../../assets/images/—Pngtree—compass_6028609.png" alt="">
-                    </td>
+
                   </tr>
                 </tbody>
               </table>
@@ -266,22 +266,15 @@
                     <td style="width: 30%;">
                       <div style="display: flex; flex-direction: column; margin-right: 10px; text-align: left;">
                         <div style="display: flex; flex-direction: row;">
-                          <button style="margin-right: 5px;" class="download"  (click)="downloadMapImage1()">IMG</button>
-                          <button class="download"  (click)="downloadMappdf1()">PDF</button>
+                          <button style="margin-right: 5px;" class="download" (click)="downloadMapImage1()">IMG</button>
+                          <button class="download" (click)="downloadMappdf1()">PDF</button>
                         </div>
                         <div style="margin-top: 5px; text-align: left;">
-                          <button class="downloadpdf" 
-                            (click)="downloadMapData1()">Statistics</button>
+                          <button class="downloadpdf" (click)="downloadMapData1()">Statistics</button>
                         </div>
                       </div>
                     </td>
                   </tr>
-                  <!-- <tr>
-                    <td>
-                      <img style="margin: 15px 0 0 7px; width: 80px; height: 80px;"
-                        src="../../assets/images/—Pngtree—compass_6028609.png" alt="">
-                    </td>
-                  </tr> -->
                 </tbody>
               </table>
               <div class="statedatacont">
@@ -473,29 +466,41 @@
                   </thead>
                   <tbody>
                     <tr>
-                      <td style="border: 1px solid black; font-size: 4px; padding: 2px; font-weight: bolder;">LARGE EXCESS</td>
-                      <td style="border: 1px solid black; font-size: 4px; padding: 2px; font-weight: bolder;">{{statecountlargeexcess}}</td>
+                      <td style="border: 1px solid black; font-size: 4px; padding: 2px; font-weight: bolder;">LARGE
+                        EXCESS</td>
+                      <td style="border: 1px solid black; font-size: 4px; padding: 2px; font-weight: bolder;">
+                        {{statecountlargeexcess}}</td>
                     </tr>
                     <tr>
-                      <td style="border: 1px solid black; font-size: 4px; padding: 2px; font-weight: bolder;">EXCESS</td>
-                      <td style="border: 1px solid black; font-size: 4px; padding: 2px; font-weight: bolder;">{{statecountexcess}}</td>
+                      <td style="border: 1px solid black; font-size: 4px; padding: 2px; font-weight: bolder;">EXCESS
+                      </td>
+                      <td style="border: 1px solid black; font-size: 4px; padding: 2px; font-weight: bolder;">
+                        {{statecountexcess}}</td>
                     </tr>
                     <tr>
-                      <td style="border: 1px solid black; font-size: 4px; padding: 2px; font-weight: bolder;">NORMAL</td>
-                      <td style="border: 1px solid black; font-size: 4px; padding: 2px; font-weight: bolder;">{{statecountnormal}}</td>
+                      <td style="border: 1px solid black; font-size: 4px; padding: 2px; font-weight: bolder;">NORMAL
+                      </td>
+                      <td style="border: 1px solid black; font-size: 4px; padding: 2px; font-weight: bolder;">
+                        {{statecountnormal}}</td>
                     </tr>
                     <tr>
-                      <td style="border: 1px solid black; font-size: 4px; padding: 2px; font-weight: bolder;">DEFICIENT</td>
-                      <td style="border: 1px solid black; font-size: 4px; padding: 2px; font-weight: bolder;">{{statecountdeficient}}</td>
+                      <td style="border: 1px solid black; font-size: 4px; padding: 2px; font-weight: bolder;">DEFICIENT
+                      </td>
+                      <td style="border: 1px solid black; font-size: 4px; padding: 2px; font-weight: bolder;">
+                        {{statecountdeficient}}</td>
                     </tr>
                     <tr>
-                      <td style="border: 1px solid black; font-size: 4px; padding: 2px; font-weight: bolder;">LARGE DEFICIENT</td>
-                      <td style="border: 1px solid black; font-size: 4px; padding: 2px; font-weight: bolder;">{{statecountlargedeficient}}
+                      <td style="border: 1px solid black; font-size: 4px; padding: 2px; font-weight: bolder;">LARGE
+                        DEFICIENT</td>
+                      <td style="border: 1px solid black; font-size: 4px; padding: 2px; font-weight: bolder;">
+                        {{statecountlargedeficient}}
                       </td>
                     </tr>
                     <tr>
-                      <td style="border: 1px solid black; font-size: 4px; padding: 2px; font-weight: bolder;">NO RAIN</td>
-                      <td style="border: 1px solid black; font-size: 4px; padding: 2px; font-weight: bolder;">{{statecountnorain}}</td>
+                      <td style="border: 1px solid black; font-size: 4px; padding: 2px; font-weight: bolder;">NO RAIN
+                      </td>
+                      <td style="border: 1px solid black; font-size: 4px; padding: 2px; font-weight: bolder;">
+                        {{statecountnorain}}</td>
                     </tr>
                   </tbody>
                 </table>
@@ -628,22 +633,15 @@
                     <td style="width: 30%;">
                       <div style="display: flex; flex-direction: column; margin-right: 10px; text-align: left;">
                         <div style="display: flex; flex-direction: row;">
-                          <button style="margin-right: 5px;" class="download"  (click)="downloadMapImage2()">IMG</button>
-                          <button class="download"  (click)="downloadMappdf2()">PDF</button>
+                          <button style="margin-right: 5px;" class="download" (click)="downloadMapImage2()">IMG</button>
+                          <button class="download" (click)="downloadMappdf2()">PDF</button>
                         </div>
                         <div style="margin-top: 5px; text-align: left;">
-                          <button class="downloadpdf" 
-                            (click)="downloadMapData2()">Statistics</button>
+                          <button class="downloadpdf" (click)="downloadMapData2()">Statistics</button>
                         </div>
                       </div>
                     </td>
                   </tr>
-                  <!-- <tr>
-                    <td>
-                      <img style="margin: 15px 0 0 7px; width: 80px; height: 80px;"
-                        src="../../assets/images/—Pngtree—compass_6028609.png" alt="">
-                    </td>
-                  </tr> -->
                 </tbody>
               </table>
               <div class="subdivdatacont" style="width: 20%;">
@@ -842,29 +840,41 @@
                   </thead>
                   <tbody>
                     <tr>
-                      <td style="border: 1px solid black; font-size: 4px; padding: 2px; font-weight: bolder;">LARGE EXCESS</td>
-                      <td style="border: 1px solid black; font-size: 4px; padding: 2px; font-weight: bolder;">{{statecountlargeexcess}}</td>
+                      <td style="border: 1px solid black; font-size: 4px; padding: 2px; font-weight: bolder;">LARGE
+                        EXCESS</td>
+                      <td style="border: 1px solid black; font-size: 4px; padding: 2px; font-weight: bolder;">
+                        {{statecountlargeexcess}}</td>
                     </tr>
                     <tr>
-                      <td style="border: 1px solid black; font-size: 4px; padding: 2px; font-weight: bolder;">EXCESS</td>
-                      <td style="border: 1px solid black; font-size: 4px; padding: 2px; font-weight: bolder;">{{statecountexcess}}</td>
+                      <td style="border: 1px solid black; font-size: 4px; padding: 2px; font-weight: bolder;">EXCESS
+                      </td>
+                      <td style="border: 1px solid black; font-size: 4px; padding: 2px; font-weight: bolder;">
+                        {{statecountexcess}}</td>
                     </tr>
                     <tr>
-                      <td style="border: 1px solid black; font-size: 4px; padding: 2px; font-weight: bolder;">NORMAL</td>
-                      <td style="border: 1px solid black; font-size: 4px; padding: 2px; font-weight: bolder;">{{statecountnormal}}</td>
+                      <td style="border: 1px solid black; font-size: 4px; padding: 2px; font-weight: bolder;">NORMAL
+                      </td>
+                      <td style="border: 1px solid black; font-size: 4px; padding: 2px; font-weight: bolder;">
+                        {{statecountnormal}}</td>
                     </tr>
                     <tr>
-                      <td style="border: 1px solid black; font-size: 4px; padding: 2px; font-weight: bolder;">DEFICIENT</td>
-                      <td style="border: 1px solid black; font-size: 4px; padding: 2px; font-weight: bolder;">{{statecountdeficient}}</td>
+                      <td style="border: 1px solid black; font-size: 4px; padding: 2px; font-weight: bolder;">DEFICIENT
+                      </td>
+                      <td style="border: 1px solid black; font-size: 4px; padding: 2px; font-weight: bolder;">
+                        {{statecountdeficient}}</td>
                     </tr>
                     <tr>
-                      <td style="border: 1px solid black; font-size: 4px; padding: 2px; font-weight: bolder;">LARGE DEFICIENT</td>
-                      <td style="border: 1px solid black; font-size: 4px; padding: 2px; font-weight: bolder;">{{statecountlargedeficient}}
+                      <td style="border: 1px solid black; font-size: 4px; padding: 2px; font-weight: bolder;">LARGE
+                        DEFICIENT</td>
+                      <td style="border: 1px solid black; font-size: 4px; padding: 2px; font-weight: bolder;">
+                        {{statecountlargedeficient}}
                       </td>
                     </tr>
                     <tr>
-                      <td style="border: 1px solid black; font-size: 4px; padding: 2px; font-weight: bolder;">NO RAIN</td>
-                      <td style="border: 1px solid black; font-size: 4px; padding: 2px; font-weight: bolder;">{{statecountnorain}}</td>
+                      <td style="border: 1px solid black; font-size: 4px; padding: 2px; font-weight: bolder;">NO RAIN
+                      </td>
+                      <td style="border: 1px solid black; font-size: 4px; padding: 2px; font-weight: bolder;">
+                        {{statecountnorain}}</td>
                     </tr>
                   </tbody>
                 </table>
@@ -991,26 +1001,24 @@
                         </tbody>
                       </table>
                     </td>
+                    <td>
+                      <img style="margin: 15px 0 0 7px; width: 50px; height: 50px;"
+                        src="../../assets/images/—Pngtree—compass_6028609.png" alt="">
+                    </td>
                     <td style="width: 30%;">
                       <div style="display: flex; flex-direction: column; margin-right: 10px; text-align: left;">
                         <div style="display: flex; flex-direction: row;">
-                          <button style="margin-right: 5px;" class="download"  (click)="downloadMapImage3()">IMG</button>
-                          <button class="download"  (click)="downloadMappdf3()">PDF</button>
+                          <button style="margin-right: 5px;" class="download" (click)="downloadMapImage3()">IMG</button>
+                          <button class="download" (click)="downloadMappdf3()">PDF</button>
                         </div>
                         <div style="margin-top: 5px; text-align: left;">
-                          <button class="downloadpdf" 
-                            (click)="downloadMapData3()">Statistics</button>
+                          <button class="downloadpdf" (click)="downloadMapData3()">Statistics</button>
                         </div>
                       </div>
                     </td>
-
-
                   </tr>
                   <tr>
-                    <td>
-                      <img style="margin: 15px 0 0 7px; width: 80px; height: 80px;"
-                        src="../../assets/images/—Pngtree—compass_6028609.png" alt="">
-                    </td>
+
                   </tr>
                 </tbody>
               </table>
@@ -1145,24 +1153,24 @@
                         </tbody>
                       </table>
                     </td>
+                    <td>
+                      <img style="margin: 15px 0 0 7px; width: 50px; height: 50px;"
+                        src="../../assets/images/—Pngtree—compass_6028609.png" alt="">
+                    </td>
                     <td style="width: 30%;">
                       <div style="display: flex; flex-direction: column; margin-right: 10px; text-align: left;">
                         <div style="display: flex; flex-direction: row;">
-                          <button style="margin-right: 5px;" class="download"  (click)="downloadMapImage4()">IMG</button>
-                          <button class="download"  (click)="downloadMappdf4()">PDF</button>
+                          <button style="margin-right: 5px;" class="download" (click)="downloadMapImage4()">IMG</button>
+                          <button class="download" (click)="downloadMappdf4()">PDF</button>
                         </div>
                         <div style="margin-top: 5px; text-align: left;">
-                          <button class="downloadpdf" 
-                            (click)="downloadMapData4()">Statistics</button>
+                          <button class="downloadpdf" (click)="downloadMapData4()">Statistics</button>
                         </div>
                       </div>
                     </td>
                   </tr>
                   <tr>
-                    <td>
-                      <img style="margin-top: 15px; width: 80px; height: 80px;"
-                        src="../../assets/images/—Pngtree—compass_6028609.png" alt="">
-                    </td>
+
                   </tr>
                 </tbody>
               </table>

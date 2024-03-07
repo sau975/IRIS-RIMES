@@ -13,113 +13,113 @@ import { DataService } from 'src/app/data.service';
 
 export class NavbarComponent implements OnInit {
   isNavbarOpen = false;
-  loggedInUser:any;
+  loggedInUser: any;
 
   toggleNavbar() {
     this.isNavbarOpen = !this.isNavbarOpen;
   }
   showPopup: boolean = false;
-  qpfReports: any[]=[];
-  rainFallReports: any[]=[];
+  qpfReports: any[] = [];
+  rainFallReports: any[] = [];
 
   constructor(
     private router: Router,
     private dataService: DataService
-    ){}
+  ) { }
 
 
   ngOnInit(): void {
-    let loggedInUser:any = localStorage.getItem("isAuthorised");
+    let loggedInUser: any = localStorage.getItem("isAuthorised");
     this.loggedInUser = JSON.parse(loggedInUser);
     this.dataService.getUploadFiles().subscribe(res => {
-      this.qpfReports = res.filter((r:any) => r.section_name == "QPF VERIFICATION REPORT");
-      this.rainFallReports = res.filter((r:any) => r.section_name == "RAINFALL REPORTS");
+      this.qpfReports = res.filter((r: any) => r.section_name == "QPF VERIFICATION REPORT");
+      this.rainFallReports = res.filter((r: any) => r.section_name == "RAINFALL REPORTS");
     })
   }
 
-  downloadPDF(name:string){
+  downloadPDF(name: string) {
     localStorage.removeItem('weekDates');
     this.dataService.setdownloadPdf(name);
   }
 
-  downloadWeeklyPDF(name:string){
+  downloadWeeklyPDF(name: string) {
     this.dataService.setweeklyPdf(name);
     this.weeklyMap();
   }
 
-  goToDailyDepartureMap(name:string){
+  goToDailyDepartureMap(name: string) {
     localStorage.removeItem('weekDates');
     this.dailyMap();
-    if(name == "District"){
+    if (name == "District") {
       this.router.navigate(['daily-departure-district-map']);
     }
-    if(name == "State"){
+    if (name == "State") {
       this.router.navigate(['daily-departure-state-map']);
     }
-    if(name == "SubDivision"){
+    if (name == "SubDivision") {
       this.router.navigate(['daily-departure-subdivision-map']);
     }
-    if(name == "Homogenous"){
+    if (name == "Homogenous") {
       this.router.navigate(['daily-departure-homogenous-map']);
     }
-    if(name == "Country"){
+    if (name == "Country") {
       this.router.navigate(['daily-departure-country-map']);
     }
   }
 
-  goToDailyMap(name:string){
+  goToDailyMap(name: string) {
     this.dailyMap();
-    if(name == "District"){
+    if (name == "District") {
       this.router.navigate(['daily-district-map']);
     }
-    if(name == "State"){
+    if (name == "State") {
       this.router.navigate(['daily-state-map']);
     }
-    if(name == "SubDivision"){
+    if (name == "SubDivision") {
       this.router.navigate(['daily-subdivision-map']);
     }
-    if(name == "Homogenous"){
+    if (name == "Homogenous") {
       this.router.navigate(['daily-homogenous-map']);
     }
   }
 
-  goToNormalMap(name:string){
+  goToNormalMap(name: string) {
     this.dailyMap();
-    if(name == "District"){
+    if (name == "District") {
       this.router.navigate(['normal-district-map']);
     }
-    if(name == "State"){
+    if (name == "State") {
       this.router.navigate(['normal-state-map']);
     }
-    if(name == "SubDivision"){
+    if (name == "SubDivision") {
       this.router.navigate(['normal-subdivision-map']);
     }
-    if(name == "Homogenous"){
+    if (name == "Homogenous") {
       this.router.navigate(['normal-homogenous-map']);
     }
   }
 
-  goToWeeklyMap(name:string){
+  goToWeeklyMap(name: string) {
     localStorage.removeItem('dailyDate');
     this.weeklyMap();
-    if(name == "District"){
+    if (name == "District") {
       this.router.navigate(['daily-departure-district-map']);
     }
-    if(name == "State"){
+    if (name == "State") {
       this.router.navigate(['daily-departure-state-map']);
     }
-    if(name == "SubDivision"){
+    if (name == "SubDivision") {
       this.router.navigate(['daily-departure-subdivision-map']);
     }
-    if(name == "Homogenous"){
+    if (name == "Homogenous") {
       this.router.navigate(['daily-departure-homogenous-map']);
     }
-    if(name == "Country"){
+    if (name == "Country") {
       this.router.navigate(['daily-departure-country-map']);
     }
   }
 
-  dailyMap(){
+  dailyMap() {
     let date = new Date();
     var data = {
       year: date.getFullYear(),
@@ -129,7 +129,7 @@ export class NavbarComponent implements OnInit {
     localStorage.setItem('dailyDate', JSON.stringify(data));
   }
 
-  weeklyMap(){
+  weeklyMap() {
     const previousWeekWeeklyRange = this.getPreviousWeekWeeklyRange();
     let data = {
       previousWeekWeeklyStartDate: previousWeekWeeklyRange.start.toISOString(),
@@ -167,7 +167,7 @@ export class NavbarComponent implements OnInit {
     };
   }
 
-  uploadPopUp(){
+  uploadPopUp() {
     this.showPopup = true;
   }
 
@@ -175,8 +175,8 @@ export class NavbarComponent implements OnInit {
     this.showPopup = false;
   }
 
-  downloadFile(data:any): void {
-    var windo:any = window.open("", "");
+  downloadFile(data: any): void {
+    var windo: any = window.open("", "");
     var objbuilder = '';
     objbuilder += ('<embed width=\'100%\' height=\'100%\'  src="data:application/pdf;base64,');
     objbuilder += (data);

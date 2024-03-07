@@ -72,7 +72,7 @@ nav ul {
   border-radius: 0 4px 0 0;
 }
 .nav li li a {
-  margin-top: 1px;
+  /* margin-top: 1px; */
 }
 
 .nav li a:first-child:nth-last-child(2):before {
@@ -189,7 +189,7 @@ nav ul {
   border-radius: 0 4px 0 0;
 }
 .nav li li a {
-  margin-top: 1px;
+  /* margin-top: 1px; */
 }
 
 .nav li a:first-child:nth-last-child(2):before {

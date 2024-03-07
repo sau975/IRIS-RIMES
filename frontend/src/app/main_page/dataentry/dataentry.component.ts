@@ -15,10 +15,10 @@ export class DataentryComponent {
   selectedRegion: string = '';
   selectedState: string = '';
   selectedDistrict: string = '';
-  regionList:any[]=[];
-  filteredStates:any[]=[];
-  filteredDistricts:any[]=[];
-  filteredStations:any[]=[];
+  regionList: any[] = [];
+  filteredStates: any[] = [];
+  filteredDistricts: any[] = [];
+  filteredStations: any[] = [];
   selectedDate: Date = new Date();
   selectedFile: File | null = null;
   selectedRainfallFile: File | null = null;
@@ -27,7 +27,7 @@ export class DataentryComponent {
   showEditPopup: boolean = false;
   showdeletePopup: boolean = false;
   previousstationid: any;
-  editData:any = {
+  editData: any = {
     stationname: '',
     stationid: '',
     dateTime: '',
@@ -36,13 +36,13 @@ export class DataentryComponent {
     lat: '',
     lng: '',
     activationDate: '',
-    editIndex : null,
+    editIndex: null,
     previousstationid: null
   };
-  deleteData:any = {
+  deleteData: any = {
     stationname: '',
     stationid: '',
-    editIndex : null,
+    editIndex: null,
   };
 
 
@@ -66,44 +66,44 @@ export class DataentryComponent {
   }
   constructor(
     private dataService: DataService,
-    ) {
-      const today = new Date();
+  ) {
+    const today = new Date();
     const dd = String(today.getDate()).padStart(2, '0');
     const mm = String(today.getMonth() + 1).padStart(2, '0');
     const yyyy = today.getFullYear();
 
     this.todayDate = yyyy + '-' + mm + '-' + dd;
-    }
+  }
 
-    onChangeRegion(){
-      let tempStates = this.existingstationdata.filter(s => s.region == this.selectedRegion);
-      this.filteredStates = Array.from(new Set(tempStates.map(a => a.state)));
-      this.selectedState = ''
-      this.selectedDistrict = ''
-    }
+  onChangeRegion() {
+    let tempStates = this.existingstationdata.filter(s => s.region == this.selectedRegion);
+    this.filteredStates = Array.from(new Set(tempStates.map(a => a.state)));
+    this.selectedState = ''
+    this.selectedDistrict = ''
+  }
 
-    onChangeState(){
-      let tempDistricts = this.existingstationdata.filter(d => d.state == this.selectedState);
-      this.filteredDistricts = Array.from(new Set(tempDistricts.map(a => a.district)));
-      this.selectedDistrict = ''
-    }
+  onChangeState() {
+    let tempDistricts = this.existingstationdata.filter(d => d.state == this.selectedState);
+    this.filteredDistricts = Array.from(new Set(tempDistricts.map(a => a.district)));
+    this.selectedDistrict = ''
+  }
 
-    goBack() {
-      window.history.back();
-    }
+  goBack() {
+    window.history.back();
+  }
 
-    dateCalculation() {
-      const months = [
-        'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-        'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
-      ];
-      let newDate = new Date(this.selectedDate);
-      let dd = String(newDate.getDate());
-      const year = newDate.getFullYear();
-      const currmonth = months[newDate.getMonth()];
-      const selectedYear = String(year).slice(-2);
-      return `${dd.padStart(2, '0')}_${currmonth}_${selectedYear}`;
-    }
+  dateCalculation() {
+    const months = [
+      'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+      'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+    ];
+    let newDate = new Date(this.selectedDate);
+    let dd = String(newDate.getDate());
+    const year = newDate.getFullYear();
+    const currmonth = months[newDate.getMonth()];
+    const selectedYear = String(year).slice(-2);
+    return `${dd.padStart(2, '0')}_${currmonth}_${selectedYear}`;
+  }
   fetchDataFromBackend(): void {
     this.dataService.existingstationdata().subscribe({
       next: value => {
@@ -115,24 +115,24 @@ export class DataentryComponent {
     });
   }
 
-  filterByDate(){
+  filterByDate() {
     this.filteredStations = this.existingstationdata.filter(s => s.district == this.selectedDistrict);
     this.filteredStations.map(x => {
       return x.RainFall = x[this.dateCalculation()];
     })
   }
 
-  editStation(station:any) {
+  editStation(station: any) {
     this.showEditPopup = true;
     this.editData.stationname = station.stationname,
-    this.editData.stationid = station.stationid,
-    this.editData.dateTime = this.selectedDate,
-    this.editData.stationType = station.stationtype,
-    this.editData.newOrOld = station.neworold,
-    this.editData.lat = station.lat,
-    this.editData.lng = station.lng,
-    this.editData.activationDate = station.activationdate,
-    this.editData.previousstationid = station.stationid
+      this.editData.stationid = station.stationid,
+      this.editData.dateTime = this.selectedDate,
+      this.editData.stationType = station.stationtype,
+      this.editData.newOrOld = station.neworold,
+      this.editData.lat = station.lat,
+      this.editData.lng = station.lng,
+      this.editData.activationDate = station.activationdate,
+      this.editData.previousstationid = station.stationid
     console.log(this.editData, "jjjj")
   }
   deleteStationdata(index: number): void {
@@ -141,52 +141,52 @@ export class DataentryComponent {
   }
 
   updateData() {
-      this.dataService.updateData(this.editData).subscribe({
-        next: response => {
-          this.fetchDataFromBackend();
-          console.log('Data updated successfully:', response);
-        },
-        error: err => console.error('Error updating data. Please check the console for details.', err)
-      });
-      this.showEditPopup = false;
+    this.dataService.updateData(this.editData).subscribe({
+      next: response => {
+        this.fetchDataFromBackend();
+        console.log('Data updated successfully:', response);
+      },
+      error: err => console.error('Error updating data. Please check the console for details.', err)
+    });
+    this.showEditPopup = false;
     // }
   }
-  deletestation(){
+  deletestation() {
     this.deleteData = {
       stationname: this.deleteData.stationname,
       stationid: this.deleteData.stationid,
-      editIndex : this.deleteData.editIndex,
+      editIndex: this.deleteData.editIndex,
     };
-      this.dataService.deletestation(this.deleteData.stationid).subscribe({
-        next: response => {
-          let loggedInUser:any = localStorage.getItem("isAuthorised");
-          let parseloggedInUser = JSON.parse(loggedInUser);
-          let data = {
-            stationName: this.deleteData.stationname,
-            stationId: this.deleteData.stationid,
-            dateTime: new Date(),
-            userName: parseloggedInUser.data[0].name
-          }
-          this.dataService.addDeletedStationLogData(data).subscribe(res => {
-            console.log('Log created successfully:', response);
-          })
-          console.log('Data deleted successfully:', response);
-        },
-        error: err => console.error('Error deleted data. Please check the console for details.', err)
-      });
-      this.showdeletePopup = false;
+    this.dataService.deletestation(this.deleteData.stationid).subscribe({
+      next: response => {
+        let loggedInUser: any = localStorage.getItem("isAuthorised");
+        let parseloggedInUser = JSON.parse(loggedInUser);
+        let data = {
+          stationName: this.deleteData.stationname,
+          stationId: this.deleteData.stationid,
+          dateTime: new Date(),
+          userName: parseloggedInUser.data[0].name
+        }
+        this.dataService.addDeletedStationLogData(data).subscribe(res => {
+          console.log('Log created successfully:', response);
+        })
+        console.log('Data deleted successfully:', response);
+      },
+      error: err => console.error('Error deleted data. Please check the console for details.', err)
+    });
+    this.showdeletePopup = false;
   }
 
   cancelEdit() {
     this.editData = {
       stationname: this.editData.stationname,
       stationid: this.editData.stationid,
-      editIndex : this.editData.editIndex,
-      previousstationid : this.editData.previousstationid
+      editIndex: this.editData.editIndex,
+      previousstationid: this.editData.previousstationid
     };
     this.showEditPopup = false;
   }
-  canceldelete(){
+  canceldelete() {
     this.showdeletePopup = false;
   }
   Addstation() {
@@ -195,15 +195,15 @@ export class DataentryComponent {
   cancelAddStation() {
     this.showPopup = false;
   }
-  addData(){
+  addData() {
     this.dataService.addData(this.data).subscribe({
       next: response => {
         this.message = response.message;
       },
       error: err => console.error('Error adding data. Please check the console for details.', err)
-  });
-  window.location.reload();
-  this.showPopup = false;
+    });
+    window.location.reload();
+    this.showPopup = false;
   }
 
   showMessage(elementRef: any) {
@@ -215,12 +215,12 @@ export class DataentryComponent {
       elementRef.style.background = 'red';
       // alert("Please enter a valid number with only one decimal place");
     }
-    if(Number(elementRef.value) > 400){
-          elementRef.style.background = 'red'
-          alert("Rainfall is greater than 400mm")
-        }else{
-          elementRef.style.background = ''
-        }
+    if (Number(elementRef.value) > 400) {
+      elementRef.style.background = 'red'
+      alert("Rainfall is greater than 400mm")
+    } else {
+      elementRef.style.background = ''
+    }
   }
 
 
@@ -233,7 +233,7 @@ export class DataentryComponent {
   //   }
   // }
 
-  submit(){
+  submit() {
     let data = {
       date: this.dateCalculation(),
       updatedstationdata: this.filteredStations
@@ -251,12 +251,12 @@ export class DataentryComponent {
   uploadFile() {
     if (this.selectedFile) {
       this.dataService.uploadStationDataFile(this.selectedFile).subscribe(
-        (response:any) => {
+        (response: any) => {
           alert('File uploaded successfully');
           this.clearFileInput();
           this.filterByDate();
         },
-        (error:any) => {
+        (error: any) => {
           alert('Error uploading file:' + error);
         }
       );
@@ -277,12 +277,12 @@ export class DataentryComponent {
   uploadRainFallFile() {
     if (this.selectedRainfallFile) {
       this.dataService.uploadRainFallDataFile(this.selectedRainfallFile, this.dateCalculation()).subscribe(
-        (response:any) => {
+        (response: any) => {
           alert('File uploaded successfully');
           this.clearRainfallFileInput();
           this.filterByDate();
         },
-        (error:any) => {
+        (error: any) => {
           alert('Error uploading file:' + error);
         }
       );
@@ -297,13 +297,13 @@ export class DataentryComponent {
   }
 
 
-  exportAsXLSX():void {
+  exportAsXLSX(): void {
     this.exportAsExcelFile(this.existingstationdata, 'export-to-excel');
   }
 
   exportAsExcelFile(json: any[], excelFileName: string): void {
     const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(json);
-    console.log('worksheet',worksheet);
+    console.log('worksheet', worksheet);
     const workbook: XLSX.WorkBook = { Sheets: { 'data': worksheet }, SheetNames: ['data'] };
     const excelBuffer: any = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
     this.saveAsExcelFile(excelBuffer, excelFileName);

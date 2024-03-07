@@ -119,8 +119,8 @@ export class MapContainerComponent implements OnInit {
         this.processedData.push({ districtID: item.districtid, Rainfall: (((item[this.inputDateNormal] - item[this.inputDateDaily]) / den)) });
       }
     }
-      else {
-        this.processedData = [];
+    else {
+      this.processedData = [];
       for (const item of this.fetchedData) {
         let den = item[this.currentDateDaily];
         if (item[this.currentDateDaily] == 0) {
@@ -128,47 +128,47 @@ export class MapContainerComponent implements OnInit {
         }
         this.processedData.push({ districtID: item.districtid, Rainfall: (((item[this.currentDateNormal] - item[this.currentDateDaily]) / den)) });
       }
-      }
+    }
   }
   loadGeoJSON1(): void {
-    if(this.inputValue && this.inputValue1){
+    if (this.inputValue && this.inputValue1) {
       this.inputValue = this.inputValue.padStart(2, '0');
       this.inputDateNormal = `${this.inputValue1}-${this.inputValue}`;
       this.inputDateDaily = `${this.inputValue}_${this.inputValue1}`;
       this.processFetchedData();
-    const name = 'name';
-    this.http.get('assets/geojson/INDIA_DISTRICT.json').subscribe((res: any) => {
-      L.geoJSON(res, {
-        style: (feature: any) => {
-          const id2 = feature.properties['OBJECTID'];
-          const matchedData = this.findMatchingData(id2);
-          const rainfall = matchedData ? matchedData.Rainfall : 0;
-          const color = this.getColorForRainfall(rainfall);
-          return {
-            fillColor: color,
-            weight: 0.5,
-            opacity: 2,
-            color: 'black',
-            fillOpacity: 0.7
-          };
-        },
-        onEachFeature: (feature: any, layer: any) => {
-          const id2 = feature.properties['OBJECTID'];
-          const matchedData = this.findMatchingData(id2);
+      const name = 'name';
+      this.http.get('assets/geojson/INDIA_DISTRICT.json').subscribe((res: any) => {
+        L.geoJSON(res, {
+          style: (feature: any) => {
+            const id2 = feature.properties['OBJECTID'];
+            const matchedData = this.findMatchingData(id2);
+            const rainfall = matchedData ? matchedData.Rainfall : 0;
+            const color = this.getColorForRainfall(rainfall);
+            return {
+              fillColor: color,
+              weight: 0.5,
+              opacity: 2,
+              color: 'black',
+              fillOpacity: 0.7
+            };
+          },
+          onEachFeature: (feature: any, layer: any) => {
+            const id2 = feature.properties['OBJECTID'];
+            const matchedData = this.findMatchingData(id2);
 
-          layer.bindPopup(`name: ${feature.properties[name]}`);
-          layer.on('mouseover', () => {
-            layer.openPopup();
-          });
-          layer.on('mouseout', () => {
-            layer.closePopup();
-          });
-        }
-      }).addTo(this.map_canvas);
-    });
+            layer.bindPopup(`name: ${feature.properties[name]}`);
+            layer.on('mouseover', () => {
+              layer.openPopup();
+            });
+            layer.on('mouseout', () => {
+              layer.closePopup();
+            });
+          }
+        }).addTo(this.map_canvas);
+      });
 
+    }
   }
-}
   loadGeoJSON(): void {
     const name = 'name';
     this.http.get('assets/geojson/INDIA_DISTRICT.json').subscribe((res: any) => {

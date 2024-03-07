@@ -8,18 +8,18 @@ import { Router } from '@angular/router';
 })
 export class HeaderComponent implements OnInit {
 
-  loggedInUser:any;
+  loggedInUser: any;
 
   constructor(
     private router: Router
-  ){}
+  ) { }
 
   ngOnInit(): void {
-    let loggedInUser:any = localStorage.getItem("isAuthorised");
+    let loggedInUser: any = localStorage.getItem("isAuthorised");
     this.loggedInUser = JSON.parse(loggedInUser);
   }
 
-  logOut(){
+  logOut() {
     localStorage.removeItem("isAuthorised");
     this.router.navigate(['login']);
   }

@@ -8,10 +8,10 @@ import { DataService } from 'src/app/data.service';
   templateUrl: './front-page.component.html',
   styleUrls: ['./front-page.component.css']
 })
-export class FrontPageComponent implements OnInit{
+export class FrontPageComponent implements OnInit {
 
   date: string = String(new Date().getDate());
-  month: string = String((new Date().getMonth()+1).toString().length == 1 ? ('0' + (new Date().getMonth()+1)) : (new Date().getMonth()+1));
+  month: string = String((new Date().getMonth() + 1).toString().length == 1 ? ('0' + (new Date().getMonth() + 1)) : (new Date().getMonth() + 1));
   year: string = '2024'
 
   fromDate: Date = new Date();
@@ -21,14 +21,14 @@ export class FrontPageComponent implements OnInit{
   constructor(
     private router: Router,
     private dataService: DataService
-    ) {
-      // this.setDateMonth();
-      // this.getAllDaysInMonth();
-    }
+  ) {
+    // this.setDateMonth();
+    // this.getAllDaysInMonth();
+  }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
-  setFromAndToDate(){
+  setFromAndToDate() {
     let data = {
       fromDate: this.fromDate,
       toDate: this.toDate
@@ -42,8 +42,8 @@ export class FrontPageComponent implements OnInit{
     var toDate = this.toDate
 
     if (fromDate > toDate) {
-        alert('From date cannot be greater than To date');
-        this.fromDate = toDate;
+      alert('From date cannot be greater than To date');
+      this.fromDate = toDate;
     }
   }
 

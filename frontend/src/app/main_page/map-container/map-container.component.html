@@ -2,19 +2,9 @@
   <div style="border: #333 1px ridge; overflow: hidden">
     <div class="values">
       <label for="date" id="date_label">Enter Date : </label>
-      <input
-        id="date"
-        type="text"
-        [(ngModel)]="inputValue"
-
-      />
+      <input id="date" type="text" [(ngModel)]="inputValue" />
       <label for="month" id="month_label"> Enter Month : </label>
-      <select
-        id="month"
-        type="text"
-        [(ngModel)]="inputValue1"
-        default="Enter a value"
-      >
+      <select id="month" type="text" [(ngModel)]="inputValue1" default="Enter a value">
         <option value="Jan">January</option>
         <option value="Feb">February</option>
         <option value="Mar">March</option>
@@ -32,18 +22,14 @@
       <button id="load" (click)="loadGeoJSON1()">Get Normal Map</button>
     </div>
 
-    <div
-      id="map_canvas"
-      style="
+    <div id="map_canvas" style="
         width: 100%;
         height: 590px;
         float: left;
         position: relative;
         outline: none;
-      "
-      class="leaflet-container leaflet-touch leaflet-fade-anim leaflet-grab leaflet-touch-drag leaflet-touch-zoom"
-      tabindex="0"
-    >
+      " class="leaflet-container leaflet-touch leaflet-fade-anim leaflet-grab leaflet-touch-drag leaflet-touch-zoom"
+      tabindex="0">
       <table style="width: 100%">
         <tbody>
           <tr>
@@ -55,80 +41,65 @@
                 <tbody>
                   <tr>
                     <td>
-                      <label
-                        style="
+                      <label style="
                           color: black;
                           vertical-align: middle;
                           font-family: Arial;
                           font-weight: bolder;
                           font-size: 15px;
-                        "
-                      >
-                        INDIA STATE NORMALS (mm)</label
-                      >
+                        ">
+                        INDIA STATE NORMALS (mm)</label>
                     </td>
                   </tr>
                   <tr>
                     <td>
-                      <label
-                        style="
+                      <label style="
                           color: black;
                           vertical-align: middle;
                           font-family: Arial;
                           font-weight: bolder;
                           font-size: 14px;
-                        "
-                      >
-                        Date : {{ inputValue }}</label
-                      >
+                        ">
+                        Date : {{ inputValue }}</label>
                     </td>
                   </tr>
                   <tr>
                     <td>
-                      <label
-                        style="
+                      <label style="
                           color: black;
                           vertical-align: middle;
                           font-family: Arial;
                           font-weight: bolder;
                           font-size: 12px;
-                        "
-                      >
-                        1992-2022</label
-                      >
+                        ">
+                        1992-2022</label>
                     </td>
                   </tr>
                   <tr>
                     <td>
-                      <label
-                        style="
+                      <label style="
                           color: black;
                           vertical-align: middle;
                           font-family: Arial;
                           font-weight: bolder;
                           font-size: 12px;
-                        "
-                      >
-                        INDIA METEOROLOGICAL DEPARTMENT</label
-                      >
+                        ">
+                        INDIA METEOROLOGICAL DEPARTMENT</label>
                     </td>
                   </tr>
                 </tbody>
               </table>
             </td>
             <td style="width: 30%">
-              <label
-                style="
+              <label style="
                   color: black;
                   vertical-align: middle;
                   font-family: Arial;
                   font-weight: bolder;
                   font-size: 12px;
                   text-align: center;
-                "
-              >
-                IMD, NEW DELHI</label
-              >
+                ">
+                IMD, NEW DELHI</label>
               <button class="download" (click)="downloadMapImage()">
                 Download
               </button>
@@ -137,10 +108,7 @@
         </tbody>
       </table>
       <div class="leaflet-bottom leaflet-right">
-        <table
-          class="info_legend leaflet-control"
-          style="width: 98%; height: 30px"
-        >
+        <table class="info_legend leaflet-control" style="width: 98%; height: 30px">
           <tbody>
             <tr align="center">
               <td width="5px"></td>
