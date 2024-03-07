@@ -2305,16 +2305,16 @@ private updateLegendDetailsPositionsubdiv(fullscreen: boolean): void {
 
   loadGeoJSON(): void {
     this.clearTextElements();
-    this.http.get('assets/geojson/INDIA_STATE.json').subscribe((stateRes: any) => {
-      const stateLayer = L.geoJSON(stateRes, {
-        style: {
-          weight: 2,
-          opacity: 1,
-          color: 'blue',
-          fillOpacity: 0
-        }
+    // this.http.get('assets/geojson/INDIA_STATE.json').subscribe((stateRes: any) => {
+    //   const stateLayer = L.geoJSON(stateRes, {
+    //     style: {
+    //       weight: 2,
+    //       opacity: 1,
+    //       color: 'blue',
+    //       fillOpacity: 0
+    //     }
         
-      }).addTo(this.map);
+    //   }).addTo(this.map);
 
     this.http.get('assets/geojson/INDIA_DISTRICT.json').subscribe((res: any) => {
       const districtLayer = L.geoJSON(res, {
@@ -2381,16 +2381,16 @@ private updateLegendDetailsPositionsubdiv(fullscreen: boolean): void {
       }).addTo(this.map);
     });
 
-    });
-    this.http.get('assets/geojson/INDIA_REGIONS.json').subscribe((regionres: any) => {
-      const regionLayer = L.geoJSON(regionres, {
-        style: {
-          weight: 2,
-          opacity: 1,
-          color: 'blue',
-          fillOpacity: 0
-        }
-      }).addTo(this.map1);
+    // });
+    // this.http.get('assets/geojson/INDIA_REGIONS.json').subscribe((regionres: any) => {
+    //   const regionLayer = L.geoJSON(regionres, {
+    //     style: {
+    //       weight: 2,
+    //       opacity: 1,
+    //       color: 'blue',
+    //       fillOpacity: 0
+    //     }
+    //   }).addTo(this.map1);
       
     this.http.get('assets/geojson/INDIA_STATE.json').subscribe((res: any) => {
     this.statecountlargeexcess = 0
@@ -2631,7 +2631,7 @@ private updateLegendDetailsPositionsubdiv(fullscreen: boolean): void {
       // Add the geoJsonLayer to the map
       geoJsonLayer.addTo(this.map1);
     });
-  });
+  // });
   this.http.get('assets/geojson/INDIA_REGIONS.json').subscribe((regionres: any) => {
     const regionLayer = L.geoJSON(regionres, {
       style: {
