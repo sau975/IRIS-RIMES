@@ -563,13 +563,13 @@
       <a class="main_nav">QPF VERIFICATION REPORT</a>
       <ul>
         <li>
-          <a style="background-color: orange;" routerLink="../underprogress">QPF VERIFICATION REPORT 2020</a>
+          <a (click)="openFile('QPF Verification Report 2020.pdf')">QPF VERIFICATION REPORT 2020</a>
         </li>
         <li>
-          <a style="background-color: orange;" routerLink="../underprogress">QPF VERIFICATION REPORT 2021</a>
+          <a (click)="openFile('QPF Verification Report 2021.pdf')">QPF VERIFICATION REPORT 2021</a>
         </li>
         <li>
-          <a style="background-color: orange;" routerLink="../underprogress">QPF VERIFICATION REPORT 2022</a>
+          <a (click)="openFile('QPF Verification Report 2022.pdf')">QPF VERIFICATION REPORT 2022</a>
         </li>
         <li *ngFor="let file of qpfReports;"><a (click)="downloadFile(file.file_data)">{{file.file_name | uppercase}}</a></li>
       </ul>
@@ -631,34 +631,34 @@
       <a class="main_nav">RAINFALL REPORTS</a>
       <ul>
         <li>
-          <a style="background-color: orange;" routerLink="../underprogress">RAINFALL STATISTICS OF INDIA - 2021</a>
+          <a (click)="openFile('Rainfall Statistics of India - 2021.pdf')">RAINFALL STATISTICS OF INDIA - 2021</a>
         </li>
         <li>
-          <a style="background-color: orange;" routerLink="../underprogress">RAINFALL STATISTICS OF INDIA - 2020</a>
+          <a (click)="openFile('Rainfall Statistics of India - 2020.pdf')">RAINFALL STATISTICS OF INDIA - 2020</a>
         </li>
         <li>
-          <a style="background-color: orange;" routerLink="../underprogress">RAINFALL STATISTICS OF INDIA - 2019</a>
+          <a (click)="openFile('Rainfall Statistics of India - 2019.pdf')">RAINFALL STATISTICS OF INDIA - 2019</a>
         </li>
         <li>
-          <a style="background-color: orange;" routerLink="../underprogress">RAINFALL STATISTICS OF INDIA - 2018</a>
+          <a (click)="openFile('Rainfall Statistics of India - 2018.pdf')">RAINFALL STATISTICS OF INDIA - 2018</a>
         </li>
         <li>
-          <a style="background-color: orange;" routerLink="../underprogress">RAINFALL STATISTICS OF INDIA - 2017</a>
+          <a (click)="openFile('Rainfall Statistics of India - 2017.pdf')">RAINFALL STATISTICS OF INDIA - 2017</a>
         </li>
         <li>
-          <a style="background-color: orange;" routerLink="../underprogress">RAINFALL STATISTICS OF INDIA - 2016</a>
+          <a (click)="openFile('Rainfall Statistics of India - 2016.pdf')">RAINFALL STATISTICS OF INDIA - 2016</a>
         </li>
         <li>
-          <a style="background-color: orange;" routerLink="../underprogress">RAINFALL STATISTICS OF INDIA - 2015</a>
+          <a (click)="openFile('Rainfall Statistics of India - 2015.pdf')">RAINFALL STATISTICS OF INDIA - 2015</a>
         </li>
         <li>
-          <a style="background-color: orange;" routerLink="../underprogress">RAINFALL STATISTICS OF INDIA - 2014</a>
+          <a (click)="openFile('Rainfall Statistics of India - 2014.pdf')">RAINFALL STATISTICS OF INDIA - 2014</a>
         </li>
         <li>
-          <a style="background-color: orange;" routerLink="../underprogress">RAINFALL STATISTICS OF INDIA - 2013</a>
+          <a (click)="openFile('Rainfall Statistics of India - 2013.pdf')">RAINFALL STATISTICS OF INDIA - 2013</a>
         </li>
         <li>
-          <a style="background-color: orange;" routerLink="../underprogress">RAINFALL STATISTICS OF INDIA - 2012</a>
+          <a (click)="openFile('Rainfall Statistics of India - 2012.pdf')">RAINFALL STATISTICS OF INDIA - 2012</a>
         </li>
         <li *ngFor="let file of rainFallReports;"><a (click)="downloadFile(file.id)">{{file.file_name}}</a></li>
       </ul>

@@ -5,6 +5,7 @@ import * as L from 'leaflet';
 import { DatePipe } from '@angular/common';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { Chart } from 'angular-highcharts';
+import { DataService } from '../data.service';
 
 @Component({
   selector: 'app-station-statistics',
@@ -13,7 +14,16 @@ import { Chart } from 'angular-highcharts';
 })
 export class StationStatisticsComponent implements OnInit, OnDestroy {
   @ViewChild('timeMenuTrigger') trigger: MatMenuTrigger | undefined;
-
+  selectedRegion: string = '';
+  selectedState: string = '';
+  selectedDistrict: string = '';
+  regionList:any[]=[];
+  filteredStates:any[]=[];
+  filteredDistricts:any[]=[];
+  filteredStations:any[]=[];
+  totalstations: number = 0;
+  notreceivedata: number = 0;
+  receivedata: number = 0;
   loading = false;
   private stationObservationMap: any;
   type: any = 'rainfall';
@@ -50,104 +60,104 @@ export class StationStatisticsComponent implements OnInit, OnDestroy {
   defaultLevelDetails!: any;
   endTime: any;
   arrowRotation = 0;
-
+  existingstationdata: any[] = [];
   stationWeatherParameters: any[] = [
-    {
-      text: 'Temperature',
-      weatherParams: 'temp',
-      colors: [
-        '#808080',
-        '#00ffff',
-        '#0000ff',
-        '#00008b',
-        '#006400',
-        '#90ee90',
-        '#ffff00',
-        '#ffd580',
-        '#ffa500',
-        '#f30000',
-        '#8b0000',
-      ],
-      categoryOptions: [
-        { text: 'Temperature', range: '(> 45°C)' },
-        { text: 'Temperature', range: '(40°C - 45°C)' },
-        { text: 'Temperature', range: '(30°C - 40°C)' },
-        { text: 'Temperature', range: '(10°C - 15°C)' },
-        { text: 'Temperature', range: '(5°C - 10°C)' },
-        { text: 'Temperature', range: '(5°C - 5°C)' },
-      ],
-      data: [
-        { hour: '00:00', value: 22, unit: '°C' },
-        { hour: '01:00', value: 22.5, unit: '°C' },
-        { hour: '02:00', value: 22.8, unit: '°C' },
-        { hour: '03:00', value: 23.2, unit: '°C' },
-        { hour: '04:00', value: 23.7, unit: '°C' },
-        { hour: '05:00', value: 24.1, unit: '°C' },
-        { hour: '06:00', value: 24.5, unit: '°C' },
-        { hour: '07:00', value: 24.9, unit: '°C' },
-        { hour: '08:00', value: 25.2, unit: '°C' },
-        { hour: '09:00', value: 25.6, unit: '°C' },
-        { hour: '10:00', value: 26.0, unit: '°C' },
-        { hour: '11:00', value: 26.3, unit: '°C' },
-        { hour: '12:00', value: 26.5, unit: '°C' },
-        { hour: '13:00', value: 26.7, unit: '°C' },
-        { hour: '14:00', value: 26.8, unit: '°C' },
-        { hour: '15:00', value: 26.9, unit: '°C' },
-        { hour: '16:00', value: 26.8, unit: '°C' },
-        { hour: '17:00', value: 26.6, unit: '°C' },
-        { hour: '18:00', value: 26.3, unit: '°C' },
-        { hour: '19:00', value: 26.0, unit: '°C' },
-        { hour: '20:00', value: 25.6, unit: '°C' },
-        { hour: '21:00', value: 25.2, unit: '°C' },
-        { hour: '22:00', value: 24.8, unit: '°C' },
-        { hour: '23:00', value: 24.4, unit: '°C' },
-      ],
-      iconName: 'device_thermostat',
-    },
-    {
-      text: 'Relative Humidity',
-      weatherParams: 'humidity',
-      colors: [
-        '#a52a2a',
-        '#8b0000',
-        '#ff0000',
-        '#ffa500',
-        '#fed8b1',
-        '#7ea2c8',
-        '#90ee90',
-        '#008000',
-        '#8467d7',
-        '#800080',
-      ],
-      categoryOptions: [],
-      data: [
-        { hour: '00:00', value: 95, unit: '%' },
-        { hour: '01:00', value: 93, unit: '%' },
-        { hour: '02:00', value: 92, unit: '%' },
-        { hour: '03:00', value: 91, unit: '%' },
-        { hour: '04:00', value: 90, unit: '%' },
-        { hour: '05:00', value: 88, unit: '%' },
-        { hour: '06:00', value: 87, unit: '%' },
-        { hour: '07:00', value: 85, unit: '%' },
-        { hour: '08:00', value: 83, unit: '%' },
-        { hour: '09:00', value: 82, unit: '%' },
-        { hour: '10:00', value: 80, unit: '%' },
-        { hour: '11:00', value: 78, unit: '%' },
-        { hour: '12:00', value: 77, unit: '%' },
-        { hour: '13:00', value: 75, unit: '%' },
-        { hour: '14:00', value: 74, unit: '%' },
-        { hour: '15:00', value: 72, unit: '%' },
-        { hour: '16:00', value: 71, unit: '%' },
-        { hour: '17:00', value: 70, unit: '%' },
-        { hour: '18:00', value: 69, unit: '%' },
-        { hour: '19:00', value: 68, unit: '%' },
-        { hour: '20:00', value: 67, unit: '%' },
-        { hour: '21:00', value: 66, unit: '%' },
-        { hour: '22:00', value: 65, unit: '%' },
-        { hour: '23:00', value: 64, unit: '%' },
-      ],
-      iconName: 'water',
-    },
+    // {
+    //   text: 'Temperature',
+    //   weatherParams: 'temp',
+    //   colors: [
+    //     '#808080',
+    //     '#00ffff',
+    //     '#0000ff',
+    //     '#00008b',
+    //     '#006400',
+    //     '#90ee90',
+    //     '#ffff00',
+    //     '#ffd580',
+    //     '#ffa500',
+    //     '#f30000',
+    //     '#8b0000',
+    //   ],
+    //   categoryOptions: [
+    //     { text: 'Temperature', range: '(> 45°C)' },
+    //     { text: 'Temperature', range: '(40°C - 45°C)' },
+    //     { text: 'Temperature', range: '(30°C - 40°C)' },
+    //     { text: 'Temperature', range: '(10°C - 15°C)' },
+    //     { text: 'Temperature', range: '(5°C - 10°C)' },
+    //     { text: 'Temperature', range: '(5°C - 5°C)' },
+    //   ],
+    //   data: [
+    //     { hour: '00:00', value: 22, unit: '°C' },
+    //     { hour: '01:00', value: 22.5, unit: '°C' },
+    //     { hour: '02:00', value: 22.8, unit: '°C' },
+    //     { hour: '03:00', value: 23.2, unit: '°C' },
+    //     { hour: '04:00', value: 23.7, unit: '°C' },
+    //     { hour: '05:00', value: 24.1, unit: '°C' },
+    //     { hour: '06:00', value: 24.5, unit: '°C' },
+    //     { hour: '07:00', value: 24.9, unit: '°C' },
+    //     { hour: '08:00', value: 25.2, unit: '°C' },
+    //     { hour: '09:00', value: 25.6, unit: '°C' },
+    //     { hour: '10:00', value: 26.0, unit: '°C' },
+    //     { hour: '11:00', value: 26.3, unit: '°C' },
+    //     { hour: '12:00', value: 26.5, unit: '°C' },
+    //     { hour: '13:00', value: 26.7, unit: '°C' },
+    //     { hour: '14:00', value: 26.8, unit: '°C' },
+    //     { hour: '15:00', value: 26.9, unit: '°C' },
+    //     { hour: '16:00', value: 26.8, unit: '°C' },
+    //     { hour: '17:00', value: 26.6, unit: '°C' },
+    //     { hour: '18:00', value: 26.3, unit: '°C' },
+    //     { hour: '19:00', value: 26.0, unit: '°C' },
+    //     { hour: '20:00', value: 25.6, unit: '°C' },
+    //     { hour: '21:00', value: 25.2, unit: '°C' },
+    //     { hour: '22:00', value: 24.8, unit: '°C' },
+    //     { hour: '23:00', value: 24.4, unit: '°C' },
+    //   ],
+    //   iconName: 'device_thermostat',
+    // },
+    // {
+    //   text: 'Relative Humidity',
+    //   weatherParams: 'humidity',
+    //   colors: [
+    //     '#a52a2a',
+    //     '#8b0000',
+    //     '#ff0000',
+    //     '#ffa500',
+    //     '#fed8b1',
+    //     '#7ea2c8',
+    //     '#90ee90',
+    //     '#008000',
+    //     '#8467d7',
+    //     '#800080',
+    //   ],
+    //   categoryOptions: [],
+    //   data: [
+    //     { hour: '00:00', value: 95, unit: '%' },
+    //     { hour: '01:00', value: 93, unit: '%' },
+    //     { hour: '02:00', value: 92, unit: '%' },
+    //     { hour: '03:00', value: 91, unit: '%' },
+    //     { hour: '04:00', value: 90, unit: '%' },
+    //     { hour: '05:00', value: 88, unit: '%' },
+    //     { hour: '06:00', value: 87, unit: '%' },
+    //     { hour: '07:00', value: 85, unit: '%' },
+    //     { hour: '08:00', value: 83, unit: '%' },
+    //     { hour: '09:00', value: 82, unit: '%' },
+    //     { hour: '10:00', value: 80, unit: '%' },
+    //     { hour: '11:00', value: 78, unit: '%' },
+    //     { hour: '12:00', value: 77, unit: '%' },
+    //     { hour: '13:00', value: 75, unit: '%' },
+    //     { hour: '14:00', value: 74, unit: '%' },
+    //     { hour: '15:00', value: 72, unit: '%' },
+    //     { hour: '16:00', value: 71, unit: '%' },
+    //     { hour: '17:00', value: 70, unit: '%' },
+    //     { hour: '18:00', value: 69, unit: '%' },
+    //     { hour: '19:00', value: 68, unit: '%' },
+    //     { hour: '20:00', value: 67, unit: '%' },
+    //     { hour: '21:00', value: 66, unit: '%' },
+    //     { hour: '22:00', value: 65, unit: '%' },
+    //     { hour: '23:00', value: 64, unit: '%' },
+    //   ],
+    //   iconName: 'water',
+    // },
     {
       text: 'Rainfall',
       weatherParams: 'rf',
@@ -206,14 +216,16 @@ export class StationStatisticsComponent implements OnInit, OnDestroy {
   selected_Date: any;
   current_Date: any;
   manual_date_time: any;
-  isSideNavOpen: boolean = false;
+  isSideNavOpen: boolean = true;
   isBottomNavOpen: boolean = false;
   selectedWeatherOption: string = 'Temperature';
   selectedWeatherData: any[] = this.stationWeatherParameters[0].data;
 
   constructor(
     private formBuilder: FormBuilder,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    private dataService: DataService,
+    private http: HttpClient
   ) {}
 
   ngOnInit(): void {
@@ -224,6 +236,8 @@ export class StationStatisticsComponent implements OnInit, OnDestroy {
 
     this.initStationObservationMap();
     this.getCurrentDate();
+    this.fetchDataFromBackend();
+    this.loadGeoJSON();
   }
 
   getCurrentDate() {
@@ -237,6 +251,21 @@ export class StationStatisticsComponent implements OnInit, OnDestroy {
         time: formattedTime,
       };
     }
+  }
+
+  onChangeRegion(){
+    debugger
+    let tempStates = this.existingstationdata.filter(s => s.region == this.selectedRegion);
+    console.log(tempStates, "=======")
+    this.filteredStates = Array.from(new Set(tempStates.map(a => a.state)));
+    this.selectedState = ''
+    this.selectedDistrict = ''
+  }
+
+  onChangeState(){
+    let tempDistricts = this.existingstationdata.filter(d => d.state == this.selectedState);
+    this.filteredDistricts = Array.from(new Set(tempDistricts.map(a => a.district)));
+    this.selectedDistrict = ''
   }
 
   ngOnDestroy(): void {
@@ -264,20 +293,12 @@ export class StationStatisticsComponent implements OnInit, OnDestroy {
 
   private initStationObservationMap(): void {
     this.stationObservationMap = L.map('map_observations', {
-      center: [
-        28.7041,
-        77.1025,
-      ],
+      center: [24, 76.9629],
       zoom: 4,
       zoomControl: false,
-      minZoom: 7,
+      minZoom: 5,
     });
 
-    L.tileLayer(
-      'https://api.mapbox.com/styles/v1/nazmul-rimes/cl14sra1f008s14pc9jkstfje/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoibmF6bXVsLXJpbWVzIiwiYSI6ImNrOWFzeHNtcDA3MjAzbG50dnB0YmkxNnAifQ.usNB6Kf9PyFtKTUF1XI38g'
-    ).addTo(this.stationObservationMap);
-
-    // Add custom zoom controls to the bottom right corner
     L.control
       .zoom({ position: 'bottomright' })
       .addTo(this.stationObservationMap);
@@ -375,14 +396,14 @@ export class StationStatisticsComponent implements OnInit, OnDestroy {
     }
   }
 
-  loadForecastData(country: number, ucode: any, source: any, parameter: any) {
-    this.isSideNavOpen = true;
-  }
+  // loadForecastData(country: number, ucode: any, source: any, parameter: any) {
+  //   this.isSideNavOpen = true;
+  // }
 
-  closeWeatherDataList() {
-    this.isSideNavOpen = false;
-    this.weatherDataList = [];
-  }
+  // closeWeatherDataList() {
+  //   this.isSideNavOpen = false;
+  //   this.weatherDataList = [];
+  // }
 
   changeDate() {
     this.manual_date_time = this.formatDate(this.selected_Date);
@@ -434,26 +455,200 @@ export class StationStatisticsComponent implements OnInit, OnDestroy {
     console.log('category', category);
   }
 
-  toggleSideNav() {
-    this.isSideNavOpen = !this.isSideNavOpen;
-    this.isBottomNavOpen = false;
+  // toggleSideNav() {
+  //   this.isSideNavOpen = !this.isSideNavOpen;
+  //   this.isBottomNavOpen = false;
 
-    const button = document.querySelector('.sidebar-btn');
+  //   const button = document.querySelector('.sidebar-btn');
 
-    if (button) {
-      if (this.isSideNavOpen) {
-        button.classList.add('rotate-180');
-      } else {
-        button.classList.remove('rotate-180');
-      }
-    }
-  }
+  //   if (button) {
+  //     if (this.isSideNavOpen) {
+  //       button.classList.add('rotate-180');
+  //     } else {
+  //       button.classList.remove('rotate-180');
+  //     }
+  //   }
+  // }
 
   toggleBottomNav() {
     this.isBottomNavOpen = !this.isBottomNavOpen;
   }
+  dateCalculation() {
+    const months = [
+      'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+      'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+    ];
+    let newDate = new Date(!this.selected_Date ? this.current_Date.date : this.manual_date_time.date);
+    let dd = String(newDate.getDate());
+    const year = newDate.getFullYear();
+    const currmonth = months[newDate.getMonth()];
+    const selectedYear = String(year).slice(-2);
+    return `${dd.padStart(2, '0')}_${currmonth}_${selectedYear}`;
+  }
+
+  fetchDataFromBackend(): void {
+    this.notreceivedata = 0;
+    this.receivedata = 0;
+    this.dataService.existingstationdata().subscribe({
+      next: value => {
+        this.existingstationdata = value;
+        this.regionList = Array.from(new Set(this.existingstationdata.map(a => a.region)));
+        this.filterByDate();
+        console.log( this.regionList, "--------")
+        this.totalstations = value.length;
+        value.forEach((element:any) => {
+          if(element.RainFall == -999.9){
+            this.notreceivedata = this.notreceivedata + 1;
+          }
+          if(element.RainFall > 0){
+            this.receivedata = this.receivedata + 1;
+          }
+        });
+      },
+      error: err => console.error('Error fetching data:', err)
+    });
+  }
+
+  filterByDate(){
+    this.filteredStations = this.existingstationdata.filter(s => s.district == this.selectedDistrict);
+    this.filteredStations.map(x => {
+      return x.RainFall = x[this.dateCalculation()];
+    })
+  }
+
+  loadGeoJSON(): void {
+    this.http.get('assets/geojson/INDIA_DISTRICT.json').subscribe((res: any) => {
+      L.geoJSON(res, {
+        style: (feature: any) => {
+          const id2 = feature.properties['district_c'];
+          const matchedData = this.findMatchingData(id2);
+
+          let rainfall: any;
+
+          if(matchedData){
+
+            if(Number.isNaN(matchedData.dailyrainfall)){
+              rainfall = ' ';
+            }
+            else{
+              rainfall = matchedData.dailydeparturerainfall;
+            }
+
+          }
+          else{
+            rainfall = -100
+          }
+
+          // const rainfall = matchedData ? matchedData.dailydeparturerainfall : -100;
+
+          // const actual = matchedData && matchedData.dailyrainfall == 'NaN' ? ' ' : "notnull";
+          const color = this.getColorForRainfall1(rainfall);
+          return {
+            fillColor: color,
+            weight: 0.5,
+            opacity: 2,
+            color: 'black',
+            fillOpacity: 2
+
+          };
+        },
+        onEachFeature: (feature: any, layer: any) => {
+          const id1 = feature.properties['district'];
+          const id2 = feature.properties['district_c'];
+          const matchedData = this.findMatchingData(id2);
+
+          let rainfall: any;
+
+          if(matchedData){
+
+            if(Number.isNaN(matchedData.dailyrainfall)){
+              rainfall = "NA";
+            }
+            else{
+              rainfall = matchedData.dailydeparturerainfall;
+            }
+
+          }
+          else{
+            rainfall = -100
+          }
+
+
+
+          //const rainfall = matchedData && matchedData.dailydeparturerainfall !== null && matchedData.dailydeparturerainfall !== undefined && !Number.isNaN(matchedData.dailydeparturerainfall) ? matchedData.dailydeparturerainfall.toFixed(2) : 'NA';
+          const dailyrainfall = matchedData && matchedData.dailyrainfall !== null && matchedData.dailyrainfall != undefined && !Number.isNaN(matchedData.dailyrainfall) ? matchedData.dailyrainfall.toFixed(2) : 'NA';
+          const normalrainfall = matchedData && !Number.isNaN(matchedData.normalrainfall) ? matchedData.normalrainfall.toFixed(2) : 'NA';
+          const popupContent = `
+            <div style="background-color: white; padding: 5px; font-family: Arial, sans-serif;">
+              <div style="color: #002467; font-weight: bold; font-size: 10px;">DISTRICT: ${id1}</div>
+              <div style="color: #002467; font-weight: bold; font-size: 10px;">DAILY RAINFALL: ${dailyrainfall}</div>
+              <div style="color: #002467; font-weight: bold; font-size: 10px;">NORMAL RAINFALL: ${normalrainfall}</div>
+              <div style="color: #002467; font-weight: bold; font-size: 10px;">DEPARTURE: ${rainfall}% </div>
+            </div>
+          `;
+          layer.bindPopup(popupContent);
+          layer.on('mouseover', () => {
+            layer.openPopup();
+          });
+          layer.on('mouseout', () => {
+            layer.closePopup();
+          });
+        }
+      }).addTo(this.stationObservationMap);
+    });
+  }
+
+  findMatchingData(id: string): any | null {
+    const matchedData = this.existingstationdata.find((data: any) => data.districtID == id);
+    if (matchedData) {
+      return matchedData;
+    }
+    else {
+      return null;
+    }
+  }
+
+  getColorForRainfall1(rainfall: any): string {
+    const numericId = rainfall;
+    let cat = '';
+    if (numericId == ' ') {
+      return '#c0c0c0';
+    }
+    if (numericId > 60) {
+      cat = 'LE';
+      return '#0096ff';
+    }
+    if (numericId >= 20 && numericId <= 59) {
+      cat = 'E';
+      return '#32c0f8';
+    }
+    if (numericId >= -19 && numericId <= 19) {
+      cat = 'N';
+      return '#00cd5b';
+    }
+    if (numericId >= -59 && numericId <= -20) {
+      cat = 'D';
+      return '#ff2700';
+    }
+    if (numericId >= -99 && numericId <= -60) {
+      cat = 'LD';
+      return '#ffff20';
+    }
+
+    if (numericId == -100) {
+      cat = 'NR';
+      return '#ffffff';
+    }
+
+    else {
+      cat = 'ND';
+      return '#c0c0c0';
+    }
+
+  }
 
   submitParameterForm() {
+    this.fetchDataFromBackend();
     const observationForm = {
       weatherParam: this.selectedParameter,
       observationDate: this.selected_Date
