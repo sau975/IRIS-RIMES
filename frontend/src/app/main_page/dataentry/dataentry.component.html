@@ -72,8 +72,8 @@
     </div>
     <div class="col-2">
       <label for="district">Select Date :</label>
-      <input type="date" class="form-control" [ngModel]="selectedDate | date:'yyyy-MM-dd'"
-        (ngModelChange)="selectedDate = $event">
+      <input type="date" class="form-control" [min]="minDate" [ngModel]="selectedDate | date:'yyyy-MM-dd'"
+        (ngModelChange)="onChangeDate($event)">
     </div>
     <div class="col-1 mt-3">
       <button class="btn btn-success" type="button" (click)="filterByDate()">Submit</button>
@@ -129,13 +129,15 @@
           <input class="form-control" type="file" #fileInput (change)="onFileSelected($event)">
         </div>
         <div class="col-2">
-          <button (click)="uploadFile()" class="btn btn-success">Upload Stations</button>
+          <button (click)="uploadFile()" class="btn btn-success">Upload Stations</button> <br>
+          <a href="javascript:void(0)" (click)="downloadStationSampleFile()">Sample File</a>
         </div>
         <div class="mb-3 col-2">
           <input class="form-control" type="file" #rainfallFileInput (change)="onRainfallFileSelected($event)">
         </div>
         <div class="col-2">
-          <button (click)="uploadRainFallFile()" class="btn btn-success">Upload Rainfall</button>
+          <button (click)="uploadRainFallFile()" class="btn btn-success">Upload Rainfall</button> <br>
+          <a href="javascript:void(0)" (click)="downloadRainfallSampleFile()">Sample File</a>
         </div>
       </div>
       <br />
@@ -147,8 +149,8 @@
             <th style="border: 1px solid black">STATION NAME</th>
             <th style="border: 1px solid black">STATION ID</th>
             <th style="border: 1px solid black">RAINFALL</th>
-            <th style="border: 1px solid black">DATE</th>
-            <th style="border: 1px solid black">TIME</th>
+            <!-- <th style="border: 1px solid black">DATE</th>
+            <th style="border: 1px solid black">TIME</th> -->
             <th style="border: 1px solid black">ACTION</th>
             <th style="border: 1px solid black">TYPE</th>
             <th style="border: 1px solid black">NEW/OLD</th>
@@ -167,10 +169,10 @@
                 required style="border: none;" step="0.1" (input)="showMessage(rainFallElementRef)">
             </td>
 
-            <td style="border: 1px solid black"><input type="date" [(ngModel)]="todayDate" id="date" name="date"
+            <!-- <td style="border: 1px solid black"><input type="date" [(ngModel)]="todayDate" id="date" name="date"
                 required style="border: none;"></td>
             <td style="border: 1px solid black"><input type="time" id="time" name="time" required style="border: none;">
-            </td>
+            </td> -->
             <td style="border: 1px solid black">
               <button class="edit" (click)="editStation(station)">Edit</button>
               <button class="delete" (click)="deleteStationdata(i)">Delete</button>

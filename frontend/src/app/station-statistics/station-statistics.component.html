@@ -223,10 +223,11 @@
 
 		  <div class="my-3 d-flex justify-content-center">
 				<button mat-button
+        type="submit"
 						class="mx-ato"
 						[class.hidden]="!isSideNavOpen"
 						style="background-color:#4050b5; color:white">
-						show station data
+						Show Station Data
 				</button>
 		  </div>
 
@@ -245,6 +246,8 @@
 				<mat-icon>graphic_eq</mat-icon>
 				<span>Station Details</span>
 			</div>
+      <mat-icon (click)="closePopup()">close</mat-icon>
+
 			<!-- <div class="h5 align-self-center" [class.selected]="selectedOption === 'Others'" (click)="selectOption('Others')">Others</div> -->
 		</div>
 

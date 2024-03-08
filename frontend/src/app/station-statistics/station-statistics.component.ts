@@ -471,7 +471,7 @@ export class StationStatisticsComponent implements OnInit, OnDestroy {
   // }
 
   toggleBottomNav() {
-    this.isBottomNavOpen = !this.isBottomNavOpen;
+    this.isBottomNavOpen = true;
   }
   dateCalculation() {
     const months = [
@@ -493,27 +493,33 @@ export class StationStatisticsComponent implements OnInit, OnDestroy {
       next: value => {
         this.existingstationdata = value;
         this.regionList = Array.from(new Set(this.existingstationdata.map(a => a.region)));
-        this.filterByDate();
-        console.log( this.regionList, "--------")
-        this.totalstations = value.length;
-        value.forEach((element:any) => {
-          if(element.RainFall == -999.9){
-            this.notreceivedata = this.notreceivedata + 1;
-          }
-          if(element.RainFall > 0){
-            this.receivedata = this.receivedata + 1;
-          }
-        });
       },
       error: err => console.error('Error fetching data:', err)
     });
   }
 
   filterByDate(){
-    this.filteredStations = this.existingstationdata.filter(s => s.district == this.selectedDistrict);
+    if(this.selectedDistrict){
+      this.filteredStations = this.existingstationdata.filter(s =>  s.district == this.selectedDistrict);
+    }
+    else if(this.selectedState){
+      this.filteredStations = this.existingstationdata.filter(s =>  s.state == this.selectedState);
+    }
+    else if(this.selectedRegion){
+      this.filteredStations = this.existingstationdata.filter(s =>  s.region == this.selectedRegion);
+    }
     this.filteredStations.map(x => {
       return x.RainFall = x[this.dateCalculation()];
     })
+    this.totalstations = this.filteredStations.length;
+    this.filteredStations.forEach((element:any) => {
+      if(element.RainFall == -999.9){
+        this.notreceivedata = this.notreceivedata + 1;
+      }
+      if(element.RainFall > 0){
+        this.receivedata = this.receivedata + 1;
+      }
+    });
   }
 
   loadGeoJSON(): void {
@@ -527,11 +533,11 @@ export class StationStatisticsComponent implements OnInit, OnDestroy {
 
           if(matchedData){
 
-            if(Number.isNaN(matchedData.dailyrainfall)){
+            if(Number.isNaN(matchedData.RainFall)){
               rainfall = ' ';
             }
             else{
-              rainfall = matchedData.dailydeparturerainfall;
+              rainfall = matchedData.RainFall;
             }
 
           }
@@ -541,7 +547,7 @@ export class StationStatisticsComponent implements OnInit, OnDestroy {
 
           // const rainfall = matchedData ? matchedData.dailydeparturerainfall : -100;
 
-          // const actual = matchedData && matchedData.dailyrainfall == 'NaN' ? ' ' : "notnull";
+          // const actual = matchedData && matchedData.RainFall == 'NaN' ? ' ' : "notnull";
           const color = this.getColorForRainfall1(rainfall);
           return {
             fillColor: color,
@@ -561,11 +567,11 @@ export class StationStatisticsComponent implements OnInit, OnDestroy {
 
           if(matchedData){
 
-            if(Number.isNaN(matchedData.dailyrainfall)){
+            if(Number.isNaN(matchedData.RainFall)){
               rainfall = "NA";
             }
             else{
-              rainfall = matchedData.dailydeparturerainfall;
+              rainfall = matchedData.RainFall;
             }
 
           }
@@ -576,30 +582,30 @@ export class StationStatisticsComponent implements OnInit, OnDestroy {
 
 
           //const rainfall = matchedData && matchedData.dailydeparturerainfall !== null && matchedData.dailydeparturerainfall !== undefined && !Number.isNaN(matchedData.dailydeparturerainfall) ? matchedData.dailydeparturerainfall.toFixed(2) : 'NA';
-          const dailyrainfall = matchedData && matchedData.dailyrainfall !== null && matchedData.dailyrainfall != undefined && !Number.isNaN(matchedData.dailyrainfall) ? matchedData.dailyrainfall.toFixed(2) : 'NA';
-          const normalrainfall = matchedData && !Number.isNaN(matchedData.normalrainfall) ? matchedData.normalrainfall.toFixed(2) : 'NA';
-          const popupContent = `
-            <div style="background-color: white; padding: 5px; font-family: Arial, sans-serif;">
-              <div style="color: #002467; font-weight: bold; font-size: 10px;">DISTRICT: ${id1}</div>
-              <div style="color: #002467; font-weight: bold; font-size: 10px;">DAILY RAINFALL: ${dailyrainfall}</div>
-              <div style="color: #002467; font-weight: bold; font-size: 10px;">NORMAL RAINFALL: ${normalrainfall}</div>
-              <div style="color: #002467; font-weight: bold; font-size: 10px;">DEPARTURE: ${rainfall}% </div>
-            </div>
-          `;
-          layer.bindPopup(popupContent);
-          layer.on('mouseover', () => {
-            layer.openPopup();
-          });
-          layer.on('mouseout', () => {
-            layer.closePopup();
-          });
+          // const dailyrainfall = matchedData && matchedData.dailyrainfall !== null && matchedData.dailyrainfall != undefined && !Number.isNaN(matchedData.dailyrainfall) ? matchedData.dailyrainfall.toFixed(2) : 'NA';
+          // const normalrainfall = matchedData && !Number.isNaN(matchedData.normalrainfall) ? matchedData.normalrainfall.toFixed(2) : 'NA';
+          // const popupContent = `
+          //   <div style="background-color: white; padding: 5px; font-family: Arial, sans-serif;">
+          //     <div style="color: #002467; font-weight: bold; font-size: 10px;">DISTRICT: ${id1}</div>
+          //     <div style="color: #002467; font-weight: bold; font-size: 10px;">DAILY RAINFALL: ${dailyrainfall}</div>
+          //     <div style="color: #002467; font-weight: bold; font-size: 10px;">NORMAL RAINFALL: ${normalrainfall}</div>
+          //     <div style="color: #002467; font-weight: bold; font-size: 10px;">DEPARTURE: ${rainfall}% </div>
+          //   </div>
+          // `;
+          // layer.bindPopup(popupContent);
+          // layer.on('mouseover', () => {
+          //   layer.openPopup();
+          // });
+          // layer.on('mouseout', () => {
+          //   layer.closePopup();
+          // });
         }
       }).addTo(this.stationObservationMap);
     });
   }
 
   findMatchingData(id: string): any | null {
-    const matchedData = this.existingstationdata.find((data: any) => data.districtID == id);
+    const matchedData = this.filteredStations.find((data: any) => data.district_code == id);
     if (matchedData) {
       return matchedData;
     }
@@ -648,7 +654,7 @@ export class StationStatisticsComponent implements OnInit, OnDestroy {
   }
 
   submitParameterForm() {
-    this.fetchDataFromBackend();
+    this.filterByDate();
     const observationForm = {
       weatherParam: this.selectedParameter,
       observationDate: this.selected_Date
@@ -660,8 +666,12 @@ export class StationStatisticsComponent implements OnInit, OnDestroy {
     };
 
     this.toggleBottomNav();
-
+    this.loadGeoJSON();
     this.updateChart(this.stationWeatherParameters[0]);
+  }
+
+  closePopup(){
+    this.isBottomNavOpen = false;
   }
 
   selectStationDataOption(option: string): void {

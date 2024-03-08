@@ -59,7 +59,7 @@ export class DataentryComponent {
     lng: '',
     activationDate: this.selectedDate
   };
-
+  minDate: string = '';
 
   ngOnInit(): void {
     this.fetchDataFromBackend();
@@ -67,12 +67,25 @@ export class DataentryComponent {
   constructor(
     private dataService: DataService,
   ) {
+    let loggedInUser: any = localStorage.getItem("isAuthorised");
+    let loggedInUserObject = JSON.parse(loggedInUser);
+    if(loggedInUserObject.data[0].mcorhq == 'mc'){
+      const todayDate = new Date();
+      todayDate.setDate(todayDate.getDate() - 29);
+      this.minDate = this.formatDate(todayDate);
+    }
+
     const today = new Date();
     const dd = String(today.getDate()).padStart(2, '0');
     const mm = String(today.getMonth() + 1).padStart(2, '0');
     const yyyy = today.getFullYear();
 
     this.todayDate = yyyy + '-' + mm + '-' + dd;
+  }
+
+  onChangeDate(value:any){
+    this.selectedDate = value;
+    this.clearRainfallFileInput();
   }
 
   onChangeRegion() {
@@ -260,6 +273,8 @@ export class DataentryComponent {
           alert('Error uploading file:' + error);
         }
       );
+    }else{
+      alert('Please choose file:');
     }
   }
 
@@ -272,6 +287,25 @@ export class DataentryComponent {
 
   onRainfallFileSelected(event: any) {
     this.selectedRainfallFile = event.target.files[0];
+    this.readExcel();
+  }
+
+  readExcel(): void {
+    if(this.selectedRainfallFile){
+      const fileReader = new FileReader();
+      fileReader.onload = (e: any) => {
+        const data = new Uint8Array(e.target.result);
+        const workbook = XLSX.read(data, { type: 'array' });
+        const sheetName = workbook.SheetNames[0];
+        const worksheet = workbook.Sheets[sheetName];
+        const jsonData:any = XLSX.utils.sheet_to_json(worksheet, { raw: true });
+          if(!jsonData[0].hasOwnProperty(this.dateCalculation())){
+            alert("Please select correct date")
+            this.clearRainfallFileInput();
+          }
+      };
+      fileReader.readAsArrayBuffer(this.selectedRainfallFile);
+    }
   }
 
   uploadRainFallFile() {
@@ -286,7 +320,16 @@ export class DataentryComponent {
           alert('Error uploading file:' + error);
         }
       );
+    }else{
+      alert('Please choose file:');
     }
+  }
+
+  private formatDate(date: Date): string {
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+    return `${year}-${month}-${day}`;
   }
 
   clearRainfallFileInput(): void {
@@ -296,6 +339,13 @@ export class DataentryComponent {
     }
   }
 
+  downloadRainfallSampleFile(){
+    window.open('/assets/rainfall_sample_file.xlsx', '_blank');
+  }
+
+  downloadStationSampleFile(){
+    window.open('/assets/station_sample_file.csv', '_blank');
+  }
 
   exportAsXLSX(): void {
     this.exportAsExcelFile(this.existingstationdata, 'export-to-excel');
