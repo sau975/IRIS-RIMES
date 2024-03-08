@@ -2272,7 +2272,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     this.http.get('assets/geojson/INDIA_STATE.json').subscribe((stateRes: any) => {
       const stateLayer = L.geoJSON(stateRes, {
         style: {
-          weight: 2,
+          weight: 1,
           opacity: 1,
           color: 'blue',
           fillOpacity: 0
