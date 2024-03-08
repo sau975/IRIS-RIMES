@@ -129,7 +129,15 @@ export class DataentryComponent {
   }
 
   filterByDate() {
-    this.filteredStations = this.existingstationdata.filter(s => s.district == this.selectedDistrict);
+    if(this.selectedDistrict){
+      this.filteredStations = this.existingstationdata.filter(s =>  s.district == this.selectedDistrict);
+    }
+    else if(this.selectedState){
+      this.filteredStations = this.existingstationdata.filter(s =>  s.state == this.selectedState);
+    }
+    else if(this.selectedRegion){
+      this.filteredStations = this.existingstationdata.filter(s =>  s.region == this.selectedRegion);
+    }
     this.filteredStations.map(x => {
       return x.RainFall = x[this.dateCalculation()];
     })
@@ -178,9 +186,10 @@ export class DataentryComponent {
           stationName: this.deleteData.stationname,
           stationId: this.deleteData.stationid,
           dateTime: new Date(),
-          userName: parseloggedInUser.data[0].name
+          userName: parseloggedInUser.data[0].name,
+          type: "Deleted"
         }
-        this.dataService.addDeletedStationLogData(data).subscribe(res => {
+        this.dataService.addDeletedAndCreatedStationLogData(data).subscribe(res => {
           console.log('Log created successfully:', response);
         })
         console.log('Data deleted successfully:', response);
@@ -211,11 +220,25 @@ export class DataentryComponent {
   addData() {
     this.dataService.addData(this.data).subscribe({
       next: response => {
+        let loggedInUser: any = localStorage.getItem("isAuthorised");
+        let parseloggedInUser = JSON.parse(loggedInUser);
+        let data = {
+          stationName: this.data.stationName,
+          stationId: this.data.stationId,
+          dateTime: new Date(),
+          userName: parseloggedInUser.data[0].name,
+          type: "Added"
+        }
+        this.dataService.addDeletedAndCreatedStationLogData(data).subscribe(res => {
+          console.log('Log created successfully:', response);
+        })
+        console.log('Data deleted successfully:', response);
         this.message = response.message;
+        alert("Station added successfully");
       },
       error: err => console.error('Error adding data. Please check the console for details.', err)
     });
-    window.location.reload();
+    // window.location.reload();
     this.showPopup = false;
   }
 
@@ -348,7 +371,7 @@ export class DataentryComponent {
   }
 
   exportAsXLSX(): void {
-    this.exportAsExcelFile(this.existingstationdata, 'export-to-excel');
+    this.exportAsExcelFile(this.filteredStations, 'export-to-excel');
   }
 
   exportAsExcelFile(json: any[], excelFileName: string): void {

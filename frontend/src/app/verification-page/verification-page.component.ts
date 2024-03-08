@@ -30,7 +30,8 @@ export class VerificationPageComponent {
     lng: '',
     activationDate: this.selectedDate
   };
-
+  verifiedDate: string = '';
+  verifiedMessage: string = '';
 
   ngOnInit(): void {
     this.fetchDataFromBackend();
@@ -63,6 +64,23 @@ export class VerificationPageComponent {
       window.history.back();
     }
 
+    Verify(){
+      if (confirm("Do want to verify these stations") == true) {
+        localStorage.setItem('verifiedDate', JSON.stringify(new Date()));
+        localStorage.setItem('verifiedMessage', "These stations are Verified");
+        this.showVerifiedDateAndMessage();
+      } else {
+
+      }
+    }
+
+    showVerifiedDateAndMessage(){
+      let verifiedDate:any = localStorage.getItem('verifiedDate');
+      this.verifiedDate = JSON.parse(verifiedDate);
+      let verifiedMessage:any = localStorage.getItem('verifiedMessage');
+      this.verifiedMessage = verifiedMessage;
+    }
+
     dateCalculation() {
       const months = [
         'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
@@ -87,10 +105,19 @@ export class VerificationPageComponent {
   }
 
   filterByDate(){
-    this.filteredStations = this.existingstationdata.filter(s => s.district == this.selectedDistrict);
+    if(this.selectedDistrict){
+      this.filteredStations = this.existingstationdata.filter(s =>  s.district == this.selectedDistrict);
+    }
+    else if(this.selectedState){
+      this.filteredStations = this.existingstationdata.filter(s =>  s.state == this.selectedState);
+    }
+    else if(this.selectedRegion){
+      this.filteredStations = this.existingstationdata.filter(s =>  s.region == this.selectedRegion);
+    }
     this.filteredStations.map(x => {
       return x.RainFall = x[this.dateCalculation()];
     })
+    // this.showVerifiedDateAndMessage();
   }
 
   showMessage(elementRef: any) {

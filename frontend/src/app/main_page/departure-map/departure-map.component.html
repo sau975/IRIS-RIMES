@@ -81,23 +81,30 @@
                           </tr>
                           <tr>
                             <td>
-
                               <label *ngIf="!previousWeekWeeklyStartDate && !previousWeekWeeklyEndDate" style="
-                                  color: black;
-                                  vertical-align: middle;
-                                  font-family: Arial;
-                                  font-weight: bolder;
-                                  font-size: 14px;
-                                ">Date : {{formatteddate}}
+                                       color: black;
+                                       vertical-align: middle;
+                                       font-family: Arial;
+                                       font-weight: bolder;
+                                       font-size: 14px;
+                                     ">Date : {{formatteddate}}
                               </label>
-                              <label *ngIf="previousWeekWeeklyStartDate && previousWeekWeeklyEndDate" style="
-                                color: black;
-                                vertical-align: middle;
-                                font-family: Arial;
-                                font-weight: bolder;
-                                font-size: 14px;
-                              ">Date : {{previousWeekWeeklyStartDate | date: 'dd-MM-yyyy'}} to
+                              <label *ngIf="previousWeekWeeklyStartDate && previousWeekWeeklyEndDate && previousWeekWeeklyStartDate != previousWeekWeeklyEndDate" style="
+                                     color: black;
+                                     vertical-align: middle;
+                                     font-family: Arial;
+                                     font-weight: bolder;
+                                     font-size: 14px;
+                                   ">Date : {{previousWeekWeeklyStartDate | date: 'dd-MM-yyyy'}} to
                                 {{previousWeekWeeklyEndDate | date: 'dd-MM-yyyy'}}
+                              </label>
+                              <label *ngIf="previousWeekWeeklyStartDate == previousWeekWeeklyEndDate" style="
+                                     color: black;
+                                     vertical-align: middle;
+                                     font-family: Arial;
+                                     font-weight: bolder;
+                                     font-size: 14px;
+                                   ">Date : {{previousWeekWeeklyStartDate | date: 'dd-MM-yyyy'}}
                               </label>
 
                             </td>
@@ -231,7 +238,7 @@
                                        font-size: 14px;
                                      ">Date : {{formatteddate}}
                               </label>
-                              <label *ngIf="previousWeekWeeklyStartDate && previousWeekWeeklyEndDate" style="
+                              <label *ngIf="previousWeekWeeklyStartDate && previousWeekWeeklyEndDate && previousWeekWeeklyStartDate != previousWeekWeeklyEndDate" style="
                                      color: black;
                                      vertical-align: middle;
                                      font-family: Arial;
@@ -239,6 +246,14 @@
                                      font-size: 14px;
                                    ">Date : {{previousWeekWeeklyStartDate | date: 'dd-MM-yyyy'}} to
                                 {{previousWeekWeeklyEndDate | date: 'dd-MM-yyyy'}}
+                              </label>
+                              <label *ngIf="previousWeekWeeklyStartDate == previousWeekWeeklyEndDate" style="
+                                     color: black;
+                                     vertical-align: middle;
+                                     font-family: Arial;
+                                     font-weight: bolder;
+                                     font-size: 14px;
+                                   ">Date : {{previousWeekWeeklyStartDate | date: 'dd-MM-yyyy'}}
                               </label>
 
                             </td>
@@ -598,7 +613,7 @@
                                        font-size: 14px;
                                      ">Date : {{formatteddate}}
                               </label>
-                              <label *ngIf="previousWeekWeeklyStartDate && previousWeekWeeklyEndDate" style="
+                              <label *ngIf="previousWeekWeeklyStartDate && previousWeekWeeklyEndDate && previousWeekWeeklyStartDate != previousWeekWeeklyEndDate" style="
                                      color: black;
                                      vertical-align: middle;
                                      font-family: Arial;
@@ -606,6 +621,14 @@
                                      font-size: 14px;
                                    ">Date : {{previousWeekWeeklyStartDate | date: 'dd-MM-yyyy'}} to
                                 {{previousWeekWeeklyEndDate | date: 'dd-MM-yyyy'}}
+                              </label>
+                              <label *ngIf="previousWeekWeeklyStartDate == previousWeekWeeklyEndDate" style="
+                                     color: black;
+                                     vertical-align: middle;
+                                     font-family: Arial;
+                                     font-weight: bolder;
+                                     font-size: 14px;
+                                   ">Date : {{previousWeekWeeklyStartDate | date: 'dd-MM-yyyy'}}
                               </label>
 
                             </td>
@@ -972,7 +995,7 @@
                                        font-size: 14px;
                                      ">Date : {{formatteddate}}
                               </label>
-                              <label *ngIf="previousWeekWeeklyStartDate && previousWeekWeeklyEndDate" style="
+                              <label *ngIf="previousWeekWeeklyStartDate && previousWeekWeeklyEndDate && previousWeekWeeklyStartDate != previousWeekWeeklyEndDate" style="
                                      color: black;
                                      vertical-align: middle;
                                      font-family: Arial;
@@ -980,6 +1003,14 @@
                                      font-size: 14px;
                                    ">Date : {{previousWeekWeeklyStartDate | date: 'dd-MM-yyyy'}} to
                                 {{previousWeekWeeklyEndDate | date: 'dd-MM-yyyy'}}
+                              </label>
+                              <label *ngIf="previousWeekWeeklyStartDate == previousWeekWeeklyEndDate" style="
+                                     color: black;
+                                     vertical-align: middle;
+                                     font-family: Arial;
+                                     font-weight: bolder;
+                                     font-size: 14px;
+                                   ">Date : {{previousWeekWeeklyStartDate | date: 'dd-MM-yyyy'}}
                               </label>
 
                             </td>
@@ -1125,7 +1156,7 @@
                                        font-size: 14px;
                                      ">Date : {{formatteddate}}
                               </label>
-                              <label *ngIf="previousWeekWeeklyStartDate && previousWeekWeeklyEndDate" style="
+                              <label *ngIf="previousWeekWeeklyStartDate && previousWeekWeeklyEndDate && previousWeekWeeklyStartDate != previousWeekWeeklyEndDate" style="
                                      color: black;
                                      vertical-align: middle;
                                      font-family: Arial;
@@ -1133,6 +1164,14 @@
                                      font-size: 14px;
                                    ">Date : {{previousWeekWeeklyStartDate | date: 'dd-MM-yyyy'}} to
                                 {{previousWeekWeeklyEndDate | date: 'dd-MM-yyyy'}}
+                              </label>
+                              <label *ngIf="previousWeekWeeklyStartDate == previousWeekWeeklyEndDate" style="
+                                     color: black;
+                                     vertical-align: middle;
+                                     font-family: Arial;
+                                     font-weight: bolder;
+                                     font-size: 14px;
+                                   ">Date : {{previousWeekWeeklyStartDate | date: 'dd-MM-yyyy'}}
                               </label>
 
                             </td>

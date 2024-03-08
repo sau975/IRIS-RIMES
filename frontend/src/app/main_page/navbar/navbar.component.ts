@@ -21,6 +21,7 @@ export class NavbarComponent implements OnInit {
   showPopup: boolean = false;
   qpfReports: any[] = [];
   rainFallReports: any[] = [];
+  designStormReports: any[] = [];
 
   constructor(
     private router: Router,
@@ -34,6 +35,7 @@ export class NavbarComponent implements OnInit {
     this.dataService.getUploadFiles().subscribe(res => {
       this.qpfReports = res.filter((r: any) => r.section_name == "QPF VERIFICATION REPORT");
       this.rainFallReports = res.filter((r: any) => r.section_name == "RAINFALL REPORTS");
+      this.designStormReports = res.filter((r: any) => r.section_name == "DESIGN STORM ANALYSIS");
     })
   }
 

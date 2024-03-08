@@ -123,7 +123,7 @@ export class DataService {
     return this.http.get(url);
   }
 
-  addDeletedStationLogData(data: any): Observable<any> {
+  addDeletedAndCreatedStationLogData(data: any): Observable<any> {
     return this.http.post<any>(this.baseUrl+'/deletedstationlog', {data});
   }
 

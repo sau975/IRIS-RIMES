@@ -623,6 +623,7 @@
             <li>
               <a (click)="openFile('Project Report 2022.pdf')">DESIGN STORMS STUDIES DURING 2022</a>
             </li>
+            <li *ngFor="let file of designStormReports;"><a (click)="downloadFile(file.file_data)">{{file.file_name}}</a></li>
           </ul>
         </li>
       </ul>
@@ -660,7 +661,7 @@
         <li>
           <a (click)="openFile('Rainfall Statistics of India - 2012.pdf')">RAINFALL STATISTICS OF INDIA - 2012</a>
         </li>
-        <li *ngFor="let file of rainFallReports;"><a (click)="downloadFile(file.id)">{{file.file_name}}</a></li>
+        <li *ngFor="let file of rainFallReports;"><a (click)="downloadFile(file.file_data)">{{file.file_name}}</a></li>
       </ul>
     </li>
     <li *ngIf="loggedInUser.data[0].mcorhq == 'hq'">
