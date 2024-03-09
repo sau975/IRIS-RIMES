@@ -452,7 +452,8 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
   date() {
     // let currentEndDay = this.previousWeekWeeklyEndDate ? new Date(this.previousWeekWeeklyEndDate).getDate() : this.today.getDate();
     let currentEndDay = this.today.getDate();
-    let startMonth = this.previousWeekWeeklyEndDate ? this.months[new Date(this.previousWeekWeeklyEndDate).getMonth()] : this.months[this.today.getMonth()];
+    // let startMonth = this.previousWeekWeeklyEndDate ? this.months[new Date(this.previousWeekWeeklyEndDate).getMonth()] : this.months[this.today.getMonth()];
+    let startMonth = "Mar";
     let startDay = 1;
     let endDay = currentEndDay.toString().length == 1 ? 0 + currentEndDay : currentEndDay;
     let allDates = [];
@@ -918,17 +919,17 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
   }
 
 
-  private updateLegendDetailsPositionstate(fullscreen: boolean): void {
-    const legendDetailsElement = document.querySelector('.legenddetailsstate') as HTMLElement; // Use type assertion to HTMLElement
-    //const datacontElement = document.querySelector('.datacont') as HTMLElement;
-    if (legendDetailsElement) {
-      if (fullscreen) {
-        legendDetailsElement.style.right = '50px';
-      } else {
-        legendDetailsElement.style.right = '140px';
-      }
-    }
-  }
+  // private updateLegendDetailsPositionstate(fullscreen: boolean): void {
+  //   const legendDetailsElement = document.querySelector('.legenddetailsstate') as HTMLElement; // Use type assertion to HTMLElement
+  //   //const datacontElement = document.querySelector('.datacont') as HTMLElement;
+  //   if (legendDetailsElement) {
+  //     if (fullscreen) {
+  //       legendDetailsElement.style.right = '50px';
+  //     } else {
+  //       legendDetailsElement.style.right = '140px';
+  //     }
+  //   }
+  // }
   private updateLegendDetailsPositionsubdiv(fullscreen: boolean): void {
     const legendDetailsElement = document.querySelector('.legenddetailssubdiv') as HTMLElement; // Use type assertion to HTMLElement
     if (legendDetailsElement) {
@@ -969,24 +970,62 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
         this.loadGeoJSON();
       }
     });
+    // Ensure legendDetailsElement is displayed by default
+    const statelegendDetailsElement = document.querySelector('.legenddetailsstate') as HTMLElement | null;
+    const statelegendDetailsElement1 = document.querySelector('.legenddetailsstate1') as HTMLElement | null;
+    const element = document.querySelector('.statedatacont') as HTMLElement | null;
+    const element1 = document.querySelector('.statedatacont1') as HTMLElement | null;
+    if (element) {
+      element.style.display = 'flex';
+    }
+    if (element1) {
+      element1.style.display = 'none'
+    }
+    if (statelegendDetailsElement) {
+      statelegendDetailsElement.style.display = 'block';
+    }
+
+    if (statelegendDetailsElement1) {
+      statelegendDetailsElement1.style.display = 'none';
+    }
+
     this.map1.on('fullscreenchange', () => {
       const element = document.querySelector('.statedatacont') as HTMLElement;
-      if (element) {
+      const element1 = document.querySelector('.statedatacont1') as HTMLElement;
+      const legendDetailsElement = document.querySelector('.legenddetailsstate') as HTMLElement;
+      const legendDetailsElement1 = document.querySelector('.legenddetailsstate1') as HTMLElement;
+      if (element && element1 && legendDetailsElement && legendDetailsElement1) {
         if (this.isFullscreen()) {
           this.map1.setZoom(this.initialZoom + 1);
-          this.updateLegendDetailsPositionstate(true);
-          element.style.display = 'block'; // Change display to block to stack tables vertically
-          element.style.flexDirection = 'column'; // Change flex direction to column
+          legendDetailsElement.style.display = 'none';
+          legendDetailsElement1.style.display = 'block';
+          element.style.display = 'none'; // Hide statedatacont when entering fullscreen
+          element1.style.display = 'block'; // Show statedatacont1 when entering fullscreen
           this.loadGeoJSON1();
         } else {
           this.map1.setZoom(this.initialZoom);
-          this.updateLegendDetailsPositionstate(false);
-          element.style.display = 'flex'; // Revert back to flex when exiting fullscreen
-          element.style.flexDirection = 'row'; // Revert back to row direction
+          legendDetailsElement.style.display = 'block';
+          legendDetailsElement1.style.display = 'none';
+          element.style.display = 'flex'; // Show statedatacont when exiting fullscreen
+          element1.style.display = 'none'; // Hide statedatacont1 when exiting fullscreen
           this.loadGeoJSON();
         }
       }
     });
+
+
+    // this.map1.on('fullscreenchange', () => {
+    //   if (this.isFullscreen()) {
+    //     this.map1.setZoom(this.initialZoom + 1);
+    //     this.updateLegendDetailsPositionstate(true);
+    //     this.loadGeoJSON1();
+    //   } else {
+    //     this.map1.setZoom(this.initialZoom);
+    //     this.updateLegendDetailsPositionstate(false); 
+    //     this.loadGeoJSON();
+    //   }
+    // });
+
 
 
     this.map2 = L.map('map2', {
@@ -1014,24 +1053,67 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     //   }
     // });
 
+    const subdivlegendDetailsElement = document.querySelector('.legenddetailssubdiv') as HTMLElement | null;
+    const subdivlegendDetailsElement1 = document.querySelector('.legenddetailssubdiv1') as HTMLElement | null;
+    const subdivelement = document.querySelector('.subdivdatacont') as HTMLElement | null;
+    const subdivelement1 = document.querySelector('.subdivdatacont1') as HTMLElement | null;
+    if (subdivelement) {
+      subdivelement.style.display = 'flex';
+    }
+    if (subdivelement1) {
+      subdivelement1.style.display = 'none'
+    }
+    if (subdivlegendDetailsElement) {
+      subdivlegendDetailsElement.style.display = 'block';
+    }
+
+    if (subdivlegendDetailsElement1) {
+      subdivlegendDetailsElement1.style.display = 'none';
+    }
+
     this.map2.on('fullscreenchange', () => {
       const element = document.querySelector('.subdivdatacont') as HTMLElement;
-      if (element) {
+      const element1 = document.querySelector('.subdivdatacont1') as HTMLElement;
+      const subdivlegendDetailsElement = document.querySelector('.legenddetailssubdiv') as HTMLElement;
+      const subdivlegendDetailsElement1 = document.querySelector('.legenddetailssubdiv1') as HTMLElement;
+      if (element && element1 && subdivlegendDetailsElement && subdivlegendDetailsElement1) {
         if (this.isFullscreen()) {
           this.map2.setZoom(this.initialZoom + 1);
-          this.updateLegendDetailsPositionsubdiv(true);
-          element.style.display = 'block'; // Change display to block to stack tables vertically
-          element.style.flexDirection = 'column'; // Change flex direction to column
+          subdivlegendDetailsElement.style.display = 'none';
+          subdivlegendDetailsElement1.style.display = 'block';
+          element.style.display = 'none'; // Hide statedatacont when entering fullscreen
+          element1.style.display = 'block'; // Show statedatacont1 when entering fullscreen
           this.loadGeoJSON1();
         } else {
           this.map2.setZoom(this.initialZoom);
-          this.updateLegendDetailsPositionsubdiv(false);
-          element.style.display = 'flex'; // Revert back to flex when exiting fullscreen
-          element.style.flexDirection = 'row'; // Revert back to row direction
+          subdivlegendDetailsElement.style.display = 'block';
+          subdivlegendDetailsElement1.style.display = 'none';
+          element.style.display = 'flex'; // Show statedatacont when exiting fullscreen
+          element1.style.display = 'none'; // Hide statedatacont1 when exiting fullscreen
           this.loadGeoJSON();
         }
       }
     });
+
+
+    // this.map2.on('fullscreenchange', () => {
+    //   const element = document.querySelector('.subdivdatacont') as HTMLElement;
+    //   if (element) {
+    //     if (this.isFullscreen()) {
+    //       this.map2.setZoom(this.initialZoom + 1);
+    //       this.updateLegendDetailsPositionsubdiv(true);
+    //       element.style.display = 'block'; // Change display to block to stack tables vertically
+    //       element.style.flexDirection = 'column'; // Change flex direction to column
+    //       this.loadGeoJSON1();
+    //     } else {
+    //       this.map2.setZoom(this.initialZoom);
+    //       this.updateLegendDetailsPositionsubdiv(false);
+    //       element.style.display = 'flex'; // Revert back to flex when exiting fullscreen
+    //       element.style.flexDirection = 'row'; // Revert back to row direction
+    //       this.loadGeoJSON();
+    //     }
+    //   }
+    // });
 
     this.map3 = L.map('map3', {
       center: [24, 76.9629],
@@ -1158,7 +1240,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     const data1 = this.subdivisionfetchedDatadepcum;
     const data2 = this.statefetchedDatadepcum;
     const doc = new jsPDF() as any;
-    const columns1 = [' ', ' ', { content: 'Day : ' + this.previousWeekWeeklyStartDate != '' && this.previousWeekWeeklyEndDate != '' ? this.datePipe.transform(this.previousWeekWeeklyStartDate, 'dd-MM-yyyy') + ' To ' + this.datePipe.transform(this.previousWeekWeeklyEndDate, 'dd-MM-yyyy') : this.formatteddate, colSpan: 4 }, { content: this.previousWeekWeeklyEndDate != '' ? 'Period:01-01-2024 To ' + this.datePipe.transform(this.previousWeekWeeklyEndDate, 'dd-MM-yyyy') : 'Period:01-01-2024 To ' + this.formatteddate, colSpan: 4 }]
+    const columns1 = [' ', ' ', { content: 'Day : ' + this.previousWeekWeeklyStartDate != '' && this.previousWeekWeeklyEndDate != '' ? this.datePipe.transform(this.previousWeekWeeklyStartDate, 'dd-MM-yyyy') + ' To ' + this.datePipe.transform(this.previousWeekWeeklyEndDate, 'dd-MM-yyyy') : this.formatteddate, colSpan: 4 }, { content: this.previousWeekWeeklyEndDate != '' ? 'Period:01-03-2024 To ' + this.datePipe.transform(this.previousWeekWeeklyEndDate, 'dd-MM-yyyy') : 'Period:01-03-2024 To ' + this.formatteddate, colSpan: 4 }]
     const columns = ['S.No', 'MET.SUBDIVISION/UT/STATE/DISTRICT', 'ACTUAL(mm)', 'NORMAL(mm)', '%DEP.', 'CAT.', 'ACTUAL(mm)', 'NORMAL(mm)', '%DEP.', 'CAT.'];
     const rows: any[][] = [];
     let previousstateName: string;
@@ -1585,7 +1667,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     const data1 = this.regionfetchedDatadepcum.sort((a, b) => a.regionid - b.regionid);
     const data2 = this.countryfetchedDatadepcum;
     const doc = new jsPDF() as any;
-    const columns1 = [' ', ' ', { content: 'Day : ' + this.previousWeekWeeklyStartDate != '' && this.previousWeekWeeklyEndDate != '' ? this.datePipe.transform(this.previousWeekWeeklyStartDate, 'dd-MM-yyyy') + ' To ' + this.datePipe.transform(this.previousWeekWeeklyEndDate, 'dd-MM-yyyy') : this.formatteddate, colSpan: 4 }, { content: this.previousWeekWeeklyEndDate != '' ? 'Period:01-01-2024 To ' + this.datePipe.transform(this.previousWeekWeeklyEndDate, 'dd-MM-yyyy') : 'Period:01-01-2024 To ' + this.formatteddate, colSpan: 4 }]
+    const columns1 = [' ', ' ', { content: 'Day : ' + this.previousWeekWeeklyStartDate != '' && this.previousWeekWeeklyEndDate != '' ? this.datePipe.transform(this.previousWeekWeeklyStartDate, 'dd-MM-yyyy') + ' To ' + this.datePipe.transform(this.previousWeekWeeklyEndDate, 'dd-MM-yyyy') : this.formatteddate, colSpan: 4 }, { content: this.previousWeekWeeklyEndDate != '' ? 'Period:01-03-2024 To ' + this.datePipe.transform(this.previousWeekWeeklyEndDate, 'dd-MM-yyyy') : 'Period:01-03-2024 To ' + this.formatteddate, colSpan: 4 }]
     const columns = ['S.No', 'MET.SUBDIVISION/UT/STATE/DISTRICT', 'DAILY', 'NORMAL', 'DEPARTURE', 'CAT', 'DAILY', 'NORMAL', 'DEPARTURE', 'CAT'];
     const rows = [];
     let previousregionName: string;
@@ -1829,7 +1911,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     const data2 = this.countryfetchedDatadepcum;
     const doc = new jsPDF() as any;
 
-    const columns1 = [' ', ' ', { content: 'Day : ' + this.previousWeekWeeklyStartDate != '' && this.previousWeekWeeklyEndDate != '' ? this.datePipe.transform(this.previousWeekWeeklyStartDate, 'dd-MM-yyyy') + ' To ' + this.datePipe.transform(this.previousWeekWeeklyEndDate, 'dd-MM-yyyy') : this.formatteddate, colSpan: 4 }, { content: this.previousWeekWeeklyEndDate != '' ? 'Period:01-01-2024 To ' + this.datePipe.transform(this.previousWeekWeeklyEndDate, 'dd-MM-yyyy') : 'Period:01-01-2024 To ' + this.formatteddate, colSpan: 4 }]
+    const columns1 = [' ', ' ', { content: 'Day : ' + this.previousWeekWeeklyStartDate != '' && this.previousWeekWeeklyEndDate != '' ? this.datePipe.transform(this.previousWeekWeeklyStartDate, 'dd-MM-yyyy') + ' To ' + this.datePipe.transform(this.previousWeekWeeklyEndDate, 'dd-MM-yyyy') : this.formatteddate, colSpan: 4 }, { content: this.previousWeekWeeklyEndDate != '' ? 'Period:01-03-2024 To ' + this.datePipe.transform(this.previousWeekWeeklyEndDate, 'dd-MM-yyyy') : 'Period:01-03-2024 To ' + this.formatteddate, colSpan: 4 }]
     const columns = ['S.No', 'MET.SUBDIVISION/UT/STATE/DISTRICT', 'DAILY', 'NORMAL', 'DEPARTURE', 'CAT', 'DAILY', 'NORMAL', 'DEPARTURE', 'CAT'];
     const rows: any[][] = [];
     let previousregionName: string;
@@ -2069,7 +2151,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
 
     const doc = new jsPDF() as any;
 
-    const columns1 = [' ', ' ', { content: 'Day : ' + this.formatteddate, colSpan: 4 }, { content: 'Period:01-01-2024 To ' + this.formatteddate, colSpan: 4 }];
+    const columns1 = [' ', ' ', { content: 'Day : ' + this.formatteddate, colSpan: 4 }, { content: 'Period:01-03-2024 To ' + this.formatteddate, colSpan: 4 }];
     const columns = ['S.No', 'REGION', 'DAILY', 'NORMAL', 'DEPARTURE', 'CAT', 'DAILY', 'NORMAL', 'DEPARTURE', 'CAT'];
 
     const rows = data.map((item, index) => [
@@ -2170,7 +2252,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
   downloadMapData4(): void {
     const data = this.countryfetchedDatadepcum;
     const doc = new jsPDF() as any;
-    const columns1 = [' ', ' ', { content: 'Day : ' + this.formatteddate, colSpan: 4 }, { content: 'Period:01-01-2024 To ' + this.formatteddate, colSpan: 4 }];
+    const columns1 = [' ', ' ', { content: 'Day : ' + this.formatteddate, colSpan: 4 }, { content: 'Period:01-03-2024 To ' + this.formatteddate, colSpan: 4 }];
     const columns = ['S.No', 'COUNTRY AS WHOLE', 'DAILY', 'NORMAL', 'DEPARTURE', 'CAT', 'DAILY', 'NORMAL', 'DEPARTURE', 'CAT'];
     const rows = data.map((item, index) => [
       index + 1, // Serial number
@@ -3810,32 +3892,22 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
   }
 
   convertImageToPdf(dataUrl: string): void {
-    const pdf = new jsPDF();
     const img = new Image();
 
     img.onload = function () {
-      const canvas = document.createElement('canvas');
-      const ctx = canvas.getContext('2d');
+      const pdf = new jsPDF({
+        orientation: img.width > img.height ? 'landscape' : 'portrait',
+        unit: 'mm',
+        format: [img.width, img.height] // Set PDF size to match image size
+      });
 
-      if (ctx) { // Check if ctx is not null
-        canvas.width = img.width;
-        canvas.height = img.height;
-        ctx.drawImage(img, 0, 0, img.width, img.height);
-
-        // Calculate aspect ratio and adjust image size to fit page width
-        const aspectRatio = img.height / img.width;
-        const imgWidth = 210; // A4 size
-        const imgHeight = imgWidth * aspectRatio;
-
-        pdf.addImage(canvas.toDataURL('image/jpeg', 1.0), 'JPEG', 0, 0, imgWidth, imgHeight);
-        pdf.save('District_dep.pdf');
-      } else {
-        console.error('Failed to get 2D context from canvas');
-      }
+      pdf.addImage(dataUrl, 'JPEG', 0, 0, img.width, img.height);
+      pdf.save('District_dep.pdf');
     };
 
     img.src = dataUrl;
   }
+
   downloadMapImage1(): void {
     htmlToImage.toJpeg(document.getElementById('map1') as HTMLElement, { quality: 0.95, filter: this.filter })
       .then(function (dataUrl) {
@@ -3851,32 +3923,23 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
         this.convertImageToPdf1(dataUrl);
       });
   }
-
   convertImageToPdf1(dataUrl: string): void {
-    const pdf = new jsPDF();
     const img = new Image();
 
     img.onload = function () {
-      const canvas = document.createElement('canvas');
-      const ctx = canvas.getContext('2d');
+      const pdf = new jsPDF({
+        orientation: img.width > img.height ? 'landscape' : 'portrait',
+        unit: 'mm',
+        format: [img.width, img.height] // Set PDF size to match image size
+      });
 
-      if (ctx) { // Check if ctx is not null
-        canvas.width = img.width;
-        canvas.height = img.height;
-        ctx.drawImage(img, 0, 0, img.width, img.height);
-        const aspectRatio = img.height / img.width;
-        const imgWidth = 210; // A4 size
-        const imgHeight = imgWidth * aspectRatio;
-
-        pdf.addImage(canvas.toDataURL('image/jpeg', 1.0), 'JPEG', 0, 0, imgWidth, imgHeight);
-        pdf.save('state_dep.pdf');
-      } else {
-        console.error('Failed to get 2D context from canvas');
-      }
+      pdf.addImage(dataUrl, 'JPEG', 0, 0, img.width, img.height);
+      pdf.save('state_dep.pdf');
     };
 
     img.src = dataUrl;
   }
+
   downloadMapImage2(): void {
     htmlToImage.toJpeg(document.getElementById('map2') as HTMLElement, { quality: 0.95, filter: this.filter })
       .then(function (dataUrl) {
@@ -3894,32 +3957,19 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
   }
 
   convertImageToPdf2(dataUrl: string): void {
-    const pdf = new jsPDF();
     const img = new Image();
-
     img.onload = function () {
-      const canvas = document.createElement('canvas');
-      const ctx = canvas.getContext('2d');
-
-      if (ctx) { // Check if ctx is not null
-        canvas.width = img.width;
-        canvas.height = img.height;
-        ctx.drawImage(img, 0, 0, img.width, img.height);
-
-        // Calculate aspect ratio and adjust image size to fit page width
-        const aspectRatio = img.height / img.width;
-        const imgWidth = 210; // A4 size
-        const imgHeight = imgWidth * aspectRatio;
-
-        pdf.addImage(canvas.toDataURL('image/jpeg', 1.0), 'JPEG', 0, 0, imgWidth, imgHeight);
-        pdf.save('sub-division_dep.pdf');
-      } else {
-        console.error('Failed to get 2D context from canvas');
-      }
+      const pdf = new jsPDF({
+        orientation: img.width > img.height ? 'landscape' : 'portrait',
+        unit: 'mm',
+        format: [img.width, img.height] // Set PDF size to match image size
+      });
+      pdf.addImage(dataUrl, 'JPEG', 0, 0, img.width, img.height);
+      pdf.save('subdiv_dep.pdf');
     };
-
     img.src = dataUrl;
   }
+
   downloadMapImage3(): void {
     htmlToImage.toJpeg(document.getElementById('map3') as HTMLElement, { quality: 0.95, filter: this.filter })
       .then(function (dataUrl) {
@@ -3937,30 +3987,16 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
   }
 
   convertImageToPdf3(dataUrl: string): void {
-    const pdf = new jsPDF();
     const img = new Image();
-
     img.onload = function () {
-      const canvas = document.createElement('canvas');
-      const ctx = canvas.getContext('2d');
-
-      if (ctx) { // Check if ctx is not null
-        canvas.width = img.width;
-        canvas.height = img.height;
-        ctx.drawImage(img, 0, 0, img.width, img.height);
-
-        // Calculate aspect ratio and adjust image size to fit page width
-        const aspectRatio = img.height / img.width;
-        const imgWidth = 210; // A4 size
-        const imgHeight = imgWidth * aspectRatio;
-
-        pdf.addImage(canvas.toDataURL('image/jpeg', 1.0), 'JPEG', 0, 0, imgWidth, imgHeight);
-        pdf.save('region_dep.pdf');
-      } else {
-        console.error('Failed to get 2D context from canvas');
-      }
+      const pdf = new jsPDF({
+        orientation: img.width > img.height ? 'landscape' : 'portrait',
+        unit: 'mm',
+        format: [img.width, img.height] // Set PDF size to match image size
+      });
+      pdf.addImage(dataUrl, 'JPEG', 0, 0, img.width, img.height);
+      pdf.save('region_dep.pdf');
     };
-
     img.src = dataUrl;
   }
 
@@ -3981,32 +4017,19 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
   }
 
   convertImageToPdf4(dataUrl: string): void {
-    const pdf = new jsPDF();
     const img = new Image();
-
     img.onload = function () {
-      const canvas = document.createElement('canvas');
-      const ctx = canvas.getContext('2d');
-
-      if (ctx) { // Check if ctx is not null
-        canvas.width = img.width;
-        canvas.height = img.height;
-        ctx.drawImage(img, 0, 0, img.width, img.height);
-
-        // Calculate aspect ratio and adjust image size to fit page width
-        const aspectRatio = img.height / img.width;
-        const imgWidth = 210; // A4 size
-        const imgHeight = imgWidth * aspectRatio;
-
-        pdf.addImage(canvas.toDataURL('image/jpeg', 1.0), 'JPEG', 0, 0, imgWidth, imgHeight);
-        pdf.save('country_dep.pdf');
-      } else {
-        console.error('Failed to get 2D context from canvas');
-      }
+      const pdf = new jsPDF({
+        orientation: img.width > img.height ? 'landscape' : 'portrait',
+        unit: 'mm',
+        format: [img.width, img.height] // Set PDF size to match image size
+      });
+      pdf.addImage(dataUrl, 'JPEG', 0, 0, img.width, img.height);
+      pdf.save('country_dep.pdf');
     };
-
     img.src = dataUrl;
   }
+
   getNormalMap() {
     this.router.navigate(['/normal']);
   }
