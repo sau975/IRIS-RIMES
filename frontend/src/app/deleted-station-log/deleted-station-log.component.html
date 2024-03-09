@@ -58,6 +58,7 @@
               <th style="border: 1px solid black">Station</th>
               <th style="border: 1px solid black">User</th>
               <th style="border: 1px solid black">Date Time</th>
+              <th style="border: 1px solid black">Added/Deleted</th>
             </tr>
           </thead>
           <tbody *ngIf="deletedStationLogs && deletedStationLogs.length > 0">
@@ -66,6 +67,7 @@
               <td>{{delstation.stationname}}</td>
               <td>{{delstation.username}}</td>
               <td>{{delstation.datetime | date: 'dd-MM-yyy hh:mm:ss'}}</td>
+              <td>{{delstation.type}}</td>
             </tr>
           </tbody>
         </table>

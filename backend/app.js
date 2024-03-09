@@ -43,7 +43,7 @@ app.post('/addData', (req, res) => {
 
 app.post('/deletedstationlog', (req, res) => {
   const data = req.body.data; 
-  client.query('INSERT INTO deletedstationlog(stationname, stationid, datetime, username) VALUES($1, $2, $3, $4)', [data.stationName, data.stationId, data.dateTime, data.userName])
+  client.query('INSERT INTO deletedstationlog(stationname, stationid, datetime, username, type) VALUES($1, $2, $3, $4, $5)', [data.stationName, data.stationId, data.dateTime, data.userName, data.type])
     .then(() => {
       res.status(200).json({ message: 'Data inserted successfully' });
     })

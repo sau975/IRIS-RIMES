@@ -231,6 +231,40 @@
 				</button>
 		  </div>
 
+      <mat-divider></mat-divider>
+
+      <div style="text-align: center; font-weight: bold;">
+        <p>Day Statistics</p>
+      </div>
+      <div style="padding: 10px;">
+        <div style="display: inline-block;">
+          <div style="width: 20px;
+          height: 10px;
+          background-color: gray;
+          display: inline-block;
+          vertical-align: middle; margin-right: 10px;"></div>
+          <span>Low Rainfall : 12</span>
+        </div>
+        <div style="display: inline-block;">
+          <div style="width: 20px;
+          height: 10px;
+          background-color: yellow;
+          display: inline-block;
+          vertical-align: middle; margin-right: 10px;"></div>
+          <span>Modrate Rainfall : 175</span>
+        </div>
+        <div style="display: inline-block;">
+          <div style="width: 20px;
+          height: 10px;
+          background-color: red;
+          display: inline-block;
+          vertical-align: middle; margin-right: 10px;"></div>
+          <span>High Rainfall : 250</span>
+        </div>
+        <label>No 250 Station received</label>
+        <label>No 4000 Station Pending</label>
+      </div>
+
 		</form>
 	</div>
 
@@ -257,30 +291,40 @@
 			<div class="d-flex flex-column justify-content-center align-items-center p-2 mb-3"
 				 style=" width:35%; max-height:80%;">
 				 <div>
-					<Span class="h5">Parameter Details</Span>
+					<Span class="h5">Station Details</Span>
 				</div>
 				<div style="overflow-y:scroll; width:100%; padding:1em;">
 
           <div class="py-2 d-flex justify-content-between station-data-table w-100">
-            <span>Total Stations</span>
-            <span>{{ totalstations }}</span>
+            <span>Station</span>
+            <span>Goa</span>
       </div>
 
 					<div class="py-2 d-flex justify-content-between station-data-table w-100">
-								<span>Received Data</span>
-								<span>{{ receivedata }}</span>
+								<span>How many days data</span>
+								<span>20</span>
 					</div>
           <div class="py-2 d-flex justify-content-between station-data-table w-100">
-            <span>Not Received Data</span>
-            <span>{{ notreceivedata }}</span>
+            <span>How many missing</span>
+            <span>05</span>
 
       </div>
+      <div class="py-2 d-flex justify-content-between station-data-table w-100">
+        <span>Highest recorded rainfall</span>
+        <span>395</span>
 
-          <div class="py-2 d-flex justify-content-between station-data-table w-100"
+  </div>
+  <div class="py-2 d-flex justify-content-between station-data-table w-100">
+    <span>Lowest recorded rainfall</span>
+    <span>05</span>
+
+</div>
+
+          <!-- <div class="py-2 d-flex justify-content-between station-data-table w-100"
           *ngFor="let weatherData of stationWeatherParameters">
               <span>{{ weatherData.text }}</span>
               <span>{{ weatherData.data[0].value }} {{ weatherData.data[0].unit }}</span>
-        </div>
+        </div> -->
 				</div>
 			</div>
 
