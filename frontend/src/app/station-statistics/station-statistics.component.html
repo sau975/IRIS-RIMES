@@ -172,14 +172,20 @@
 
 			<mat-divider></mat-divider>
 
-			<div style="padding: 10px;">
-				<div>
+			<div style="padding: 5px;">
+        <app-multi-select-dropdown
+          [list]="regionList"
+          (shareCheckedList)="shareCheckedList($event)"
+          (shareIndividualCheckedList)="shareIndividualCheckedList($event)">
+        </app-multi-select-dropdown>
+				<!-- <div>
 					<label for="region">Select Region :</label>
 					<select name="region" class="form-control" id="region" [(ngModel)]="selectedRegion"
 						(change)="onChangeRegion()">
 						<option *ngFor="let region of regionList" [value]="region">{{region}}</option>
 					</select>
-				</div> <br>
+				</div>  -->
+        <br>
 				<div>
 					<label for="mcs">Select RMC/MC :</label>
 					<select name="mcs" class="form-control" id="mcs">
@@ -298,7 +304,7 @@
 						<span>05</span>
 
 					</div>
-					
+
 
 					<!-- <div class="py-2 d-flex justify-content-between station-data-table w-100"
           *ngFor="let weatherData of stationWeatherParameters">

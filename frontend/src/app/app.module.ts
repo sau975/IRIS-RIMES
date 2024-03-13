@@ -60,6 +60,8 @@ import { MatMenuModule} from '@angular/material/menu';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core'
 import { ChartModule } from 'angular-highcharts';
+import { MultiSelectDropdownComponent } from './multi-select-dropdown/multi-select-dropdown.component';
+import { YearlyStationStatisticsComponent } from './yearly-station-statistics/yearly-station-statistics.component';
 
 @NgModule({
   declarations: [
@@ -97,7 +99,9 @@ import { ChartModule } from 'angular-highcharts';
     VerificationPageComponent,
     DeletedStationLogComponent,
     LastFiveYearDataComponent,
-    StationStatisticsComponent
+    StationStatisticsComponent,
+    MultiSelectDropdownComponent,
+    YearlyStationStatisticsComponent
   ],
   imports: [
     PdfViewerModule,

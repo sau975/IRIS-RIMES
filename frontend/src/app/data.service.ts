@@ -19,6 +19,12 @@ export class DataService {
   updateData(data: any): Observable<any> {
     return this.http.put<any>(this.baseUrl+'/updateexistingstationdata', {data});
   }
+  verifiedRainfallData(data: any): Observable<any> {
+    return this.http.put<any>(this.baseUrl+'/verifiedrainfall', {data});
+  }
+  addColumn(data: any): Observable<any> {
+    return this.http.put<any>(this.baseUrl+'/addcolumn', {data});
+  }
   updateRainFallData(data: any): Observable<any> {
     return this.http.put<any>(this.baseUrl+'/updaterainfall', {data});
   }
@@ -130,6 +136,10 @@ export class DataService {
   getDeletedStationLog(): Observable<any> {
     const url = `${this.baseUrl}`+'/deletedstationlog';
     return this.http.get(url);
+  }
+
+  sendEmail(emailData: any): Observable<any> {
+    return this.http.post(this.baseUrl+'/send-email', emailData);
   }
 
 }

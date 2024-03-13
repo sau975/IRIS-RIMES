@@ -276,6 +276,13 @@ export class StationStatisticsComponent implements OnInit, OnDestroy {
     return this.form.controls;
   }
 
+  shareCheckedList(item:any[]){
+    console.log(item);
+  }
+  shareIndividualCheckedList(item:{}){
+    console.log(item);
+  }
+
   updateMapAttribution(specialText: string) {
     // Get the Leaflet map container
     const mapContainer = this.stationObservationMap.getContainer();
@@ -492,7 +499,11 @@ export class StationStatisticsComponent implements OnInit, OnDestroy {
     this.dataService.existingstationdata().subscribe({
       next: value => {
         this.existingstationdata = value;
-        this.regionList = Array.from(new Set(this.existingstationdata.map(a => a.region)));
+        let regionList = Array.from(new Set(this.existingstationdata.map(a => a.region)));
+        this.regionList = regionList.map(x => {
+          return {name: x}
+        })
+
       },
       error: err => console.error('Error fetching data:', err)
     });

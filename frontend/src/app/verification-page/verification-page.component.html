@@ -72,9 +72,9 @@
   </div>
   <div class="col-1">
     <label for="status">Select Status :</label>
-    <select name="status" class="form-control" id="status">
-      <option>Verified</option>
-      <option>Not Verified</option>
+    <select name="status" class="form-control" id="status" [(ngModel)]="status">
+      <option [value]="'verified'">Verified</option>
+      <option [value]="'notverified'">Not Verified</option>
     </select>
   </div>
   <div class="col-2">
@@ -120,7 +120,7 @@
                 <input type="number" id="rainfall" #rainFallElementRef name="rainfall" [(ngModel)]="station.RainFall" required style="border: none;"
                   step="0.1" (input)="showMessage(rainFallElementRef)">
               </td>
-              <td style="border: 1px solid black"><button>Verified</button><button>Not Verified</button></td>
+              <td style="border: 1px solid black"><button [ngClass]="{'selectedOptionolor': station.isverified === 'verified'}">Verified</button><button [ngClass]="{'selectedOptionolor': station.isverified === 'notverified'}">Not Verified</button></td>
               <td style="border: 1px solid black"><button>Email</button></td>
               <td style="border: 1px solid black"><button value="AWS" [ngClass]="{'selectedOptionolor': station.stationtype === 'aws'}">AWS</button><button
                   value="ORG" [ngClass]="{'selectedOptionolor': station.stationtype === 'org'}">ORG</button><button value="ARG" [ngClass]="{'selectedOptionolor': station.stationtype === 'arg'}">ARG</button></td>

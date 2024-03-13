@@ -32,6 +32,7 @@ export class VerificationPageComponent {
   };
   verifiedDate: string = '';
   verifiedMessage: string = '';
+  status: string = '';
 
   ngOnInit(): void {
     this.fetchDataFromBackend();
@@ -66,19 +67,23 @@ export class VerificationPageComponent {
 
     Verify(){
       if (confirm("Do want to verify these stations") == true) {
-        localStorage.setItem('verifiedDate', JSON.stringify(new Date()));
-        localStorage.setItem('verifiedMessage', "These stations are Verified");
-        this.showVerifiedDateAndMessage();
+        let data = {
+          date: this.dateCalculation(),
+          verifiedstationdata: this.filteredStations
+        }
+        this.dataService.verifiedRainfallData(data).subscribe(res => {
+          alert("Verified Successfully");
+          this.showVerifiedDateAndMessage();
+          this.filterByDate();
+        })
       } else {
 
       }
     }
 
     showVerifiedDateAndMessage(){
-      let verifiedDate:any = localStorage.getItem('verifiedDate');
-      this.verifiedDate = JSON.parse(verifiedDate);
-      let verifiedMessage:any = localStorage.getItem('verifiedMessage');
-      this.verifiedMessage = verifiedMessage;
+      this.verifiedDate = String(new Date(this.selectedDate));
+      this.verifiedMessage = "These stations are Verified";
     }
 
     dateCalculation() {
@@ -105,6 +110,8 @@ export class VerificationPageComponent {
   }
 
   filterByDate(){
+    this.verifiedDate = '';
+    this.verifiedMessage = '';
     if(this.selectedDistrict){
       this.filteredStations = this.existingstationdata.filter(s =>  s.district == this.selectedDistrict);
     }
@@ -117,7 +124,18 @@ export class VerificationPageComponent {
     this.filteredStations.map(x => {
       return x.RainFall = x[this.dateCalculation()];
     })
-    // this.showVerifiedDateAndMessage();
+    this.filteredStations.map(x => {
+      return x.isverified = x['isverified_' + this.dateCalculation()];
+    })
+    if(this.status){
+      this.filteredStations = this.filteredStations.filter(s =>  s.isverified == this.status);
+    }
+    if(this.filteredStations.length > 0){
+      let isverified = this.filteredStations.every(station => station && station.isverified == "verified");
+      if(isverified){
+        this.showVerifiedDateAndMessage();
+      }
+    }
   }
 
   showMessage(elementRef: any) {

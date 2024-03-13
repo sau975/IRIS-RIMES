@@ -7,6 +7,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const multer = require('multer');
 const xlsx = require('xlsx');
+const nodemailer = require('nodemailer');
 // const cron = require('node-cron');
 
 // cron.schedule('0 14 * * *', () => {
@@ -27,6 +28,43 @@ app.use((req, res, next) => {
     "GET, POST, PUT, PATCH, DELETE, OPTIONS"
   );
   next();
+});
+
+const smtpTransport = nodemailer.createTransport({
+  host: 'smtp.gmail.com',
+  port: 587,
+  secure: false, // true for 465, false for other ports
+  auth: {
+    user: 'saurav@rimes.int',
+    pass: 'sxcjuiwivyptrxkp'
+  }
+});
+
+app.post('/send-email', (req, res) => {
+  const { to, subject, text } = req.body;
+
+  const mailOptions = {
+    from: 'saurav@rimes.int',
+    to: to,
+    subject: subject,
+    text: text,
+    // attachments: [
+    //   {
+    //     filename: 'Indus Basin Reort Part-I.pdf',
+    //     path: '../frontend/src/assets/Indus Basin Reort Part-I.pdf'
+    //   }
+    // ]
+  };
+  console.log("Sending Email");
+  smtpTransport.sendMail(mailOptions, (error, response) => {
+    if (error) {
+      console.log(error);
+      res.status(500).send('Error sending email');
+    } else {
+      console.log('Email sent: ' + response.message);
+      res.send('Email sent successfully');
+    }
+  });
 });
 
 app.post('/addData', (req, res) => {
@@ -110,6 +148,44 @@ app.get("/existingstationdata", (req, res) => {
       }
     }
   );
+});
+
+app.put("/addcolumn", (req, res) => {
+  const data = req.body.data;
+  try {
+    client.query('BEGIN');
+    const queryText = `ALTER TABLE existingstationdata ADD COLUMN IF NOT EXISTS "${'isverified_'+data.date}" character varying DEFAULT 'notverified'`;
+    client.query(queryText);
+    client.query('COMMIT');
+    res.status(200).json({ message: `Column Created successfully`});
+  }
+   catch (error) {
+    client.query('ROLLBACK');
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+app.put("/verifiedrainfall", (req, res) => {
+  const data = req.body.data;
+  try {
+    // Begin a transaction
+    client.query('BEGIN');
+    // Loop through each object and insert into the database
+    for (const element of data.verifiedstationdata) {
+      const queryText = `UPDATE existingstationdata SET "${'isverified_'+data.date}" = 'verified' WHERE stationid = ${element.station_id}`;
+      // Execute the query
+      client.query(queryText);
+    }
+    // Commit the transaction
+    client.query('COMMIT');
+    res.status(200).json({ message: `Verified successfully`});
+  }
+   catch (error) {
+    // Rollback the transaction in case of an error
+    client.query('ROLLBACK');
+    res.status(500).json({ error: 'Internal server error' });
+    console.error('Error inserting data:', error);
+  }
 });
 
 app.get("/masterFile", (req, res) => {

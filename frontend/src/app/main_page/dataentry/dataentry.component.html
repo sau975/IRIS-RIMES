@@ -133,11 +133,11 @@
           <a href="javascript:void(0)" (click)="downloadStationSampleFile()">Sample File</a>
         </div>
         <div class="mb-3 col-2">
-          <input class="form-control" type="file" #rainfallFileInput (change)="onRainfallFileSelected($event)">
+          <input [disabled]="loggedInUserObject.data[0].mcorhq == 'mc'" class="form-control" type="file" #rainfallFileInput (change)="onRainfallFileSelected($event)">
         </div>
         <div class="col-2">
-          <button (click)="uploadRainFallFile()" class="btn btn-success">Upload Rainfall</button> <br>
-          <a href="javascript:void(0)" (click)="downloadRainfallSampleFile()">Sample File</a>
+          <button [disabled]="loggedInUserObject.data[0].mcorhq == 'mc'" (click)="uploadRainFallFile()" class="btn btn-success">Upload Rainfall</button> <br>
+          <a *ngIf="loggedInUserObject.data[0].mcorhq == 'hq'" href="javascript:void(0)" (click)="downloadRainfallSampleFile()">Sample File</a>
         </div>
       </div>
       <br />
@@ -192,7 +192,7 @@
           </tr>
         </tbody>
       </table>
-      <button class="enter" (click)="Addstation()">Add Station</button>
+      <button *ngIf="loggedInUserObject.data[0].mcorhq == 'hq'" class="enter" (click)="Addstation()">Add Station</button>
       <button type="submit" class="enter" (click)="submit()">Submit</button>
       <!-- </form> -->
 

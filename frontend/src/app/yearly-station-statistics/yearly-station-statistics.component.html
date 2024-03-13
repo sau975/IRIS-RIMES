@@ -1,0 +1,119 @@
+<div class="background-effect">
+  <table style="width: 100%; background: linear-gradient(to top, #09203f 0%, #537895 100%);">
+    <tbody>
+      <tr>
+        <td style="width: 8%; padding: 10px 0px 17px 25px;" align="left">
+        </td>
+        <td style="text-align: center; padding: 20px; width: 90%">
+          <table style="width: 100%">
+            <tbody>
+              <tr>
+                <td>
+                  <label style="
+                      color: white;
+                      vertical-align: middle;
+                      font-family: Arial;
+                      font-weight: bolder;
+                      font-size: 20px;
+                    ">
+                    IMD Rainfall Information System (IRIS)</label>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <label style="
+                      color: white;
+                      vertical-align: middle;
+                      font-family: Arial;
+                      font-weight: bolder;
+                      font-size: 18px;
+                    ">
+                    Hydromet Division</label>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </td>
+        <td>
+          <div class="button">
+            <button class="Back" (click)="goBack()">Back</button>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="navbar row">
+    <div class="col-3">
+      <label for="region">Select Region :</label>
+      <select name="region" class="form-control" id="region" [(ngModel)]="selectedRegion" (change)="onChangeRegion()">
+        <option *ngFor="let region of regionList" [value]="region">{{region}}</option>
+      </select>
+    </div>
+    <div class="col-2">
+      <label for="mcs">Select MC :</label>
+      <select name="mcs" class="form-control" id="mcs">
+        <option value="mc1">RMC/MC</option>
+        <option value="mc2">RMC/MC</option>
+        <option value="mc3">RMC/MC</option>
+        <option value="mc4">RMC/MC</option>
+      </select>
+    </div>
+    <div class="col-2">
+      <label for="state">Select State :</label>
+      <select name="state" class="form-control" id="state" [(ngModel)]="selectedState" (change)="onChangeState()">
+        <option *ngFor="let state of filteredStates" [value]="state">{{state}}</option>
+      </select>
+    </div>
+    <div class="col-2">
+      <label for="district">Select District :</label>
+      <select name="district" class="form-control" id="district" [(ngModel)]="selectedDistrict">
+        <option *ngFor="let district of filteredDistricts" [value]="district">{{district}}</option>
+      </select>
+    </div>
+    <div class="col-2">
+      <label for="year">Select Year :</label>
+      <select name="year" class="form-control" id="year" [(ngModel)]="selectedYear">
+        <option [value]="2026">2026</option>
+        <option [value]="2052">2025</option>
+        <option [value]="2043">2024</option>
+        <option [value]="2023">2023</option>
+        <option [value]="2022">2022</option>
+        <option [value]="2021">2021</option>
+        <option [value]="2020">2020</option>
+      </select>
+    </div>
+    <div class="col-1 mt-3">
+      <button class="btn btn-success" type="button" (click)="submit()">Submit</button>
+    </div>
+  </div>
+
+  <div style="text-align: center; padding-top: 40px">
+    <div class="dataentry">
+      <button class="btn btn-primary mb-2" type="button" (click)="download()">Download</button>
+      <table style=" margin: auto; border-collapse: collapse; width: 90%; border: 1px solid black;">
+        <thead>
+          <tr>
+            <th style="border: 1px solid black">S No.</th>
+            <th style="border: 1px solid black">Region</th>
+            <th style="border: 1px solid black">State</th>
+            <th style="border: 1px solid black">District</th>
+            <th style="border: 1px solid black">Station</th>
+            <th style="border: 1px solid black">Date</th>
+            <th style="border: 1px solid black">Rainfall</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of yearlyStationData; let i = index;">
+            <td style="border: 1px solid black">{{i+1}}</td>
+            <td style="border: 1px solid black">{{item.region}}</td>
+            <td style="border: 1px solid black">{{item.state}}</td>
+            <td style="border: 1px solid black">{{item.district}}</td>
+            <td style="border: 1px solid black">{{item.station}}</td>
+            <td style="border: 1px solid black">{{item.date}}</td>
+            <td style="border: 1px solid black">{{item.rainfall}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

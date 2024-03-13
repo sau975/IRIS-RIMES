@@ -190,4 +190,21 @@ export class NavbarComponent implements OnInit {
     windo.document.write(objbuilder);
     // window.open(`http://localhost:3000/download/${fileId}`, '_blank');
   }
+
+  sendEmail(){
+    if (confirm("Do want to send email") == true) {
+      // let emails = ["saurav97531@gmail.com", "pavan@rimes.int", "dominic@rimes.int", "tarakesh@rimes.int", "saipraveen@rimes.int"];
+      let emails = ["saurav97531@gmail.com"];
+      emails.forEach(email => {
+        let data = {
+          to: email,
+          subject: "Welcome",
+          text: "Hi This is the first mail for testing purpose"
+        }
+        this.dataService.sendEmail(data).subscribe(res => {
+          console.log("Email Sent Successfully");
+        })
+      })
+    }
+  }
 }

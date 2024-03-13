@@ -1021,7 +1021,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     //     this.loadGeoJSON1();
     //   } else {
     //     this.map1.setZoom(this.initialZoom);
-    //     this.updateLegendDetailsPositionstate(false); 
+    //     this.updateLegendDetailsPositionstate(false);
     //     this.loadGeoJSON();
     //   }
     // });
@@ -1048,7 +1048,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     //     this.loadGeoJSON1();
     //   } else {
     //     this.map2.setZoom(this.initialZoom);
-    //     this.updateLegendDetailsPositionsubdiv(false); 
+    //     this.updateLegendDetailsPositionsubdiv(false);
     //      this.loadGeoJSON();
     //   }
     // });
@@ -1658,6 +1658,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     });
 
     const filename = 'Districtdeparture_data.pdf';
+    // doc.save("../../../assets/Districtdeparture_data" + new Date() + ".pdf");
     doc.save(filename);
   }
 
