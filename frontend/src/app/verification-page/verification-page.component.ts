@@ -30,7 +30,6 @@ export class VerificationPageComponent {
     lng: '',
     activationDate: this.selectedDate
   };
-  verifiedDate: string = '';
   verifiedMessage: string = '';
   status: string = '';
 
@@ -69,6 +68,7 @@ export class VerificationPageComponent {
       if (confirm("Do want to verify these stations") == true) {
         let data = {
           date: this.dateCalculation(),
+          verifiedDateTime: new Date(),
           verifiedstationdata: this.filteredStations
         }
         this.dataService.verifiedRainfallData(data).subscribe(res => {
@@ -82,7 +82,6 @@ export class VerificationPageComponent {
     }
 
     showVerifiedDateAndMessage(){
-      this.verifiedDate = String(new Date(this.selectedDate));
       this.verifiedMessage = "These stations are Verified";
     }
 
@@ -110,7 +109,6 @@ export class VerificationPageComponent {
   }
 
   filterByDate(){
-    this.verifiedDate = '';
     this.verifiedMessage = '';
     if(this.selectedDistrict){
       this.filteredStations = this.existingstationdata.filter(s =>  s.district == this.selectedDistrict);
@@ -125,13 +123,13 @@ export class VerificationPageComponent {
       return x.RainFall = x[this.dateCalculation()];
     })
     this.filteredStations.map(x => {
-      return x.isverified = x['isverified_' + this.dateCalculation()];
+      return x.isverified = JSON.parse(x['isverified_' + this.dateCalculation()]);
     })
     if(this.status){
-      this.filteredStations = this.filteredStations.filter(s =>  s.isverified == this.status);
+      this.filteredStations = this.filteredStations.filter(s =>  s.isverified.status == this.status);
     }
     if(this.filteredStations.length > 0){
-      let isverified = this.filteredStations.every(station => station && station.isverified == "verified");
+      let isverified = this.filteredStations.every(station => station && station.isverified.status == "verified");
       if(isverified){
         this.showVerifiedDateAndMessage();
       }
