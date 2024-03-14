@@ -194,8 +194,8 @@ export class NavbarComponent implements OnInit {
 
   sendEmail(){
     if (confirm("Do want to send email") == true) {
-      let emails = ["saurav97531@gmail.com", "pavan@rimes.int", "dominic@rimes.int", "tarakesh@rimes.int", "saipraveen@rimes.int", "saurabh@rimes.int"];
-      // let emails = ["saurav97531@gmail.com"];
+      // let emails = ["saurav97531@gmail.com", "pavan@rimes.int", "dominic@rimes.int", "tarakesh@rimes.int", "saipraveen@rimes.int", "saurabh@rimes.int"];
+      let emails = ["saurav97531@gmail.com"];
       var attachments:any[]=[];
       this.indexedDBService.getAllData().then(response => {
         response.forEach((f:any) => {
