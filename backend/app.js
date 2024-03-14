@@ -41,19 +41,13 @@ const smtpTransport = nodemailer.createTransport({
 });
 
 app.post('/send-email', (req, res) => {
-  const { to, subject, text } = req.body;
-
+  const { to, subject, text, attachments } = req.body;
   const mailOptions = {
     from: 'saurav@rimes.int',
     to: to,
     subject: subject,
     text: text,
-    // attachments: [
-    //   {
-    //     filename: 'Indus Basin Reort Part-I.pdf',
-    //     path: '../frontend/src/assets/Indus Basin Reort Part-I.pdf'
-    //   }
-    // ]
+    attachments: attachments
   };
   console.log("Sending Email");
   smtpTransport.sendMail(mailOptions, (error, response) => {

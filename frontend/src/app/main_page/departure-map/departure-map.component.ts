@@ -9,6 +9,7 @@ import * as htmlToImage from 'html-to-image';
 import { NavigationEnd, Router } from '@angular/router';
 import { EMPTY, concatMap, filter } from 'rxjs';
 import { DatePipe } from '@angular/common';
+import { IndexedDBService } from 'src/app/indexed-db.service';
 
 @Component({
   selector: 'app-departure-map',
@@ -68,7 +69,8 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     private http: HttpClient,
     private dataService: DataService,
     private router: Router,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    private indexedDBService: IndexedDBService
   ) {
     this.dateCalculation();
     this.dataService.fromAndToDate$.subscribe((value) => {
@@ -1658,8 +1660,9 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     });
 
     const filename = 'Districtdeparture_data.pdf';
-    // doc.save("../../../assets/Districtdeparture_data" + new Date() + ".pdf");
     doc.save(filename);
+    let base64pdf = doc.output('datauristring')
+    this.indexedDBService.addData({ filename: filename, base64pdf: base64pdf });
   }
 
   downloadMapData1(): void {

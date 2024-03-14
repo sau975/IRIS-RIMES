@@ -139,6 +139,7 @@ export class DataService {
   }
 
   sendEmail(emailData: any): Observable<any> {
+    console.log(emailData, "-------")
     return this.http.post(this.baseUrl+'/send-email', emailData);
   }
 

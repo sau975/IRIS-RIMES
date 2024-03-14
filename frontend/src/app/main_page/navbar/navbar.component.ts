@@ -1,7 +1,7 @@
-import { filter } from 'rxjs';
 import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { DataService } from 'src/app/data.service';
+import { IndexedDBService } from 'src/app/indexed-db.service';
 
 
 @Component({
@@ -25,7 +25,8 @@ export class NavbarComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private dataService: DataService
+    private dataService: DataService,
+    private indexedDBService: IndexedDBService
   ) { }
 
 
@@ -193,18 +194,29 @@ export class NavbarComponent implements OnInit {
 
   sendEmail(){
     if (confirm("Do want to send email") == true) {
-      // let emails = ["saurav97531@gmail.com", "pavan@rimes.int", "dominic@rimes.int", "tarakesh@rimes.int", "saipraveen@rimes.int"];
-      let emails = ["saurav97531@gmail.com"];
-      emails.forEach(email => {
-        let data = {
-          to: email,
-          subject: "Welcome",
-          text: "Hi This is the first mail for testing purpose"
-        }
-        this.dataService.sendEmail(data).subscribe(res => {
-          console.log("Email Sent Successfully");
+      let emails = ["saurav97531@gmail.com", "pavan@rimes.int", "dominic@rimes.int", "tarakesh@rimes.int", "saipraveen@rimes.int", "saurabh@rimes.int"];
+      // let emails = ["saurav97531@gmail.com"];
+      var attachments:any[]=[];
+      this.indexedDBService.getAllData().then(response => {
+        response.forEach((f:any) => {
+          let file = {
+            filename: f.filename,
+            path: f.base64pdf
+          }
+          attachments.push(file);
         })
-      })
+        emails.forEach(email => {
+          let data = {
+            to: email,
+            subject: "Welcome to IRIS",
+            text: "Hi This mail is being sent for testing purposes only. PFA",
+            attachments: attachments
+          }
+          this.dataService.sendEmail(data).subscribe(res => {
+            console.log("Email Sent Successfully");
+          })
+        })
+      });
     }
   }
 }
