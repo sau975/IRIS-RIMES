@@ -38,76 +38,9 @@
 		<div class="my-3" [class.nav-heading]="isSideNavOpen"
 			[ngClass]="{'d-flex flex-row-reverse justify-content-center align-items-center': !isSideNavOpen}">
 			<h2 class="mb-3 pr-2" [class.hidden]="!isSideNavOpen">Explore</h2>
-
-			<!-- <button (click)="toggleSideNav()"
-				class="close-button sidebar-btn"
-				style="background-color: #e7e1e1;"
-				mat-icon-button>
-				<mat-icon class="">keyboard_arrow_right</mat-icon>
-			</button> -->
 		</div>
-
-		<!-- <mat-divider></mat-divider> -->
-
 		<form id="observation-form" class="form-container" (ngSubmit)="submitParameterForm()">
-			<!-- Parameter Selection -->
-			<!-- <div class="drawer-fields my-3"
-		  	  [ngClass]="{'d-flex justify-content-evenly': !isSideNavOpen}">
-			<span class="material-icons">device_thermostat</span>
-			<button mat-button
-					[matMenuTriggerFor]="parameterMenu"
-					[ngClass]="{'d-flex flex-row-reverse': isSideNavOpen}"
-					[class.hidden]="!isSideNavOpen"
-					(click)="preventButtonBehaviour($event)">
-			  <span *ngIf="!selectedParameter">Select Parameter</span>
-			  <span *ngIf="selectedParameter">{{selectedParameter.text}}</span>
-			</button>
-			<span class="material-icons" [class.hidden]="!isSideNavOpen">chevron_right</span>
-			<mat-menu #parameterMenu="matMenu"
-					  xPosition="after"
-					  [class.hidden]="!isSideNavOpen">
-				<button mat-menu-item *ngFor="let option of stationWeatherParameters" (click)="selectParameter(option)">
-					{{ option.text }}
-				  </button>
-			</mat-menu>
-		  </div>
-
-		  <mat-divider></mat-divider> -->
-
-			<!-- Category Selection -->
-			<!-- <div class="drawer-fields my-3"
-		  	   [ngClass]="{'d-flex justify-content-evenly': !isSideNavOpen}"
-			   *ngIf="selectedParameter && selectedParameter?.categoryOptions?.length > 0">
-		  	   <span class="material-icons">{{selectedParameter.iconName}}</span>
-		  	   <button mat-button
-		  	  			[matMenuTriggerFor]="parameterMenu"
-		  	  			[ngClass]="{'d-flex flex-row-reverse': isSideNavOpen}"
-		  	  			[class.hidden]="!isSideNavOpen"
-		  	  			(click)="preventButtonBehaviour($event)">
-		  	  	  <span *ngIf="!selectedCategory">Category</span>
-		  	  	  <span *ngIf="selectedCategory">{{selectedCategory}}</span>
-		  	   </button>
-     			<span class="material-icons" [class.hidden]="!isSideNavOpen">chevron_right</span>
-
-		  	   <mat-menu #parameterMenu="matMenu"
-		  	  			  xPosition="after"
-		  	  			  [class.hidden]="!isSideNavOpen">
-		  	  		<button mat-menu-item *ngFor="let category of selectedParameter?.categoryOptions; let i = index"
-											(click)="selectCategory(category.text)"
-											class="category-menu-button position-relative">
-						<span>
-							<span style="font-size:12px;">{{ category.text }}</span>
-							<span style="font-size:12px;">{{ category.range }}</span>
-						</span>
-						<span
-						[ngStyle]="{ 'background-color': selectedParameter.colors[i], 'color': 'white', 'border-radius': '50%', 'padding': '1px 3px', 'font-size': '11px'}">{{i}}</span>
-		  	  		</button>
-		  	   </mat-menu>
-		  </div> -->
-
 			<mat-divider></mat-divider>
-
-			<!-- Time Selection -->
 			<div class="my-3" style="gap: 1.2em; padding-left:1em;"
 				[ngClass]="{'d-flex justify-content-around items-center': isSideNavOpen}">
 
@@ -166,8 +99,6 @@
 						</div>
 					</button>
 				</div>
-
-				<!-- <mat-icon [class.hidden]="!isSideNavOpen">more_vert</mat-icon> -->
 			</div>
 
 			<mat-divider></mat-divider>
@@ -206,10 +137,15 @@
 
 			<mat-divider></mat-divider>
 
+			<!-- Inside the form -->
 			<div class="my-3 d-flex justify-content-center">
 				<button mat-button type="submit" class="mx-ato" [class.hidden]="!isSideNavOpen"
-					style="background-color:#4050b5; color:white">
+					style="background-color:#4050b5; color:white" (click)="showStationData()">
 					Show Station Data
+				</button>
+				<button mat-button type="submit" class="mx-ato" [class.hidden]="!isSideNavOpen"
+					style="background-color:#4050b5; color:white; margin:0px 10px 0px 10px;" (click)="compareCharts()">
+					Compare
 				</button>
 			</div>
 
@@ -269,6 +205,11 @@
 				<mat-icon>graphic_eq</mat-icon>
 				<span>Station Details</span>
 			</div>
+			<div class="h5 align-self-center d-flex" [class.selected]="selectedOption === 'compare_station_data'"
+				(click)="selectStationDataOption('compare_station_data')" style="gap:0.2em;">
+				<mat-icon>compare_arrows</mat-icon>
+				<span>Compare</span>
+			</div>
 			<mat-icon (click)="closePopup()">close</mat-icon>
 
 			<!-- <div class="h5 align-self-center" [class.selected]="selectedOption === 'Others'" (click)="selectOption('Others')">Others</div> -->
@@ -277,50 +218,68 @@
 		<mat-divider></mat-divider>
 
 		<div class="d-flex" style="height:100%;">
-			<div class="d-flex flex-column justify-content-center align-items-center p-2 mb-3"
-				style=" width:35%; max-height:80%;">
-				<div>
+			<ng-container *ngIf="selectedOption === 'station_details'">
+				<div class="d-flex flex-column justify-content-center align-items-center p-2 mb-3"
+					style=" width:35%; max-height:80%;">
 					<Span class="h5">Station Details</Span>
+
+					<div style="overflow-y:scroll; width:100%; padding:1em;">
+
+						<div class="py-2 d-flex justify-content-between station-data-table w-100">
+							<span>Station</span>
+							<span>Goa</span>
+						</div>
+
+						<div class="py-2 d-flex justify-content-between station-data-table w-100">
+							<span>How many days data</span>
+							<span>20</span>
+						</div>
+						<div class="py-2 d-flex justify-content-between station-data-table w-100">
+							<span>How many missing</span>
+							<span>05</span>
+						</div>
+					</div>
 				</div>
-				<div style="overflow-y:scroll; width:100%; padding:1em;">
-
-					<div class="py-2 d-flex justify-content-between station-data-table w-100">
-						<span>Station</span>
-						<span>Goa</span>
+			</ng-container>
+			<ng-container *ngIf="selectedOption === 'compare_station_data'">
+				<div class="d-flex flex-column justify-content-center align-items-center p-2 mb-3"
+					style=" width:35%; max-height:80%;">
+					<div>
+						<Span class="h5">Compare Stations</Span>
 					</div>
-
-					<div class="py-2 d-flex justify-content-between station-data-table w-100">
-						<span>How many days data</span>
-						<span>20</span>
+					<div style="overflow-y:scroll; width:100%; padding:1em;">
+						<div class="py-2 d-flex justify-content-between station-data-table w-100">
+							<select name="stations" id="stations">
+								<option value="station1">Station1</option>
+								<option value="station2">Station2</option>
+							</select>
+						</div>
+						<div class="py-2 d-flex justify-content-between station-data-table w-100">
+							<span>How many days data</span>
+							<span>20</span>
+						</div>
+						<div class="py-2 d-flex justify-content-between station-data-table w-100">
+							<span>How many missing</span>
+							<span>05</span>
+						</div>
 					</div>
-					<div class="py-2 d-flex justify-content-between station-data-table w-100">
-						<span>How many missing</span>
-						<span>05</span>
-
-					</div>
-					
-
-					<!-- <div class="py-2 d-flex justify-content-between station-data-table w-100"
-          *ngFor="let weatherData of stationWeatherParameters">
-              <span>{{ weatherData.text }}</span>
-              <span>{{ weatherData.data[0].value }} {{ weatherData.data[0].unit }}</span>
-        </div> -->
 				</div>
-			</div>
+			</ng-container>
 
 			<div style="max-height:80%; width:70%;" class="my-auto">
 				<div *ngIf="chart" [chart]="chart" style="height: 232px; width:57em;" class="chart-container"></div>
-
 				<div class="station-data-options">
 					<div *ngFor="let weatherOptions of stationWeatherParameters" class="station-data-sub-options p-2"
 						[class.clicked]="toggleDataParameter(weatherOptions.text)"
 						(click)="updateChart(weatherOptions)">
 						{{ weatherOptions.text }}
 					</div>
+					<button mat-button style="background-color:#4050b5; color:white; margin:0px 10px 0px 10px;">
+						Historical
+					</button>
 				</div>
 			</div>
 		</div>
-
 	</div>
 
 </div>
