@@ -208,7 +208,7 @@ export class NavbarComponent implements OnInit {
         emails.forEach(email => {
           let data = {
             to: email,
-            subject: "Welcome to IRIS",
+            subject: `Today's Maps and Reports - ${new Date().toDateString()}`,
             text: "Hi This mail is being sent for testing purposes only. PFA",
             attachments: attachments
           }
