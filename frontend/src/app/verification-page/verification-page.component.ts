@@ -153,6 +153,23 @@ export class VerificationPageComponent {
         }
   }
 
+  sendEmail(){
+    if (confirm("Do want to send email") == true) {
+      // let emails = ["saurav97531@gmail.com", "pavan@rimes.int", "dominic@rimes.int", "tarakesh@rimes.int", "saipraveen@rimes.int", "saurabh@rimes.int"];
+      let emails = ["saurav97531@gmail.com"];
+      emails.forEach(email => {
+        let data = {
+          to: email,
+          subject: `Rainfall data is not correct for - ${new Date().toDateString()}`,
+          text: `Hi Rainfall data is not correct for - ${new Date().toDateString()} please correct it`,
+        }
+        this.dataService.sendEmail(data).subscribe(res => {
+          console.log("Email Sent Successfully");
+        })
+      })
+    }
+  }
+
 
   // showMessage(elementRef:any){
   //   if(Number(elementRef.value) > 400){
