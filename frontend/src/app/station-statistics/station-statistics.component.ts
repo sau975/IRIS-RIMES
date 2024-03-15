@@ -13,6 +13,21 @@ import { DataService } from '../data.service';
   styleUrls: ['./station-statistics.component.css'],
 })
 export class StationStatisticsComponent implements OnInit, OnDestroy {
+
+  showStationData(): void {
+    this.selectedOption = 'station_details';
+    // Update the chart to show the station data
+    this.updateChart(this.stationWeatherParameters[0]);
+  }
+
+  // Method to handle the click event for comparing charts
+  compareCharts(): void {
+    this.selectedOption = 'compare_charts';
+    // Update both charts to compare data
+    this.updateChart(this.stationWeatherParameters[0]);
+    this.updateChart(this.stationWeatherParameters[0]); // Update the second chart, you can modify this to use a different dataset for comparison
+  }
+
   @ViewChild('timeMenuTrigger') trigger: MatMenuTrigger | undefined;
   selectedRegion: string = '';
   selectedState: string = '';
@@ -62,102 +77,7 @@ export class StationStatisticsComponent implements OnInit, OnDestroy {
   arrowRotation = 0;
   existingstationdata: any[] = [];
   stationWeatherParameters: any[] = [
-    // {
-    //   text: 'Temperature',
-    //   weatherParams: 'temp',
-    //   colors: [
-    //     '#808080',
-    //     '#00ffff',
-    //     '#0000ff',
-    //     '#00008b',
-    //     '#006400',
-    //     '#90ee90',
-    //     '#ffff00',
-    //     '#ffd580',
-    //     '#ffa500',
-    //     '#f30000',
-    //     '#8b0000',
-    //   ],
-    //   categoryOptions: [
-    //     { text: 'Temperature', range: '(> 45°C)' },
-    //     { text: 'Temperature', range: '(40°C - 45°C)' },
-    //     { text: 'Temperature', range: '(30°C - 40°C)' },
-    //     { text: 'Temperature', range: '(10°C - 15°C)' },
-    //     { text: 'Temperature', range: '(5°C - 10°C)' },
-    //     { text: 'Temperature', range: '(5°C - 5°C)' },
-    //   ],
-    //   data: [
-    //     { hour: '00:00', value: 22, unit: '°C' },
-    //     { hour: '01:00', value: 22.5, unit: '°C' },
-    //     { hour: '02:00', value: 22.8, unit: '°C' },
-    //     { hour: '03:00', value: 23.2, unit: '°C' },
-    //     { hour: '04:00', value: 23.7, unit: '°C' },
-    //     { hour: '05:00', value: 24.1, unit: '°C' },
-    //     { hour: '06:00', value: 24.5, unit: '°C' },
-    //     { hour: '07:00', value: 24.9, unit: '°C' },
-    //     { hour: '08:00', value: 25.2, unit: '°C' },
-    //     { hour: '09:00', value: 25.6, unit: '°C' },
-    //     { hour: '10:00', value: 26.0, unit: '°C' },
-    //     { hour: '11:00', value: 26.3, unit: '°C' },
-    //     { hour: '12:00', value: 26.5, unit: '°C' },
-    //     { hour: '13:00', value: 26.7, unit: '°C' },
-    //     { hour: '14:00', value: 26.8, unit: '°C' },
-    //     { hour: '15:00', value: 26.9, unit: '°C' },
-    //     { hour: '16:00', value: 26.8, unit: '°C' },
-    //     { hour: '17:00', value: 26.6, unit: '°C' },
-    //     { hour: '18:00', value: 26.3, unit: '°C' },
-    //     { hour: '19:00', value: 26.0, unit: '°C' },
-    //     { hour: '20:00', value: 25.6, unit: '°C' },
-    //     { hour: '21:00', value: 25.2, unit: '°C' },
-    //     { hour: '22:00', value: 24.8, unit: '°C' },
-    //     { hour: '23:00', value: 24.4, unit: '°C' },
-    //   ],
-    //   iconName: 'device_thermostat',
-    // },
-    // {
-    //   text: 'Relative Humidity',
-    //   weatherParams: 'humidity',
-    //   colors: [
-    //     '#a52a2a',
-    //     '#8b0000',
-    //     '#ff0000',
-    //     '#ffa500',
-    //     '#fed8b1',
-    //     '#7ea2c8',
-    //     '#90ee90',
-    //     '#008000',
-    //     '#8467d7',
-    //     '#800080',
-    //   ],
-    //   categoryOptions: [],
-    //   data: [
-    //     { hour: '00:00', value: 95, unit: '%' },
-    //     { hour: '01:00', value: 93, unit: '%' },
-    //     { hour: '02:00', value: 92, unit: '%' },
-    //     { hour: '03:00', value: 91, unit: '%' },
-    //     { hour: '04:00', value: 90, unit: '%' },
-    //     { hour: '05:00', value: 88, unit: '%' },
-    //     { hour: '06:00', value: 87, unit: '%' },
-    //     { hour: '07:00', value: 85, unit: '%' },
-    //     { hour: '08:00', value: 83, unit: '%' },
-    //     { hour: '09:00', value: 82, unit: '%' },
-    //     { hour: '10:00', value: 80, unit: '%' },
-    //     { hour: '11:00', value: 78, unit: '%' },
-    //     { hour: '12:00', value: 77, unit: '%' },
-    //     { hour: '13:00', value: 75, unit: '%' },
-    //     { hour: '14:00', value: 74, unit: '%' },
-    //     { hour: '15:00', value: 72, unit: '%' },
-    //     { hour: '16:00', value: 71, unit: '%' },
-    //     { hour: '17:00', value: 70, unit: '%' },
-    //     { hour: '18:00', value: 69, unit: '%' },
-    //     { hour: '19:00', value: 68, unit: '%' },
-    //     { hour: '20:00', value: 67, unit: '%' },
-    //     { hour: '21:00', value: 66, unit: '%' },
-    //     { hour: '22:00', value: 65, unit: '%' },
-    //     { hour: '23:00', value: 64, unit: '%' },
-    //   ],
-    //   iconName: 'water',
-    // },
+   
     {
       text: 'Rainfall',
       weatherParams: 'rf',
@@ -181,8 +101,34 @@ export class StationStatisticsComponent implements OnInit, OnDestroy {
       ],
       data: [
         { hour: '07', value: 0, unit: 'mm' },
-        { hour: '08', value: 0, unit: 'mm' },
+        { hour: '08', value: 10, unit: 'mm' },
         { hour: '09', value: 0, unit: 'mm' },
+        { hour: '10', value: 0, unit: 'mm' },
+        { hour: '11', value: 0, unit: 'mm' },
+        { hour: '12', value: 0, unit: 'mm' },
+        { hour: '13', value: 0, unit: 'mm' },
+        { hour: '14', value: 0, unit: 'mm' },
+        { hour: '15', value: 0, unit: 'mm' },
+        { hour: '16', value: 0, unit: 'mm' },
+        { hour: '17', value: 0, unit: 'mm' },
+        { hour: '18', value: 0, unit: 'mm' },
+        { hour: '19', value: 0, unit: 'mm' },
+        { hour: '20', value: 0, unit: 'mm' },
+        { hour: '21', value: 0, unit: 'mm' },
+        { hour: '22', value: 0, unit: 'mm' },
+        { hour: '23', value: 0, unit: 'mm' },
+        { hour: '24', value: 0, unit: 'mm' },
+        { hour: '25', value: 0, unit: 'mm' },
+        { hour: '26', value: 0, unit: 'mm' },
+        { hour: '27', value: 0, unit: 'mm' },
+        { hour: '28', value: 0, unit: 'mm' },
+        { hour: '29', value: 0, unit: 'mm' },
+        { hour: '30', value: 0, unit: 'mm' },
+      ],
+      data1: [
+        { hour: '07', value: 10, unit: 'mm' },
+        { hour: '08', value: 10, unit: 'mm' },
+        { hour: '09', value: 4, unit: 'mm' },
         { hour: '10', value: 0, unit: 'mm' },
         { hour: '11', value: 0, unit: 'mm' },
         { hour: '12', value: 0, unit: 'mm' },
@@ -403,15 +349,6 @@ export class StationStatisticsComponent implements OnInit, OnDestroy {
     }
   }
 
-  // loadForecastData(country: number, ucode: any, source: any, parameter: any) {
-  //   this.isSideNavOpen = true;
-  // }
-
-  // closeWeatherDataList() {
-  //   this.isSideNavOpen = false;
-  //   this.weatherDataList = [];
-  // }
-
   changeDate() {
     this.manual_date_time = this.formatDate(this.selected_Date);
   }
@@ -461,22 +398,6 @@ export class StationStatisticsComponent implements OnInit, OnDestroy {
     this.selectedCategory = category;
     console.log('category', category);
   }
-
-  // toggleSideNav() {
-  //   this.isSideNavOpen = !this.isSideNavOpen;
-  //   this.isBottomNavOpen = false;
-
-  //   const button = document.querySelector('.sidebar-btn');
-
-  //   if (button) {
-  //     if (this.isSideNavOpen) {
-  //       button.classList.add('rotate-180');
-  //     } else {
-  //       button.classList.remove('rotate-180');
-  //     }
-  //   }
-  // }
-
   toggleBottomNav() {
     this.isBottomNavOpen = true;
   }
@@ -555,10 +476,6 @@ export class StationStatisticsComponent implements OnInit, OnDestroy {
           else{
             rainfall = -100
           }
-
-          // const rainfall = matchedData ? matchedData.dailydeparturerainfall : -100;
-
-          // const actual = matchedData && matchedData.RainFall == 'NaN' ? ' ' : "notnull";
           const color = this.getColorForRainfall1(rainfall);
           return {
             fillColor: color,
@@ -589,27 +506,6 @@ export class StationStatisticsComponent implements OnInit, OnDestroy {
           else{
             rainfall = -100
           }
-
-
-
-          //const rainfall = matchedData && matchedData.dailydeparturerainfall !== null && matchedData.dailydeparturerainfall !== undefined && !Number.isNaN(matchedData.dailydeparturerainfall) ? matchedData.dailydeparturerainfall.toFixed(2) : 'NA';
-          // const dailyrainfall = matchedData && matchedData.dailyrainfall !== null && matchedData.dailyrainfall != undefined && !Number.isNaN(matchedData.dailyrainfall) ? matchedData.dailyrainfall.toFixed(2) : 'NA';
-          // const normalrainfall = matchedData && !Number.isNaN(matchedData.normalrainfall) ? matchedData.normalrainfall.toFixed(2) : 'NA';
-          // const popupContent = `
-          //   <div style="background-color: white; padding: 5px; font-family: Arial, sans-serif;">
-          //     <div style="color: #002467; font-weight: bold; font-size: 10px;">DISTRICT: ${id1}</div>
-          //     <div style="color: #002467; font-weight: bold; font-size: 10px;">DAILY RAINFALL: ${dailyrainfall}</div>
-          //     <div style="color: #002467; font-weight: bold; font-size: 10px;">NORMAL RAINFALL: ${normalrainfall}</div>
-          //     <div style="color: #002467; font-weight: bold; font-size: 10px;">DEPARTURE: ${rainfall}% </div>
-          //   </div>
-          // `;
-          // layer.bindPopup(popupContent);
-          // layer.on('mouseover', () => {
-          //   layer.openPopup();
-          // });
-          // layer.on('mouseout', () => {
-          //   layer.closePopup();
-          // });
         }
       }).addTo(this.stationObservationMap);
     });
@@ -690,46 +586,94 @@ export class StationStatisticsComponent implements OnInit, OnDestroy {
   }
 
   updateChart(weatherOptions: any) {
-    console.log('weatherOptions 1', weatherOptions);
-    const hoursArray = weatherOptions.data.map(
-      (dataPoint: any) => dataPoint.hour
-    );
-    const valuesArray = weatherOptions.data.map(
-      (dataPoint: any) => dataPoint.value
-    );
-    const unit = weatherOptions.data[0].unit;
-
-    //updating chart
-    this.chart = new Chart({
-      chart: {
-        type: 'line',
-      },
-      title: {
-        text: '',
-      },
-      credits: {
-        enabled: false,
-      },
-      xAxis: {
-        categories: hoursArray,
-      },
-      yAxis: {
-        title: {
-          text: unit, // Display unit on y-axis title
-        },
-      },
-      series: [
-        {
+    if (this.selectedOption === 'station_details') {
+      // Display only one chart for station data
+      const hoursArray = weatherOptions.data.map(
+        (dataPoint: any) => dataPoint.hour
+      );
+      const valuesArray = weatherOptions.data.map(
+        (dataPoint: any) => dataPoint.value
+      );
+      const unit = weatherOptions.data[0].unit;
+      this.chart = new Chart({
+        chart: {
           type: 'line',
-          name: weatherOptions.text,
-          data: valuesArray, // Display values array on y-axis
         },
-      ],
-    });
-
-    this.selectedWeatherOption = weatherOptions.text;
-    this.selectedWeatherData = weatherOptions.data;
+        title: {
+          text: '',
+        },
+        credits: {
+          enabled: false,
+        },
+        xAxis: {
+          categories: hoursArray,
+        },
+        yAxis: {
+          title: {
+            text: unit, // Display unit on y-axis title
+          },
+        },
+        series: [
+          {
+            type: 'line',
+            name: weatherOptions.text,
+            data: valuesArray, // Display values array on y-axis
+          },
+        ],
+      });
+  
+      this.selectedWeatherOption = weatherOptions.text;
+      this.selectedWeatherData = weatherOptions.data;
+    } else if (this.selectedOption === 'compare_charts') {
+      // Display two charts for comparison
+      const hoursArray = weatherOptions.data.map(
+        (dataPoint: any) => dataPoint.hour
+      );
+      const valuesArray = weatherOptions.data.map(
+        (dataPoint: any) => dataPoint.value
+      );
+      const valuesArray1 = weatherOptions.data1.map(
+        (dataPoint: any) => dataPoint.value
+      );
+      const unit = weatherOptions.data[0].unit;
+      this.chart = new Chart({
+        chart: {
+          type: 'line',
+        },
+        title: {
+          text: '',
+        },
+        credits: {
+          enabled: false,
+        },
+        xAxis: {
+          categories: hoursArray,
+        },
+        yAxis: {
+          title: {
+            text: unit, // Display unit on y-axis title
+          },
+        },
+        series: [
+          {
+            type: 'line',
+            name: weatherOptions.text,
+            data: valuesArray, // Display values array on y-axis
+          },
+          {
+            type: 'line',
+            name: weatherOptions.text + ' 1',
+            data: valuesArray1, // Display values array on y-axis
+          },
+        ],
+      });
+  
+      this.selectedWeatherOption = weatherOptions.text;
+      this.selectedWeatherData = weatherOptions.data;
+    }
   }
+  
+
 
   toggleDataParameter(param: string) {
     return param === this.selectedWeatherOption;
