@@ -18,6 +18,7 @@ export class StationStatisticsComponent implements OnInit, OnDestroy {
     this.selectedOption = 'station_details';
     // Update the chart to show the station data
     this.updateChart(this.stationWeatherParameters[0]);
+    this.submitParameterForm();
   }
 
   // Method to handle the click event for comparing charts
@@ -43,9 +44,12 @@ export class StationStatisticsComponent implements OnInit, OnDestroy {
   pendingdata: number = 0;
   highestrecorded: number = 0;
   lowestrecorded: number = 0;
-  lowRainFallStationCount: number = 0;
+  veryLightRainFallStationCount: number = 0;
+  lightRainfallStationCount: number = 0;
   modrateRainFallStationCount: number = 0;
-  highRainFallStationCount: number = 0;
+  heavyRainFallStationCount: number = 0;
+  veryHeavyRainfallStationCount: number = 0;
+  extremelyHeavyRainfallStationCount: number = 0;
   loading = false;
   private stationObservationMap: any;
   type: any = 'rainfall';
@@ -213,23 +217,38 @@ export class StationStatisticsComponent implements OnInit, OnDestroy {
     }
   }
 
-  onChangeRegion(item:any){
-    let tempStates = this.existingstationdata.filter(s => s.region == item.name);
+  onChangeRegion(checkedValues:any){
+    let tempStates = this.existingstationdata.filter(item => {
+      return checkedValues.some((value:any) => {
+        return item.region == value;
+      });
+    });
     let tempfilteredStates = Array.from(new Set(tempStates.map(a => a.state)));
     this.filteredStates = tempfilteredStates.map(a => { return {name: a}});
     this.selectedState = ''
     this.selectedDistrict = ''
   }
 
-  onChangeState(item:any){
-    let tempDistricts = this.existingstationdata.filter(d => d.state == item.name);
+  onChangeState(checkedValues:any){
+    let tempDistricts = this.existingstationdata.filter(item => {
+      return checkedValues.some((value:any) => {
+        return item.state == value;
+      });
+    })
     let tempfilteredDistricts = Array.from(new Set(tempDistricts.map(a => a.district)));
     this.filteredDistricts = tempfilteredDistricts.map(a => { return {name: a}});
     this.selectedDistrict = ''
   }
 
-  onChangeDistrict(item:any){
-    this.selectedDistrict = item.name;
+  onChangeDistrict(checkedValues:any){
+    let tempStations = this.existingstationdata.filter(item => {
+      return checkedValues.some((value:any) => {
+        return item.district == value;
+      });
+    })
+    let tempfilteredStations = Array.from(new Set(tempStations.map(a => a.station)));
+    this.filteredStations = tempfilteredStations.map(a => { return {name: a}});
+    this.selectedStation = ''
   }
 
   onChangeStation(item:any){
@@ -471,14 +490,23 @@ export class StationStatisticsComponent implements OnInit, OnDestroy {
           if(element[this.dateCalculation()] == 0){
             this.pendingdata = this.pendingdata + 1;
           }
-          if(element[this.dateCalculation()] > 0 && element[this.dateCalculation()] <= 20){
-            this.lowRainFallStationCount = this.lowRainFallStationCount + 1;
+          if(element[this.dateCalculation()] > 0 && element[this.dateCalculation()] <= 2.4){
+            this.veryLightRainFallStationCount = this.veryLightRainFallStationCount + 1;
           }
-          if(element[this.dateCalculation()] > 20 && element[this.dateCalculation()] <= 35){
+          if(element[this.dateCalculation()] >= 2.5 && element[this.dateCalculation()] <= 15.5){
+            this.lightRainfallStationCount = this.lightRainfallStationCount + 1;
+          }
+          if(element[this.dateCalculation()] >= 15.6 && element[this.dateCalculation()] <= 64.4){
             this.modrateRainFallStationCount = this.modrateRainFallStationCount + 1;
           }
-          if(element[this.dateCalculation()] > 35 && element[this.dateCalculation()] <= 50){
-            this.highRainFallStationCount = this.highRainFallStationCount + 1;
+          if(element[this.dateCalculation()] >= 64.5 && element[this.dateCalculation()] <= 115.5){
+            this.heavyRainFallStationCount = this.heavyRainFallStationCount + 1;
+          }
+          if(element[this.dateCalculation()] >= 115.6 && element[this.dateCalculation()] <= 204.4){
+            this.veryHeavyRainfallStationCount = this.veryHeavyRainfallStationCount + 1;
+          }
+          if(element[this.dateCalculation()] >= 204.5){
+            this.extremelyHeavyRainfallStationCount = this.extremelyHeavyRainfallStationCount + 1;
           }
         });
         let regionList = Array.from(new Set(this.existingstationdata.map(a => a.region)));

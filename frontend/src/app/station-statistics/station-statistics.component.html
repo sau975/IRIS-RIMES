@@ -39,7 +39,7 @@
 			[ngClass]="{'d-flex flex-row-reverse justify-content-center align-items-center': !isSideNavOpen}">
 			<h2 class="mb-3 pr-2" [class.hidden]="!isSideNavOpen">Explore</h2>
 		</div> -->
-		<form id="observation-form" class="form-container" (ngSubmit)="submitParameterForm()">
+		<form id="observation-form" class="form-container">
 			<mat-divider></mat-divider>
 			<div class="my-3" style="gap: 1.2em; padding-left:1em;"
 				[ngClass]="{'d-flex justify-content-around items-center': isSideNavOpen}">
@@ -107,8 +107,8 @@
         <app-multi-select-dropdown
           [list]="regionList"
           [type]="'Region'"
-          (shareCheckedList)="shareCheckedList($event)"
-          (shareIndividualCheckedList)="onChangeRegion($event)">
+          (shareCheckedList)="onChangeRegion($event)"
+          >
         </app-multi-select-dropdown>
 				<!-- <div>
 					<label for="region">Select Region :</label>
@@ -144,16 +144,16 @@
         <app-multi-select-dropdown
         [list]="filteredStates"
         [type]="'State'"
-        (shareCheckedList)="shareCheckedList($event)"
-        (shareIndividualCheckedList)="onChangeState($event)">
+        (shareCheckedList)="onChangeState($event)"
+        >
       </app-multi-select-dropdown>
 
         <br>
         <app-multi-select-dropdown
         [list]="filteredDistricts"
         [type]="'District'"
-        (shareCheckedList)="shareCheckedList($event)"
-        (shareIndividualCheckedList)="onChangeDistrict($event)">
+        (shareCheckedList)="onChangeDistrict($event)"
+        >
       </app-multi-select-dropdown>
 
       <br>
@@ -176,7 +176,7 @@
 
 			<!-- Inside the form -->
 			<div class="my-3 d-flex justify-content-center">
-				<button mat-button type="submit" class="mx-ato" [class.hidden]="!isSideNavOpen"
+				<button mat-button type="button" class="mx-ato" [class.hidden]="!isSideNavOpen"
 					style="background-color:#4050b5; color:white" (click)="showStationData()">
 					Show Station Data
 				</button>
@@ -195,15 +195,23 @@
 				<div style="display: inline-block;">
 					<div style="width: 20px;
           height: 10px;
-          background-color: gray;
+          background-color: #808080;
           display: inline-block;
           vertical-align: middle; margin-right: 10px;"></div>
-					<span>Low Rainfall : {{lowRainFallStationCount}}</span>
+					<span>Very Light Rainfall : {{veryLightRainFallStationCount}}</span>
+				</div>
+        <div style="display: inline-block;">
+					<div style="width: 20px;
+          height: 10px;
+          background-color: #add8e6;
+          display: inline-block;
+          vertical-align: middle; margin-right: 10px;"></div>
+					<span>Light Rainfall : {{lightRainfallStationCount}}</span>
 				</div>
 				<div style="display: inline-block;">
 					<div style="width: 20px;
           height: 10px;
-          background-color: yellow;
+          background-color: #ffd700;
           display: inline-block;
           vertical-align: middle; margin-right: 10px;"></div>
 					<span>Moderate Rainfall : {{modrateRainFallStationCount}}</span>
@@ -211,10 +219,26 @@
 				<div style="display: inline-block;">
 					<div style="width: 20px;
           height: 10px;
-          background-color: red;
+          background-color: #ff8c00;
           display: inline-block;
           vertical-align: middle; margin-right: 10px;"></div>
-					<span>High Rainfall : {{highRainFallStationCount}}</span>
+					<span>Heavy Rainfall : {{heavyRainFallStationCount}}</span>
+				</div>
+        <div style="display: inline-block;">
+					<div style="width: 20px;
+          height: 10px;
+          background-color: #ff0000;
+          display: inline-block;
+          vertical-align: middle; margin-right: 10px;"></div>
+					<span>Very Heavy Rainfall : {{veryHeavyRainfallStationCount}}</span>
+				</div>
+        <div style="display: inline-block;">
+					<div style="width: 20px;
+          height: 10px;
+          background-color: #800000;
+          display: inline-block;
+          vertical-align: middle; margin-right: 10px;"></div>
+					<span>Extremely Heavy Rainfall : {{extremelyHeavyRainfallStationCount}}</span>
 				</div>
         <label>Highest recorded rainfall : {{highestrecorded}}</label>
 				<label>Lowest recorded rainfall : {{lowestrecorded}}</label>
