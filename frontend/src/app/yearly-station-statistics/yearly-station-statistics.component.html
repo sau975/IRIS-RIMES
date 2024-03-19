@@ -103,7 +103,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let item of yearlyStationData; let i = index;">
+          <tr *ngFor="let item of filteredStations; let i = index;">
             <td style="border: 1px solid black">{{i+1}}</td>
             <td style="border: 1px solid black">{{item.region}}</td>
             <td style="border: 1px solid black">{{item.state}}</td>

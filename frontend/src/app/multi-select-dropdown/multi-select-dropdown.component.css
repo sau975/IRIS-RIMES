@@ -9,7 +9,7 @@
   cursor: pointer;
   cursor: hand;
   border: 1px solid #ccc;
-  width: 233px;
+  width: 280px;
   text-align: left;
 }
 .drop-toggle i{
@@ -33,8 +33,6 @@
   cursor: pointer;
 }
 .drop-show label input{
-  vertical-align: top;
-}
-.drop-show label span{
-  display:inline-block;
+  vertical-align: initial;
+  margin-right: 5px;
 }

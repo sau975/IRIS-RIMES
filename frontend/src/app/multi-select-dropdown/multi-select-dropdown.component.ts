@@ -7,6 +7,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 })
 export class MultiSelectDropdownComponent {
   @Input() list: any[]=[];
+  @Input() type: string='';
 
   @Output() shareCheckedList = new EventEmitter();
   @Output() shareIndividualCheckedList = new EventEmitter();

@@ -32,6 +32,7 @@ export class StationStatisticsComponent implements OnInit, OnDestroy {
   selectedRegion: string = '';
   selectedState: string = '';
   selectedDistrict: string = '';
+  selectedStation: string = '';
   regionList:any[]=[];
   filteredStates:any[]=[];
   filteredDistricts:any[]=[];
@@ -39,6 +40,12 @@ export class StationStatisticsComponent implements OnInit, OnDestroy {
   totalstations: number = 0;
   notreceivedata: number = 0;
   receivedata: number = 0;
+  pendingdata: number = 0;
+  highestrecorded: number = 0;
+  lowestrecorded: number = 0;
+  lowRainFallStationCount: number = 0;
+  modrateRainFallStationCount: number = 0;
+  highRainFallStationCount: number = 0;
   loading = false;
   private stationObservationMap: any;
   type: any = 'rainfall';
@@ -77,7 +84,7 @@ export class StationStatisticsComponent implements OnInit, OnDestroy {
   arrowRotation = 0;
   existingstationdata: any[] = [];
   stationWeatherParameters: any[] = [
-   
+
     {
       text: 'Rainfall',
       weatherParams: 'rf',
@@ -166,6 +173,13 @@ export class StationStatisticsComponent implements OnInit, OnDestroy {
   isBottomNavOpen: boolean = false;
   selectedWeatherOption: string = 'Temperature';
   selectedWeatherData: any[] = this.stationWeatherParameters[0].data;
+  mcdata = [
+    {id:101, name: "mc1"},
+    {id:101, name: "mc1"},
+    {id:101, name: "mc1"},
+    {id:101, name: "mc1"},
+    {id:101, name: "mc1"}
+  ]
 
   constructor(
     private formBuilder: FormBuilder,
@@ -199,21 +213,28 @@ export class StationStatisticsComponent implements OnInit, OnDestroy {
     }
   }
 
-  onChangeRegion(){
-    debugger
-    let tempStates = this.existingstationdata.filter(s => s.region == this.selectedRegion);
-    console.log(tempStates, "=======")
-    this.filteredStates = Array.from(new Set(tempStates.map(a => a.state)));
+  onChangeRegion(item:any){
+    let tempStates = this.existingstationdata.filter(s => s.region == item.name);
+    let tempfilteredStates = Array.from(new Set(tempStates.map(a => a.state)));
+    this.filteredStates = tempfilteredStates.map(a => { return {name: a}});
     this.selectedState = ''
     this.selectedDistrict = ''
   }
 
-  onChangeState(){
-    let tempDistricts = this.existingstationdata.filter(d => d.state == this.selectedState);
-    this.filteredDistricts = Array.from(new Set(tempDistricts.map(a => a.district)));
+  onChangeState(item:any){
+    let tempDistricts = this.existingstationdata.filter(d => d.state == item.name);
+    let tempfilteredDistricts = Array.from(new Set(tempDistricts.map(a => a.district)));
+    this.filteredDistricts = tempfilteredDistricts.map(a => { return {name: a}});
     this.selectedDistrict = ''
   }
 
+  onChangeDistrict(item:any){
+    this.selectedDistrict = item.name;
+  }
+
+  onChangeStation(item:any){
+    this.selectedStation = item.name;
+  }
   ngOnDestroy(): void {
     this.stationObservationMap.remove();
   }
@@ -225,7 +246,7 @@ export class StationStatisticsComponent implements OnInit, OnDestroy {
   shareCheckedList(item:any[]){
     console.log(item);
   }
-  shareIndividualCheckedList(item:{}){
+  shareIndividualCheckedList(item:any){
     console.log(item);
   }
 
@@ -417,9 +438,49 @@ export class StationStatisticsComponent implements OnInit, OnDestroy {
   fetchDataFromBackend(): void {
     this.notreceivedata = 0;
     this.receivedata = 0;
+    this.pendingdata = 0;
     this.dataService.existingstationdata().subscribe({
       next: value => {
         this.existingstationdata = value;
+        let maxNumber = this.existingstationdata[0][this.dateCalculation()];
+        for (let i = 1; i < this.existingstationdata.length; i++) {
+          if (this.existingstationdata[i][this.dateCalculation()] > maxNumber) {
+            maxNumber = this.existingstationdata[i][this.dateCalculation()];
+          }
+        }
+        this.highestrecorded = maxNumber;
+
+        let totalstationdata:any = this.existingstationdata.filter(x => x[this.dateCalculation()] > 0);
+        if(totalstationdata && totalstationdata.length > 0){
+          let minNumber = totalstationdata[0][this.dateCalculation()];
+          for (let i = 1; i < totalstationdata.length; i++) {
+            if (totalstationdata[i][this.dateCalculation()] < minNumber) {
+              minNumber = totalstationdata[i][this.dateCalculation()];
+            }
+          }
+          this.lowestrecorded = minNumber;
+        }
+
+        this.existingstationdata.forEach((element:any) => {
+          if(element[this.dateCalculation()] == -999.9){
+            this.notreceivedata = this.notreceivedata + 1;
+          }
+          if(element[this.dateCalculation()] > 0){
+            this.receivedata = this.receivedata + 1;
+          }
+          if(element[this.dateCalculation()] == 0){
+            this.pendingdata = this.pendingdata + 1;
+          }
+          if(element[this.dateCalculation()] > 0 && element[this.dateCalculation()] <= 20){
+            this.lowRainFallStationCount = this.lowRainFallStationCount + 1;
+          }
+          if(element[this.dateCalculation()] > 20 && element[this.dateCalculation()] <= 35){
+            this.modrateRainFallStationCount = this.modrateRainFallStationCount + 1;
+          }
+          if(element[this.dateCalculation()] > 35 && element[this.dateCalculation()] <= 50){
+            this.highRainFallStationCount = this.highRainFallStationCount + 1;
+          }
+        });
         let regionList = Array.from(new Set(this.existingstationdata.map(a => a.region)));
         this.regionList = regionList.map(x => {
           return {name: x}
@@ -431,6 +492,7 @@ export class StationStatisticsComponent implements OnInit, OnDestroy {
   }
 
   filterByDate(){
+    this.fetchDataFromBackend();
     if(this.selectedDistrict){
       this.filteredStations = this.existingstationdata.filter(s =>  s.district == this.selectedDistrict);
     }
@@ -443,15 +505,11 @@ export class StationStatisticsComponent implements OnInit, OnDestroy {
     this.filteredStations.map(x => {
       return x.RainFall = x[this.dateCalculation()];
     })
+    this.filteredStations.map(x => {
+      return x.name = x.station;
+    })
+
     this.totalstations = this.filteredStations.length;
-    this.filteredStations.forEach((element:any) => {
-      if(element.RainFall == -999.9){
-        this.notreceivedata = this.notreceivedata + 1;
-      }
-      if(element.RainFall > 0){
-        this.receivedata = this.receivedata + 1;
-      }
-    });
   }
 
   loadGeoJSON(): void {
@@ -621,7 +679,7 @@ export class StationStatisticsComponent implements OnInit, OnDestroy {
           },
         ],
       });
-  
+
       this.selectedWeatherOption = weatherOptions.text;
       this.selectedWeatherData = weatherOptions.data;
     } else if (this.selectedOption === 'compare_charts') {
@@ -667,12 +725,12 @@ export class StationStatisticsComponent implements OnInit, OnDestroy {
           },
         ],
       });
-  
+
       this.selectedWeatherOption = weatherOptions.text;
       this.selectedWeatherData = weatherOptions.data;
     }
   }
-  
+
 
 
   toggleDataParameter(param: string) {

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { jsPDF } from 'jspdf';
+import { DataService } from '../data.service';
 
 @Component({
   selector: 'app-yearly-station-statistics',
@@ -11,25 +12,53 @@ export class YearlyStationStatisticsComponent {
   selectedRegion: string = '';
   selectedState: string = '';
   selectedDistrict: string = '';
+  todayDate: string;
   regionList:any[]=[];
   filteredStates:any[]=[];
   filteredDistricts:any[]=[];
   filteredStations:any[]=[];
   existingstationdata: any[] = [];
-  yearlyStationData: any[] = [
-    {
-      sNo: 1,
-      region: "North India",
-      state: "Bihar",
-      district: "Nalanda",
-      station: "Biharsharif",
-      date: "13-03-2024",
-      rainfall: 4.5
-    }
-  ];
+  // yearlyStationData: any[] = [
+  //   {
+  //     sNo: 1,
+  //     region: "North India",
+  //     state: "Bihar",
+  //     district: "Nalanda",
+  //     station: "Biharsharif",
+  //     date: "13-03-2024",
+  //     rainfall: 4.5
+  //   }
+  // ];
+
+  constructor(
+    private dataService: DataService,
+  ) {
+    const today = new Date();
+    const dd = String(today.getDate()).padStart(2, '0');
+    const mm = String(today.getMonth() + 1).padStart(2, '0');
+    const yyyy = today.getFullYear();
+    this.todayDate = yyyy + '-' + mm + '-' + dd;
+  }
+
+  ngOnInit(): void {
+    this.fetchDataFromBackend();
+  }
 
   goBack() {
     window.history.back();
+  }
+
+  dateCalculation() {
+    const months = [
+      'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+      'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+    ];
+    let newDate = new Date(this.selectedYear);
+    let dd = String(newDate.getDate());
+    const year = newDate.getFullYear();
+    const currmonth = months[newDate.getMonth()];
+    const selectedYear = String(year).slice(-2);
+    return `${dd.padStart(2, '0')}_${currmonth}_${selectedYear}`;
   }
 
   onChangeRegion(){
@@ -45,8 +74,34 @@ export class YearlyStationStatisticsComponent {
     this.selectedDistrict = ''
   }
 
-  submit(){
+  fetchDataFromBackend(): void {
+    this.dataService.existingstationdata().subscribe({
+      next: value => {
+        this.existingstationdata = value;
+        this.regionList = Array.from(new Set(this.existingstationdata.map(a => a.region)));
+        this.filterByDate();
+      },
+      error: err => console.error('Error fetching data:', err)
+    });
+  }
 
+  filterByDate(){
+    if(this.selectedDistrict){
+      this.filteredStations = this.existingstationdata.filter(s =>  s.district == this.selectedDistrict);
+    }
+    else if(this.selectedState){
+      this.filteredStations = this.existingstationdata.filter(s =>  s.state == this.selectedState);
+    }
+    else if(this.selectedRegion){
+      this.filteredStations = this.existingstationdata.filter(s =>  s.region == this.selectedRegion);
+    }
+    this.filteredStations.map(x => {
+      return x.RainFall = x[this.dateCalculation()];
+    })
+  }
+
+  submit(){
+    this.filterByDate();
   }
 
   download(): void {
@@ -73,7 +128,7 @@ export class YearlyStationStatisticsComponent {
 
     doc.autoTable({
       head: [columns],
-      body: this.yearlyStationData,
+      body: this.filteredStations,
       theme: 'striped',
       startY: marginTop + cellHeight + 25,
       margin: { left: marginLeft },
