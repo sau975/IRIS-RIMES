@@ -60,6 +60,7 @@ export class DataentryComponent {
     activationDate: this.selectedDate
   };
   minDate: string = '';
+  loggedInUserObject: any;
 
   ngOnInit(): void {
     this.fetchDataFromBackend();
@@ -68,8 +69,8 @@ export class DataentryComponent {
     private dataService: DataService,
   ) {
     let loggedInUser: any = localStorage.getItem("isAuthorised");
-    let loggedInUserObject = JSON.parse(loggedInUser);
-    if(loggedInUserObject.data[0].mcorhq == 'mc'){
+    this.loggedInUserObject = JSON.parse(loggedInUser);
+    if(this.loggedInUserObject.data[0].mcorhq == 'mc'){
       const todayDate = new Date();
       todayDate.setDate(todayDate.getDate() - 29);
       this.minDate = this.formatDate(todayDate);
@@ -140,6 +141,9 @@ export class DataentryComponent {
     }
     this.filteredStations.map(x => {
       return x.RainFall = x[this.dateCalculation()];
+    })
+    this.dataService.addColumn({date:this.dateCalculation()}).subscribe(res => {
+      console.log("Column Created Successfully");
     })
   }
 

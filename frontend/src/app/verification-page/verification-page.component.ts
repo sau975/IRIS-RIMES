@@ -30,8 +30,8 @@ export class VerificationPageComponent {
     lng: '',
     activationDate: this.selectedDate
   };
-  verifiedDate: string = '';
   verifiedMessage: string = '';
+  status: string = '';
 
   ngOnInit(): void {
     this.fetchDataFromBackend();
@@ -66,19 +66,23 @@ export class VerificationPageComponent {
 
     Verify(){
       if (confirm("Do want to verify these stations") == true) {
-        localStorage.setItem('verifiedDate', JSON.stringify(new Date()));
-        localStorage.setItem('verifiedMessage', "These stations are Verified");
-        this.showVerifiedDateAndMessage();
+        let data = {
+          date: this.dateCalculation(),
+          verifiedDateTime: new Date(),
+          verifiedstationdata: this.filteredStations
+        }
+        this.dataService.verifiedRainfallData(data).subscribe(res => {
+          alert("Verified Successfully");
+          this.showVerifiedDateAndMessage();
+          this.filterByDate();
+        })
       } else {
 
       }
     }
 
     showVerifiedDateAndMessage(){
-      let verifiedDate:any = localStorage.getItem('verifiedDate');
-      this.verifiedDate = JSON.parse(verifiedDate);
-      let verifiedMessage:any = localStorage.getItem('verifiedMessage');
-      this.verifiedMessage = verifiedMessage;
+      this.verifiedMessage = "These stations are Verified";
     }
 
     dateCalculation() {
@@ -105,6 +109,7 @@ export class VerificationPageComponent {
   }
 
   filterByDate(){
+    this.verifiedMessage = '';
     if(this.selectedDistrict){
       this.filteredStations = this.existingstationdata.filter(s =>  s.district == this.selectedDistrict);
     }
@@ -117,7 +122,18 @@ export class VerificationPageComponent {
     this.filteredStations.map(x => {
       return x.RainFall = x[this.dateCalculation()];
     })
-    // this.showVerifiedDateAndMessage();
+    this.filteredStations.map(x => {
+      return x.isverified = JSON.parse(x['isverified_' + this.dateCalculation()]);
+    })
+    if(this.status){
+      this.filteredStations = this.filteredStations.filter(s =>  s.isverified.status == this.status);
+    }
+    if(this.filteredStations.length > 0){
+      let isverified = this.filteredStations.every(station => station && station.isverified.status == "verified");
+      if(isverified){
+        this.showVerifiedDateAndMessage();
+      }
+    }
   }
 
   showMessage(elementRef: any) {
@@ -135,6 +151,23 @@ export class VerificationPageComponent {
         }else{
           elementRef.style.background = ''
         }
+  }
+
+  sendEmail(){
+    if (confirm("Do want to send email") == true) {
+      // let emails = ["saurav97531@gmail.com", "pavan@rimes.int", "dominic@rimes.int", "tarakesh@rimes.int", "saipraveen@rimes.int", "saurabh@rimes.int"];
+      let emails = ["saurav97531@gmail.com"];
+      emails.forEach(email => {
+        let data = {
+          to: email,
+          subject: `Rainfall data is not correct for - ${new Date().toDateString()}`,
+          text: `Hi Rainfall data is not correct for - ${new Date().toDateString()} please correct it`,
+        }
+        this.dataService.sendEmail(data).subscribe(res => {
+          console.log("Email Sent Successfully");
+        })
+      })
+    }
   }
 
 

@@ -33,6 +33,7 @@ import { VerificationPageComponent } from './verification-page/verification-page
 import { DeletedStationLogComponent } from './deleted-station-log/deleted-station-log.component';
 import { LastFiveYearDataComponent } from './last-five-year-data/last-five-year-data.component';
 import { StationStatisticsComponent } from './station-statistics/station-statistics.component';
+import { YearlyStationStatisticsComponent } from './yearly-station-statistics/yearly-station-statistics.component';
 
 
 const routes: Routes = [
@@ -62,6 +63,7 @@ const routes: Routes = [
   { path: 'deleted-station-log', component: DeletedStationLogComponent, canActivate: [AuthGuard] },
   { path: 'last-five-year-data', component: LastFiveYearDataComponent, canActivate: [AuthGuard] },
   { path: 'station-statistics', component: StationStatisticsComponent, canActivate: [AuthGuard] },
+  { path: 'yearly-station-statistics', component: YearlyStationStatisticsComponent, canActivate: [AuthGuard] },
   { path: 'front-page', component: FrontPageComponent, canActivate: [AuthGuard], children:
     [
       { path: 'departure', component: DepartureMapComponent },

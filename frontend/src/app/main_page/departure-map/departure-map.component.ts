@@ -9,6 +9,7 @@ import * as htmlToImage from 'html-to-image';
 import { NavigationEnd, Router } from '@angular/router';
 import { EMPTY, concatMap, filter } from 'rxjs';
 import { DatePipe } from '@angular/common';
+import { IndexedDBService } from 'src/app/indexed-db.service';
 
 @Component({
   selector: 'app-departure-map',
@@ -68,7 +69,8 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     private http: HttpClient,
     private dataService: DataService,
     private router: Router,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    private indexedDBService: IndexedDBService
   ) {
     this.dateCalculation();
     this.dataService.fromAndToDate$.subscribe((value) => {
@@ -1021,7 +1023,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     //     this.loadGeoJSON1();
     //   } else {
     //     this.map1.setZoom(this.initialZoom);
-    //     this.updateLegendDetailsPositionstate(false); 
+    //     this.updateLegendDetailsPositionstate(false);
     //     this.loadGeoJSON();
     //   }
     // });
@@ -1048,7 +1050,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     //     this.loadGeoJSON1();
     //   } else {
     //     this.map2.setZoom(this.initialZoom);
-    //     this.updateLegendDetailsPositionsubdiv(false); 
+    //     this.updateLegendDetailsPositionsubdiv(false);
     //      this.loadGeoJSON();
     //   }
     // });
@@ -1657,8 +1659,10 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       },
     });
 
-    const filename = 'Districtdeparture_data.pdf';
+    const filename = `Districtdeparture_data_${new Date().toISOString()}.pdf`;
     doc.save(filename);
+    let base64pdf = doc.output('datauristring')
+    this.indexedDBService.addData({ filename: filename, base64pdf: base64pdf });
   }
 
   downloadMapData1(): void {
@@ -1901,8 +1905,10 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
         doc.setDrawColor(0);
       },
     });
-    const filename = 'Statedeparture_data.pdf';
+    const filename = `Statedeparture_data_${new Date().toISOString()}.pdf`;
     doc.save(filename);
+    let base64pdf = doc.output('datauristring')
+    this.indexedDBService.addData({ filename: filename, base64pdf: base64pdf });
   }
 
   downloadMapData2(): void {
@@ -2143,8 +2149,10 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
         doc.setDrawColor(0);
       },
     });
-    const filename = 'Subdivdeparture_data.pdf';
+    const filename = `Subdivdeparture_data_${new Date().toISOString()}.pdf`;
     doc.save(filename);
+    let base64pdf = doc.output('datauristring')
+    this.indexedDBService.addData({ filename: filename, base64pdf: base64pdf });
   }
   downloadMapData3(): void {
     const data = this.regionfetchedDatadepcum;
@@ -2246,8 +2254,10 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
         doc.setDrawColor(0);
       },
     });
-    const filename = 'Regiondeparture_data.pdf';
+    const filename = `Regiondeparture_data_${new Date().toISOString()}.pdf`;
     doc.save(filename);
+    let base64pdf = doc.output('datauristring')
+    this.indexedDBService.addData({ filename: filename, base64pdf: base64pdf });
   }
   downloadMapData4(): void {
     const data = this.countryfetchedDatadepcum;
@@ -2337,8 +2347,10 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
         doc.setDrawColor(0);
       },
     });
-    const filename = 'countrydeparture_data.pdf';
+    const filename = `countrydeparture_data_${new Date().toISOString()}.pdf`;
     doc.save(filename);
+    let base64pdf = doc.output('datauristring')
+    this.indexedDBService.addData({ filename: filename, base64pdf: base64pdf });
   }
 
   private clearTextElements(): void {
@@ -3888,6 +3900,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     htmlToImage.toJpeg(document.getElementById('map') as HTMLElement, { quality: 0.95, filter: this.filter })
       .then((dataUrl) => {
         this.convertImageToPdf(dataUrl);
+        this.indexedDBService.addData({ filename: 'District_dep.jpeg', base64pdf: dataUrl });
       });
   }
 
@@ -3921,6 +3934,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     htmlToImage.toJpeg(document.getElementById('map1') as HTMLElement, { quality: 0.95, filter: this.filter })
       .then((dataUrl) => {
         this.convertImageToPdf1(dataUrl);
+        this.indexedDBService.addData({ filename: 'state_dep.jpeg', base64pdf: dataUrl });
       });
   }
   convertImageToPdf1(dataUrl: string): void {
@@ -3953,6 +3967,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     htmlToImage.toJpeg(document.getElementById('map2') as HTMLElement, { quality: 0.95, filter: this.filter })
       .then((dataUrl) => {
         this.convertImageToPdf2(dataUrl);
+        this.indexedDBService.addData({ filename: 'subdiv_dep.jpeg', base64pdf: dataUrl });
       });
   }
 
@@ -3983,6 +3998,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     htmlToImage.toJpeg(document.getElementById('map3') as HTMLElement, { quality: 0.95, filter: this.filter })
       .then((dataUrl) => {
         this.convertImageToPdf3(dataUrl);
+        this.indexedDBService.addData({ filename: 'region_dep.jpeg', base64pdf: dataUrl });
       });
   }
 
@@ -4013,6 +4029,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     htmlToImage.toJpeg(document.getElementById('map4') as HTMLElement, { quality: 0.95, filter: this.filter })
       .then((dataUrl) => {
         this.convertImageToPdf4(dataUrl);
+        this.indexedDBService.addData({ filename: 'country_dep.jpeg', base64pdf: dataUrl });
       });
   }
 

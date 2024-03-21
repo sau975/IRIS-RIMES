@@ -72,9 +72,9 @@
   </div>
   <div class="col-1">
     <label for="status">Select Status :</label>
-    <select name="status" class="form-control" id="status">
-      <option>Verified</option>
-      <option>Not Verified</option>
+    <select name="status" class="form-control" id="status" [(ngModel)]="status">
+      <option [value]="'verified'">Verified</option>
+      <option [value]="'notverified'">Not Verified</option>
     </select>
   </div>
   <div class="col-2">
@@ -103,6 +103,7 @@
               <th style="border: 1px solid black">STATION ID</th>
               <th style="border: 1px solid black">RAINFALL</th>
               <th style="border: 1px solid black">Status</th>
+              <th style="border: 1px solid black">Verified Date Time</th>
               <th style="border: 1px solid black">Email</th>
               <th style="border: 1px solid black">TYPE</th>
               <th style="border: 1px solid black">NEW/OLD</th>
@@ -120,8 +121,9 @@
                 <input type="number" id="rainfall" #rainFallElementRef name="rainfall" [(ngModel)]="station.RainFall" required style="border: none;"
                   step="0.1" (input)="showMessage(rainFallElementRef)">
               </td>
-              <td style="border: 1px solid black"><button>Verified</button><button>Not Verified</button></td>
-              <td style="border: 1px solid black"><button>Email</button></td>
+              <td style="border: 1px solid black"><button [ngClass]="{'selectedOptionolor': station.isverified.status === 'verified'}">Verified</button><button [ngClass]="{'selectedOptionolor': station.isverified.status === 'notverified'}">Not Verified</button></td>
+              <td style="border: 1px solid black">{{station.isverified.verifiedDateTime | date: 'dd-MM-YYY hh:mm:ss'}}</td>
+              <td style="border: 1px solid black"><button (click)="sendEmail()">Email</button></td>
               <td style="border: 1px solid black"><button value="AWS" [ngClass]="{'selectedOptionolor': station.stationtype === 'aws'}">AWS</button><button
                   value="ORG" [ngClass]="{'selectedOptionolor': station.stationtype === 'org'}">ORG</button><button value="ARG" [ngClass]="{'selectedOptionolor': station.stationtype === 'arg'}">ARG</button></td>
               <td style="border: 1px solid black"><button [ngClass]="{'selectedOptionolor': station.neworold === 'old'}">OLD</button><button [ngClass]="{'selectedOptionolor': station.neworold === 'new'}">NEW</button></td>
@@ -138,8 +140,7 @@
       <!-- </form> -->
       <div *ngIf="verifiedMessage">
         <br>
-
-        <p style="color: green; font-weight: bold;">{{ verifiedMessage }}     {{verifiedDate | date: 'dd-MM-yyyy HH:MM:SS' }}</p>
+        <p style="color: green; font-weight: bold;">{{ verifiedMessage }}</p>
       </div>
     </div>
   </div>
