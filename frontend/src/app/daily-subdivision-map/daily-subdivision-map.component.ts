@@ -331,6 +331,18 @@ export class DailySubdivisionMapComponent {
         this.processedData.push({ districtdailyID: item.districtid, districtdailyRainfall: item[this.currentDateDaily]});
       }}}
 
+      private updateLegendDetailsPositionsubdiv(fullscreen: boolean): void {
+        const legendDetailsElement = document.querySelector('.legenddetailssubdiv1') as HTMLElement; // Use type assertion to HTMLElement
+        if (legendDetailsElement) {
+          if (fullscreen) {
+            legendDetailsElement.style.right = '50px';
+          } else {
+            legendDetailsElement.style.right = '200px';
+          }
+        }
+      }
+
+
   private initMap(): void {
     this.map2 = L.map('map2', {
       center: [23, 76.9629],
@@ -340,8 +352,12 @@ export class DailySubdivisionMapComponent {
     this.map2.on('fullscreenchange', () => {
       if (this.isFullscreen()) {
         this.map2.setZoom(this.initialZoom);
+        this.updateLegendDetailsPositionsubdiv(true)
+        this.loadGeoJSON()
       } else {
         this.map2.setZoom(this.initialZoom);
+        this.updateLegendDetailsPositionsubdiv(false)
+        this.loadGeoJSON()
       }
     });
     const fullscreenControl = new (L.Control as any).Fullscreen({

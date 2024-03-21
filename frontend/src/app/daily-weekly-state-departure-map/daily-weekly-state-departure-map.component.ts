@@ -866,7 +866,16 @@ export class DailyWeeklyStateDepartureMapComponent implements OnInit, AfterViewI
   }
 
 
-
+  private updateLegendDetailsPositionsubdiv(fullscreen: boolean): void {
+    const legendDetailsElement = document.querySelector('.legenddetails') as HTMLElement; 
+    if (legendDetailsElement) {
+      if (fullscreen) {
+        legendDetailsElement.style.right = '50px';
+      } else {
+        legendDetailsElement.style.right = '200px';
+      }
+    }
+  }
   private initMap(): void {
     this.map1 = L.map('map1', {
       center: [24, 76.9629],
@@ -877,8 +886,12 @@ export class DailyWeeklyStateDepartureMapComponent implements OnInit, AfterViewI
     this.map1.on('fullscreenchange', () => {
       if (this.isFullscreen()) {
         this.map1.setZoom(this.initialZoom);
+        this.updateLegendDetailsPositionsubdiv(true)
+        this.loadGeoJSON()
       } else {
         this.map1.setZoom(this.initialZoom);
+        this.updateLegendDetailsPositionsubdiv(false)
+        this.loadGeoJSON()
       }
     });
     const fullscreenControl = new (L.Control as any).Fullscreen({
