@@ -38,9 +38,7 @@
       <div class="col-10">
         <div class="map-container">
           <div class="map-frame">
-            <div
-              id="map1"
-              style="
+            <div id="map1" style="
                 width: 100%;
                 height: 130vh;
                 border-style: solid;
@@ -49,76 +47,62 @@
                 text-align: center;
                 margin: 10px;
                 box-shadow: 10px 15px 10px 2px rgba(0,0,0,.8);
-              "
-            >
+              ">
               <table style="width: 100%">
                 <tbody>
                   <tr>
                     <td style="width: 15%; text-align: center; margin-left: 20px ">
-                      <img
-                        class="logo"
-                        src="/assets/images/IMDlogo_Ipart-iris.png"
-                        alt=""
-                      />
+                      <img class="logo" src="/assets/images/IMDlogo_Ipart-iris.png" alt="" />
                     </td>
                     <td style="text-align: center; width: 72%">
                       <table style="width: 100%">
                         <tbody>
                           <tr>
                             <td>
-                              <label
-                                style="
+                              <label style="
                                   color: black;
                                   vertical-align: middle;
                                   font-family: Arial;
                                   font-weight: bolder;
                                   font-size: 15px;
-                                "
-                              >
-                               STATE RAINFALL MAP (mm)</label
-                              >
+                                ">
+                                STATE RAINFALL MAP (mm)</label>
                             </td>
                           </tr>
                           <tr>
                             <td>
 
-                         <label *ngIf="!previousWeekWeeklyStartDate && !previousWeekWeeklyEndDate"
-                                style="
+                              <label *ngIf="!previousWeekWeeklyStartDate && !previousWeekWeeklyEndDate" style="
                                   color: black;
                                   vertical-align: middle;
                                   font-family: Arial;
                                   font-weight: bolder;
                                   font-size: 14px;
-                                "
-                                >Date : {{formatteddate}}
+                                ">Date : {{formatteddate}}
                               </label>
-                              <label *ngIf="previousWeekWeeklyStartDate && previousWeekWeeklyEndDate"
-                              style="
+                              <label *ngIf="previousWeekWeeklyStartDate && previousWeekWeeklyEndDate" style="
                                 color: black;
                                 vertical-align: middle;
                                 font-family: Arial;
                                 font-weight: bolder;
                                 font-size: 14px;
-                              "
-                              >Date : {{previousWeekWeeklyStartDate | date: 'dd-MM-yyyy'}} to {{previousWeekWeeklyEndDate | date: 'dd-MM-yyyy'}}
-                            </label>
+                              ">Date : {{previousWeekWeeklyStartDate | date: 'dd-MM-yyyy'}} to
+                                {{previousWeekWeeklyEndDate | date: 'dd-MM-yyyy'}}
+                              </label>
 
                             </td>
                           </tr>
 
                           <tr>
                             <td>
-                              <label
-                                style="
+                              <label style="
                                   color: black;
                                   vertical-align: middle;
                                   font-family: Arial;
                                   font-weight: bolder;
                                   font-size: 12px;
-                                "
-                              >
-                                INDIA METEOROLOGICAL DEPARTMENT, NEW DELHI</label
-                              >
+                                ">
+                                INDIA METEOROLOGICAL DEPARTMENT, NEW DELHI</label>
                             </td>
                           </tr>
                         </tbody>
@@ -133,7 +117,8 @@
                   </tr>
                   <tr>
                     <td>
-                        <img style="margin-top: 7px; width: 80px; height: 80px;" src="../../assets/images/—Pngtree—compass_6028609.png" alt="">
+                      <img style="margin-top: 7px; width: 80px; height: 80px;"
+                        src="../../assets/images/—Pngtree—compass_6028609.png" alt="">
                     </td>
                   </tr>
                 </tbody>
@@ -143,261 +128,256 @@
                   <table style="width: 20%; margin: 10px;margin-top: 20px; border-collapse: collapse;">
                     <thead>
                       <tr>
-                        <th style="border: 1px solid black; font-size: 8px; background-color:#32c0f8; padding: 3px;">
+                        <th style="border: 1px solid black; font-size: 12px; background-color:#32c0f8; padding: 3px;">
                           Code</th>
-                        <th style="border: 1px solid black; font-size: 8px; background-color:#32c0f8; padding: 3px;">
+                        <th style="border: 1px solid black; font-size: 12px; background-color:#32c0f8; padding: 3px;">
                           Abbreviation</th>
                       </tr>
                     </thead>
                     <tbody>
                       <tr>
-                        <td style="border: 1px solid black; font-size: 6px; padding: 2px;">AR</td>
-                        <td style="border: 1px solid black; font-size: 6px; padding: 2px;">ARUNACHAL PRADESH</td>
+                        <td style="border: 1px solid black; font-size: 10px; padding: 2px;">AR</td>
+                        <td style="border: 1px solid black; font-size: 10px; padding: 2px;">ARUNACHAL PRADESH</td>
                       </tr>
                       <tr>
-                        <td style="border: 1px solid black; font-size: 6px; padding: 2px;">AS</td>
-                        <td style="border: 1px solid black; font-size: 6px; padding: 2px;">ASSAM</td>
+                        <td style="border: 1px solid black; font-size: 10px; padding: 2px;">AS</td>
+                        <td style="border: 1px solid black; font-size: 10px; padding: 2px;">ASSAM</td>
                       </tr>
                       <tr>
-                        <td style="border: 1px solid black; font-size: 6px; padding: 2px;">ML</td>
-                        <td style="border: 1px solid black; font-size: 6px; padding: 2px;">MEGHALAYA</td>
+                        <td style="border: 1px solid black; font-size: 10px; padding: 2px;">ML</td>
+                        <td style="border: 1px solid black; font-size: 10px; padding: 2px;">MEGHALAYA</td>
                       </tr>
                       <tr>
-                        <td style="border: 1px solid black; font-size: 6px; padding: 2px;">NL</td>
-                        <td style="border: 1px solid black; font-size: 6px; padding: 2px;">NAGALAND</td>
+                        <td style="border: 1px solid black; font-size: 10px; padding: 2px;">NL</td>
+                        <td style="border: 1px solid black; font-size: 10px; padding: 2px;">NAGALAND</td>
                       </tr>
                       <tr>
-                        <td style="border: 1px solid black; font-size: 6px; padding: 2px;">MN</td>
-                        <td style="border: 1px solid black; font-size: 6px; padding: 2px;">MANIPUR</td>
+                        <td style="border: 1px solid black; font-size: 10px; padding: 2px;">MN</td>
+                        <td style="border: 1px solid black; font-size: 10px; padding: 2px;">MANIPUR</td>
                       </tr>
                       <tr>
-                        <td style="border: 1px solid black; font-size: 6px; padding: 2px;">MZ</td>
-                        <td style="border: 1px solid black; font-size: 6px; padding: 2px;">MIZORAM</td>
+                        <td style="border: 1px solid black; font-size: 10px; padding: 2px;">MZ</td>
+                        <td style="border: 1px solid black; font-size: 10px; padding: 2px;">MIZORAM</td>
                       </tr>
                       <tr>
-                        <td style="border: 1px solid black; font-size: 6px; padding: 2px;">TR</td>
-                        <td style="border: 1px solid black; font-size: 6px; padding: 2px;">TRIPURA</td>
+                        <td style="border: 1px solid black; font-size: 10px; padding: 2px;">TR</td>
+                        <td style="border: 1px solid black; font-size: 10px; padding: 2px;">TRIPURA</td>
                       </tr>
                       <tr>
-                        <td style="border: 1px solid black; font-size: 6px; padding: 2px;">SK</td>
-                        <td style="border: 1px solid black; font-size: 6px; padding: 2px;">SIKKIM</td>
+                        <td style="border: 1px solid black; font-size: 10px; padding: 2px;">SK</td>
+                        <td style="border: 1px solid black; font-size: 10px; padding: 2px;">SIKKIM</td>
                       </tr>
                       <tr>
-                        <td style="border: 1px solid black; font-size: 6px; padding: 2px;">WB</td>
-                        <td style="border: 1px solid black; font-size: 6px; padding: 2px;">WEST BENGAL</td>
+                        <td style="border: 1px solid black; font-size: 10px; padding: 2px;">WB</td>
+                        <td style="border: 1px solid black; font-size: 10px; padding: 2px;">WEST BENGAL</td>
                       </tr>
                       <tr>
-                        <td style="border: 1px solid black; font-size: 6px; padding: 2px;">JH</td>
-                        <td style="border: 1px solid black; font-size: 6px; padding: 2px;">JHARKHAND</td>
+                        <td style="border: 1px solid black; font-size: 10px; padding: 2px;">JH</td>
+                        <td style="border: 1px solid black; font-size: 10px; padding: 2px;">JHARKHAND</td>
                       </tr>
                       <tr>
-                        <td style="border: 1px solid black; font-size: 6px; padding: 2px;">BR</td>
-                        <td style="border: 1px solid black; font-size: 6px; padding: 2px;">BIHAR</td>
+                        <td style="border: 1px solid black; font-size: 10px; padding: 2px;">BR</td>
+                        <td style="border: 1px solid black; font-size: 10px; padding: 2px;">BIHAR</td>
                       </tr>
                       <tr>
-                        <td style="border: 1px solid black; font-size: 6px; padding: 2px;">UP</td>
-                        <td style="border: 1px solid black; font-size: 6px; padding: 2px;">UTTAR PRADEDH</td>
+                        <td style="border: 1px solid black; font-size: 10px; padding: 2px;">UP</td>
+                        <td style="border: 1px solid black; font-size: 10px; padding: 2px;">UTTAR PRADEDH</td>
                       </tr>
                       <tr>
-                        <td style="border: 1px solid black; font-size: 6px; padding: 2px;">UK</td>
-                        <td style="border: 1px solid black; font-size: 6px; padding: 2px;">UTTARAKHAND</td>
+                        <td style="border: 1px solid black; font-size: 10px; padding: 2px;">UK</td>
+                        <td style="border: 1px solid black; font-size: 10px; padding: 2px;">UTTARAKHAND</td>
                       </tr>
                       <tr>
-                        <td style="border: 1px solid black; font-size: 6px; padding: 2px;">HR</td>
-                        <td style="border: 1px solid black; font-size: 6px; padding: 2px;">HARYANA</td>
+                        <td style="border: 1px solid black; font-size: 10px; padding: 2px;">HR</td>
+                        <td style="border: 1px solid black; font-size: 10px; padding: 2px;">HARYANA</td>
                       </tr>
                       <tr>
-                        <td style="border: 1px solid black; font-size: 6px; padding: 2px;">CH</td>
-                        <td style="border: 1px solid black; font-size: 6px; padding: 2px;">CHANDIGARH (UT)</td>
+                        <td style="border: 1px solid black; font-size: 10px; padding: 2px;">CH</td>
+                        <td style="border: 1px solid black; font-size: 10px; padding: 2px;">CHANDIGARH (UT)</td>
                       </tr>
                       <tr>
-                        <td style="border: 1px solid black; font-size: 6px; padding: 2px;">DL</td>
-                        <td style="border: 1px solid black; font-size: 6px; padding: 2px;">DELHI (UT)</td>
+                        <td style="border: 1px solid black; font-size: 10px; padding: 2px;">DL</td>
+                        <td style="border: 1px solid black; font-size: 10px; padding: 2px;">DELHI (UT)</td>
                       </tr>
                       <tr>
-                        <td style="border: 1px solid black; font-size: 6px; padding: 2px;">PB</td>
-                        <td style="border: 1px solid black; font-size: 6px; padding: 2px;">PUNJAB</td>
+                        <td style="border: 1px solid black; font-size: 10px; padding: 2px;">PB</td>
+                        <td style="border: 1px solid black; font-size: 10px; padding: 2px;">PUNJAB</td>
                       </tr>
                       <tr>
-                        <td style="border: 1px solid black; font-size: 6px; padding: 2px;">HP</td>
-                        <td style="border: 1px solid black; font-size: 6px; padding: 2px;">HIMACHAL PRADESH</td>
+                        <td style="border: 1px solid black; font-size: 10px; padding: 2px;">HP</td>
+                        <td style="border: 1px solid black; font-size: 10px; padding: 2px;">HIMACHAL PRADESH</td>
                       </tr>
                       <tr>
-                        <td style="border: 1px solid black; font-size: 6px; padding: 2px;">JK</td>
-                        <td style="border: 1px solid black; font-size: 6px; padding: 2px;">JAMMU&KASHMIR(UT)</td>
+                        <td style="border: 1px solid black; font-size: 10px; padding: 2px;">JK</td>
+                        <td style="border: 1px solid black; font-size: 10px; padding: 2px;">JAMMU&KASHMIR(UT)</td>
                       </tr>
                       <tr>
-                        <td style="border: 1px solid black; font-size: 6px; padding: 2px;">LA</td>
-                        <td style="border: 1px solid black; font-size: 6px; padding: 2px;">LADAKH (UT)</td>
+                        <td style="border: 1px solid black; font-size: 10px; padding: 2px;">LA</td>
+                        <td style="border: 1px solid black; font-size: 10px; padding: 2px;">LADAKH (UT)</td>
                       </tr>
                       <tr>
-                        <td style="border: 1px solid black; font-size: 6px; padding: 2px;">RJ</td>
-                        <td style="border: 1px solid black; font-size: 6px; padding: 2px;">RAJASTHAN</td>
+                        <td style="border: 1px solid black; font-size: 10px; padding: 2px;">RJ</td>
+                        <td style="border: 1px solid black; font-size: 10px; padding: 2px;">RAJASTHAN</td>
                       </tr>
                       <tr>
-                        <td style="border: 1px solid black; font-size: 6px; padding: 2px;">OD</td>
-                        <td style="border: 1px solid black; font-size: 6px; padding: 2px;">ODISHA</td>
+                        <td style="border: 1px solid black; font-size: 10px; padding: 2px;">OD</td>
+                        <td style="border: 1px solid black; font-size: 10px; padding: 2px;">ODISHA</td>
                       </tr>
                       <tr>
-                        <td style="border: 1px solid black; font-size: 6px; padding: 2px;">MP</td>
-                        <td style="border: 1px solid black; font-size: 6px; padding: 2px;">MADHYA PRADESH</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-                <div class="table-container">
-
-                  <table style="width: 20%; margin: 10px;margin-top: 20px; border-collapse: collapse;">
-                    <thead>
-                      <tr>
-                        <th style="border: 1px solid black; font-size: 8px; background-color:#32c0f8; padding: 3px;">
-                          Code</th>
-                        <th style="border: 1px solid black; font-size: 8px; background-color:#32c0f8; padding: 3px;">
-                          Abbreviation</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td style="border: 1px solid black; font-size: 6px; padding: 2px;">GJ</td>
-                        <td style="border: 1px solid black; font-size: 6px; padding: 2px;">GUJARAT</td>
+                        <td style="border: 1px solid black; font-size: 10px; padding: 2px;">MP</td>
+                        <td style="border: 1px solid black; font-size: 10px; padding: 2px;">MADHYA PRADESH</td>
                       </tr>
                       <tr>
-                        <td style="border: 1px solid black; font-size: 6px; padding: 2px;">DH & DD</td>
-                        <td style="border: 1px solid black; font-size: 6px; padding: 2px;">DADRA & NAGAR HAVELI AND
+                        <td style="border: 1px solid black; font-size: 10px; padding: 2px;">GJ</td>
+                        <td style="border: 1px solid black; font-size: 10px; padding: 2px;">GUJARAT</td>
+                      </tr>
+                      <tr>
+                        <td style="border: 1px solid black; font-size: 10px; padding: 2px;">DH & DD</td>
+                        <td style="border: 1px solid black; font-size: 10px; padding: 2px;">DADRA & NAGAR HAVELI AND
                           DAMAN & DIU (UT)</td>
                       </tr>
                       <tr>
-                        <td style="border: 1px solid black; font-size: 6px; padding: 2px;">GA</td>
-                        <td style="border: 1px solid black; font-size: 6px; padding: 2px;">GOA</td>
+                        <td style="border: 1px solid black; font-size: 10px; padding: 2px;">GA</td>
+                        <td style="border: 1px solid black; font-size: 10px; padding: 2px;">GOA</td>
                       </tr>
                       <tr>
-                        <td style="border: 1px solid black; font-size: 6px; padding: 2px;">MH</td>
-                        <td style="border: 1px solid black; font-size: 6px; padding: 2px;">MAHARASTRA</td>
+                        <td style="border: 1px solid black; font-size: 10px; padding: 2px;">MH</td>
+                        <td style="border: 1px solid black; font-size: 10px; padding: 2px;">MAHARASTRA</td>
                       </tr>
                       <tr>
-                        <td style="border: 1px solid black; font-size: 6px; padding: 2px;">CG</td>
-                        <td style="border: 1px solid black; font-size: 6px; padding: 2px;">CHHATTISGARH</td>
+                        <td style="border: 1px solid black; font-size: 10px; padding: 2px;">CG</td>
+                        <td style="border: 1px solid black; font-size: 10px; padding: 2px;">CHHATTISGARH</td>
                       </tr>
                       <tr>
-                        <td style="border: 1px solid black; font-size: 6px; padding: 2px;">AN</td>
-                        <td style="border: 1px solid black; font-size: 6px; padding: 2px;">ANDAMAN & NICOBAR ISLANDS
+                        <td style="border: 1px solid black; font-size: 10px; padding: 2px;">AN</td>
+                        <td style="border: 1px solid black; font-size: 10px; padding: 2px;">ANDAMAN & NICOBAR ISLANDS
                           (UT)</td>
                       </tr>
                       <tr>
-                        <td style="border: 1px solid black; font-size: 6px; padding: 2px;">AP</td>
-                        <td style="border: 1px solid black; font-size: 6px; padding: 2px;">ANDHRA PRADESH</td>
+                        <td style="border: 1px solid black; font-size: 10px; padding: 2px;">AP</td>
+                        <td style="border: 1px solid black; font-size: 10px; padding: 2px;">ANDHRA PRADESH</td>
                       </tr>
                       <tr>
-                        <td style="border: 1px solid black; font-size: 6px; padding: 2px;">TS</td>
-                        <td style="border: 1px solid black; font-size: 6px; padding: 2px;">TELANGANA</td>
+                        <td style="border: 1px solid black; font-size: 10px; padding: 2px;">TS</td>
+                        <td style="border: 1px solid black; font-size: 10px; padding: 2px;">TELANGANA</td>
                       </tr>
                       <tr>
-                        <td style="border: 1px solid black; font-size: 6px; padding: 2px;">TN</td>
-                        <td style="border: 1px solid black; font-size: 6px; padding: 2px;">TAMILNADU</td>
+                        <td style="border: 1px solid black; font-size: 10px; padding: 2px;">TN</td>
+                        <td style="border: 1px solid black; font-size: 10px; padding: 2px;">TAMILNADU</td>
                       </tr>
                       <tr>
-                        <td style="border: 1px solid black; font-size: 6px; padding: 2px;">PY</td>
-                        <td style="border: 1px solid black; font-size: 6px; padding: 2px;">PUDUCHERRY (UT)</td>
+                        <td style="border: 1px solid black; font-size: 10px; padding: 2px;">PY</td>
+                        <td style="border: 1px solid black; font-size: 10px; padding: 2px;">PUDUCHERRY (UT)</td>
                       </tr>
                       <tr>
-                        <td style="border: 1px solid black; font-size: 6px; padding: 2px;">KA</td>
-                        <td style="border: 1px solid black; font-size: 6px; padding: 2px;">KARNATAKA</td>
+                        <td style="border: 1px solid black; font-size: 10px; padding: 2px;">KA</td>
+                        <td style="border: 1px solid black; font-size: 10px; padding: 2px;">KARNATAKA</td>
                       </tr>
                       <tr>
-                        <td style="border: 1px solid black; font-size: 6px; padding: 2px;">KL</td>
-                        <td style="border: 1px solid black; font-size: 6px; padding: 2px;">KERALA</td>
+                        <td style="border: 1px solid black; font-size: 10px; padding: 2px;">KL</td>
+                        <td style="border: 1px solid black; font-size: 10px; padding: 2px;">KERALA</td>
                       </tr>
                       <tr>
-                        <td style="border: 1px solid black; font-size: 6px; padding: 2px;">LD</td>
-                        <td style="border: 1px solid black; font-size: 6px; padding: 2px;">LAKSHADWEEP (UT)</td>
+                        <td style="border: 1px solid black; font-size: 10px; padding: 2px;">LD</td>
+                        <td style="border: 1px solid black; font-size: 10px; padding: 2px;">LAKSHADWEEP (UT)</td>
                       </tr>
                     </tbody>
                   </table>
                 </div>
               </div>
-              <div class="legenddetails" style="position: absolute; right: 140px; bottom: 80px;  width: 20%;">
+              <div class="legenddetails" style="position: absolute; right: 200px; bottom: 80px;  width: 20%;">
                 <table style="width: 20%; margin: 10px;margin-top: 20px; border-collapse: collapse;">
                   <thead>
                     <tr>
-                      <th style="border: 1px solid black; font-size: 6px; background-color:#32c0f8; padding: 3px;">
+                      <th style="border: 1px solid black; font-size: 12px; background-color:#32c0f8; padding: 3px;">
                         CATEGORYWISE</th>
-                      <th style="border: 1px solid black; font-size: 6px; background-color:#32c0f8; padding: 3px;">
+                      <th style="border: 1px solid black; font-size: 12px; background-color:#32c0f8; padding: 3px;">
                         NO. OF STATES/UTS</th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr>
-                      <td style="border: 1px solid black; font-size: 4px; padding: 2px;">LARGE EXCESS</td>
-                      <td style="border: 1px solid black; font-size: 4px; padding: 2px;">{{countlargeexcess}}</td>
+                      <td style="border: 1px solid black; font-size: 10px; padding: 2px; font-weight: bolder;">LARGE
+                        EXCESS</td>
+                      <td style="border: 1px solid black; font-size: 10px; padding: 2px; font-weight: bolder;">
+                        {{countlargeexcess}}</td>
                     </tr>
                     <tr>
-                      <td style="border: 1px solid black; font-size: 4px; padding: 2px;">EXCESS</td>
-                      <td style="border: 1px solid black; font-size: 4px; padding: 2px;">{{countexcess}}</td>
+                      <td style="border: 1px solid black; font-size: 10px; padding: 2px; font-weight: bolder;">EXCESS
+                      </td>
+                      <td style="border: 1px solid black; font-size: 10px; padding: 2px; font-weight: bolder;">
+                        {{countexcess}}</td>
                     </tr>
                     <tr>
-                      <td style="border: 1px solid black; font-size: 4px; padding: 2px;">NORMAL</td>
-                      <td style="border: 1px solid black; font-size: 4px; padding: 2px;">{{countnormal}}</td>
+                      <td style="border: 1px solid black; font-size: 10px; padding: 2px; font-weight: bolder;">NORMAL
+                      </td>
+                      <td style="border: 1px solid black; font-size: 10px; padding: 2px; font-weight: bolder;">
+                        {{countnormal}}</td>
                     </tr>
                     <tr>
-                      <td style="border: 1px solid black; font-size: 4px; padding: 2px;">DEFICIENT</td>
-                      <td style="border: 1px solid black; font-size: 4px; padding: 2px;">{{countdeficient}}</td>
+                      <td style="border: 1px solid black; font-size: 10px; padding: 2px; font-weight: bolder;">DEFICIENT
+                      </td>
+                      <td style="border: 1px solid black; font-size: 10px; padding: 2px; font-weight: bolder;">
+                        {{countdeficient}}</td>
                     </tr>
                     <tr>
-                      <td style="border: 1px solid black; font-size: 4px; padding: 2px;">LARGE DEFICIENT</td>
-                      <td style="border: 1px solid black; font-size: 4px; padding: 2px;">{{countlargedeficient}}</td>
+                      <td style="border: 1px solid black; font-size: 10px; padding: 2px; font-weight: bolder;">LARGE
+                        DEFICIENT</td>
+                      <td style="border: 1px solid black; font-size: 10px; padding: 2px; font-weight: bolder;">
+                        {{countlargedeficient}}
+                      </td>
                     </tr>
                     <tr>
-                      <td style="border: 1px solid black; font-size: 4px; padding: 2px;">NO RAIN</td>
-                      <td style="border: 1px solid black; font-size: 4px; padding: 2px;">{{countnorain}}</td>
+                      <td style="border: 1px solid black; font-size: 10px; padding: 2px; font-weight: bolder;">NO RAIN
+                      </td>
+                      <td style="border: 1px solid black; font-size: 10px; padding: 2px; font-weight: bolder;">
+                        {{countnorain}}</td>
                     </tr>
                   </tbody>
                 </table>
               </div>
               <div class="leaflet-bottom leaflet-right">
-                <table
-                  class="info_legend leaflet-control"
-                  style="width: 98%; height: 30px; margin-bottom: 20px"
-                >
-                <tbody>
-                  <tr align="center">
-                    <td width="5px"></td>
-                    <td style="background-color: #0096ff; width: 10px"></td>
-                    <td style="font-size: 10px; color: black; font-weight: 800">
-                      Large Excess [60% or more]
-                    </td>
-                    <td width="5px"></td>
-                    <td style="background-color: #32c0f8; width: 10px"></td>
-                    <td style="font-size: 10px; color: black; font-weight: 800">
-                      Excess [20% to 59%]
-                    </td>
-                    <td width="5px"></td>
-                    <td style="background-color: #00cd5b; width: 10px"></td>
-                    <td style="font-size: 10px; color: black; font-weight: 800">
-                      Normal [-19% to 19%]
-                    </td>
+                <table class="info_legend leaflet-control" style="width: 98%; height: 30px; margin-bottom: 20px">
+                  <tbody>
+                    <tr align="center">
+                      <td width="5px"></td>
+                      <td style="background-color: #0096ff; width: 10px"></td>
+                      <td style="font-size: 10px; color: black; font-weight: 800">
+                        Large Excess [60% or more]
+                      </td>
+                      <td width="5px"></td>
+                      <td style="background-color: #32c0f8; width: 10px"></td>
+                      <td style="font-size: 10px; color: black; font-weight: 800">
+                        Excess [20% to 59%]
+                      </td>
+                      <td width="5px"></td>
+                      <td style="background-color: #00cd5b; width: 10px"></td>
+                      <td style="font-size: 10px; color: black; font-weight: 800">
+                        Normal [-19% to 19%]
+                      </td>
 
-                    <td width="5px"></td>
-                    <td style="background-color: #ff2700; width: 10px"></td>
-                    <td style="font-size: 10px; color: black; font-weight: 800">
-                      Deficient [-59% to -20%]
-                    </td>
+                      <td width="5px"></td>
+                      <td style="background-color: #ff2700; width: 10px"></td>
+                      <td style="font-size: 10px; color: black; font-weight: 800">
+                        Deficient [-59% to -20%]
+                      </td>
 
-                    <td width="5px"></td>
-                    <td style="background-color: #ffff20; width: 10px"></td>
-                    <td style="font-size: 10px; color: black; font-weight: 800">
-                      Large Deficient [-99% to -60%]
-                    </td>
-                    <td width="5px"></td>
-                    <td style="background-color:#ffffff;  width: 10px"></td>
-                    <td style="font-size: 10px; color: black; font-weight: 800">
-                      No Rain [-100%]
-                    </td>
-                    <td style="background-color: #c0c0c0; width: 10px"></td>
-                    <td style="font-size: 10px; color: black; font-weight: 800">
-                      No Data
-                    </td>
-                  </tr>
-                </tbody>
+                      <td width="5px"></td>
+                      <td style="background-color: #ffff20; width: 10px"></td>
+                      <td style="font-size: 10px; color: black; font-weight: 800">
+                        Large Deficient [-99% to -60%]
+                      </td>
+                      <td width="5px"></td>
+                      <td style="background-color:#ffffff;  width: 10px"></td>
+                      <td style="font-size: 10px; color: black; font-weight: 800">
+                        No Rain [-100%]
+                      </td>
+                      <td style="background-color: #c0c0c0; width: 10px"></td>
+                      <td style="font-size: 10px; color: black; font-weight: 800">
+                        No Data
+                      </td>
+                    </tr>
+                  </tbody>
                 </table>
               </div>
             </div>

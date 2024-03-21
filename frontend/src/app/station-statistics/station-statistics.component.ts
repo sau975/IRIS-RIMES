@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import * as L from 'leaflet';
 import { DatePipe } from '@angular/common';
@@ -13,29 +13,33 @@ import { DataService } from '../data.service';
   styleUrls: ['./station-statistics.component.css'],
 })
 export class StationStatisticsComponent implements OnInit, OnDestroy {
+  showStationDetails: boolean = false;
+  showCompareData: boolean = false;
+  showFirstMap: boolean = true;
+  showSecondMap: boolean = false;
 
   showStationData(): void {
     this.selectedOption = 'station_details';
-    // Update the chart to show the station data
     this.updateChart(this.stationWeatherParameters[0]);
   }
-
-  // Method to handle the click event for comparing charts
   compareCharts(): void {
     this.selectedOption = 'compare_charts';
-    // Update both charts to compare data
     this.updateChart(this.stationWeatherParameters[0]);
-    this.updateChart(this.stationWeatherParameters[0]); // Update the second chart, you can modify this to use a different dataset for comparison
+    this.updateChart(this.stationWeatherParameters[0]); 
+    this.showCompareData = true;
   }
-
+  toggleCompareSection(): void {
+    this.selectedOption = this.selectedOption === 'compare_charts' ? 'station_details' : 'compare_charts';
+    this.showCompareData = !this.showCompareData;
+  }
   @ViewChild('timeMenuTrigger') trigger: MatMenuTrigger | undefined;
   selectedRegion: string = '';
   selectedState: string = '';
   selectedDistrict: string = '';
-  regionList:any[]=[];
-  filteredStates:any[]=[];
-  filteredDistricts:any[]=[];
-  filteredStations:any[]=[];
+  regionList: any[] = [];
+  filteredStates: any[] = [];
+  filteredDistricts: any[] = [];
+  filteredStations: any[] = [];
   totalstations: number = 0;
   notreceivedata: number = 0;
   receivedata: number = 0;
@@ -77,7 +81,7 @@ export class StationStatisticsComponent implements OnInit, OnDestroy {
   arrowRotation = 0;
   existingstationdata: any[] = [];
   stationWeatherParameters: any[] = [
-   
+
     {
       text: 'Rainfall',
       weatherParams: 'rf',
@@ -172,7 +176,7 @@ export class StationStatisticsComponent implements OnInit, OnDestroy {
     private datePipe: DatePipe,
     private dataService: DataService,
     private http: HttpClient
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.form = this.formBuilder.group({
@@ -199,7 +203,7 @@ export class StationStatisticsComponent implements OnInit, OnDestroy {
     }
   }
 
-  onChangeRegion(){
+  onChangeRegion() {
     debugger
     let tempStates = this.existingstationdata.filter(s => s.region == this.selectedRegion);
     console.log(tempStates, "=======")
@@ -208,7 +212,7 @@ export class StationStatisticsComponent implements OnInit, OnDestroy {
     this.selectedDistrict = ''
   }
 
-  onChangeState(){
+  onChangeState() {
     let tempDistricts = this.existingstationdata.filter(d => d.state == this.selectedState);
     this.filteredDistricts = Array.from(new Set(tempDistricts.map(a => a.district)));
     this.selectedDistrict = ''
@@ -419,31 +423,43 @@ export class StationStatisticsComponent implements OnInit, OnDestroy {
     });
   }
 
-  filterByDate(){
-    if(this.selectedDistrict){
-      this.filteredStations = this.existingstationdata.filter(s =>  s.district == this.selectedDistrict);
+  filterByDate() {
+    if (this.selectedDistrict) {
+      this.filteredStations = this.existingstationdata.filter(s => s.district == this.selectedDistrict);
     }
-    else if(this.selectedState){
-      this.filteredStations = this.existingstationdata.filter(s =>  s.state == this.selectedState);
+    else if (this.selectedState) {
+      this.filteredStations = this.existingstationdata.filter(s => s.state == this.selectedState);
     }
-    else if(this.selectedRegion){
-      this.filteredStations = this.existingstationdata.filter(s =>  s.region == this.selectedRegion);
+    else if (this.selectedRegion) {
+      this.filteredStations = this.existingstationdata.filter(s => s.region == this.selectedRegion);
     }
     this.filteredStations.map(x => {
       return x.RainFall = x[this.dateCalculation()];
     })
     this.totalstations = this.filteredStations.length;
-    this.filteredStations.forEach((element:any) => {
-      if(element.RainFall == -999.9){
+    this.filteredStations.forEach((element: any) => {
+      if (element.RainFall == -999.9) {
         this.notreceivedata = this.notreceivedata + 1;
       }
-      if(element.RainFall > 0){
+      if (element.RainFall > 0) {
         this.receivedata = this.receivedata + 1;
       }
     });
   }
+  toggleMapDisplay(): void {
+    // Toggle the display of map elements
+    this.showFirstMap = !this.showFirstMap;
+    this.showSecondMap = !this.showSecondMap;
 
+    // Load GeoJSON based on map display
+    if (this.showFirstMap) {
+      this.loadGeoJSON();
+    } else {
+      this.loadGeoJSON1();
+    }
+  }
   loadGeoJSON(): void {
+
     this.http.get('assets/geojson/INDIA_DISTRICT.json').subscribe((res: any) => {
       L.geoJSON(res, {
         style: (feature: any) => {
@@ -452,17 +468,16 @@ export class StationStatisticsComponent implements OnInit, OnDestroy {
 
           let rainfall: any;
 
-          if(matchedData){
+          if (matchedData) {
 
-            if(Number.isNaN(matchedData.RainFall)){
+            if (Number.isNaN(matchedData.RainFall)) {
               rainfall = ' ';
             }
-            else{
+            else {
               rainfall = matchedData.RainFall;
             }
-
           }
-          else{
+          else {
             rainfall = -100
           }
           const color = this.getColorForRainfall1(rainfall);
@@ -472,27 +487,70 @@ export class StationStatisticsComponent implements OnInit, OnDestroy {
             opacity: 2,
             color: 'black',
             fillOpacity: 2
-
           };
         },
         onEachFeature: (feature: any, layer: any) => {
           const id1 = feature.properties['district'];
           const id2 = feature.properties['district_c'];
           const matchedData = this.findMatchingData(id2);
-
           let rainfall: any;
-
-          if(matchedData){
-
-            if(Number.isNaN(matchedData.RainFall)){
+          if (matchedData) {
+            if (Number.isNaN(matchedData.RainFall)) {
               rainfall = "NA";
             }
-            else{
+            else {
               rainfall = matchedData.RainFall;
             }
-
           }
-          else{
+          else {
+            rainfall = -100
+          }
+        }
+      }).addTo(this.stationObservationMap);
+    });
+  }
+
+  loadGeoJSON1(): void {
+    this.http.get('assets/geojson/INDIA_STATE.json').subscribe((res: any) => {
+      L.geoJSON(res, {
+        style: (feature: any) => {
+          const id2 = feature.properties['district_c'];
+          const matchedData = this.findMatchingData(id2);
+          let rainfall: any;
+          if (matchedData) {
+            if (Number.isNaN(matchedData.RainFall)) {
+              rainfall = ' ';
+            }
+            else {
+              rainfall = matchedData.RainFall;
+            }
+          }
+          else {
+            rainfall = -100
+          }
+          const color = this.getColorForRainfall1(rainfall);
+          return {
+            fillColor: color,
+            weight: 0.5,
+            opacity: 2,
+            color: 'black',
+            fillOpacity: 2
+          };
+        },
+        onEachFeature: (feature: any, layer: any) => {
+          const id1 = feature.properties['district'];
+          const id2 = feature.properties['district_c'];
+          const matchedData = this.findMatchingData(id2);
+          let rainfall: any;
+          if (matchedData) {
+            if (Number.isNaN(matchedData.RainFall)) {
+              rainfall = "NA";
+            }
+            else {
+              rainfall = matchedData.RainFall;
+            }
+          }
+          else {
             rainfall = -100
           }
         }
@@ -541,12 +599,10 @@ export class StationStatisticsComponent implements OnInit, OnDestroy {
       cat = 'NR';
       return '#ffffff';
     }
-
     else {
       cat = 'ND';
       return '#c0c0c0';
     }
-
   }
 
   submitParameterForm() {
@@ -560,13 +616,12 @@ export class StationStatisticsComponent implements OnInit, OnDestroy {
         ? this.manual_date_time.time
         : this.current_Date.time,
     };
-
     this.toggleBottomNav();
     this.loadGeoJSON();
     this.updateChart(this.stationWeatherParameters[0]);
   }
 
-  closePopup(){
+  closePopup() {
     this.isBottomNavOpen = false;
   }
 
@@ -610,7 +665,7 @@ export class StationStatisticsComponent implements OnInit, OnDestroy {
           },
         ],
       });
-  
+
       this.selectedWeatherOption = weatherOptions.text;
       this.selectedWeatherData = weatherOptions.data;
     } else if (this.selectedOption === 'compare_charts') {
@@ -656,14 +711,11 @@ export class StationStatisticsComponent implements OnInit, OnDestroy {
           },
         ],
       });
-  
+
       this.selectedWeatherOption = weatherOptions.text;
       this.selectedWeatherData = weatherOptions.data;
     }
   }
-  
-
-
   toggleDataParameter(param: string) {
     return param === this.selectedWeatherOption;
   }
