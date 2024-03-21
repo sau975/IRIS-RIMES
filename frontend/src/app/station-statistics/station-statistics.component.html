@@ -34,12 +34,10 @@
 	<div [class.side-nav-visible]="isSideNavOpen" [class.side-nav-hidden]="!isSideNavOpen" style="height: 100%"
 		class="weather-data-list-container">
 		<div class="my-3" [class.nav-heading]="isSideNavOpen"
-
-		<!-- <div class="my-3" [class.nav-heading]="isSideNavOpen"
 			[ngClass]="{'d-flex flex-row-reverse justify-content-center align-items-center': !isSideNavOpen}">
 			<h2 class="mb-3 pr-2" [class.hidden]="!isSideNavOpen">Explore</h2>
-		</div> -->
-		<form id="observation-form" class="form-container">
+		</div>
+		<form id="observation-form" class="form-container" (ngSubmit)="submitParameterForm()">
 			<mat-divider></mat-divider>
 			<div class="my-3" style="gap: 1.2em; padding-left:1em;"
 				[ngClass]="{'d-flex justify-content-around items-center': isSideNavOpen}">
@@ -93,23 +91,13 @@
 			<mat-divider></mat-divider>
 			<div style="padding: 10px;">
 				<div>
-
-			<div style="padding: 5px;">
-        <app-multi-select-dropdown
-          [list]="regionList"
-          [type]="'Region'"
-          (shareCheckedList)="onChangeRegion($event)"
-          >
-        </app-multi-select-dropdown>
-				<!-- <div>
 					<label for="region">Select Region :</label>
 					<select name="region" class="form-control" id="region" [(ngModel)]="selectedRegion"
 						(change)="onChangeRegion()">
 						<option *ngFor="let region of regionList" [value]="region">{{region}}</option>
 					</select>
-				</div>  -->
-        <br>
-				<!-- <div>
+				</div> <br>
+				<div>
 					<label for="mcs">Select RMC/MC :</label>
 					<select name="mcs" class="form-control" id="mcs">
 						<option value="mc1">RMC/MC</option>
@@ -117,54 +105,24 @@
 						<option value="mc3">RMC/MC</option>
 						<option value="mc4">RMC/MC</option>
 					</select>
-				</div>   -->
-        <app-multi-select-dropdown
-        [list]="mcdata"
-        [type]="'MC'"
-        (shareCheckedList)="shareCheckedList($event)"
-        (shareIndividualCheckedList)="shareIndividualCheckedList($event)">
-      </app-multi-select-dropdown>
-      <br>
-				<!-- <div>
+				</div><br>
+				<div>
 					<label for="state">Select State :</label>
 					<select name="state" class="form-control" id="state" [(ngModel)]="selectedState"
 						(change)="onChangeState()">
 						<option *ngFor="let state of filteredStates" [value]="state">{{state}}</option>
 					</select>
-				</div> -->
-        <app-multi-select-dropdown
-        [list]="filteredStates"
-        [type]="'State'"
-        (shareCheckedList)="onChangeState($event)"
-        >
-      </app-multi-select-dropdown>
-
-        <br>
-        <app-multi-select-dropdown
-        [list]="filteredDistricts"
-        [type]="'District'"
-        (shareCheckedList)="onChangeDistrict($event)"
-        >
-      </app-multi-select-dropdown>
-
-      <br>
-      <app-multi-select-dropdown
-      [list]="filteredStations"
-      [type]="'Station'"
-      (shareCheckedList)="shareCheckedList($event)"
-      (shareIndividualCheckedList)="onChangeStation($event)">
-    </app-multi-select-dropdown>
-
-				<!-- <div>
+				</div><br>
+				<div>
 					<label for="district">Select District :</label>
 					<select name="district" class="form-control" id="district" [(ngModel)]="selectedDistrict">
 						<option *ngFor="let district of filteredDistricts" [value]="district">{{district}}</option>
 					</select>
-				</div> -->
+				</div>
 			</div>
 			<mat-divider></mat-divider>
 			<div class="my-3 d-flex justify-content-center">
-				<button mat-button type="button" class="mx-ato" [class.hidden]="!isSideNavOpen"
+				<button mat-button type="submit" class="mx-ato" [class.hidden]="!isSideNavOpen"
 					style="background-color:#4050b5; color:white" (click)="showStationData()">
 					Show Station Data
 				</button>
@@ -184,62 +142,34 @@
 			<div class="py-2 d-flex justify-content-between station-data-table w-100">
 				<span>Lowest recorded rainfall</span>
 				<span>05</span>
-				<label>Day Statistics</label>
 			</div>
 			<div style="padding: 10px;">
 				<div style="display: inline-block;">
 					<div style="width: 20px;
           height: 10px;
-          background-color: #808080;
+          background-color: gray;
           display: inline-block;
           vertical-align: middle; margin-right: 10px;"></div>
-					<span>Very Light Rainfall : {{veryLightRainFallStationCount}}</span>
-				</div>
-        <div style="display: inline-block;">
-					<div style="width: 20px;
-          height: 10px;
-          background-color: #add8e6;
-          display: inline-block;
-          vertical-align: middle; margin-right: 10px;"></div>
-					<span>Light Rainfall : {{lightRainfallStationCount}}</span>
+					<span>Low Rainfall : 12</span>
 				</div>
 				<div style="display: inline-block;">
 					<div style="width: 20px;
           height: 10px;
-          background-color: #ffd700;
+          background-color: yellow;
           display: inline-block;
           vertical-align: middle; margin-right: 10px;"></div>
-					<span>Moderate Rainfall : {{modrateRainFallStationCount}}</span>
+					<span>Modrate Rainfall : 175</span>
 				</div>
 				<div style="display: inline-block;">
 					<div style="width: 20px;
           height: 10px;
-          background-color: #ff8c00;
+          background-color: red;
           display: inline-block;
           vertical-align: middle; margin-right: 10px;"></div>
-					<span>Heavy Rainfall : {{heavyRainFallStationCount}}</span>
+					<span>High Rainfall : 250</span>
 				</div>
-        <div style="display: inline-block;">
-					<div style="width: 20px;
-          height: 10px;
-          background-color: #ff0000;
-          display: inline-block;
-          vertical-align: middle; margin-right: 10px;"></div>
-					<span>Very Heavy Rainfall : {{veryHeavyRainfallStationCount}}</span>
-				</div>
-        <div style="display: inline-block;">
-					<div style="width: 20px;
-          height: 10px;
-          background-color: #800000;
-          display: inline-block;
-          vertical-align: middle; margin-right: 10px;"></div>
-					<span>Extremely Heavy Rainfall : {{extremelyHeavyRainfallStationCount}}</span>
-				</div>
-        <label>Highest recorded rainfall : {{highestrecorded}}</label>
-				<label>Lowest recorded rainfall : {{lowestrecorded}}</label>
-				<label>No {{receivedata}} Station received</label>
-        <label>No {{notreceivedata}} Station not received</label>
-        <label>No {{pendingdata}} Station Pending</label>
+				<label>No 250 Station received</label>
+				<label>No 4000 Station Pending</label>
 			</div>
 		</form>
 	</div>
@@ -262,7 +192,7 @@
 					<div style="overflow-y:scroll; width:100%; padding:1em;">
 						<div class="py-2 d-flex justify-content-between station-data-table w-100">
 							<span>Station</span>
-							<span>{{selectedStation}}</span>
+							<span>Goa</span>
 						</div>
 						<div class="py-2 d-flex justify-content-between station-data-table w-100">
 							<span>How many days data</span>
@@ -300,18 +230,6 @@
 							<span>05</span>
 						</div>
 					</div>
-					<div class="py-2 d-flex justify-content-between station-data-table w-100">
-						<span>How many missing</span>
-						<span>05</span>
-
-					</div>
-
-
-					<!-- <div class="py-2 d-flex justify-content-between station-data-table w-100"
-          *ngFor="let weatherData of stationWeatherParameters">
-              <span>{{ weatherData.text }}</span>
-              <span>{{ weatherData.data[0].value }} {{ weatherData.data[0].unit }}</span>
-        </div> -->
 				</div>
 			</ng-container>
 			<div style="max-height:80%; width:70%;" class="my-auto">
@@ -329,6 +247,4 @@
 			</div>
 		</div>
 	</div>
-</div>
-
 </div>
