@@ -1,9 +1,6 @@
 <div class="main-container">
-
 	<div [class.full-width]="!isSideNavOpen" class="map-container position-relative">
-
 		<div class="data-bars-container">
-
 			<div class="d-flex gap-1">
 				<div class="p-2 data-bars">Date : {{!this.selected_Date?current_Date.date :manual_date_time.date}}</div>
 			</div>
@@ -25,17 +22,18 @@
 				</div>
 			</div>
 		</div>
-
-		<!-- Map is being rendered from TS file using the id="map_alert" -->
-		<div class="main-map" style="height: calc(100vh - 64px);" id="map_observations">
-		</div>
-
+  
+		<!-- <button (click)="toggleMapDisplay()" class="toggle-map-button">Toggle Map</button> -->
+  
+		<div class="main-map" style="height: calc(100vh - 64px);" id="map_observations"></div>
+		<div class="main-map1" style="height: calc(100vh - 64px); display: none;" id="map_observations1"></div>
+  
+  
+  
 	</div>
-
 	<div [class.side-nav-visible]="isSideNavOpen" [class.side-nav-hidden]="!isSideNavOpen" style="height: 100%"
 		class="weather-data-list-container">
-
-		<!-- <div class="my-3" [class.nav-heading]="isSideNavOpen"
+		<div class="my-3" [class.nav-heading]="isSideNavOpen"
 			[ngClass]="{'d-flex flex-row-reverse justify-content-center align-items-center': !isSideNavOpen}">
 			<h2 class="mb-3 pr-2" [class.hidden]="!isSideNavOpen">Explore</h2>
 		</div>
@@ -43,12 +41,10 @@
 			<mat-divider></mat-divider>
 			<div class="my-3" style="gap: 1.2em; padding-left:1em;"
 				[ngClass]="{'d-flex justify-content-around items-center': isSideNavOpen}">
-
 				<span [ngStyle]="{'margin-left': !isSideNavOpen ? '1rem' : '0'}">
 					<mat-icon class="time-bg bg-light-green" *ngIf="!this.selected_Date">access_time</mat-icon>
 					<mat-icon class="time-bg bg-orange" *ngIf="this.selected_Date">access_time</mat-icon>
 				</span>
-
 				<div class="d-flex">
 					<mat-menu #timeMenu="matMenu" class="timeMenu" [class.hidden]="!isSideNavOpen"
 						style="z-index:3000;">
@@ -62,31 +58,23 @@
 									<p class="text-orange">Historical</p>
 								</div>
 							</div>
-
-							<!--Date time Picker -->
 							<mat-form-field class="mt-3 mb-3 example-full-width" appearance="outline"
 								style="width:100%">
-
+  
 								<mat-label>Select date and time</mat-label>
-
+  
 								<input name="bulletin-date" [(ngModel)]="selected_Date" matInput
 									[matDatepicker]="picker" (dateChange)="changeDate()">
-
 								<mat-hint>MM/DD/YYYY</mat-hint>
 								<mat-datepicker-toggle [for]="picker" matSuffix></mat-datepicker-toggle>
-
 								<mat-datepicker #picker></mat-datepicker>
-
 							</mat-form-field>
-
 							<button mat-flat-button color="primary" (click)="confirmTimeDate($event)">Done</button>
 						</div>
 					</mat-menu>
-
 					<button mat-button #timeMenuTrigger="matMenuTrigger" [matMenuTriggerFor]="timeMenu"
 						[ngClass]="{'d-flex flex-row': isSideNavOpen}" [class.hidden]="!isSideNavOpen"
 						(click)="preventButtonBehaviour($event)">
-
 						<div style="display:flex; flex-direction:row;align-items:center;gap: 2.4em;">
 							<div *ngIf="!this.selected_Date">
 								<div>{{ current_Date.date }}</div>
@@ -100,24 +88,25 @@
 					</button>
 				</div>
 			</div>
-
+  
 			<mat-divider></mat-divider>
-
-			<div style="padding: 5px;">
-        <app-multi-select-dropdown
-          [list]="regionList"
-          [type]="'Region'"
-          (shareCheckedList)="onChangeRegion($event)"
-          >
-        </app-multi-select-dropdown>
-				<!-- <div>
+  
+			  <div style="padding: 5px;">
+				<app-multi-select-dropdown
+			[list]="regionList"
+			[type]="'Region'"
+			(shareCheckedList)="onChangeRegion($event)"
+			>
+		  </app-multi-select-dropdown>
+				  <!-- <div>
 					<label for="region">Select Region :</label>
 					<select name="region" class="form-control" id="region" [(ngModel)]="selectedRegion"
 						(change)="onChangeRegion()">
 						<option *ngFor="let region of regionList" [value]="region">{{region}}</option>
 					</select>
-				</div> <br>
-				<div>
+				</div>  -->
+		  <br>
+				<!-- <div>
 					<label for="mcs">Select RMC/MC :</label>
 					<select name="mcs" class="form-control" id="mcs">
 						<option value="mc1">RMC/MC</option>
@@ -125,27 +114,57 @@
 						<option value="mc3">RMC/MC</option>
 						<option value="mc4">RMC/MC</option>
 					</select>
-				</div><br>
-				<div>
+				</div>   -->
+		  <app-multi-select-dropdown
+		  [list]="mcdata"
+		  [type]="'MC'"
+		  (shareCheckedList)="shareCheckedList($event)"
+		  (shareIndividualCheckedList)="shareIndividualCheckedList($event)">
+		</app-multi-select-dropdown>
+		<br>
+				<!-- <div>
 					<label for="state">Select State :</label>
 					<select name="state" class="form-control" id="state" [(ngModel)]="selectedState"
 						(change)="onChangeState()">
 						<option *ngFor="let state of filteredStates" [value]="state">{{state}}</option>
 					</select>
-				</div><br>
-				<div>
+				</div> -->
+		  <app-multi-select-dropdown
+		  [list]="filteredStates"
+		  [type]="'State'"
+		  (shareCheckedList)="onChangeState($event)"
+		  >
+				</app-multi-select-dropdown>
+  
+		  <br>
+		  <app-multi-select-dropdown
+		  [list]="filteredDistricts"
+		  [type]="'District'"
+		  (shareCheckedList)="onChangeDistrict($event)"
+		  >
+		</app-multi-select-dropdown>
+  
+		<br>
+		<app-multi-select-dropdown
+		[list]="filteredStations"
+		[type]="'Station'"
+		(shareCheckedList)="shareCheckedList($event)"
+		(shareIndividualCheckedList)="onChangeStation($event)">
+	  </app-multi-select-dropdown>
+  
+				  <!-- <div>
 					<label for="district">Select District :</label>
 					<select name="district" class="form-control" id="district" [(ngModel)]="selectedDistrict">
 						<option *ngFor="let district of filteredDistricts" [value]="district">{{district}}</option>
 					</select>
-				</div>
+				</div> -->
 			</div>
-
+  
 			<mat-divider></mat-divider>
-
-			<!-- Inside the form -->
+  
+			  <!-- Inside the form -->
 			<div class="my-3 d-flex justify-content-center">
-				<button mat-button type="submit" class="mx-ato" [class.hidden]="!isSideNavOpen"
+				<button mat-button type="button" class="mx-ato" [class.hidden]="!isSideNavOpen"
 					style="background-color:#4050b5; color:white" (click)="showStationData()">
 					Show Station Data
 				</button>
@@ -154,78 +173,105 @@
 					Compare
 				</button>
 			</div>
-
+  
 			<mat-divider></mat-divider>
-
+  
 			<div style="text-align: center; font-weight: bold;">
 				<label>Day Statistics</label>
 			</div>
 			<div style="padding: 10px;">
 				<div style="display: inline-block;">
 					<div style="width: 20px;
-          height: 10px;
-          background-color: gray;
-          display: inline-block;
-          vertical-align: middle; margin-right: 10px;"></div>
-					<span>Low Rainfall : 12</span>
+		  height: 10px;
+		  background-color: #808080;
+		  display: inline-block;
+		  vertical-align: middle; margin-right: 10px;"></div>
+					<span>Very Light Rainfall : {{veryLightRainFallStationCount}}</span>
 				</div>
 				<div style="display: inline-block;">
 					<div style="width: 20px;
-          height: 10px;
-          background-color: yellow;
-          display: inline-block;
-          vertical-align: middle; margin-right: 10px;"></div>
-					<span>Modrate Rainfall : 175</span>
+		  height: 10px;
+		  background-color: #add8e6;
+		  display: inline-block;
+		  vertical-align: middle; margin-right: 10px;"></div>
+					<span>Light Rainfall : {{lightRainfallStationCount}}</span>
 				</div>
 				<div style="display: inline-block;">
 					<div style="width: 20px;
-          height: 10px;
-          background-color: red;
-          display: inline-block;
-          vertical-align: middle; margin-right: 10px;"></div>
-					<span>High Rainfall : 250</span>
+		  height: 10px;
+		  background-color: #ffd700;
+		  display: inline-block;
+		  vertical-align: middle; margin-right: 10px;"></div>
+					<span>Moderate Rainfall : {{modrateRainFallStationCount}}</span>
 				</div>
-				<label>No 250 Station received</label>
-				<label>No 4000 Station Pending</label>
+				<div style="display: inline-block;">
+					  <div style="width: 20px;
+			height: 10px;
+			background-color: #ff8c00;
+			display: inline-block;
+			vertical-align: middle; margin-right: 10px;"></div>
+					  <span>Heavy Rainfall : {{heavyRainFallStationCount}}</span>
+				  </div>
+		  <div style="display: inline-block;">
+					  <div style="width: 20px;
+			height: 10px;
+			background-color: #ff0000;
+			display: inline-block;
+			vertical-align: middle; margin-right: 10px;"></div>
+					  <span>Very Heavy Rainfall : {{veryHeavyRainfallStationCount}}</span>
+				  </div>
+		  <div style="display: inline-block;">
+					  <div style="width: 20px;
+			height: 10px;
+			background-color: #800000;
+			display: inline-block;
+			vertical-align: middle; margin-right: 10px;"></div>
+					  <span>Extremely Heavy Rainfall : {{extremelyHeavyRainfallStationCount}}</span>
+				  </div>
+		  <label>Highest recorded rainfall : {{highestrecorded}}</label>
+				  <label>Lowest recorded rainfall : {{lowestrecorded}}</label>
+				<label>No {{receivedata}} Station received</label>
+		  <label>No {{notreceivedata}} Station not received</label>
+		  <label>No {{pendingdata}} Station Pending</label>
 			</div>
-
+  
 		</form>
 	</div>
-
+  
 	<div [ngStyle]="{'display': !isBottomNavOpen ? 'none' : 'flex'}" [class.station-data-container]="isBottomNavOpen"
 		class="flex-column">
-
+  
 		<div class="d-flex justify-content-center align-items-center" style="gap:2em;">
 			<div class="h5 align-self-center d-flex" [class.selected]="selectedOption === 'station_details'"
 				(click)="selectStationDataOption('station_details')" style="gap:0.2em;">
 				<mat-icon>graphic_eq</mat-icon>
 				<span>Station Details</span>
 			</div>
-			<div class="h5 align-self-center d-flex" [class.selected]="selectedOption === 'compare_station_data'"
-				(click)="selectStationDataOption('compare_station_data')" style="gap:0.2em;">
-				<mat-icon>compare_arrows</mat-icon>
-				<span>Compare</span>
-			</div>
+  <div class="h5 align-self-center d-flex" [class.selected]="selectedOption === 'compare_station_data'"
+				  (click)="selectStationDataOption('compare_station_data')" style="gap:0.2em;">
+				  <mat-icon>compare_arrows</mat-icon>
+				  <!-- <span>Compare</span> -->
+			  </div>
 			<mat-icon (click)="closePopup()">close</mat-icon>
-
-			<!-- <div class="h5 align-self-center" [class.selected]="selectedOption === 'Others'" (click)="selectOption('Others')">Others</div> -->
+  
+			  <!-- <div class="h5 align-self-center" [class.selected]="selectedOption === 'Others'" (click)="selectOption('Others')">Others</div> -->
 		</div>
-
+  
 		<mat-divider></mat-divider>
-
+  
 		<div class="d-flex" style="height:100%;">
 			<ng-container *ngIf="selectedOption === 'station_details'">
 				<div class="d-flex flex-column justify-content-center align-items-center p-2 mb-3"
 					style=" width:35%; max-height:80%;">
 					<Span class="h5">Station Details</Span>
-
+  
 					<div style="overflow-y:scroll; width:100%; padding:1em;">
-
+  
 						<div class="py-2 d-flex justify-content-between station-data-table w-100">
 							<span>Station</span>
-							<span>Goa</span>
+							<span>{{selectedStation}}</span>
 						</div>
-
+  
 						<div class="py-2 d-flex justify-content-between station-data-table w-100">
 							<span>How many days data</span>
 							<span>20</span>
@@ -237,7 +283,7 @@
 					</div>
 				</div>
 			</ng-container>
-			<ng-container *ngIf="selectedOption === 'compare_station_data'">
+			<ng-container *ngIf="selectedOption === 'compare_charts' && showCompareData">
 				<div class="d-flex flex-column justify-content-center align-items-center p-2 mb-3"
 					style=" width:35%; max-height:80%;">
 					<div>
@@ -248,6 +294,9 @@
 							<select name="stations" id="stations">
 								<option value="station1">Station1</option>
 								<option value="station2">Station2</option>
+								<option value="station2">Station3</option>
+								<option value="station2">Station4</option>
+								<option value="station2">Station5</option>
 							</select>
 						</div>
 						<div class="py-2 d-flex justify-content-between station-data-table w-100">
@@ -261,7 +310,6 @@
 					</div>
 				</div>
 			</ng-container>
-
 			<div style="max-height:80%; width:70%;" class="my-auto">
 				<div *ngIf="chart" [chart]="chart" style="height: 232px; width:57em;" class="chart-container"></div>
 				<div class="station-data-options">
@@ -277,5 +325,4 @@
 			</div>
 		</div>
 	</div>
-
-</div>
+  </div>
