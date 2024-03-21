@@ -56,11 +56,11 @@ img{
   border-color: #002467;
 }
 .values{
-  margin: 20px 70px 20px 10%;
+  margin: 10px 32% 10px  32%;
   background-color: white;
-  padding: 8px 15px 8px 30px;
-  border-radius: 20px;
-  width: 50%;
+  padding: 25px;
+  border-radius: 10px;
+  width: auto;
 }
 #month{
   background-color: #002467;

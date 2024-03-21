@@ -70,14 +70,14 @@
       <option *ngFor="let district of filteredDistricts" [value]="district">{{district}}</option>
     </select>
   </div>
-  <div class="col-1">
+  <div class="col-2">
     <label for="status">Select Status :</label>
     <select name="status" class="form-control" id="status" [(ngModel)]="status">
       <option [value]="'verified'">Verified</option>
       <option [value]="'notverified'">Not Verified</option>
     </select>
   </div>
-  <div class="col-2">
+  <div class="col-1">
     <label for="district">Select Date :</label>
     <input type="date" class="form-control" [ngModel] ="selectedDate | date:'yyyy-MM-dd'" (ngModelChange)="selectedDate = $event">
   </div>

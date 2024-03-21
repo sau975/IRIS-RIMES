@@ -1,63 +1,48 @@
 <div class="background-image">
   <app-header></app-header>
-  <div style="text-align: center; background-color: blanchedalmond; color: red; font-weight: bolder;">IRIS System is in
-    experimental mode!</div>
+  <div
+    style="
+      text-align: center;
+      background-color: blanchedalmond;
+      color: red;
+      font-weight: bolder;
+    "
+  >
+    IRIS System is in experimental mode!
+  </div>
   <app-navbar></app-navbar>
-
-  <div style="margin: 30px 0px 20px 400px;">
-    <div class="values">
-      <div class="row" style="padding: 0px 20px 10px 0px;">
-        <div class="col-5">
-          <label>From Date</label>
-          <input type="date" class="form-control" [(ngModel)]="fromDate" (ngModelChange)="validateDateRange()"
-            placeholder="Select date">
-        </div>
-        <div class="col-5">
-          <label>To Date</label>
-          <input type="date" class="form-control" [(ngModel)]="toDate" (ngModelChange)="validateDateRange()"
-            placeholder="Select date">
-        </div>
-        <div class="col-2">
-          <button type="button" class="btn btn-primary mt-4" (click)="setFromAndToDate()">Submit</button>
-        </div>
+  <div class="values">
+    <div class="row">
+      <div class="col-md-5 col-sm-3">
+        <label>From Date</label>
+        <input
+          type="date"
+          class="form-control"
+          [(ngModel)]="fromDate"
+          (ngModelChange)="validateDateRange()"
+          placeholder="Select date"
+        />
       </div>
-
-      <!-- <label for="date" id="date_label">Enter Date : </label>
-      <select id="date" type="text" [(ngModel)]="date" (ngModelChange)="setDateMonthYear()">
-        <option [value]="dt" *ngFor="let dt of allDaysInMonth">{{dt}}</option>
-      </select>
-
-      <label for="month" id="month_label"> Enter Month : </label>
-      <select id="month" type="text" [(ngModel)]="month" (ngModelChange)="setDateMonthYear()">
-        <option value="01">January</option>
-        <option value="02">February</option>
-        <option value="03">March</option>
-        <option value="04">April</option>
-        <option value="05">May</option>
-        <option value="06">June</option>
-        <option value="07">July</option>
-        <option value="08">August</option>
-        <option value="09">September</option>
-        <option value="10">October</option>
-        <option value="11">November</option>
-        <option value="12">December</option>
-      </select>
-
-      <label for="year" id="year_label">Enter Year : </label>
-      <select id="year" type="text" [(ngModel)]="year" (ngModelChange)="setDateMonthYear()">
-        <option value="2024">2024</option>
-        <option value="2023">2023</option>
-        <option value="2022">2022</option>
-        <option value="2021">2021</option>
-      </select>
-
-      <button type="button" class="load" routerLinkActive='active' routerLink="/front-page/departure">Departure Map</button> -->
-      <!-- <button type="button" class="load" routerLinkActive='active' routerLink="/front-page/weekly-departure">Weekly Dep Map</button>
-      <button type="button" class="load" routerLinkActive='active' routerLink="/front-page/normal">Normal Map</button>
-      <button type="button" class="load" routerLinkActive='active' routerLink="/front-page/daily">Daily Map</button> -->
-
+      <div class="col-md-5 col-sm-3">
+        <label>To Date</label>
+        <input
+          type="date"
+          class="form-control"
+          [(ngModel)]="toDate"
+          (ngModelChange)="validateDateRange()"
+          placeholder="Select date"
+        />
+      </div>
+      <div class="col-md-2 col-sm-3">
+        <button
+          type="button"
+          class="btn btn-primary mt-4"
+          (click)="setFromAndToDate()"
+        >
+          Submit
+        </button>
+      </div>
     </div>
   </div>
-
   <router-outlet></router-outlet>
 </div>
