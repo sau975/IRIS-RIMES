@@ -1137,10 +1137,10 @@ export class DailyWeeklyStateDepartureMapComponent implements OnInit, AfterViewI
 
           console.log(id1)
           textElement.innerHTML = `
-          <div style="text-align: center; line-height: 0.4;">
-          <div style="color: #000000; font-weight: bold;text-wrap: nowrap; font-size: 5px; margin-bottom: 3px;">${dailyrainfall}(${Math.round(rainfall)})</div>
-          <div style="color: #000000; font-weight: bold;text-wrap: nowrap; font-size: 5px; margin-bottom: 3px;">${id1}</div>
-          <div style="color: #000000; font-weight: bold;text-wrap: nowrap; font-size: 5px;">${normalrainfall}</div>
+          <div style="text-align: center; line-height: 0.8;">
+          <div style="color: #000000; font-weight: bold;text-wrap: nowrap; font-size: 10px; margin-bottom: 3px;">${dailyrainfall}(${Math.round(rainfall)})</div>
+          <div style="color: #000000; font-weight: bold;text-wrap: nowrap; font-size: 10px; margin-bottom: 3px;">${id1}</div>
+          <div style="color: #000000; font-weight: bold;text-wrap: nowrap; font-size: 10px;">${normalrainfall}</div>
           </div>`;
           console.log("bounds : ", bounds, "center : ", center, "lat : ", lat, "lng : ", lng)
 
