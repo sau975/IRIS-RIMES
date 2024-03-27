@@ -4,8 +4,6 @@
   </button>
   <span>IRIS PRODUCTS</span>
 </mat-toolbar>
-
-
 <nav [ngClass]="{'open': isNavbarOpen}" class="top">
   <ul class="nav">
     <li>
@@ -708,8 +706,6 @@
 
   </ul>
 </nav>
-
-
 <div *ngIf="showPopup" class="popup">
   <button class="close-btn" (click)="cancel()">X</button>
   <app-upload-file></app-upload-file>
