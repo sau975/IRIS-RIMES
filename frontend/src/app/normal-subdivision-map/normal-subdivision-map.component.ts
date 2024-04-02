@@ -241,7 +241,17 @@ export class NormalSubdivisionMapComponent {
         this.processedData.push({ districtID: item.district_code, Rainfall: normal });
       }
     }
-
+  private updateLegendDetailsPositionstate(fullscreen: boolean): void {
+    const legendDetailsElement = document.querySelector('.legenddetailssubdiv') as HTMLElement; // Use type assertion to HTMLElement
+    //const datacontElement = document.querySelector('.datacont') as HTMLElement;
+    if (legendDetailsElement) {
+      if (fullscreen) {
+        legendDetailsElement.style.right = '50px';
+      } else {
+        legendDetailsElement.style.right = '200px';
+      }
+    }
+  }
   private initMap(): void {
     this.map2 = L.map('map2', {
       center: [23, 76.9629],
@@ -251,8 +261,10 @@ export class NormalSubdivisionMapComponent {
     this.map2.on('fullscreenchange', () => {
       if (this.isFullscreen()) {
         this.map2.setZoom(this.initialZoom);
+        this.updateLegendDetailsPositionstate(true)
       } else {
         this.map2.setZoom(this.initialZoom);
+        this.updateLegendDetailsPositionstate(false)
       }
     });
     const fullscreenControl = new (L.Control as any).Fullscreen({

@@ -118,6 +118,9 @@ OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
+angular-highcharts
+MIT
+
 bootstrap
 MIT
 The MIT License (MIT)
@@ -801,6 +804,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
   [1]: http://eligrey.com
 
+
+highcharts
+https://www.highcharts.com/license
 
 html-to-image
 MIT

@@ -8,20 +8,20 @@ const { Client } = require('pg');
 //   database: "IRIS"
 // });
 
-// const client = new Client( {
-//   host:"localhost",
-//   user: "postgres",
-//   port: 5432,
-//   password: "iru@ADMIN123",
-//   database: "iru_imd_db"
-// });
 const client = new Client( {
   host:"localhost",
   user: "postgres",
   port: 5432,
-  password: "rimes@123",
-  database: "IRIS"
+  password: "iru@ADMIN123",
+  database: "iru_imd_db"
 });
+// const client = new Client( {
+//   host:"localhost",
+//   user: "postgres",
+//   port: 5432,
+//   password: "rimes@123",
+//   database: "IRIS"
+// });
 
 
 
