@@ -2,9 +2,9 @@
 	<div [class.full-width]="!isSideNavOpen" class="map-container position-relative"> 
 		<div class="data-bars-container">
 			<div class="d-flex gap-1">
-				<div class="p-2 data-bars">Date : {{!this.selected_Date?current_Date.date :manual_date_time.date}}</div>
+				<div class="p-2 data-bars">Date : {{selected_Date | date: 'dd-MM-yyyy HH:mm'}}</div>
 			</div>
-			<div class="d-flex gap-1" *ngIf="selectedParameter">
+			<!-- <div class="d-flex gap-1" *ngIf="selectedParameter">
 				<div class="p-2 data-bars" *ngIf="selectedParameter.text === 'Temperature'">
 					Tmax : 35°C
 				</div>
@@ -20,7 +20,7 @@
 				<div class="selected-parameter-icon" *ngIf="selectedParameter">
 					<mat-icon>{{selectedParameter.iconName}}</mat-icon>
 				</div>
-			</div>
+			</div> -->
 		</div>
 		<!-- <button mat-button type="submit" class="mx-ato" [class.hidden]="!isSideNavOpen"
 		style="background-color:#4050b5; color:white; margin:0px 10px 0px 10px;" (click)="compareCharts()">
@@ -36,20 +36,22 @@
 	</div>
 	<div [class.side-nav-visible]="isSideNavOpen" [class.side-nav-hidden]="!isSideNavOpen" style="height: 100%"
 		class="weather-data-list-container">
-		<div class="my-3" [class.nav-heading]="isSideNavOpen"
+		<!-- <div class="my-3" [class.nav-heading]="isSideNavOpen"
 			[ngClass]="{'d-flex flex-row-reverse justify-content-center align-items-center': !isSideNavOpen}">
 			<h2 class="mb-3 pr-2" [class.hidden]="!isSideNavOpen">Explore</h2>
-		</div>
+		</div> -->
 		<form id="observation-form" class="form-container" (ngSubmit)="submitParameterForm()">
 			<mat-divider></mat-divider>
 			<div class="my-3" style="gap: 1.2em; padding-left:1em;"
 				[ngClass]="{'d-flex justify-content-around items-center': isSideNavOpen}">
-				<span [ngStyle]="{'margin-left': !isSideNavOpen ? '1rem' : '0'}">
+				<!-- <span [ngStyle]="{'margin-left': !isSideNavOpen ? '1rem' : '0'}">
 					<mat-icon class="time-bg bg-light-green" *ngIf="!this.selected_Date">access_time</mat-icon>
 					<mat-icon class="time-bg bg-orange" *ngIf="this.selected_Date">access_time</mat-icon>
-				</span>
-				<div class="d-flex">
-					<mat-menu #timeMenu="matMenu" class="timeMenu" [class.hidden]="!isSideNavOpen"
+				</span> -->          <span><mat-icon class="time-bg bg-light-green">access_time</mat-icon></span>
+        <input class="form-control" type="datetime-local" id="birthdaytime" [ngModel] ="selected_Date | date:'yyyy-MM-dd HH:mm'" (ngModelChange)="selected_Date = $event" name="birthdaytime">
+
+				<div >
+          			<!-- <mat-menu #timeMenu="matMenu" class="timeMenu" [class.hidden]="!isSideNavOpen"
 						style="z-index:3000;">
 						<div style="padding:1em;" (click)="$event.stopPropagation()">
 							<div>
@@ -88,7 +90,7 @@
 								<div>{{manual_date_time.time}}</div>
 							</div>
 						</div>
-					</button>
+					</button> -->
 				</div>
 			</div>
 
@@ -120,7 +122,20 @@
 					(shareCheckedList)="shareCheckedList($event)"
 					(shareIndividualCheckedList)="onChangeStation($event)">
 				</app-multi-select-dropdown>
-
+        <div class="row mt-2">
+          <div class="col">
+            <input type="radio" id="aws" name="aws" value="aws" [(ngModel)]="stationType">
+            <label for="aws">AWS</label>
+          </div>
+          <div class="col">
+            <input type="radio" id="org" name="org" value="org" [(ngModel)]="stationType">
+            <label for="org">ORG</label>
+          </div>
+          <div class="col">
+            <input type="radio" id="arg" name="arg" value="arg" [(ngModel)]="stationType">
+            <label for="arg">ARG</label>
+          </div>
+        </div>
 			</div>
 
 			<mat-divider></mat-divider>

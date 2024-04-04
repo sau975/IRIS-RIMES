@@ -25,6 +25,9 @@ export class DataService {
   addColumn(data: any): Observable<any> {
     return this.http.put<any>(this.baseUrl+'/addcolumn', {data});
   }
+  addColumnForDailyData(data: any): Observable<any> {
+    return this.http.put<any>(this.baseUrl+'/addcolumnfordailydata', {data});
+  }
   updateRainFallData(data: any): Observable<any> {
     return this.http.put<any>(this.baseUrl+'/updaterainfall', {data});
   }

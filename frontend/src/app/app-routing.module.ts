@@ -34,6 +34,8 @@ import { DeletedStationLogComponent } from './deleted-station-log/deleted-statio
 import { LastFiveYearDataComponent } from './last-five-year-data/last-five-year-data.component';
 import { StationStatisticsComponent } from './station-statistics/station-statistics.component';
 import { YearlyStationStatisticsComponent } from './yearly-station-statistics/yearly-station-statistics.component';
+import { EmailDisseminationComponent } from './email-dissemination/email-dissemination.component';
+import { RealtimeStationDataComponent } from './realtime-station-data/realtime-station-data.component';
 
 
 const routes: Routes = [
@@ -64,6 +66,8 @@ const routes: Routes = [
   { path: 'last-five-year-data', component: LastFiveYearDataComponent, canActivate: [AuthGuard] },
   { path: 'station-statistics', component: StationStatisticsComponent, canActivate: [AuthGuard] },
   { path: 'yearly-station-statistics', component: YearlyStationStatisticsComponent, canActivate: [AuthGuard] },
+  { path: 'email-dissemination', component: EmailDisseminationComponent, canActivate: [AuthGuard] },
+  { path: 'realtime-station-data', component: RealtimeStationDataComponent, canActivate: [AuthGuard] },
   { path: 'front-page', component: FrontPageComponent, canActivate: [AuthGuard], children:
     [
       { path: 'departure', component: DepartureMapComponent },
