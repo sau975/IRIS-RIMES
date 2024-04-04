@@ -42,8 +42,9 @@
       </tr>
     </tbody>
   </table>
+
   <div class="navbar row">
-    <div class="col-3">
+    <div class="col-2">
       <label for="region">Select Region :</label>
       <select name="region" class="form-control" id="region" [(ngModel)]="selectedRegion" (change)="onChangeRegion()">
         <option *ngFor="let region of regionList" [value]="region">{{region}}</option>
@@ -70,17 +71,32 @@
         <option *ngFor="let district of filteredDistricts" [value]="district">{{district}}</option>
       </select>
     </div>
-    <div class="col-2">
-      <label for="year">Select Year :</label>
-      <select name="year" class="form-control" id="year" [(ngModel)]="selectedYear">
-        <option [value]="2026">2026</option>
-        <option [value]="2052">2025</option>
-        <option [value]="2043">2024</option>
-        <option [value]="2023">2023</option>
-        <option [value]="2022">2022</option>
-        <option [value]="2021">2021</option>
-        <option [value]="2020">2020</option>
-      </select>
+    <div class="col-3">
+      <div class="values">
+        <div class="row">
+          <div class="col-md-5 col-sm-3">
+            <label>From Date</label>
+            <input
+              type="date"
+              class="form-control"
+              [(ngModel)]="fromDate"
+              (ngModelChange)="validateDateRange()"
+              placeholder="Select date"
+            />
+          </div>
+          <div class="col-md-5 col-sm-3">
+            <label>To Date</label>
+            <input
+              type="date"
+              class="form-control"
+              [(ngModel)]="toDate"
+              (ngModelChange)="validateDateRange()"
+              placeholder="Select date"
+            />
+          </div>
+
+        </div>
+      </div>
     </div>
     <div class="col-1 mt-3">
       <button class="btn btn-success" type="button" (click)="submit()">Submit</button>
@@ -99,7 +115,7 @@
             <th style="border: 1px solid black">District</th>
             <th style="border: 1px solid black">Station</th>
             <th style="border: 1px solid black">Date</th>
-            <th style="border: 1px solid black">Rainfall</th>
+            <th style="border: 1px solid black">Rainfall(mm)</th>
           </tr>
         </thead>
         <tbody>

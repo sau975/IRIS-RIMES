@@ -16,16 +16,18 @@ h3{
   font-weight: 600;
 }
 .navbar{
-  margin: 20px 20px 0px 250px;
+  margin: 20px 70px 20px 70px;
   height: 90px;
   background-color: white;
   text-align: center;
   padding: 10px;
   border-radius: 20px;
-  width: 70%;
+  width: 90%;
 }
 body{
   display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 /* #region, #mcs, #state, #district{
   background-color: #002467;

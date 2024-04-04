@@ -95,7 +95,7 @@ export class StationStatisticsComponent implements OnInit, OnDestroy {
   stationWeatherParameters: any[] = [
 
     {
-      text: 'Rainfall',
+      text: 'Hourly Data',
       weatherParams: 'rf',
       colors: [
         '#808080',
@@ -166,12 +166,6 @@ export class StationStatisticsComponent implements OnInit, OnDestroy {
         { hour: '22', value: 0, unit: 'mm' },
         { hour: '23', value: 0, unit: 'mm' },
         { hour: '24', value: 0, unit: 'mm' },
-        { hour: '25', value: 0, unit: 'mm' },
-        { hour: '26', value: 0, unit: 'mm' },
-        { hour: '27', value: 0, unit: 'mm' },
-        { hour: '28', value: 0, unit: 'mm' },
-        { hour: '29', value: 0, unit: 'mm' },
-        { hour: '30', value: 0, unit: 'mm' },
       ],
       data1: [
         { hour: '07', value: 10, unit: 'mm' },

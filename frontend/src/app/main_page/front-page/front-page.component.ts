@@ -34,7 +34,6 @@ export class FrontPageComponent implements OnInit {
       toDate: this.toDate
     }
     this.dataService.setfromAndToDate(JSON.stringify(data));
-    // this.getAllDaysInMonth();
   }
 
   validateDateRange() {
@@ -47,22 +46,5 @@ export class FrontPageComponent implements OnInit {
     }
   }
 
-  // getAllDaysInMonth() {
-  //   this.allDaysInMonth = [];
-  //   const currentDate = new Date();
-  //   const currentYear = currentDate.getFullYear();
-  //   const currentMonth = Number(this.month)-1;
-
-  //   // Set the date to the first day of the month
-  //   const firstDayOfMonth = new Date(currentYear, currentMonth, 1);
-
-  //   // Get the last day of the month
-  //   const lastDayOfMonth = new Date(currentYear, currentMonth + 1, 0);
-
-  //   // Loop through each day of the month
-  //   for (let day = firstDayOfMonth.getDate(); day <= lastDayOfMonth.getDate(); day++) {
-  //     this.allDaysInMonth.push(day);
-  //   }
-  // }
 
 }

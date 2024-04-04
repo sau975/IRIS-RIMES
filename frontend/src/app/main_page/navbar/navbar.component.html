@@ -554,8 +554,32 @@
         </li>
       </ul>
     </li>
+
+
+    <li>
+      <a routerLink="../data-entry" class="main_nav">DATA ENTRY</a>
+    </li>
+    <!-- <li>
+      <a routerLink="../station-level-data" class="main_nav">STATION LEVEL DATA</a>
+    </li> -->
+
+
     <li *ngIf="loggedInUser.data[0].mcorhq == 'hq'">
-      <a class="main_nav" (click)="uploadPopUp()">UPLOAD</a>
+      <a class="main_nav" routerLink="../verification-page">VERIFICATION</a>
+    </li>
+    <li>
+      <!-- <a style="background-color: orange;" routerLink="../underprogress">STATION STATISTICS</a> -->
+      <a routerLink="../station-statistics">STATION STATISTICS</a>
+    </li>
+    <li>
+      <a routerLink="../yearly-station-statistics">YEARLY STATION STATISTICS</a>
+    </li>
+
+    <li *ngIf="loggedInUser.data[0].mcorhq == 'hq'">
+      <a (click)="sendEmail()">DISSEMINATION</a>
+    </li>
+    <li *ngIf="loggedInUser.data[0].mcorhq == 'hq'">
+      <a class="main_nav" (click)="uploadPopUp()">INFO UPLOAD</a>
     </li>
     <li *ngIf="loggedInUser.data[0].mcorhq == 'hq'">
       <a class="main_nav">QPF VERIFICATION REPORT</a>
@@ -569,7 +593,8 @@
         <li>
           <a (click)="openFile('QPF Verification Report 2022.pdf')">QPF VERIFICATION REPORT 2022</a>
         </li>
-        <li *ngFor="let file of qpfReports;"><a (click)="downloadFile(file.file_data)">{{file.file_name | uppercase}}</a></li>
+        <li *ngFor="let file of qpfReports;"><a (click)="downloadFile(file.file_data)">{{file.file_name |
+            uppercase}}</a></li>
       </ul>
     </li>
 
@@ -621,7 +646,8 @@
             <li>
               <a (click)="openFile('Project Report 2022.pdf')">DESIGN STORMS STUDIES DURING 2022</a>
             </li>
-            <li *ngFor="let file of designStormReports;"><a (click)="downloadFile(file.file_data)">{{file.file_name}}</a></li>
+            <li *ngFor="let file of designStormReports;"><a
+                (click)="downloadFile(file.file_data)">{{file.file_name}}</a></li>
           </ul>
         </li>
       </ul>
