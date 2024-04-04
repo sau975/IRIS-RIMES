@@ -62,6 +62,9 @@ import { MatNativeDateModule } from '@angular/material/core'
 import { ChartModule } from 'angular-highcharts';
 import { MultiSelectDropdownComponent } from './multi-select-dropdown/multi-select-dropdown.component';
 import { YearlyStationStatisticsComponent } from './yearly-station-statistics/yearly-station-statistics.component';
+import { EmailDisseminationComponent } from './email-dissemination/email-dissemination.component';
+import { MatTabsModule } from '@angular/material/tabs';
+import { RealtimeStationDataComponent } from './realtime-station-data/realtime-station-data.component';
 
 @NgModule({
   declarations: [
@@ -101,7 +104,9 @@ import { YearlyStationStatisticsComponent } from './yearly-station-statistics/ye
     LastFiveYearDataComponent,
     StationStatisticsComponent,
     MultiSelectDropdownComponent,
-    YearlyStationStatisticsComponent
+    YearlyStationStatisticsComponent,
+    EmailDisseminationComponent,
+    RealtimeStationDataComponent
   ],
   imports: [
     PdfViewerModule,
@@ -127,7 +132,8 @@ import { YearlyStationStatisticsComponent } from './yearly-station-statistics/ye
     MatMenuModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    ChartModule
+    ChartModule,
+    MatTabsModule
   ],
   providers: [AuthGuard, DatePipe],
   bootstrap: [AppComponent]

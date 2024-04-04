@@ -17,6 +17,7 @@ export class StationStatisticsComponent implements OnInit, OnDestroy {
   showCompareData: boolean = false;
   showFirstMap: boolean = true;
   showSecondMap: boolean = false;
+  stationType: string = '';
 
   showStationData(): void {
     this.selectedOption = 'station_details';
@@ -26,7 +27,7 @@ export class StationStatisticsComponent implements OnInit, OnDestroy {
   compareCharts(): void {
     this.selectedOption = 'compare_charts';
     this.updateChart(this.stationWeatherParameters[0]);
-    this.updateChart(this.stationWeatherParameters[0]); 
+    this.updateChart(this.stationWeatherParameters[0]);
     this.showCompareData = true;
   }
   toggleCompareSection(): void {
@@ -114,15 +115,47 @@ export class StationStatisticsComponent implements OnInit, OnDestroy {
         { text: 'Very Heavy Rainfall', range: '(124.5mm - 244.4mm)' },
         { text: 'Extremely Heavy Rainfall', range: '(>244.5mm)' },
       ],
-      data: [
+      hourWisedata: [
+        { hour: '01', value: 0, unit: 'mm' },
+        { hour: '02', value: 10, unit: 'mm' },
+        { hour: '03', value: 0, unit: 'mm' },
+        { hour: '04', value: 0, unit: 'mm' },
+        { hour: '05', value: 0, unit: 'mm' },
+        { hour: '06', value: 0, unit: 'mm' },
         { hour: '07', value: 0, unit: 'mm' },
-        { hour: '08', value: 10, unit: 'mm' },
+        { hour: '08', value: 0, unit: 'mm' },
         { hour: '09', value: 0, unit: 'mm' },
-        { hour: '10', value: 0, unit: 'mm' },
+        { hour: '10', value: 2.5, unit: 'mm' },
         { hour: '11', value: 0, unit: 'mm' },
         { hour: '12', value: 0, unit: 'mm' },
         { hour: '13', value: 0, unit: 'mm' },
-        { hour: '14', value: 0, unit: 'mm' },
+        { hour: '14', value: 8.9, unit: 'mm' },
+        { hour: '15', value: 0, unit: 'mm' },
+        { hour: '16', value: 0, unit: 'mm' },
+        { hour: '17', value: 0, unit: 'mm' },
+        { hour: '18', value: 0, unit: 'mm' },
+        { hour: '19', value: 0, unit: 'mm' },
+        { hour: '20', value: 0, unit: 'mm' },
+        { hour: '21', value: 0, unit: 'mm' },
+        { hour: '22', value: 0, unit: 'mm' },
+        { hour: '23', value: 0, unit: 'mm' },
+        { hour: '24', value: 0, unit: 'mm' },
+      ],
+      data: [
+        { hour: '01', value: 0, unit: 'mm' },
+        { hour: '02', value: 10, unit: 'mm' },
+        { hour: '03', value: 0, unit: 'mm' },
+        { hour: '04', value: 0, unit: 'mm' },
+        { hour: '05', value: 0, unit: 'mm' },
+        { hour: '06', value: 0, unit: 'mm' },
+        { hour: '07', value: 0, unit: 'mm' },
+        { hour: '08', value: 0, unit: 'mm' },
+        { hour: '09', value: 0, unit: 'mm' },
+        { hour: '10', value: 2.5, unit: 'mm' },
+        { hour: '11', value: 0, unit: 'mm' },
+        { hour: '12', value: 0, unit: 'mm' },
+        { hour: '13', value: 0, unit: 'mm' },
+        { hour: '14', value: 8.9, unit: 'mm' },
         { hour: '15', value: 0, unit: 'mm' },
         { hour: '16', value: 0, unit: 'mm' },
         { hour: '17', value: 0, unit: 'mm' },
@@ -159,7 +192,7 @@ export class StationStatisticsComponent implements OnInit, OnDestroy {
         { hour: '22', value: 0, unit: 'mm' },
         { hour: '23', value: 0, unit: 'mm' },
         { hour: '24', value: 0, unit: 'mm' },
-        { hour: '25', value: 0, unit: 'mm' },
+        { hour: '25', value: 3.6, unit: 'mm' },
         { hour: '26', value: 0, unit: 'mm' },
         { hour: '27', value: 0, unit: 'mm' },
         { hour: '28', value: 0, unit: 'mm' },
@@ -174,7 +207,7 @@ export class StationStatisticsComponent implements OnInit, OnDestroy {
   selectedOption: string = 'station_details';
   selectedParameter: any;
   selectedCategory: any;
-  selected_Date: any;
+  selected_Date: Date = new Date();
   current_Date: any;
   manual_date_time: any;
   isSideNavOpen: boolean = true;
@@ -450,7 +483,7 @@ export class StationStatisticsComponent implements OnInit, OnDestroy {
       'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
       'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
     ];
-    let newDate = new Date(!this.selected_Date ? this.current_Date.date : this.manual_date_time.date);
+    let newDate = new Date(this.selected_Date);
     let dd = String(newDate.getDate());
     const year = newDate.getFullYear();
     const currmonth = months[newDate.getMonth()];
@@ -712,15 +745,15 @@ export class StationStatisticsComponent implements OnInit, OnDestroy {
 
   submitParameterForm() {
     this.filterByDate();
-    const observationForm = {
-      weatherParam: this.selectedParameter,
-      observationDate: this.selected_Date
-        ? this.manual_date_time.date
-        : this.current_Date.date,
-      observationTime: this.selected_Date
-        ? this.manual_date_time.time
-        : this.current_Date.time,
-    };
+    // const observationForm = {
+    //   weatherParam: this.selectedParameter,
+    //   observationDate: this.selected_Date
+    //     ? this.manual_date_time.date
+    //     : this.current_Date.date,
+    //   observationTime: this.selected_Date
+    //     ? this.manual_date_time.time
+    //     : this.current_Date.time,
+    // };
     this.toggleBottomNav();
     this.loadGeoJSON();
     this.updateChart(this.stationWeatherParameters[0]);
@@ -737,12 +770,23 @@ export class StationStatisticsComponent implements OnInit, OnDestroy {
   updateChart(weatherOptions: any) {
     if (this.selectedOption === 'station_details') {
       // Display only one chart for station data
-      const hoursArray = weatherOptions.data.map(
-        (dataPoint: any) => dataPoint.hour
-      );
-      const valuesArray = weatherOptions.data.map(
-        (dataPoint: any) => dataPoint.value
-      );
+      var hoursArray;
+      var valuesArray;
+      if(this.stationType != 'aws'){
+        hoursArray = weatherOptions.data.map(
+          (dataPoint: any) => dataPoint.hour
+        );
+        valuesArray = weatherOptions.data.map(
+          (dataPoint: any) => dataPoint.value
+        );
+      }else{
+        hoursArray = weatherOptions.hourWisedata.map(
+          (dataPoint: any) => dataPoint.hour
+        );
+        valuesArray = weatherOptions.hourWisedata.map(
+          (dataPoint: any) => dataPoint.value
+        );
+      }
       const unit = weatherOptions.data[0].unit;
       this.chart = new Chart({
         chart: {

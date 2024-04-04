@@ -8,8 +8,8 @@ import { BehaviorSubject, Observable } from 'rxjs';
 })
 export class DataService {
 
-  private baseUrl = 'http://203.156.108.107:3000';
-  //private baseUrl = 'http://localhost:3000';
+  // private baseUrl = 'http://203.156.108.107:3000';
+  private baseUrl = 'http://localhost:3000';
 
   constructor(private http: HttpClient) {}
   addData(data: any): Observable<any> {
@@ -24,6 +24,9 @@ export class DataService {
   }
   addColumn(data: any): Observable<any> {
     return this.http.put<any>(this.baseUrl+'/addcolumn', {data});
+  }
+  addColumnForDailyData(data: any): Observable<any> {
+    return this.http.put<any>(this.baseUrl+'/addcolumnfordailydata', {data});
   }
   updateRainFallData(data: any): Observable<any> {
     return this.http.put<any>(this.baseUrl+'/updaterainfall', {data});

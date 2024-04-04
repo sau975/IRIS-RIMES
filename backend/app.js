@@ -163,6 +163,21 @@ app.put("/addcolumn", (req, res) => {
   }
 });
 
+app.put("/addcolumnfordailydata", (req, res) => {
+  const data = req.body.data;
+  try {
+    client.query('BEGIN');
+    const queryText = `ALTER TABLE stationdatadaily ADD COLUMN IF NOT EXISTS "${data.date}" double precision DEFAULT 0`;
+    client.query(queryText);
+    client.query('COMMIT');
+    res.status(200).json({ message: `Column Created successfully`});
+  }
+   catch (error) {
+    client.query('ROLLBACK');
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 app.put("/verifiedrainfall", (req, res) => {
   const data = req.body.data;
   try {

@@ -663,7 +663,7 @@
       </ul>
     </li>
     <li *ngIf="loggedInUser.data[0].mcorhq == 'hq'">
-      <a (click)="sendEmail()">DISSEMINATION</a>
+      <a routerLink="../email-dissemination">DISSEMINATION</a>
     </li>
     <li>
       <a routerLink="../data-entry" class="main_nav">DATA ENTRY</a>
@@ -677,12 +677,19 @@
       <a class="main_nav" routerLink="../verification-page">VERIFICATION</a>
     </li>
     <li>
-      <!-- <a style="background-color: orange;" routerLink="../underprogress">STATION STATISTICS</a> -->
-      <a routerLink="../station-statistics">STATION STATISTICS</a>
+      <a class="main_nav">STATION STATISTICS</a>
+      <ul>
+        <li>
+          <a routerLink="../station-statistics">STATISTICS</a>
+        </li>
+        <li>
+          <a routerLink="../realtime-station-data">AWS/ARG/ORG REALTIME STATION DATA</a>
+        </li>
+      </ul>
     </li>
-    <!-- <li>
+    <li>
       <a routerLink="../yearly-station-statistics">YEARLY STATION STATISTICS</a>
-    </li> -->
+    </li>
     <li *ngIf="loggedInUser.data[0].mcorhq == 'hq'">
       <a class="main_nav" routerLink="../deleted-station-log">LOG INFO</a>
     </li>
