@@ -1,5 +1,5 @@
 <div class="main-container">
-	<div [class.full-width]="!isSideNavOpen" class="map-container position-relative">
+	<div [class.full-width]="!isSideNavOpen" class="map-container position-relative"> 
 		<div class="data-bars-container">
 			<div class="d-flex gap-1">
 				<div class="p-2 data-bars">Date : {{!this.selected_Date?current_Date.date :manual_date_time.date}}</div>
@@ -22,8 +22,11 @@
 				</div>
 			</div>
 		</div>
-
-		<!-- <button (click)="toggleMapDisplay()" class="toggle-map-button">Toggle Map</button> -->
+		<!-- <button mat-button type="submit" class="mx-ato" [class.hidden]="!isSideNavOpen"
+		style="background-color:#4050b5; color:white; margin:0px 10px 0px 10px;" (click)="compareCharts()">
+		Compare
+	</button> -->
+		<button mat-button class="mx-ato" style="background-color:#4050b5; color:white; margin:0px 10px 0px 10px;" (click)="toggleMapDisplay()" class="toggle-map-button">Toggle Map</button>
 
 		<div class="main-map" style="height: calc(100vh - 64px);" id="map_observations"></div>
 		<div class="main-map1" style="height: calc(100vh - 64px); display: none;" id="map_observations1"></div>
@@ -208,7 +211,7 @@
 			</div>
 			<div class="h5 align-self-center d-flex" [class.selected]="selectedOption === 'compare_station_data'"
 				(click)="selectStationDataOption('compare_station_data')" style="gap:0.2em;">
-				<mat-icon>compare_arrows</mat-icon>
+				<!-- <mat-icon>compare_arrows</mat-icon> -->
 				<!-- <span>Compare</span> -->
 			</div>
 			<mat-icon (click)="closePopup()">close</mat-icon>
