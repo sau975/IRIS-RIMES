@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { jsPDF } from 'jspdf';
 import { DataService } from '../data.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-yearly-station-statistics',
@@ -29,8 +30,38 @@ export class YearlyStationStatisticsComponent {
   //     rainfall: 4.5
   //   }
   // ];
+  date: string = String(new Date().getDate());
+  month: string = String((new Date().getMonth() + 1).toString().length == 1 ? ('0' + (new Date().getMonth() + 1)) : (new Date().getMonth() + 1));
+  year: string = '2024'
+
+  fromDate: Date = new Date();
+  toDate: Date = new Date();
+  // allDaysInMonth:any[]=[];
+
+
+
+
+
+  setFromAndToDate() {
+    let data = {
+      fromDate: this.fromDate,
+      toDate: this.toDate
+    }
+    this.dataService.setfromAndToDate(JSON.stringify(data));
+  }
+
+  validateDateRange() {
+    var fromDate = this.fromDate;
+    var toDate = this.toDate
+
+    if (fromDate > toDate) {
+      alert('From date cannot be greater than To date');
+      this.fromDate = toDate;
+    }
+  }
 
   constructor(
+    private router: Router,
     private dataService: DataService,
   ) {
     const today = new Date();
@@ -101,6 +132,7 @@ export class YearlyStationStatisticsComponent {
   }
 
   submit(){
+    this.setFromAndToDate()
     this.filterByDate();
   }
 

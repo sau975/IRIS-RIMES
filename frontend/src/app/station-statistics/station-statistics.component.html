@@ -253,6 +253,7 @@
 					</div>
 					<div style="overflow-y:scroll; width:100%; padding:1em;">
 						<div class="py-2 d-flex justify-content-between station-data-table w-100">
+							<label for="stations">Select stations</label>
 							<select name="stations" id="stations">
 								<option value="station1">Station1</option>
 								<option value="station2">Station2</option>
@@ -261,14 +262,14 @@
 								<option value="station2">Station5</option>
 							</select>
 						</div>
-						<div class="py-2 d-flex justify-content-between station-data-table w-100">
+						<!-- <div class="py-2 d-flex justify-content-between station-data-table w-100">
 							<span>How many days data</span>
 							<span>20</span>
 						</div>
 						<div class="py-2 d-flex justify-content-between station-data-table w-100">
 							<span>How many missing</span>
 							<span>05</span>
-						</div>
+						</div> -->
 					</div>
 				</div>
 			</ng-container>
@@ -281,7 +282,7 @@
 						{{ weatherOptions.text }}
 					</div>
 					<button mat-button style="background-color:#4050b5; color:white; margin:0px 10px 0px 10px;">
-						Historical
+						Historical Data
 					</button>
 				</div>
 			</div>

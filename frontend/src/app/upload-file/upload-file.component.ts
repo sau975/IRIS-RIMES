@@ -8,7 +8,7 @@ import { DataService } from '../data.service';
 })
 export class UploadFileComponent {
   selectedFile: File | null = null;
-  selectedSection: string = 'QPF VERIFICATION REPORT';
+  selectedSection: string = 'Select Section';
   @ViewChild('fileInput') fileInput!: ElementRef;
 
   constructor(private dataService: DataService) {}

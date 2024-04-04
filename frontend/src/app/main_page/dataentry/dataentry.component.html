@@ -42,7 +42,12 @@
       </tr>
     </tbody>
   </table>
-  <div class="navbar row">
+  <!-- <div class="navbar row">
+
+
+
+
+
     <div class="col-2">
       <label for="region">Select Region :</label>
       <select name="region" class="form-control" id="region" [(ngModel)]="selectedRegion" (change)="onChangeRegion()">
@@ -78,43 +83,42 @@
     <div class="col-1 mt-3">
       <button class="btn btn-success" type="button" (click)="filterByDate()">Submit</button>
     </div>
-  </div>
-  <!--
-  <div class="navbar">
-    <label for="region" class="date_label">Select Region :</label>
-    <select name="region" id="region">
-      <option value="region1">Region1</option>
-      <option value="region2">Region2</option>
-      <option value="region3">Region3</option>
-      <option value="region4">Region4</option>
-    </select>
-    <label for="mcs" class="date_label">Select MC :</label>
-    <select name="mcs" id="mcs">
-      <option value="mc1">RMC/MC</option>
-      <option value="mc2">RMC/MC</option>
-      <option value="mc3">RMC/MC</option>
-      <option value="mc4">RMC/MC</option>
-    </select>
-    <label for="state" class="date_label">Select State :</label>
-    <select name="state" id="state">
-      <option value="state1">State1</option>
-      <option value="state2">State2</option>
-      <option value="state3">State3</option>
-      <option value="state4">State4</option>
-    </select>
-    <label for="district" class="date_label">Select District :</label>
-    <select name="district" id="district">
-      <option value="district1">District1</option>
-      <option value="district2">District2</option>
-      <option value="district3">District3</option>
-      <option value="district4">District4</option>
-    </select>
-    <label for="district" class="date_label">Select Date :</label>
-    <input type="date" [ngModel] ="selectedDate | date:'yyyy-MM-dd'" (ngModelChange)="selectedDate = $event">
-    <div class="button">
-      <button class="btn btn-success" (click)="filterByDate()">Submit</button>
-    </div>
   </div> -->
+  <div class="navbar row">
+    <div class="col-2">
+      <app-multi-select-dropdown [list]="regionList" [type]="'Region'" (shareCheckedList)="onChangeRegion($event)">
+      </app-multi-select-dropdown>
+    </div>
+    <div class="col-2">
+      <app-multi-select-dropdown [list]="mcdata" [type]="'MC'" (shareCheckedList)="shareCheckedList($event)"
+        (shareIndividualCheckedList)="shareIndividualCheckedList($event)">
+      </app-multi-select-dropdown>
+    </div>
+    <div class="col-2">
+      <app-multi-select-dropdown [list]="filteredStates" [type]="'State'" (shareCheckedList)="onChangeState($event)">
+      </app-multi-select-dropdown>
+    </div>
+    <!-- <div class="col-2">
+      <label for="district">Select District :</label>
+      <select name="district" class="form-control" id="district" [(ngModel)]="selectedDistrict">
+        <option *ngFor="let district of filteredDistricts" [value]="district">{{district}}</option>
+      </select>
+    </div> -->
+    <div class="col-2">
+      <app-multi-select-dropdown [list]="filteredDistricts" [type]="'District'"
+        (shareCheckedList)="onChangeDistrict($event)">
+      </app-multi-select-dropdown>
+    </div>
+    <div class="col-2">
+      <input type="date" class="form-control" [min]="minDate" [ngModel]="selectedDate | date:'yyyy-MM-dd'"
+        (ngModelChange)="onChangeDate($event)">
+    </div>
+    <div class="col-2 mt-3">
+      <button class="btn btn-success" type="button" (click)="filterByDate()">Submit</button>
+    </div>
+  </div>
+
+
 
   <div style="text-align: center; padding-top: 40px">
     <div class="dataentry">
@@ -133,11 +137,14 @@
           <a href="javascript:void(0)" (click)="downloadStationSampleFile()">Sample File</a>
         </div>
         <div class="mb-3 col-2">
-          <input [disabled]="loggedInUserObject.data[0].mcorhq == 'mc'" class="form-control" type="file" #rainfallFileInput (change)="onRainfallFileSelected($event)">
+          <input [disabled]="loggedInUserObject.data[0].mcorhq == 'mc'" class="form-control" type="file"
+            #rainfallFileInput (change)="onRainfallFileSelected($event)">
         </div>
         <div class="col-2">
-          <button [disabled]="loggedInUserObject.data[0].mcorhq == 'mc'" (click)="uploadRainFallFile()" class="btn btn-success">Upload Rainfall</button> <br>
-          <a *ngIf="loggedInUserObject.data[0].mcorhq == 'hq'" href="javascript:void(0)" (click)="downloadRainfallSampleFile()">Sample File</a>
+          <button [disabled]="loggedInUserObject.data[0].mcorhq == 'mc'" (click)="uploadRainFallFile()"
+            class="btn btn-success">Upload Rainfall</button> <br>
+          <a *ngIf="loggedInUserObject.data[0].mcorhq == 'hq'" href="javascript:void(0)"
+            (click)="downloadRainfallSampleFile()">Sample File</a>
         </div>
       </div>
       <br />
@@ -192,7 +199,8 @@
           </tr>
         </tbody>
       </table>
-      <button *ngIf="loggedInUserObject.data[0].mcorhq == 'hq'" class="enter" (click)="Addstation()">Add Station</button>
+      <button *ngIf="loggedInUserObject.data[0].mcorhq == 'hq'" class="enter" (click)="Addstation()">Add
+        Station</button>
       <button type="submit" class="enter" (click)="submit()">Submit</button>
       <!-- </form> -->
 

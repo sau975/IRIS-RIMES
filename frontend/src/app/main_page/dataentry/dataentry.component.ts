@@ -44,7 +44,13 @@ export class DataentryComponent {
     stationid: '',
     editIndex: null,
   };
-
+  mcdata = [
+    {id:101, name: "mc1"},
+    {id:101, name: "mc1"},
+    {id:101, name: "mc1"},
+    {id:101, name: "mc1"},
+    {id:101, name: "mc1"}
+  ]
 
   showPopup: boolean = false;
   message: string | null = null;
@@ -89,17 +95,43 @@ export class DataentryComponent {
     this.clearRainfallFileInput();
   }
 
-  onChangeRegion() {
-    let tempStates = this.existingstationdata.filter(s => s.region == this.selectedRegion);
-    this.filteredStates = Array.from(new Set(tempStates.map(a => a.state)));
+  onChangeRegion(checkedValues:any){
+    let tempStates = this.existingstationdata.filter(item => {
+      return checkedValues.some((value:any) => {
+        return item.region == value;
+      });
+    });
+    let tempfilteredStates = Array.from(new Set(tempStates.map(a => a.state)));
+    this.filteredStates = tempfilteredStates.map(a => { return {name: a}});
     this.selectedState = ''
     this.selectedDistrict = ''
   }
 
-  onChangeState() {
-    let tempDistricts = this.existingstationdata.filter(d => d.state == this.selectedState);
-    this.filteredDistricts = Array.from(new Set(tempDistricts.map(a => a.district)));
+  onChangeState(checkedValues:any){
+    let tempDistricts = this.existingstationdata.filter(item => {
+      return checkedValues.some((value:any) => {
+        return item.state == value;
+      });
+    })
+    let tempfilteredDistricts = Array.from(new Set(tempDistricts.map(a => a.district)));
+    this.filteredDistricts = tempfilteredDistricts.map(a => { return {name: a}});
     this.selectedDistrict = ''
+  }
+  onChangeDistrict(checkedValues:any){
+    let tempStations = this.existingstationdata.filter(item => {
+      return checkedValues.some((value:any) => {
+        return item.district == value;
+      });
+    })
+    let tempfilteredStations = Array.from(new Set(tempStations.map(a => a.station)));
+    this.filteredStations = tempfilteredStations.map(a => { return {name: a}});
+    console.log(this.filteredStations)
+  }
+  shareCheckedList(item:any[]){
+    console.log(item);
+  }
+  shareIndividualCheckedList(item:any){
+    console.log(item);
   }
 
   goBack() {
@@ -122,7 +154,10 @@ export class DataentryComponent {
     this.dataService.existingstationdata().subscribe({
       next: value => {
         this.existingstationdata = value;
-        this.regionList = Array.from(new Set(this.existingstationdata.map(a => a.region)));
+        let regionList = Array.from(new Set(this.existingstationdata.map(a => a.region)));
+        this.regionList = regionList.map(x => {
+          return {name: x}
+        })
         this.filterByDate();
       },
       error: err => console.error('Error fetching data:', err)
