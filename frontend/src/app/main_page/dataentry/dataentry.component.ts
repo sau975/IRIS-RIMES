@@ -12,9 +12,9 @@ import * as FileSaver from 'file-saver';
 export class DataentryComponent {
   @ViewChild('fileInput') fileInput!: ElementRef;
   @ViewChild('rainfallFileInput') rainfallFileInput!: ElementRef;
-  selectedRegion: string = '';
-  selectedState: string = '';
-  selectedDistrict: string = '';
+  selectedRegion: string[] = [];
+  selectedState: string[] = [];
+  selectedDistrict: string[] = [];
   regionList: any[] = [];
   filteredStates: any[] = [];
   filteredDistricts: any[] = [];
@@ -96,6 +96,7 @@ export class DataentryComponent {
   }
 
   onChangeRegion(checkedValues:any){
+    this.selectedRegion = checkedValues;
     let tempStates = this.existingstationdata.filter(item => {
       return checkedValues.some((value:any) => {
         return item.region == value;
@@ -103,11 +104,10 @@ export class DataentryComponent {
     });
     let tempfilteredStates = Array.from(new Set(tempStates.map(a => a.state)));
     this.filteredStates = tempfilteredStates.map(a => { return {name: a}});
-    this.selectedState = ''
-    this.selectedDistrict = ''
   }
 
   onChangeState(checkedValues:any){
+    this.selectedState = checkedValues;
     let tempDistricts = this.existingstationdata.filter(item => {
       return checkedValues.some((value:any) => {
         return item.state == value;
@@ -115,17 +115,15 @@ export class DataentryComponent {
     })
     let tempfilteredDistricts = Array.from(new Set(tempDistricts.map(a => a.district)));
     this.filteredDistricts = tempfilteredDistricts.map(a => { return {name: a}});
-    this.selectedDistrict = ''
   }
+
   onChangeDistrict(checkedValues:any){
     let tempStations = this.existingstationdata.filter(item => {
       return checkedValues.some((value:any) => {
         return item.district == value;
       });
     })
-    let tempfilteredStations = Array.from(new Set(tempStations.map(a => a.station)));
-    this.filteredStations = tempfilteredStations.map(a => { return {name: a}});
-    console.log(this.filteredStations)
+    this.filteredStations = Array.from(new Set(tempStations.map(a => a.station)));
   }
   shareCheckedList(item:any[]){
     console.log(item);
@@ -152,30 +150,43 @@ export class DataentryComponent {
   }
   fetchDataFromBackend(): void {
     this.dataService.existingstationdata().subscribe({
-      next: value => {
+      next: (value) => {
         this.existingstationdata = value;
+        this.regionList = Array.from(new Set(this.existingstationdata.map(a => a.region)));
         let regionList = Array.from(new Set(this.existingstationdata.map(a => a.region)));
         this.regionList = regionList.map(x => {
           return {name: x}
         })
         this.filterByDate();
       },
-      error: err => console.error('Error fetching data:', err)
+      error: (err) => console.error('Error fetching data:', err),
     });
   }
 
   filterByDate() {
-    if(this.selectedDistrict){
-      this.filteredStations = this.existingstationdata.filter(s =>  s.district == this.selectedDistrict);
+    if(this.filteredStations && this.filteredStations.length > 0){
+      this.filteredStations = this.existingstationdata.filter(item => {
+        return this.filteredStations.some((value:any) => {
+          return item.station == value;
+        });
+      })
     }
-    else if(this.selectedState){
-      this.filteredStations = this.existingstationdata.filter(s =>  s.state == this.selectedState);
+    else if(this.selectedState && this.selectedState.length > 0){
+      this.filteredStations = this.existingstationdata.filter(item => {
+        return this.selectedState.some((value:any) => {
+          return item.state == value;
+        });
+      })
     }
-    else if(this.selectedRegion){
-      this.filteredStations = this.existingstationdata.filter(s =>  s.region == this.selectedRegion);
+    else if(this.selectedRegion && this.selectedRegion.length > 0){
+      this.filteredStations = this.existingstationdata.filter(item => {
+        return this.selectedRegion.some((value:any) => {
+          return item.region == value;
+        });
+      })
     }
     this.filteredStations.map(x => {
-      return x.RainFall = x[this.dateCalculation()];
+          return x.RainFall = x[this.dateCalculation()];
     })
     this.dataService.addColumn({date:this.dateCalculation()}).subscribe(res => {
       console.log("Column Created Successfully");
@@ -209,7 +220,6 @@ export class DataentryComponent {
       error: err => console.error('Error updating data. Please check the console for details.', err)
     });
     this.showEditPopup = false;
-    // }
   }
   deletestation() {
     this.deleteData = {
@@ -277,7 +287,6 @@ export class DataentryComponent {
       },
       error: err => console.error('Error adding data. Please check the console for details.', err)
     });
-    // window.location.reload();
     this.showPopup = false;
   }
 
