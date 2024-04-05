@@ -556,28 +556,10 @@
     </li>
 
 
-    <li>
-      <a routerLink="../data-entry" class="main_nav">DATA ENTRY</a>
-    </li>
-    <!-- <li>
-      <a routerLink="../station-level-data" class="main_nav">STATION LEVEL DATA</a>
-    </li> -->
 
 
-    <li *ngIf="loggedInUser.data[0].mcorhq == 'hq'">
-      <a class="main_nav" routerLink="../verification-page">VERIFICATION</a>
-    </li>
-    <li>
-      <!-- <a style="background-color: orange;" routerLink="../underprogress">STATION STATISTICS</a> -->
-      <a routerLink="../station-statistics">STATION STATISTICS</a>
-    </li>
-    <li>
-      <a routerLink="../yearly-station-statistics">YEARLY STATION STATISTICS</a>
-    </li>
 
-    <li *ngIf="loggedInUser.data[0].mcorhq == 'hq'">
-      <a (click)="sendEmail()">DISSEMINATION</a>
-    </li>
+    
     <li *ngIf="loggedInUser.data[0].mcorhq == 'hq'">
       <a class="main_nav" (click)="uploadPopUp()">INFO UPLOAD</a>
     </li>
@@ -688,9 +670,7 @@
         <li *ngFor="let file of rainFallReports;"><a (click)="downloadFile(file.file_data)">{{file.file_name}}</a></li>
       </ul>
     </li>
-    <li *ngIf="loggedInUser.data[0].mcorhq == 'hq'">
-      <a routerLink="../email-dissemination">DISSEMINATION</a>
-    </li>
+
     <li>
       <a routerLink="../data-entry" class="main_nav">DATA ENTRY</a>
     </li>
@@ -701,6 +681,9 @@
 
     <li *ngIf="loggedInUser.data[0].mcorhq == 'hq'">
       <a class="main_nav" routerLink="../verification-page">VERIFICATION</a>
+    </li>
+    <li *ngIf="loggedInUser.data[0].mcorhq == 'hq'">
+      <a routerLink="../email-dissemination">DISSEMINATION</a>
     </li>
     <li>
       <a class="main_nav">STATION STATISTICS</a>
@@ -719,6 +702,7 @@
     <li *ngIf="loggedInUser.data[0].mcorhq == 'hq'">
       <a class="main_nav" routerLink="../deleted-station-log">LOG INFO</a>
     </li>
+
     <li>
       <a class="main_nav">ABOUT</a>
       <ul>
