@@ -12,9 +12,9 @@ import * as FileSaver from 'file-saver';
 export class DataentryComponent {
   @ViewChild('fileInput') fileInput!: ElementRef;
   @ViewChild('rainfallFileInput') rainfallFileInput!: ElementRef;
-  selectedRegion: string[] = [];
-  selectedState: string[] = [];
-  selectedDistrict: string[] = [];
+  selectedRegions: string[] = [];
+  selectedStates: string[] = [];
+  tempfilteredStations: any[] = [];
   regionList: any[] = [];
   filteredStates: any[] = [];
   filteredDistricts: any[] = [];
@@ -96,7 +96,7 @@ export class DataentryComponent {
   }
 
   onChangeRegion(checkedValues:any){
-    this.selectedRegion = checkedValues;
+    this.selectedRegions = checkedValues;
     let tempStates = this.existingstationdata.filter(item => {
       return checkedValues.some((value:any) => {
         return item.region == value;
@@ -107,7 +107,7 @@ export class DataentryComponent {
   }
 
   onChangeState(checkedValues:any){
-    this.selectedState = checkedValues;
+    this.selectedStates = checkedValues;
     let tempDistricts = this.existingstationdata.filter(item => {
       return checkedValues.some((value:any) => {
         return item.state == value;
@@ -123,8 +123,9 @@ export class DataentryComponent {
         return item.district == value;
       });
     })
-    this.filteredStations = Array.from(new Set(tempStations.map(a => a.station)));
+    this.tempfilteredStations = Array.from(new Set(tempStations.map(a => a.station)));
   }
+
   shareCheckedList(item:any[]){
     console.log(item);
   }
@@ -164,23 +165,23 @@ export class DataentryComponent {
   }
 
   filterByDate() {
-    if(this.filteredStations && this.filteredStations.length > 0){
+    if(this.tempfilteredStations && this.tempfilteredStations.length > 0){
       this.filteredStations = this.existingstationdata.filter(item => {
-        return this.filteredStations.some((value:any) => {
+        return this.tempfilteredStations.some((value:any) => {
           return item.station == value;
         });
       })
     }
-    else if(this.selectedState && this.selectedState.length > 0){
+    else if(this.selectedStates && this.selectedStates.length > 0){
       this.filteredStations = this.existingstationdata.filter(item => {
-        return this.selectedState.some((value:any) => {
+        return this.selectedStates.some((value:any) => {
           return item.state == value;
         });
       })
     }
-    else if(this.selectedRegion && this.selectedRegion.length > 0){
+    else if(this.selectedRegions && this.selectedRegions.length > 0){
       this.filteredStations = this.existingstationdata.filter(item => {
-        return this.selectedRegion.some((value:any) => {
+        return this.selectedRegions.some((value:any) => {
           return item.region == value;
         });
       })
