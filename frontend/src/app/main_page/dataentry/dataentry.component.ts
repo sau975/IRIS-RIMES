@@ -152,6 +152,7 @@ export class DataentryComponent {
     this.dataService.existingstationdata().subscribe({
       next: (value) => {
         this.existingstationdata = value;
+        this.regionList = Array.from(new Set(this.existingstationdata.map(a => a.region)));
         let regionList = Array.from(new Set(this.existingstationdata.map(a => a.region)));
         this.regionList = regionList.map(x => {
           return {name: x}
@@ -184,6 +185,12 @@ export class DataentryComponent {
         });
       })
     }
+    this.filteredStations.map(x => {
+          return x.RainFall = x[this.dateCalculation()];
+    })
+    this.dataService.addColumn({date:this.dateCalculation()}).subscribe(res => {
+      console.log("Column Created Successfully");
+    })
   }
 
   editStation(station: any) {
@@ -213,7 +220,6 @@ export class DataentryComponent {
       error: err => console.error('Error updating data. Please check the console for details.', err)
     });
     this.showEditPopup = false;
-    // }
   }
   deletestation() {
     this.deleteData = {
@@ -281,7 +287,6 @@ export class DataentryComponent {
       },
       error: err => console.error('Error adding data. Please check the console for details.', err)
     });
-    // window.location.reload();
     this.showPopup = false;
   }
 
