@@ -42,7 +42,28 @@
       </tr>
     </tbody>
   </table>
-  <div class="navbar row">
+  <div class="navbar">
+    <app-multi-select-dropdown [list]="regionList" [type]="'Region'"
+      (shareCheckedList)="onChangeRegion($event)">
+    </app-multi-select-dropdown>
+
+    <app-multi-select-dropdown [list]="mcdata" [type]="'MC'" (shareCheckedList)="shareCheckedList($event)"
+      (shareIndividualCheckedList)="shareIndividualCheckedList($event)">
+    </app-multi-select-dropdown>
+
+    <app-multi-select-dropdown [list]="filteredStates" [type]="'State'"
+      (shareCheckedList)="onChangeState($event)">
+    </app-multi-select-dropdown>
+
+    <app-multi-select-dropdown [list]="filteredDistricts" [type]="'District'"
+      (shareCheckedList)="onChangeDistrict($event)">
+    </app-multi-select-dropdown>
+
+    <div class="col-1 mt-2">
+      <button class="btn btn-success" type="button" (click)="filterByDate()">Submit</button>
+    </div>
+  </div>
+  <!-- <div class="navbar row">
     <div class="col-2">
     <label for="region">Select Region :</label>
     <select name="region" class="form-control" id="region" [(ngModel)]="selectedRegion" (change)="onChangeRegion()">
@@ -84,7 +105,7 @@
     <div class="col-1 mt-3">
       <button class="btn btn-success" type="button" (click)="filterByDate()">Submit</button>
     </div>
-  </div>
+  </div> -->
 
   <div style="text-align: center; padding-top: 40px">
     <div class="dataentry">

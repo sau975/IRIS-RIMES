@@ -84,7 +84,7 @@
       <button class="btn btn-success" type="button" (click)="filterByDate()">Submit</button>
     </div>
   </div> -->
-  <div class="navbar row">
+  <div class="navbar">
     <div class="col-2">
       <app-multi-select-dropdown [list]="regionList" [type]="'Region'" (shareCheckedList)="onChangeRegion($event)">
       </app-multi-select-dropdown>
@@ -94,26 +94,22 @@
         (shareIndividualCheckedList)="shareIndividualCheckedList($event)">
       </app-multi-select-dropdown>
     </div>
-    <div class="col-2">
+    <div class="col-3">
       <app-multi-select-dropdown [list]="filteredStates" [type]="'State'" (shareCheckedList)="onChangeState($event)">
       </app-multi-select-dropdown>
     </div>
-    <!-- <div class="col-2">
-      <label for="district">Select District :</label>
-      <select name="district" class="form-control" id="district" [(ngModel)]="selectedDistrict">
-        <option *ngFor="let district of filteredDistricts" [value]="district">{{district}}</option>
-      </select>
-    </div> -->
-    <div class="col-2">
+    <div class="col-3">
       <app-multi-select-dropdown [list]="filteredDistricts" [type]="'District'"
         (shareCheckedList)="onChangeDistrict($event)">
       </app-multi-select-dropdown>
     </div>
-    <div class="col-2">
-      <input type="date" class="form-control" [min]="minDate" [ngModel]="selectedDate | date:'yyyy-MM-dd'"
-        (ngModelChange)="onChangeDate($event)">
+
+    <div class="col-1" style="display: flex; flex-direction: row;">
+      <!-- <label for="district">Select Date :</label> -->
+        <input type="date" class="form-control" [min]="minDate" [ngModel]="selectedDate | date:'yyyy-MM-dd'"
+          (ngModelChange)="onChangeDate($event)">
     </div>
-    <div class="col-2 mt-3">
+    <div class="col-1 mt-2">
       <button class="btn btn-success" type="button" (click)="filterByDate()">Submit</button>
     </div>
   </div>
