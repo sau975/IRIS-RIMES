@@ -1,96 +1,29 @@
 <div class="main-container">
-	<div [class.full-width]="!isSideNavOpen" class="map-container position-relative"> 
+	<div [class.full-width]="!isSideNavOpen" class="map-container position-relative">
 		<div class="data-bars-container">
 			<div class="d-flex gap-1">
 				<div class="p-2 data-bars">Date : {{selected_Date | date: 'dd-MM-yyyy HH:mm'}}</div>
 			</div>
-			<!-- <div class="d-flex gap-1" *ngIf="selectedParameter">
-				<div class="p-2 data-bars" *ngIf="selectedParameter.text === 'Temperature'">
-					Tmax : 35°C
-				</div>
-				<div class="p-2 data-bars" *ngIf="selectedParameter.text === 'Temperature'">
-					Tmin : 12°C
-				</div>
-				<div class="p-2 data-bars" *ngIf="selectedParameter.text === 'Rainfall'">
-					Highest Rainfall : 17mm
-				</div>
-				<div class="p-2 data-bars" *ngIf="selectedParameter.text === 'Rainfall'">
-					Lowest Rainfall : 2mm
-				</div>
-				<div class="selected-parameter-icon" *ngIf="selectedParameter">
-					<mat-icon>{{selectedParameter.iconName}}</mat-icon>
-				</div>
-			</div> -->
 		</div>
-		<!-- <button mat-button type="submit" class="mx-ato" [class.hidden]="!isSideNavOpen"
-		style="background-color:#4050b5; color:white; margin:0px 10px 0px 10px;" (click)="compareCharts()">
-		Compare
-	</button> -->
-		<button mat-button class="mx-ato" style="background-color:#4050b5; color:white; margin:0px 10px 0px 10px;" (click)="toggleMapDisplay()" class="toggle-map-button">Toggle Map</button>
-
+		
+		<button mat-button class="mx-ato" style="background-color:#4050b5; color:white; margin:0px 10px 0px 10px;"
+			(click)="toggleMapDisplay()" class="toggle-map-button">Toggle Map</button>
 		<div class="main-map" style="height: calc(100vh - 64px);" id="map_observations"></div>
 		<div class="main-map1" style="height: calc(100vh - 64px); display: none;" id="map_observations1"></div>
-
-
-
 	</div>
 	<div [class.side-nav-visible]="isSideNavOpen" [class.side-nav-hidden]="!isSideNavOpen" style="height: 100%"
 		class="weather-data-list-container">
-		<!-- <div class="my-3" [class.nav-heading]="isSideNavOpen"
-			[ngClass]="{'d-flex flex-row-reverse justify-content-center align-items-center': !isSideNavOpen}">
-			<h2 class="mb-3 pr-2" [class.hidden]="!isSideNavOpen">Explore</h2>
-		</div> -->
 		<form id="observation-form" class="form-container" (ngSubmit)="submitParameterForm()">
 			<mat-divider></mat-divider>
 			<div class="my-3" style="gap: 1.2em; padding-left:1em;"
 				[ngClass]="{'d-flex justify-content-around items-center': isSideNavOpen}">
-				<!-- <span [ngStyle]="{'margin-left': !isSideNavOpen ? '1rem' : '0'}">
-					<mat-icon class="time-bg bg-light-green" *ngIf="!this.selected_Date">access_time</mat-icon>
-					<mat-icon class="time-bg bg-orange" *ngIf="this.selected_Date">access_time</mat-icon>
-				</span> -->          <span><mat-icon class="time-bg bg-light-green">access_time</mat-icon></span>
-        <input class="form-control" type="datetime-local" id="birthdaytime" [ngModel] ="selected_Date | date:'yyyy-MM-dd HH:mm'" (ngModelChange)="selected_Date = $event" name="birthdaytime">
+				<span><mat-icon class="time-bg bg-light-green">access_time</mat-icon></span>
+				<input class="form-control" type="datetime-local" id="birthdaytime"
+					[ngModel]="selected_Date | date:'yyyy-MM-dd HH:mm'" (ngModelChange)="selected_Date = $event"
+					name="birthdaytime">
 
-				<div >
-          			<!-- <mat-menu #timeMenu="matMenu" class="timeMenu" [class.hidden]="!isSideNavOpen"
-						style="z-index:3000;">
-						<div style="padding:1em;" (click)="$event.stopPropagation()">
-							<div>
-								<p>Time mode:</p>
-								<div class="d-flex" style="gap: 1em;">
-									<p class="text-light-green">Daily</p>
-									<mat-slide-toggle [checked]="false" color="primary"
-										(change)="changeTimeToggle($event)"></mat-slide-toggle>
-									<p class="text-orange">Historical</p>
-								</div>
-							</div>
-							<mat-form-field class="mt-3 mb-3 example-full-width" appearance="outline"
-								style="width:100%">
+				<div>
 
-								<mat-label>Select date and time</mat-label>
-
-								<input name="bulletin-date" [(ngModel)]="selected_Date" matInput
-									[matDatepicker]="picker" (dateChange)="changeDate()">
-								<mat-hint>MM/DD/YYYY</mat-hint>
-								<mat-datepicker-toggle [for]="picker" matSuffix></mat-datepicker-toggle>
-								<mat-datepicker #picker></mat-datepicker>
-							</mat-form-field>
-							<button mat-flat-button color="primary" (click)="confirmTimeDate($event)">Done</button>
-						</div>
-					</mat-menu>
-					<button mat-button #timeMenuTrigger="matMenuTrigger" [matMenuTriggerFor]="timeMenu"
-						[ngClass]="{'d-flex flex-row': isSideNavOpen}" [class.hidden]="!isSideNavOpen"
-						(click)="preventButtonBehaviour($event)">
-						<div style="display:flex; flex-direction:row;align-items:center;gap: 2.4em;">
-							<div *ngIf="!this.selected_Date">
-								<div>{{ current_Date.date }}</div>
-								<div>{{ current_Date.time }}</div>
-							</div>
-							<div *ngIf="this.selected_Date">
-								<div>{{manual_date_time.date}}</div>
-								<div>{{manual_date_time.time}}</div>
-							</div>
-						</div>
-					</button> -->
 				</div>
 			</div>
 
@@ -122,20 +55,20 @@
 					(shareCheckedList)="shareCheckedList($event)"
 					(shareIndividualCheckedList)="onChangeStation($event)">
 				</app-multi-select-dropdown>
-        <div class="row mt-2">
-          <div class="col">
-            <input type="radio" id="aws" name="aws" value="aws" [(ngModel)]="stationType">
-            <label for="aws">AWS</label>
-          </div>
-          <div class="col">
-            <input type="radio" id="org" name="org" value="org" [(ngModel)]="stationType">
-            <label for="org">ORG</label>
-          </div>
-          <div class="col">
-            <input type="radio" id="arg" name="arg" value="arg" [(ngModel)]="stationType">
-            <label for="arg">ARG</label>
-          </div>
-        </div>
+				<div class="row mt-2">
+					<div class="col">
+						<input type="radio" id="aws" name="aws" value="aws" [(ngModel)]="stationType">
+						  <label for="aws">AWS</label>
+					</div>
+					<div class="col">
+						<input type="radio" id="org" name="org" value="org" [(ngModel)]="stationType">
+						  <label for="org">ORG</label>
+					</div>
+					<div class="col">
+						<input type="radio" id="arg" name="arg" value="arg" [(ngModel)]="stationType">
+						  <label for="arg">ARG</label>
+					</div>
+				</div>
 			</div>
 
 			<mat-divider></mat-divider>
@@ -226,12 +159,10 @@
 			</div>
 			<div class="h5 align-self-center d-flex" [class.selected]="selectedOption === 'compare_station_data'"
 				(click)="selectStationDataOption('compare_station_data')" style="gap:0.2em;">
-				<!-- <mat-icon>compare_arrows</mat-icon> -->
-				<!-- <span>Compare</span> -->
+
 			</div>
 			<mat-icon (click)="closePopup()">close</mat-icon>
 
-			<!-- <div class="h5 align-self-center" [class.selected]="selectedOption === 'Others'" (click)="selectOption('Others')">Others</div> -->
 		</div>
 
 		<mat-divider></mat-divider>
@@ -277,14 +208,6 @@
 								<option value="station2">Station5</option>
 							</select>
 						</div>
-						<!-- <div class="py-2 d-flex justify-content-between station-data-table w-100">
-							<span>How many days data</span>
-							<span>20</span>
-						</div>
-						<div class="py-2 d-flex justify-content-between station-data-table w-100">
-							<span>How many missing</span>
-							<span>05</span>
-						</div> -->
 					</div>
 				</div>
 			</ng-container>

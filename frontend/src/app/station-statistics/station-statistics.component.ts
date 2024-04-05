@@ -19,6 +19,7 @@ export class StationStatisticsComponent implements OnInit, OnDestroy {
   showSecondMap: boolean = false;
   stationType: string = '';
 
+
   showStationData(): void {
     this.selectedOption = 'station_details';
     this.updateChart(this.stationWeatherParameters[0]);
