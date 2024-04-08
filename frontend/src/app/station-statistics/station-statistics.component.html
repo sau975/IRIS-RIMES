@@ -5,7 +5,7 @@
 				<div class="p-2 data-bars">Date : {{selected_Date | date: 'dd-MM-yyyy HH:mm'}}</div>
 			</div>
 		</div>
-		
+
 		<button mat-button class="mx-ato" style="background-color:#4050b5; color:white; margin:0px 10px 0px 10px;"
 			(click)="toggleMapDisplay()" class="toggle-map-button">Toggle Map</button>
 		<div class="main-map" style="height: calc(100vh - 64px);" id="map_observations"></div>
@@ -219,9 +219,14 @@
 						(click)="updateChart(weatherOptions)">
 						{{ weatherOptions.text }}
 					</div>
-					<button mat-button style="background-color:#4050b5; color:white; margin:0px 10px 0px 10px;">
+          <!-- <div *ngFor="let weatherOptions of stationWeatherParameters[1]" class="station-data-sub-options p-2"
+          [class.clicked]="toggleDataParameter(weatherOptions.text)"
+          (click)="updateChart(weatherOptions)">
+          {{ weatherOptions.text }}
+        </div> -->
+					<!-- <button mat-button style="background-color:#4050b5; color:white; margin:0px 10px 0px 10px;">
 						Historical Data
-					</button>
+					</button> -->
 				</div>
 			</div>
 		</div>

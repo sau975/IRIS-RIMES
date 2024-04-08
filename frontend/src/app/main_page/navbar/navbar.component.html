@@ -2,7 +2,7 @@
   <button mat-icon-button (click)="toggleNavbar()">
     <mat-icon>menu</mat-icon>
   </button>
-  <span>IRIS PRODUCTS</span>
+  <span>iRAINS PRODUCTS</span>
 </mat-toolbar>
 <nav [ngClass]="{'open': isNavbarOpen}" class="top">
   <ul class="nav">
@@ -559,7 +559,7 @@
 
 
 
-    
+
     <li *ngIf="loggedInUser.data[0].mcorhq == 'hq'">
       <a class="main_nav" (click)="uploadPopUp()">INFO UPLOAD</a>
     </li>
