@@ -586,11 +586,8 @@ export class StationStatisticsComponent implements OnInit, OnDestroy {
     });
   }
   toggleMapDisplay(): void {
-    // Toggle the display of map elements
     this.showFirstMap = !this.showFirstMap;
     this.showSecondMap = !this.showSecondMap;
-
-    // Load GeoJSON based on map display
     if (this.showFirstMap) {
       this.loadGeoJSON();
     } else {
@@ -650,6 +647,53 @@ export class StationStatisticsComponent implements OnInit, OnDestroy {
   }
 
   loadGeoJSON1(): void {
+    this.http.get('assets/geojson/INDIA_STATE.json').subscribe((res: any) => {
+      L.geoJSON(res, {
+        style: (feature: any) => {
+          const id2 = feature.properties['district_c'];
+          const matchedData = this.findMatchingData(id2);
+          let rainfall: any;
+          if (matchedData) {
+            if (Number.isNaN(matchedData.RainFall)) {
+              rainfall = ' ';
+            }
+            else {
+              rainfall = matchedData.RainFall;
+            }
+          }
+          else {
+            rainfall = -100
+          }
+          const color = this.getColorForRainfall1(rainfall);
+          return {
+            fillColor: color,
+            weight: 0.5,
+            opacity: 2,
+            color: 'black',
+            fillOpacity: 2
+          };
+        },
+        onEachFeature: (feature: any, layer: any) => {
+          const id1 = feature.properties['district'];
+          const id2 = feature.properties['district_c'];
+          const matchedData = this.findMatchingData(id2);
+          let rainfall: any;
+          if (matchedData) {
+            if (Number.isNaN(matchedData.RainFall)) {
+              rainfall = "NA";
+            }
+            else {
+              rainfall = matchedData.RainFall;
+            }
+          }
+          else {
+            rainfall = -100
+          }
+        }
+      }).addTo(this.stationObservationMap);
+    });
+  }
+  loadGeoJSON2(): void {
     this.http.get('assets/geojson/INDIA_STATE.json').subscribe((res: any) => {
       L.geoJSON(res, {
         style: (feature: any) => {
