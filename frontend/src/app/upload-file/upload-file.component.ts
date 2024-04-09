@@ -42,6 +42,20 @@ export class UploadFileComponent {
         .subscribe(
           (response: any) => {
             alert('File uploaded successfully');
+            let loggedInUser: any = localStorage.getItem("isAuthorised");
+            let parseloggedInUser = JSON.parse(loggedInUser);
+            if(this.selectedFile){
+              let dataUpload = {
+                stationName: this.selectedFile.name,
+                stationId: '',
+                dateTime: new Date(),
+                userName: parseloggedInUser.data[0].name,
+                type: "Report Uploaded"
+              }
+              this.dataService.addDeletedAndCreatedStationLogData(dataUpload).subscribe(res => {
+                console.log('Log created successfully:', response);
+              })
+            }
             this.clearFileInput();
             localStorage.removeItem("base64String");
           },

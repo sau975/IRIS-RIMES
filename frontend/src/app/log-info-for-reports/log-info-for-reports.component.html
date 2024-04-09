@@ -47,23 +47,21 @@
     <div class="dataentry">
       <div class="row">
         <div class="col-12">
-          <h3>STATIONS LOG</h3>
+          <h3>REPORTS LOG</h3>
         </div>
       </div>
       <br />
         <table style=" margin: auto; border-collapse: collapse; width: 90%; border: 1px solid black;">
           <thead>
             <tr>
-              <th style="border: 1px solid black">StationId</th>
-              <th style="border: 1px solid black">Station</th>
+              <th style="border: 1px solid black">Report Name</th>
               <th style="border: 1px solid black">User</th>
               <th style="border: 1px solid black">Date Time</th>
-              <th style="border: 1px solid black">Added/Deleted</th>
+              <th style="border: 1px solid black">Uploaded</th>
             </tr>
           </thead>
-          <tbody *ngIf="deletedStationLogs && deletedStationLogs.length > 0">
-            <tr *ngFor="let delstation of deletedStationLogs; let i = index">
-              <td>{{delstation.stationid}}</td>
+          <tbody *ngIf="reportsLogs && reportsLogs.length > 0">
+            <tr *ngFor="let delstation of reportsLogs; let i = index">
               <td>{{delstation.stationname}}</td>
               <td>{{delstation.username}}</td>
               <td>{{delstation.datetime | date: 'dd-MM-yyy hh:mm:ss'}}</td>

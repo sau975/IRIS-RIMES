@@ -65,6 +65,8 @@ import { YearlyStationStatisticsComponent } from './yearly-station-statistics/ye
 import { EmailDisseminationComponent } from './email-dissemination/email-dissemination.component';
 import { MatTabsModule } from '@angular/material/tabs';
 import { RealtimeStationDataComponent } from './realtime-station-data/realtime-station-data.component';
+import { LogInfoContainerComponent } from './log-info-container/log-info-container.component';
+import { LogInfoForReportsComponent } from './log-info-for-reports/log-info-for-reports.component';
 
 @NgModule({
   declarations: [
@@ -106,7 +108,9 @@ import { RealtimeStationDataComponent } from './realtime-station-data/realtime-s
     MultiSelectDropdownComponent,
     YearlyStationStatisticsComponent,
     EmailDisseminationComponent,
-    RealtimeStationDataComponent
+    RealtimeStationDataComponent,
+    LogInfoContainerComponent,
+    LogInfoForReportsComponent
   ],
   imports: [
     PdfViewerModule,

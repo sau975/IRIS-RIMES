@@ -10,15 +10,22 @@ import { Router } from '@angular/router';
 })
 export class YearlyStationStatisticsComponent {
   selectedYear: string = '';
-  selectedRegion: string = '';
-  selectedState: string = '';
-  selectedDistrict: string = '';
+  selectedRegions: string[] = [];
+  selectedStates: string[] = [];
+  tempfilteredStations: any[] = [];
   todayDate: string;
   regionList:any[]=[];
   filteredStates:any[]=[];
   filteredDistricts:any[]=[];
   filteredStations:any[]=[];
   existingstationdata: any[] = [];
+  mcdata = [
+    {id:101, name: "mc1"},
+    {id:101, name: "mc1"},
+    {id:101, name: "mc1"},
+    {id:101, name: "mc1"},
+    {id:101, name: "mc1"}
+  ]
   // yearlyStationData: any[] = [
   //   {
   //     sNo: 1,
@@ -92,43 +99,80 @@ export class YearlyStationStatisticsComponent {
     return `${dd.padStart(2, '0')}_${currmonth}_${selectedYear}`;
   }
 
-  onChangeRegion(){
-    let tempStates = this.existingstationdata.filter(s => s.region == this.selectedRegion);
-    this.filteredStates = Array.from(new Set(tempStates.map(a => a.state)));
-    this.selectedState = ''
-    this.selectedDistrict = ''
+  onChangeRegion(checkedValues:any){
+    this.selectedRegions = checkedValues;
+    let tempStates = this.existingstationdata.filter(item => {
+      return checkedValues.some((value:any) => {
+        return item.region == value;
+      });
+    });
+    let tempfilteredStates = Array.from(new Set(tempStates.map(a => a.state)));
+    this.filteredStates = tempfilteredStates.map(a => { return {name: a}});
   }
 
-  onChangeState(){
-    let tempDistricts = this.existingstationdata.filter(d => d.state == this.selectedState);
-    this.filteredDistricts = Array.from(new Set(tempDistricts.map(a => a.district)));
-    this.selectedDistrict = ''
+  onChangeState(checkedValues:any){
+    this.selectedStates = checkedValues;
+    let tempDistricts = this.existingstationdata.filter(item => {
+      return checkedValues.some((value:any) => {
+        return item.state == value;
+      });
+    })
+    let tempfilteredDistricts = Array.from(new Set(tempDistricts.map(a => a.district)));
+    this.filteredDistricts = tempfilteredDistricts.map(a => { return {name: a}});
+  }
+
+  onChangeDistrict(checkedValues:any){
+    let tempStations = this.existingstationdata.filter(item => {
+      return checkedValues.some((value:any) => {
+        return item.district == value;
+      });
+    })
+    this.tempfilteredStations = Array.from(new Set(tempStations.map(a => a.station)));
+  }
+
+  shareCheckedList(item:any[]){
+    console.log(item);
+  }
+  shareIndividualCheckedList(item:any){
+    console.log(item);
   }
 
   fetchDataFromBackend(): void {
     this.dataService.existingstationdata().subscribe({
       next: value => {
         this.existingstationdata = value;
-        this.regionList = Array.from(new Set(this.existingstationdata.map(a => a.region)));
+        let regionList = Array.from(new Set(this.existingstationdata.map(a => a.region)));
+        this.regionList = regionList.map(x => {
+          return {name: x}
+        })
         this.filterByDate();
       },
       error: err => console.error('Error fetching data:', err)
     });
   }
 
-  filterByDate(){
-    if(this.selectedDistrict){
-      this.filteredStations = this.existingstationdata.filter(s =>  s.district == this.selectedDistrict);
+  filterByDate() {
+    if(this.tempfilteredStations && this.tempfilteredStations.length > 0){
+      this.filteredStations = this.existingstationdata.filter(item => {
+        return this.tempfilteredStations.some((value:any) => {
+          return item.station == value;
+        });
+      })
     }
-    else if(this.selectedState){
-      this.filteredStations = this.existingstationdata.filter(s =>  s.state == this.selectedState);
+    else if(this.selectedStates && this.selectedStates.length > 0){
+      this.filteredStations = this.existingstationdata.filter(item => {
+        return this.selectedStates.some((value:any) => {
+          return item.state == value;
+        });
+      })
     }
-    else if(this.selectedRegion){
-      this.filteredStations = this.existingstationdata.filter(s =>  s.region == this.selectedRegion);
+    else if(this.selectedRegions && this.selectedRegions.length > 0){
+      this.filteredStations = this.existingstationdata.filter(item => {
+        return this.selectedRegions.some((value:any) => {
+          return item.region == value;
+        });
+      })
     }
-    this.filteredStations.map(x => {
-      return x.RainFall = x[this.dateCalculation()];
-    })
   }
 
   submit(){

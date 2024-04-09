@@ -13,7 +13,7 @@
 	</div>
 	<div [class.side-nav-visible]="isSideNavOpen" [class.side-nav-hidden]="!isSideNavOpen" style="height: 100%"
 		class="weather-data-list-container">
-		<form id="observation-form" class="form-container" (ngSubmit)="submitParameterForm()">
+		<form id="observation-form" class="form-container">
 			<mat-divider></mat-divider>
 			<div class="my-3" style="gap: 1.2em; padding-left:1em;"
 				[ngClass]="{'d-flex justify-content-around items-center': isSideNavOpen}">
@@ -78,7 +78,7 @@
 					style="background-color:#4050b5; color:white" (click)="showStationData()">
 					Show Station Data
 				</button>
-				<button mat-button type="submit" class="mx-ato" [class.hidden]="!isSideNavOpen"
+				<button mat-button type="button" class="mx-ato" [class.hidden]="!isSideNavOpen"
 					style="background-color:#4050b5; color:white; margin:0px 10px 0px 10px;" (click)="compareCharts()">
 					Compare
 				</button>
@@ -199,15 +199,11 @@
 					</div>
 					<div style="overflow-y:scroll; width:100%; padding:1em;">
 						<div class="py-2 d-flex justify-content-between station-data-table w-100">
-							<label for="stations">Select stations</label>
-							<select name="stations" id="stations">
-								<option value="station1">Station1</option>
-								<option value="station2">Station2</option>
-								<option value="station2">Station3</option>
-								<option value="station2">Station4</option>
-								<option value="station2">Station5</option>
-							</select>
-						</div>
+              <app-multi-select-dropdown [list]="filteredStations" [type]="'Station'"
+              (shareCheckedList)="shareCheckedList($event)"
+              (shareIndividualCheckedList)="onChangeStation($event)">
+              </app-multi-select-dropdown>
+            </div>
 					</div>
 				</div>
 			</ng-container>

@@ -16,7 +16,7 @@ export class DeletedStationLogComponent implements OnInit {
 
   ngOnInit(): void {
     this.dataService.getDeletedStationLog().subscribe(res => {
-      this.deletedStationLogs = res;
+      this.deletedStationLogs = res.filter((x:any) => x.type != "Report Uploaded");
     })
   }
 

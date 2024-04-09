@@ -16,6 +16,18 @@ export class MultiSelectDropdownComponent {
   checkedList: any[];
   currentSelected: {}={};
 
+  private _clear: boolean = false;
+  @Input() get clear(): boolean {
+    return this._clear;
+  }
+  set clear(value: boolean) {
+    this._clear = value;
+    console.log(value, "pppppppp")
+    if(value == true){
+      this.checkedList = []
+    }
+  }
+
   constructor() {
     this.checkedList = [];
   }
@@ -28,7 +40,7 @@ export class MultiSelectDropdownComponent {
       this.checkedList.splice(index, 1);
     }
 
-    this.currentSelected = { checked: status, name: value };
+    // this.currentSelected = { checked: status, name: value };
 
     //share checked list
     this.shareCheckedlist();

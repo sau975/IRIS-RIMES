@@ -1,3 +1,4 @@
+import { LogInfoForReportsComponent } from './log-info-for-reports/log-info-for-reports.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './login/login/login.component';
@@ -36,6 +37,7 @@ import { StationStatisticsComponent } from './station-statistics/station-statist
 import { YearlyStationStatisticsComponent } from './yearly-station-statistics/yearly-station-statistics.component';
 import { EmailDisseminationComponent } from './email-dissemination/email-dissemination.component';
 import { RealtimeStationDataComponent } from './realtime-station-data/realtime-station-data.component';
+import { LogInfoContainerComponent } from './log-info-container/log-info-container.component';
 
 
 const routes: Routes = [
@@ -62,12 +64,18 @@ const routes: Routes = [
   { path: 'upload-file', component: UploadFileComponent, canActivate: [AuthGuard] },
   { path: 'about', component: AboutComponent, canActivate: [AuthGuard] },
   { path: 'verification-page', component: VerificationPageComponent, canActivate: [AuthGuard] },
-  { path: 'deleted-station-log', component: DeletedStationLogComponent, canActivate: [AuthGuard] },
   { path: 'last-five-year-data', component: LastFiveYearDataComponent, canActivate: [AuthGuard] },
   { path: 'station-statistics', component: StationStatisticsComponent, canActivate: [AuthGuard] },
   { path: 'yearly-station-statistics', component: YearlyStationStatisticsComponent, canActivate: [AuthGuard] },
   { path: 'email-dissemination', component: EmailDisseminationComponent, canActivate: [AuthGuard] },
   { path: 'realtime-station-data', component: RealtimeStationDataComponent, canActivate: [AuthGuard] },
+  { path: 'log-info', component: LogInfoContainerComponent, canActivate: [AuthGuard], children:
+    [
+      { path: 'station-log', component: DeletedStationLogComponent },
+      { path: 'reports-log', component: LogInfoForReportsComponent },
+      { path: '', redirectTo: 'station-log', pathMatch: 'full' }
+    ]
+   },
   { path: 'front-page', component: FrontPageComponent, canActivate: [AuthGuard], children:
     [
       { path: 'departure', component: DepartureMapComponent },

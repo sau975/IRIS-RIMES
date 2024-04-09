@@ -29,6 +29,7 @@ export class StationStatisticsComponent implements OnInit, OnDestroy {
     this.selectedOption = 'compare_charts';
     this.updateChart(this.stationWeatherParameters[0]);
     this.updateChart(this.stationWeatherParameters[0]);
+    this.toggleBottomNav();
     this.showCompareData = true;
   }
   toggleCompareSection(): void {
@@ -347,6 +348,8 @@ export class StationStatisticsComponent implements OnInit, OnDestroy {
     })
     let tempfilteredStations = Array.from(new Set(tempStations.map(a => a.station)));
     this.filteredStations = tempfilteredStations.map(a => { return {name: a}});
+    console.log(this.filteredStations, "ppppppppppp")
+
     this.selectedStation = ''
   }
 

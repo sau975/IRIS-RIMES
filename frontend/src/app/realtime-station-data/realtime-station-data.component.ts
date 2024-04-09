@@ -23,6 +23,7 @@ export class RealtimeStationDataComponent {
     {id:101, name: "mc1"},
     {id:101, name: "mc1"}
   ]
+  clearDropdown: boolean = false;
 
   ngOnInit(): void {
     this.fetchDataFromBackend();
@@ -30,6 +31,7 @@ export class RealtimeStationDataComponent {
   constructor(private dataService: DataService) {}
 
   onChangeRegion(checkedValues:any){
+    this.clearDropdown = true;
     this.selectedRegions = checkedValues;
     let tempStates = this.existingstationdata.filter(item => {
       return checkedValues.some((value:any) => {

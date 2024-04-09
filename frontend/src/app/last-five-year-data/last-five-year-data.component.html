@@ -42,27 +42,25 @@
       </tr>
     </tbody>
   </table>
-  <div class="navbar row">
-    <div class="col-5">
-    <label for="state">Choose the States/UTs </label>
-    <select name="state" class="form-control">
-      <option value="mc1">Bihar</option>
-      <option value="mc2">Assam</option>
-      <option value="mc3">Delhi</option>
-      <option value="mc4">Goa</option>
-    </select>
-  </div>
-  <div class="col-5">
-    <label for="mcs">Select District</label>
-    <select name="district" class="form-control">
-      <option value="mc1">Gaya</option>
-      <option value="mc2">Nalanda</option>
-      <option value="mc3">Patna</option>
-      <option value="mc4">Bhojpur</option>
-    </select>
-  </div>
-    <div class="col-2 mt-3">
-      <button class="btn btn-success" type="button" (click)="submit()">Go</button>
+  <div class="navbar">
+    <app-multi-select-dropdown [list]="regionList" [type]="'Region'"
+      (shareCheckedList)="onChangeRegion($event)">
+    </app-multi-select-dropdown>
+
+    <app-multi-select-dropdown [list]="mcdata" [type]="'MC'" (shareCheckedList)="shareCheckedList($event)"
+      (shareIndividualCheckedList)="shareIndividualCheckedList($event)">
+    </app-multi-select-dropdown>
+
+    <app-multi-select-dropdown [list]="filteredStates" [type]="'State'"
+      (shareCheckedList)="onChangeState($event)">
+    </app-multi-select-dropdown>
+
+    <app-multi-select-dropdown [list]="filteredDistricts" [type]="'District'"
+      (shareCheckedList)="onChangeDistrict($event)">
+    </app-multi-select-dropdown>
+
+    <div class="col-1 mt-2">
+      <button class="btn btn-success" type="button" (click)="submit()">Submit</button>
     </div>
   </div>
 
