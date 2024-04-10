@@ -353,8 +353,8 @@ export class StationStatisticsComponent implements OnInit, OnDestroy {
     this.selectedStation = ''
   }
 
-  onChangeStation(item:any){
-    this.selectedStation = item.name;
+  onSelectStations(item:any){
+    // this.selectedStation = item;
   }
   ngOnDestroy(): void {
     this.stationObservationMap.remove();
@@ -623,31 +623,31 @@ export class StationStatisticsComponent implements OnInit, OnDestroy {
 
   filterByDate(){
     this.fetchDataFromBackend();
-    if(this.selectedDistrict){
-      this.filteredStations = this.existingstationdata.filter(s =>  s.district == this.selectedDistrict);
-    }
-    else if (this.selectedState) {
-      this.filteredStations = this.existingstationdata.filter(s => s.state == this.selectedState);
-    }
-    else if (this.selectedRegion) {
-      this.filteredStations = this.existingstationdata.filter(s => s.region == this.selectedRegion);
-    }
-    this.filteredStations.map(x => {
-      return x.RainFall = x[this.dateCalculation()];
-    })
-    this.filteredStations.map(x => {
-      return x.name = x.station;
-    })
+    // if(this.selectedDistrict){
+    //   this.filteredStations = this.existingstationdata.filter(s =>  s.district == this.selectedDistrict);
+    // }
+    // else if (this.selectedState) {
+    //   this.filteredStations = this.existingstationdata.filter(s => s.state == this.selectedState);
+    // }
+    // else if (this.selectedRegion) {
+    //   this.filteredStations = this.existingstationdata.filter(s => s.region == this.selectedRegion);
+    // }
+    // this.filteredStations.map(x => {
+    //   return x.RainFall = x[this.dateCalculation()];
+    // })
+    // this.filteredStations.map(x => {
+    //   return x.name = x.station;
+    // })
 
-    this.totalstations = this.filteredStations.length;
-    this.filteredStations.forEach((element: any) => {
-      if (element.RainFall == -999.9) {
-        this.notreceivedata = this.notreceivedata + 1;
-      }
-      if (element.RainFall > 0) {
-        this.receivedata = this.receivedata + 1;
-      }
-    });
+    // this.totalstations = this.filteredStations.length;
+    // this.filteredStations.forEach((element: any) => {
+    //   if (element.RainFall == -999.9) {
+    //     this.notreceivedata = this.notreceivedata + 1;
+    //   }
+    //   if (element.RainFall > 0) {
+    //     this.receivedata = this.receivedata + 1;
+    //   }
+    // });
   }
   toggleMapDisplay(): void {
     this.showFirstMap = !this.showFirstMap;
