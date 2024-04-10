@@ -43,8 +43,8 @@
 </table>
 
 <div class="sidebar">
-  <a class="active" routerLink="station-log">Station Log</a>
-  <a routerLink="reports-log">Reports Log</a>
+  <a [ngClass]="{'active': isSelected('station-log')}" (click)="selectMenuItem('station-log')" routerLink="station-log">Station Log</a>
+  <a [ngClass]="{'active': isSelected('reports-log')}" (click)="selectMenuItem('reports-log')" routerLink="reports-log">Reports Log</a>
 </div>
 
 <div class="content">

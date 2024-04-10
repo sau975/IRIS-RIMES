@@ -11,4 +11,13 @@ export class LogInfoContainerComponent {
     window.history.back();
   }
 
+  selectedMenuItem: string = 'station-log'; // To store the selected menu item
+
+  selectMenuItem(menuItem: string): void {
+    this.selectedMenuItem = menuItem;
+  }
+
+  isSelected(menuItem: string): boolean {
+    return this.selectedMenuItem === menuItem;
+  }
 }
