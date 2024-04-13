@@ -288,6 +288,7 @@ export class StationStatisticsComponent implements OnInit, OnDestroy {
     {id:101, name: "mc1"},
     {id:101, name: "mc1"}
   ]
+  startNumber:number = 1;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -375,23 +376,18 @@ export class StationStatisticsComponent implements OnInit, OnDestroy {
     console.log(item);
   }
 
-
   showStationDailyData(){
-    // let startDate = "01_Apr_2024";
-    // let endDate = "30_Apr_2024";
-    // for(let i = 1; i > 31; i++){
-
-    // }
-    // this.existingstationdata.forEach(x => {
-    //   // if(x.station == this.selectedStation){
-    //     var hh = 1
-    //     let data = {
-    //       hour: hh, value: x[this.dateCalculation()], unit: 'mm'
-    //     }
-    //     hh++
-    //     this.stationWeatherParameters[0].data.push(data);
-    //   // }
-    // })
+    this.stationWeatherParameters[0].data = [];
+    this.startNumber = 1;
+    let stationData = this.existingstationdata.find(x => x.station == this.selectedStation);
+    for(let i = 0; i < 30; i++){
+      let date = String(this.startNumber).length > 1 ? this.startNumber : '0' + this.startNumber;
+      let data = {
+        hour: date, value: stationData[date + '_' + 'Apr_24'], unit: 'mm'
+      }
+      this.startNumber = this.startNumber + 1;
+      this.stationWeatherParameters[0].data.push(data);
+    }
   }
 
   updateMapAttribution(specialText: string) {
@@ -586,6 +582,8 @@ export class StationStatisticsComponent implements OnInit, OnDestroy {
     this.dataService.existingstationdata().subscribe({
       next: value => {
         this.existingstationdata = value;
+        console.log(this.existingstationdata, "oooooooooooo")
+
         let maxNumber = this.existingstationdata[0][this.dateCalculation()];
         for (let i = 1; i < this.existingstationdata.length; i++) {
           if (this.existingstationdata[i][this.dateCalculation()] > maxNumber) {
