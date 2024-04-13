@@ -51,9 +51,12 @@ export class AppComponent {
     }
 
     setTimeout(() => {
+      let autoEmailOnOff = JSON.parse(localStorage.getItem('autoEmail') as any);
+      if(autoEmailOnOff == true){
         this.sendEmail();
-        // Reschedule function for the next day
-        this.scheduleFunction();
+      }
+      // Reschedule function for the next day
+      this.scheduleFunction();
     }, delay);
   }
 }

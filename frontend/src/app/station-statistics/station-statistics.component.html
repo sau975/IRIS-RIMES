@@ -8,8 +8,8 @@
 
 		<button mat-button class="mx-ato" style="background-color:#4050b5; color:white; margin:0px 10px 0px 10px;"
 			(click)="toggleMapDisplay()" class="toggle-map-button">Toggle Map</button>
-		<div class="main-map" style="height: calc(100vh - 64px);" id="map_observations"></div>
-		<div class="main-map1" style="height: calc(100vh - 64px); display: none;" id="map_observations1"></div>
+		<div class="main-map" style="height: 100vh;" id="map_observations"></div>
+		<div class="main-map1" style="height: 100vh; display: none;" id="map_observations1"></div>
 	</div>
 	<div [class.side-nav-visible]="isSideNavOpen" [class.side-nav-hidden]="!isSideNavOpen" style="height: 100%"
 		class="weather-data-list-container">
@@ -53,9 +53,9 @@
 				<br>
 
         <div>
-					<select name="district" class="form-control" id="district" [(ngModel)]="selectedStation">
+					<select name="district" class="form-control" id="district" (change)="showStationDailyData()" [(ngModel)]="selectedStation">
             <option [value]="''">Select Station</option>
-						<option *ngFor="let station of filteredStations" [value]="station.name">{{station.name}}</option>
+						<option *ngFor="let station of filteredStations"  [value]="station.name">{{station.name}}</option>
 					</select>
 				</div>
 
@@ -98,6 +98,7 @@
 			</div>
 			<div style="padding: 10px;">
 				<div style="display: inline-block;">
+          <input style="margin-right: 7px;" type="checkbox">
 					<div style="width: 20px;
 		  height: 10px;
 		  background-color: #808080;
@@ -106,6 +107,7 @@
 					<span>Very Light Rainfall : {{veryLightRainFallStationCount}}</span>
 				</div>
 				<div style="display: inline-block;">
+          <input style="margin-right: 7px;" type="checkbox">
 					<div style="width: 20px;
 		  height: 10px;
 		  background-color: #add8e6;
@@ -114,6 +116,7 @@
 					<span>Light Rainfall : {{lightRainfallStationCount}}</span>
 				</div>
 				<div style="display: inline-block;">
+          <input style="margin-right: 7px;" type="checkbox">
 					<div style="width: 20px;
 		  height: 10px;
 		  background-color: #ffd700;
@@ -122,6 +125,7 @@
 					<span>Moderate Rainfall : {{modrateRainFallStationCount}}</span>
 				</div>
 				<div style="display: inline-block;">
+          <input style="margin-right: 7px;" type="checkbox">
 					<div style="width: 20px;
 			height: 10px;
 			background-color: #ff8c00;
@@ -130,6 +134,7 @@
 					<span>Heavy Rainfall : {{heavyRainFallStationCount}}</span>
 				</div>
 				<div style="display: inline-block;">
+          <input style="margin-right: 7px;" type="checkbox">
 					<div style="width: 20px;
 			height: 10px;
 			background-color: #ff0000;
@@ -138,6 +143,7 @@
 					<span>Very Heavy Rainfall : {{veryHeavyRainfallStationCount}}</span>
 				</div>
 				<div style="display: inline-block;">
+          <input style="margin-right: 7px;" type="checkbox">
 					<div style="width: 20px;
 			height: 10px;
 			background-color: #800000;

@@ -44,7 +44,140 @@
   </table>
 </div>
 <mat-tab-group>
-  <mat-tab label="Email"> Content 1 </mat-tab>
-  <mat-tab label="Auto Email"> Content 2 </mat-tab>
-  <mat-tab label="Email Group"> Content 3 </mat-tab>
+  <mat-tab label="Send Email">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6 offset-md-3 center-box">
+          <h5 class="text-center mt-5">Send Email</h5>
+          <div>
+            <div class="mt-3">
+              <label>Send To</label>
+              <select name="sendTo" class="form-control" id="sendTo" [(ngModel)]="sendTo">
+                <option [value]="''">Select</option>
+                <option [value]="'ManualEMail'">Manual E-mail</option>
+                <option [value]="'UserDefined'">User Defined Group</option>
+              </select>
+            </div>
+            <div class="mt-3" *ngIf="sendTo == 'ManualEMail'">
+              <label>Email</label>
+              <input class="form-control" type="email" [(ngModel)]="to">
+            </div>
+            <div class="mt-3">
+              <label>Subject</label>
+              <input class="form-control" type="text" [(ngModel)]="subject">
+            </div>
+            <div class="mt-3" *ngIf="sendTo == 'UserDefined'">
+              <label>User Group</label>
+              <select name="sendTo" class="form-control" id="sendTo" [(ngModel)]="sendToGroup">
+                <option [value]="''">Select</option>
+                <option [value]="group.emails" *ngFor="let group of emailGroups">{{group.groupname}}</option>
+              </select>
+            </div>
+            <div class="mt-3">
+              <label>Message</label>
+              <textarea class="form-control" id="message" name="message" rows="4" cols="50" [(ngModel)]="message"></textarea>
+            </div>
+            <div class="mt-3">
+              <label>Attachments</label>
+              <input class="form-control" type="file">
+            </div>
+            <div class="text-end mt-5">
+              <button type="button" class="btn btn-success" (click)="send()">Send</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </mat-tab>
+  <mat-tab label="Auto Email Setup">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6 offset-md-3 center-box">
+          <h5 class="text-center mt-5">Auto Email On/Off</h5>
+          <div>
+            <h5>Set:</h5>
+            <input type="radio" id="on" name="on" [value]="true" [(ngModel)]="autoEmailOnOff">
+              <label for="on">On</label><br>
+            <input type="radio" id="off" name="off" [value]="false" [(ngModel)]="autoEmailOnOff">
+              <label for="off">Off</label><br>
+          </div>
+          <div class="text-center mt-5">
+            <button type="button" class="btn btn-success" (click)="setAutoEmail()">Submit</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </mat-tab>
+  <mat-tab label="Defined Email Group">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6 offset-md-3 center-box">
+          <h5 class="text-center mt-5">Defined Email Group</h5>
+          <div>
+            <div class="text-end mt-5">
+              <button type="button" class="btn btn-primary" (click)="open()">Create Group</button>
+            </div>
+            <table class="table">
+              <tr>
+                <th>Group Name</th>
+                <th>Emails</th>
+              </tr>
+              <tr *ngFor="let item of emailGroups">
+                <td>{{item.groupname}}</td>
+                <td>{{item.emails}}</td>
+              </tr>
+            </table>
+          </div>
+          <div *ngIf="showPopup" class="popup">
+            <button class="close-btn" (click)="cancel()">X</button>
+            <h4>Create New Email Group</h4>
+            <div class="mt-3">
+              <label>Group Name</label>
+              <input class="form-control" [(ngModel)]="groupName" type="text">
+            </div>
+            <div class="mt-3">
+              <label>Email</label>
+              <input class="form-control" [(ngModel)]="email" type="email">
+            </div>
+            <div class="text-end mt-2">
+              <button type="button" class="btn btn-success" (click)="addEmail()">+</button>
+            </div>
+            <div *ngFor="let email of emails">
+              {{email}}
+            </div>
+            <div class="text-center mt-5">
+              <button type="button" class="btn btn-success" (click)="createEmailGroup()">Submit</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </mat-tab>
+  <mat-tab label="Email Log">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-8 offset-md-3 center-box">
+          <h5 class="text-center mt-5">Email Log</h5>
+          <div>
+            <table class="table">
+              <tr>
+                <th>To</th>
+                <th>Subject</th>
+                <th>Message</th>
+                <th>Date Time</th>
+                <th>Status</th>
+              </tr>
+              <tr *ngFor="let item of emailLogs">
+                <td>{{item.email}}</td>
+                <td>{{item.subject}}</td>
+                <td>{{item.message}}</td>
+                <td>{{item.datetime | date: 'dd-MM-yyyy hh:mm:ss'}}</td>
+                <td>{{item.status == false ? 'Failed' : 'Sent'}}</td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </mat-tab>
 </mat-tab-group>

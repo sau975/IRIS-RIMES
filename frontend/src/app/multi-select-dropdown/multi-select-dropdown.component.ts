@@ -40,6 +40,7 @@ export class MultiSelectDropdownComponent {
       this.checkedList.splice(index, 1);
     }
 
+    console.log(this.checkedList,"oooooooooo")
     // this.currentSelected = { checked: status, name: value };
 
     //share checked list

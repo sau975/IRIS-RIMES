@@ -170,6 +170,9 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
   }
 
   dateCalculation() {
+    // var todayDate = new Date();
+    // this.today.setDate(todayDate.getDate() - 1);
+
     const yesterday = new Date(this.today);
     yesterday.setDate(this.today.getDate() - 1);
     const months = [
@@ -1659,7 +1662,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       },
     });
 
-    const filename = `Districtdeparture_data_${new Date().toISOString()}.pdf`;
+    const filename = `Districtdeparture_data_${this.today.toISOString()}.pdf`;
     doc.save(filename);
     let base64pdf = doc.output('datauristring')
     this.indexedDBService.addData({ filename: filename, base64pdf: base64pdf });
@@ -1905,7 +1908,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
         doc.setDrawColor(0);
       },
     });
-    const filename = `Statedeparture_data_${new Date().toISOString()}.pdf`;
+    const filename = `Statedeparture_data_${this.today.toISOString()}.pdf`;
     doc.save(filename);
     let base64pdf = doc.output('datauristring')
     this.indexedDBService.addData({ filename: filename, base64pdf: base64pdf });
@@ -2149,7 +2152,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
         doc.setDrawColor(0);
       },
     });
-    const filename = `Subdivdeparture_data_${new Date().toISOString()}.pdf`;
+    const filename = `Subdivdeparture_data_${this.today.toISOString()}.pdf`;
     doc.save(filename);
     let base64pdf = doc.output('datauristring')
     this.indexedDBService.addData({ filename: filename, base64pdf: base64pdf });
@@ -2254,7 +2257,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
         doc.setDrawColor(0);
       },
     });
-    const filename = `Regiondeparture_data_${new Date().toISOString()}.pdf`;
+    const filename = `Regiondeparture_data_${this.today.toISOString()}.pdf`;
     doc.save(filename);
     let base64pdf = doc.output('datauristring')
     this.indexedDBService.addData({ filename: filename, base64pdf: base64pdf });
@@ -2347,7 +2350,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
         doc.setDrawColor(0);
       },
     });
-    const filename = `countrydeparture_data_${new Date().toISOString()}.pdf`;
+    const filename = `countrydeparture_data_${this.today.toISOString()}.pdf`;
     doc.save(filename);
     let base64pdf = doc.output('datauristring')
     this.indexedDBService.addData({ filename: filename, base64pdf: base64pdf });

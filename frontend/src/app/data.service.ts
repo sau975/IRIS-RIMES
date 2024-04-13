@@ -8,8 +8,8 @@ import { BehaviorSubject, Observable } from 'rxjs';
 })
 export class DataService {
 
-  private baseUrl = 'http://203.156.108.107:3000';
-  //private baseUrl = 'http://localhost:3000';
+  // private baseUrl = 'http://203.156.108.107:3000';
+  private baseUrl = 'http://localhost:3000';
 
   constructor(private http: HttpClient) {}
   addData(data: any): Observable<any> {
@@ -144,6 +144,20 @@ export class DataService {
   sendEmail(emailData: any): Observable<any> {
     console.log(emailData, "-------")
     return this.http.post(this.baseUrl+'/send-email', emailData);
+  }
+
+  emailLog(): Observable<any> {
+    const url = `${this.baseUrl}`+'/emaillog';
+    return this.http.get(url);
+  }
+
+  createEmailGroup(data: any): Observable<any> {
+    return this.http.post(this.baseUrl+'/emailgroup', data);
+  }
+
+  getEmailGroup(): Observable<any> {
+    const url = `${this.baseUrl}`+'/emailgroup';
+    return this.http.get(url);
   }
 
 }

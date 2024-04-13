@@ -144,37 +144,41 @@ export class StationStatisticsComponent implements OnInit, OnDestroy {
         { hour: '24', value: 0, unit: 'mm' },
       ],
       data: [
-        { hour: '01', value: 0, unit: 'mm' },
-        { hour: '02', value: 10, unit: 'mm' },
-        { hour: '03', value: 0, unit: 'mm' },
-        { hour: '04', value: 0, unit: 'mm' },
-        { hour: '05', value: 0, unit: 'mm' },
-        { hour: '06', value: 0, unit: 'mm' },
-        { hour: '07', value: 0, unit: 'mm' },
-        { hour: '08', value: 0, unit: 'mm' },
-        { hour: '09', value: 0, unit: 'mm' },
-        { hour: '10', value: 2.5, unit: 'mm' },
-        { hour: '11', value: 0, unit: 'mm' },
-        { hour: '12', value: 0, unit: 'mm' },
-        { hour: '13', value: 0, unit: 'mm' },
-        { hour: '14', value: 8.9, unit: 'mm' },
-        { hour: '15', value: 0, unit: 'mm' },
-        { hour: '16', value: 0, unit: 'mm' },
-        { hour: '17', value: 0, unit: 'mm' },
-        { hour: '18', value: 0, unit: 'mm' },
-        { hour: '19', value: 0, unit: 'mm' },
-        { hour: '20', value: 0, unit: 'mm' },
-        { hour: '21', value: 0, unit: 'mm' },
-        { hour: '22', value: 0, unit: 'mm' },
-        { hour: '23', value: 0, unit: 'mm' },
-        { hour: '24', value: 0, unit: 'mm' },
-        { hour: '25', value: 0, unit: 'mm' },
-        { hour: '26', value: 0, unit: 'mm' },
-        { hour: '27', value: 0, unit: 'mm' },
-        { hour: '28', value: 0, unit: 'mm' },
-        { hour: '29', value: 0, unit: 'mm' },
-        { hour: '30', value: 0, unit: 'mm' },
-      ],
+        { hour: '01', value: 0, unit: 'mm' }
+      ]
+      // data: [
+      //   { hour: '01', value: 0, unit: 'mm' },
+      //   { hour: '02', value: 10, unit: 'mm' },
+      //   { hour: '03', value: 0, unit: 'mm' },
+      //   { hour: '04', value: 0, unit: 'mm' },
+      //   { hour: '05', value: 0, unit: 'mm' },
+      //   { hour: '06', value: 0, unit: 'mm' },
+      //   { hour: '07', value: 0, unit: 'mm' },
+      //   { hour: '08', value: 0, unit: 'mm' },
+      //   { hour: '09', value: 0, unit: 'mm' },
+      //   { hour: '10', value: 2.5, unit: 'mm' },
+      //   { hour: '11', value: 0, unit: 'mm' },
+      //   { hour: '12', value: 0, unit: 'mm' },
+      //   { hour: '13', value: 0, unit: 'mm' },
+      //   { hour: '14', value: 8.9, unit: 'mm' },
+      //   { hour: '15', value: 0, unit: 'mm' },
+      //   { hour: '16', value: 0, unit: 'mm' },
+      //   { hour: '17', value: 0, unit: 'mm' },
+      //   { hour: '18', value: 0, unit: 'mm' },
+      //   { hour: '19', value: 0, unit: 'mm' },
+      //   { hour: '20', value: 0, unit: 'mm' },
+      //   { hour: '21', value: 0, unit: 'mm' },
+      //   { hour: '22', value: 0, unit: 'mm' },
+      //   { hour: '23', value: 0, unit: 'mm' },
+      //   { hour: '24', value: 0, unit: 'mm' },
+      //   { hour: '25', value: 0, unit: 'mm' },
+      //   { hour: '26', value: 0, unit: 'mm' },
+      //   { hour: '27', value: 0, unit: 'mm' },
+      //   { hour: '28', value: 0, unit: 'mm' },
+      //   { hour: '29', value: 0, unit: 'mm' },
+      //   { hour: '30', value: 0, unit: 'mm' },
+      // ],
+      ,
       data1: [
         { hour: '07', value: 10, unit: 'mm' },
         { hour: '08', value: 10, unit: 'mm' },
@@ -369,6 +373,25 @@ export class StationStatisticsComponent implements OnInit, OnDestroy {
   }
   shareIndividualCheckedList(item:any){
     console.log(item);
+  }
+
+
+  showStationDailyData(){
+    // let startDate = "01_Apr_2024";
+    // let endDate = "30_Apr_2024";
+    // for(let i = 1; i > 31; i++){
+
+    // }
+    // this.existingstationdata.forEach(x => {
+    //   // if(x.station == this.selectedStation){
+    //     var hh = 1
+    //     let data = {
+    //       hour: hh, value: x[this.dateCalculation()], unit: 'mm'
+    //     }
+    //     hh++
+    //     this.stationWeatherParameters[0].data.push(data);
+    //   // }
+    // })
   }
 
   updateMapAttribution(specialText: string) {
