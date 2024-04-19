@@ -10,6 +10,8 @@ import { NavigationEnd, Router } from '@angular/router';
 import { EMPTY, concatMap, filter } from 'rxjs';
 import { DatePipe } from '@angular/common';
 import { IndexedDBService } from 'src/app/indexed-db.service';
+import * as XLSX from 'xlsx';
+import * as FileSaver from 'file-saver';
 
 @Component({
   selector: 'app-departure-map',
@@ -1246,6 +1248,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     const data2 = this.statefetchedDatadepcum;
     const doc = new jsPDF() as any;
     const columns1 = [' ', ' ', { content: 'Day : ' + this.previousWeekWeeklyStartDate != '' && this.previousWeekWeeklyEndDate != '' ? this.datePipe.transform(this.previousWeekWeeklyStartDate, 'dd-MM-yyyy') + ' To ' + this.datePipe.transform(this.previousWeekWeeklyEndDate, 'dd-MM-yyyy') : this.formatteddate, colSpan: 4 }, { content: this.previousWeekWeeklyEndDate != '' ? 'Period:01-03-2024 To ' + this.datePipe.transform(this.previousWeekWeeklyEndDate, 'dd-MM-yyyy') : 'Period:01-03-2024 To ' + this.formatteddate, colSpan: 4 }]
+    const columns1forexcel = [' ', ' ', { content: 'Day : ' + this.previousWeekWeeklyStartDate != '' && this.previousWeekWeeklyEndDate != '' ? this.datePipe.transform(this.previousWeekWeeklyStartDate, 'dd-MM-yyyy') + ' To ' + this.datePipe.transform(this.previousWeekWeeklyEndDate, 'dd-MM-yyyy') : this.formatteddate, colSpan: 4 }, '', '', '', '', { content: this.previousWeekWeeklyEndDate != '' ? 'Period:01-03-2024 To ' + this.datePipe.transform(this.previousWeekWeeklyEndDate, 'dd-MM-yyyy') : 'Period:01-03-2024 To ' + this.formatteddate, colSpan: 4 }, '', '']
     const columns = ['S.No', 'MET.SUBDIVISION/UT/STATE/DISTRICT', 'ACTUAL(mm)', 'NORMAL(mm)', '%DEP.', 'CAT.', 'ACTUAL(mm)', 'NORMAL(mm)', '%DEP.', 'CAT.'];
     const rows: any[][] = [];
     let previousstateName: string;
@@ -1663,9 +1666,48 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     });
 
     const filename = `Districtdeparture_data_${this.today.toISOString()}.pdf`;
+
+    var newArr = rows.map((subArr) => {
+      return subArr.map((item) => {
+        if (typeof item === 'object' && item.hasOwnProperty('content')) {
+          return item.content;
+        }
+        return item;
+      });
+    });
+
+    console.log(newArr);
+
+    var newcolumns1 = columns1forexcel.map((item) => {
+      if (typeof item === 'object' && item.hasOwnProperty('content')) {
+        return item.content;
+      }
+      return item;
+    });
+
+    this.exportAsExcelFile(newArr, `Districtdeparture_data_${this.today.toISOString()}`, columns, newcolumns1);
     doc.save(filename);
     let base64pdf = doc.output('datauristring')
     this.indexedDBService.addData({ filename: filename, base64pdf: base64pdf });
+  }
+
+  exportAsExcelFile(json: any[], excelFileName: string, columns:any, columns1:any): void {
+    const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(json);
+    XLSX.utils.sheet_add_aoa(worksheet, [columns1], {origin: 'A1'});
+    XLSX.utils.sheet_add_aoa(worksheet, [columns], {origin: 'A2'});
+    console.log('worksheet', worksheet);
+    const workbook: XLSX.WorkBook = { Sheets: { 'data': worksheet }, SheetNames: ['data'] };
+    const excelBuffer: any = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+    this.saveAsExcelFile(excelBuffer, excelFileName);
+  }
+
+  saveAsExcelFile(buffer: any, fileName: string): void {
+    const EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+    const EXCEL_EXTENSION = '.xlsx';
+    const data: Blob = new Blob([buffer], {
+      type: EXCEL_TYPE
+    });
+    FileSaver.saveAs(data, fileName + '_export_' + new Date().getTime() + EXCEL_EXTENSION);
   }
 
   downloadMapData1(): void {
@@ -1675,6 +1717,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     const data2 = this.countryfetchedDatadepcum;
     const doc = new jsPDF() as any;
     const columns1 = [' ', ' ', { content: 'Day : ' + this.previousWeekWeeklyStartDate != '' && this.previousWeekWeeklyEndDate != '' ? this.datePipe.transform(this.previousWeekWeeklyStartDate, 'dd-MM-yyyy') + ' To ' + this.datePipe.transform(this.previousWeekWeeklyEndDate, 'dd-MM-yyyy') : this.formatteddate, colSpan: 4 }, { content: this.previousWeekWeeklyEndDate != '' ? 'Period:01-03-2024 To ' + this.datePipe.transform(this.previousWeekWeeklyEndDate, 'dd-MM-yyyy') : 'Period:01-03-2024 To ' + this.formatteddate, colSpan: 4 }]
+    const columns1forexcel = [' ', ' ', { content: 'Day : ' + this.previousWeekWeeklyStartDate != '' && this.previousWeekWeeklyEndDate != '' ? this.datePipe.transform(this.previousWeekWeeklyStartDate, 'dd-MM-yyyy') + ' To ' + this.datePipe.transform(this.previousWeekWeeklyEndDate, 'dd-MM-yyyy') : this.formatteddate, colSpan: 4 }, '', '', '', '', { content: this.previousWeekWeeklyEndDate != '' ? 'Period:01-03-2024 To ' + this.datePipe.transform(this.previousWeekWeeklyEndDate, 'dd-MM-yyyy') : 'Period:01-03-2024 To ' + this.formatteddate, colSpan: 4 }, '', '']
     const columns = ['S.No', 'MET.SUBDIVISION/UT/STATE/DISTRICT', 'DAILY', 'NORMAL', 'DEPARTURE', 'CAT', 'DAILY', 'NORMAL', 'DEPARTURE', 'CAT'];
     const rows = [];
     let previousregionName: string;
@@ -1909,6 +1952,27 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       },
     });
     const filename = `Statedeparture_data_${this.today.toISOString()}.pdf`;
+
+    var newArr = rows.map((subArr) => {
+      return subArr.map((item:any) => {
+        if (typeof item === 'object' && item.hasOwnProperty('content')) {
+          return item.content;
+        }
+        return item;
+      });
+    });
+
+    console.log(newArr);
+
+    var newcolumns1 = columns1forexcel.map((item) => {
+      if (typeof item === 'object' && item.hasOwnProperty('content')) {
+        return item.content;
+      }
+      return item;
+    });
+
+    this.exportAsExcelFile(newArr, `Statedeparture_data_${this.today.toISOString()}`, columns, newcolumns1);
+
     doc.save(filename);
     let base64pdf = doc.output('datauristring')
     this.indexedDBService.addData({ filename: filename, base64pdf: base64pdf });
@@ -1921,6 +1985,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     const doc = new jsPDF() as any;
 
     const columns1 = [' ', ' ', { content: 'Day : ' + this.previousWeekWeeklyStartDate != '' && this.previousWeekWeeklyEndDate != '' ? this.datePipe.transform(this.previousWeekWeeklyStartDate, 'dd-MM-yyyy') + ' To ' + this.datePipe.transform(this.previousWeekWeeklyEndDate, 'dd-MM-yyyy') : this.formatteddate, colSpan: 4 }, { content: this.previousWeekWeeklyEndDate != '' ? 'Period:01-03-2024 To ' + this.datePipe.transform(this.previousWeekWeeklyEndDate, 'dd-MM-yyyy') : 'Period:01-03-2024 To ' + this.formatteddate, colSpan: 4 }]
+    const columns1forexcel = [' ', ' ', { content: 'Day : ' + this.previousWeekWeeklyStartDate != '' && this.previousWeekWeeklyEndDate != '' ? this.datePipe.transform(this.previousWeekWeeklyStartDate, 'dd-MM-yyyy') + ' To ' + this.datePipe.transform(this.previousWeekWeeklyEndDate, 'dd-MM-yyyy') : this.formatteddate, colSpan: 4 }, '', '', '', '', { content: this.previousWeekWeeklyEndDate != '' ? 'Period:01-03-2024 To ' + this.datePipe.transform(this.previousWeekWeeklyEndDate, 'dd-MM-yyyy') : 'Period:01-03-2024 To ' + this.formatteddate, colSpan: 4 }, '', '']
     const columns = ['S.No', 'MET.SUBDIVISION/UT/STATE/DISTRICT', 'DAILY', 'NORMAL', 'DEPARTURE', 'CAT', 'DAILY', 'NORMAL', 'DEPARTURE', 'CAT'];
     const rows: any[][] = [];
     let previousregionName: string;
@@ -2153,6 +2218,26 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       },
     });
     const filename = `Subdivdeparture_data_${this.today.toISOString()}.pdf`;
+    var newArr = rows.map((subArr) => {
+      return subArr.map((item:any) => {
+        if (typeof item === 'object' && item.hasOwnProperty('content')) {
+          return item.content;
+        }
+        return item;
+      });
+    });
+
+    console.log(newArr);
+
+    var newcolumns1 = columns1forexcel.map((item) => {
+      if (typeof item === 'object' && item.hasOwnProperty('content')) {
+        return item.content;
+      }
+      return item;
+    });
+
+    this.exportAsExcelFile(newArr, `Subdivdeparture_data_${this.today.toISOString()}`, columns, newcolumns1);
+
     doc.save(filename);
     let base64pdf = doc.output('datauristring')
     this.indexedDBService.addData({ filename: filename, base64pdf: base64pdf });
@@ -2163,6 +2248,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     const doc = new jsPDF() as any;
 
     const columns1 = [' ', ' ', { content: 'Day : ' + this.formatteddate, colSpan: 4 }, { content: 'Period:01-03-2024 To ' + this.formatteddate, colSpan: 4 }];
+    const columns1forexcel = [' ', ' ', { content: 'Day : ' + this.previousWeekWeeklyStartDate != '' && this.previousWeekWeeklyEndDate != '' ? this.datePipe.transform(this.previousWeekWeeklyStartDate, 'dd-MM-yyyy') + ' To ' + this.datePipe.transform(this.previousWeekWeeklyEndDate, 'dd-MM-yyyy') : this.formatteddate, colSpan: 4 }, '', '', '', '', { content: this.previousWeekWeeklyEndDate != '' ? 'Period:01-03-2024 To ' + this.datePipe.transform(this.previousWeekWeeklyEndDate, 'dd-MM-yyyy') : 'Period:01-03-2024 To ' + this.formatteddate, colSpan: 4 }, '', '']
     const columns = ['S.No', 'REGION', 'DAILY', 'NORMAL', 'DEPARTURE', 'CAT', 'DAILY', 'NORMAL', 'DEPARTURE', 'CAT'];
 
     const rows = data.map((item, index) => [
@@ -2258,6 +2344,26 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       },
     });
     const filename = `Regiondeparture_data_${this.today.toISOString()}.pdf`;
+    var newArr = rows.map((subArr) => {
+      return subArr.map((item:any) => {
+        if (typeof item === 'object' && item.hasOwnProperty('content')) {
+          return item.content;
+        }
+        return item;
+      });
+    });
+
+    console.log(newArr);
+
+    var newcolumns1 = columns1forexcel.map((item) => {
+      if (typeof item === 'object' && item.hasOwnProperty('content')) {
+        return item.content;
+      }
+      return item;
+    });
+
+    this.exportAsExcelFile(newArr, `Regiondeparture_data_${this.today.toISOString()}`, columns, newcolumns1);
+
     doc.save(filename);
     let base64pdf = doc.output('datauristring')
     this.indexedDBService.addData({ filename: filename, base64pdf: base64pdf });
@@ -2266,6 +2372,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     const data = this.countryfetchedDatadepcum;
     const doc = new jsPDF() as any;
     const columns1 = [' ', ' ', { content: 'Day : ' + this.formatteddate, colSpan: 4 }, { content: 'Period:01-03-2024 To ' + this.formatteddate, colSpan: 4 }];
+    const columns1forexcel = [' ', ' ', { content: 'Day : ' + this.previousWeekWeeklyStartDate != '' && this.previousWeekWeeklyEndDate != '' ? this.datePipe.transform(this.previousWeekWeeklyStartDate, 'dd-MM-yyyy') + ' To ' + this.datePipe.transform(this.previousWeekWeeklyEndDate, 'dd-MM-yyyy') : this.formatteddate, colSpan: 4 }, '', '', '', '', { content: this.previousWeekWeeklyEndDate != '' ? 'Period:01-03-2024 To ' + this.datePipe.transform(this.previousWeekWeeklyEndDate, 'dd-MM-yyyy') : 'Period:01-03-2024 To ' + this.formatteddate, colSpan: 4 }, '', '']
     const columns = ['S.No', 'COUNTRY AS WHOLE', 'DAILY', 'NORMAL', 'DEPARTURE', 'CAT', 'DAILY', 'NORMAL', 'DEPARTURE', 'CAT'];
     const rows = data.map((item, index) => [
       index + 1, // Serial number
@@ -2351,6 +2458,26 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       },
     });
     const filename = `countrydeparture_data_${this.today.toISOString()}.pdf`;
+    var newArr = rows.map((subArr) => {
+      return subArr.map((item:any) => {
+        if (typeof item === 'object' && item.hasOwnProperty('content')) {
+          return item.content;
+        }
+        return item;
+      });
+    });
+
+    console.log(newArr);
+
+    var newcolumns1 = columns1forexcel.map((item) => {
+      if (typeof item === 'object' && item.hasOwnProperty('content')) {
+        return item.content;
+      }
+      return item;
+    });
+
+    this.exportAsExcelFile(newArr, `countrydeparture_data_${this.today.toISOString()}`, columns, newcolumns1);
+
     doc.save(filename);
     let base64pdf = doc.output('datauristring')
     this.indexedDBService.addData({ filename: filename, base64pdf: base64pdf });
@@ -3891,10 +4018,11 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
   }
 
   downloadMapImage(): void {
+    let dat = this.today.toISOString()
     htmlToImage.toJpeg(document.getElementById('map') as HTMLElement, { quality: 0.95, filter: this.filter })
       .then(function (dataUrl) {
         var link = document.createElement('a');
-        link.download = 'District_dep.jpeg';
+        link.download = `District_dep_${dat}.jpeg`;
         link.href = dataUrl;
         link.click();
       });
@@ -3909,7 +4037,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
 
   convertImageToPdf(dataUrl: string): void {
     const img = new Image();
-
+    let dat = this.today.toISOString()
     img.onload = function () {
       const pdf = new jsPDF({
         orientation: img.width > img.height ? 'landscape' : 'portrait',
@@ -3918,17 +4046,18 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       });
 
       pdf.addImage(dataUrl, 'JPEG', 0, 0, img.width, img.height);
-      pdf.save('District_dep.pdf');
+      pdf.save(`District_dep_${dat}.jpeg`);
     };
 
     img.src = dataUrl;
   }
 
   downloadMapImage1(): void {
+    let dat = this.today.toISOString()
     htmlToImage.toJpeg(document.getElementById('map1') as HTMLElement, { quality: 0.95, filter: this.filter })
       .then(function (dataUrl) {
         var link = document.createElement('a');
-        link.download = 'state_dep.jpeg';
+        link.download = `state_dep_${dat}.jpeg`;
         link.href = dataUrl;
         link.click();
       });
@@ -3942,7 +4071,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
   }
   convertImageToPdf1(dataUrl: string): void {
     const img = new Image();
-
+    let dat = this.today.toISOString()
     img.onload = function () {
       const pdf = new jsPDF({
         orientation: img.width > img.height ? 'landscape' : 'portrait',
@@ -3951,17 +4080,18 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       });
 
       pdf.addImage(dataUrl, 'JPEG', 0, 0, img.width, img.height);
-      pdf.save('state_dep.pdf');
+      pdf.save(`state_dep_${dat}.jpeg`);
     };
 
     img.src = dataUrl;
   }
 
   downloadMapImage2(): void {
+    let dat = this.today.toISOString()
     htmlToImage.toJpeg(document.getElementById('map2') as HTMLElement, { quality: 0.95, filter: this.filter })
       .then(function (dataUrl) {
         var link = document.createElement('a');
-        link.download = 'sub-division_dep.jpeg';
+        link.download = `sub-division_dep_${dat}.jpeg`;
         link.href = dataUrl;
         link.click();
       });
@@ -3976,6 +4106,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
 
   convertImageToPdf2(dataUrl: string): void {
     const img = new Image();
+    let dat = this.today.toISOString()
     img.onload = function () {
       const pdf = new jsPDF({
         orientation: img.width > img.height ? 'landscape' : 'portrait',
@@ -3983,16 +4114,17 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
         format: [img.width, img.height] // Set PDF size to match image size
       });
       pdf.addImage(dataUrl, 'JPEG', 0, 0, img.width, img.height);
-      pdf.save('subdiv_dep.pdf');
+      pdf.save(`sub-division_dep_${dat}.jpeg`);
     };
     img.src = dataUrl;
   }
 
   downloadMapImage3(): void {
+    let dat = this.today.toISOString()
     htmlToImage.toJpeg(document.getElementById('map3') as HTMLElement, { quality: 0.95, filter: this.filter })
       .then(function (dataUrl) {
         var link = document.createElement('a');
-        link.download = 'region_dep.jpeg';
+        link.download = `region_dep_${dat}.jpeg`;
         link.href = dataUrl;
         link.click();
       });
@@ -4007,6 +4139,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
 
   convertImageToPdf3(dataUrl: string): void {
     const img = new Image();
+    let dat = this.today.toISOString()
     img.onload = function () {
       const pdf = new jsPDF({
         orientation: img.width > img.height ? 'landscape' : 'portrait',
@@ -4014,16 +4147,17 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
         format: [img.width, img.height] // Set PDF size to match image size
       });
       pdf.addImage(dataUrl, 'JPEG', 0, 0, img.width, img.height);
-      pdf.save('region_dep.pdf');
+      pdf.save(`region_dep_${dat}.jpeg`);
     };
     img.src = dataUrl;
   }
 
   downloadMapImage4(): void {
+    let dat = this.today.toISOString()
     htmlToImage.toJpeg(document.getElementById('map4') as HTMLElement, { quality: 0.95, filter: this.filter })
       .then(function (dataUrl) {
         var link = document.createElement('a');
-        link.download = 'country_dep.jpeg';
+        link.download = `country_dep_${dat}.jpeg`;
         link.href = dataUrl;
         link.click();
       });
@@ -4038,6 +4172,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
 
   convertImageToPdf4(dataUrl: string): void {
     const img = new Image();
+    let dat = this.today.toISOString()
     img.onload = function () {
       const pdf = new jsPDF({
         orientation: img.width > img.height ? 'landscape' : 'portrait',
@@ -4045,7 +4180,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
         format: [img.width, img.height] // Set PDF size to match image size
       });
       pdf.addImage(dataUrl, 'JPEG', 0, 0, img.width, img.height);
-      pdf.save('country_dep.pdf');
+      pdf.save(`country_dep_${dat}.pdf`);
     };
     img.src = dataUrl;
   }
