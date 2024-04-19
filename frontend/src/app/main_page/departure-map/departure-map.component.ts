@@ -1693,6 +1693,32 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
 
   exportAsExcelFile(json: any[], excelFileName: string, columns:any, columns1:any): void {
     const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(json);
+
+
+    // Define the range of cells you want to merge
+    const startCell = 'C1'; // Start cell
+    const endCell = 'F1'; // End cell
+    const startCell1 = 'G1'; // Start cell
+    const endCell1 = 'J1'; // End cell
+
+    // Decode the range to get the row and column indexes
+    const startRange = XLSX.utils.decode_cell(startCell);
+    const endRange = XLSX.utils.decode_cell(endCell);
+    const startRange1 = XLSX.utils.decode_cell(startCell1);
+    const endRange1 = XLSX.utils.decode_cell(endCell1);
+
+    // Merge the cells
+    worksheet['!merges'] = [];
+    worksheet['!merges'].push({
+        s: startRange,
+        e: endRange
+    });
+
+    worksheet['!merges'].push({
+      s: startRange1,
+      e: endRange1
+    });
+
     XLSX.utils.sheet_add_aoa(worksheet, [columns1], {origin: 'A1'});
     XLSX.utils.sheet_add_aoa(worksheet, [columns], {origin: 'A2'});
     console.log('worksheet', worksheet);
@@ -1718,7 +1744,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     const doc = new jsPDF() as any;
     const columns1 = [' ', ' ', { content: 'Day : ' + this.previousWeekWeeklyStartDate != '' && this.previousWeekWeeklyEndDate != '' ? this.datePipe.transform(this.previousWeekWeeklyStartDate, 'dd-MM-yyyy') + ' To ' + this.datePipe.transform(this.previousWeekWeeklyEndDate, 'dd-MM-yyyy') : this.formatteddate, colSpan: 4 }, { content: this.previousWeekWeeklyEndDate != '' ? 'Period:01-03-2024 To ' + this.datePipe.transform(this.previousWeekWeeklyEndDate, 'dd-MM-yyyy') : 'Period:01-03-2024 To ' + this.formatteddate, colSpan: 4 }]
     const columns1forexcel = [' ', ' ', { content: 'Day : ' + this.previousWeekWeeklyStartDate != '' && this.previousWeekWeeklyEndDate != '' ? this.datePipe.transform(this.previousWeekWeeklyStartDate, 'dd-MM-yyyy') + ' To ' + this.datePipe.transform(this.previousWeekWeeklyEndDate, 'dd-MM-yyyy') : this.formatteddate, colSpan: 4 }, '', '', '', '', { content: this.previousWeekWeeklyEndDate != '' ? 'Period:01-03-2024 To ' + this.datePipe.transform(this.previousWeekWeeklyEndDate, 'dd-MM-yyyy') : 'Period:01-03-2024 To ' + this.formatteddate, colSpan: 4 }, '', '']
-    const columns = ['S.No', 'MET.SUBDIVISION/UT/STATE/DISTRICT', 'DAILY', 'NORMAL', 'DEPARTURE', 'CAT', 'DAILY', 'NORMAL', 'DEPARTURE', 'CAT'];
+    const columns = ['S.No', 'MET.SUBDIVISION/UT/STATE/DISTRICT', 'ACTUAL(mm)', 'NORMAL(mm)', '%DEP.', 'CAT.', 'ACTUAL(mm)', 'NORMAL(mm)', '%DEP.', 'CAT.'];
     const rows = [];
     let previousregionName: string;
     let regionIndex = 0;
@@ -1806,7 +1832,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
           },
           (Math.round(item.dailyrainfallcum * 10) / 10).toFixed(1),
           (Math.round(item.cummnormal * 10) / 10).toFixed(1),
-          (Math.round(item.cumdeparture * 10) / 10).toFixed(1),
+          (Math.round(item.cumdeparture * 10) / 10).toFixed(1) + "%",
           {
             content: this.getCatForRainfall(
               Math.round(item.cumdeparture * 10) / 10),
@@ -1828,7 +1854,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
           },
           (Math.round(item.dailyrainfallcum * 10) / 10).toFixed(1),
           (Math.round(item.cummnormal * 10) / 10).toFixed(1),
-          (Math.round(item.cumdeparture * 10) / 10).toFixed(1),
+          (Math.round(item.cumdeparture * 10) / 10).toFixed(1) + "%",
           {
             content: this.getCatForRainfall(
               Math.round(item.cumdeparture * 10) / 10),
@@ -1856,7 +1882,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
           content: (Math.round(item.normalrainfall * 10) / 10).toFixed(1),
           styles: { fillColor: '#85ff86' },
         },
-        (Math.round(item.dailydeparturerainfall * 10) / 10).toFixed(1),
+        (Math.round(item.dailydeparturerainfall * 10) / 10).toFixed(1) + "%",
         {
           content: this.getCatForRainfall(item.dailydeparturerainfall),
           styles: { fillColor: this.getColorForRainfall(item.dailydeparturerainfall) }, // Background color
@@ -1869,7 +1895,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
           content: (Math.round(item.cummnormal * 10) / 10).toFixed(1),
           styles: { fillColor: '#85ff86' },
         },
-        (Math.round(item.cumdeparture * 10) / 10).toFixed(1),
+        (Math.round(item.cumdeparture * 10) / 10).toFixed(1) + "%",
         {
           content: this.getCatForRainfall(item.cumdeparture),
           styles: { fillColor: this.getColorForRainfall(item.cumdeparture) }, // Background color
@@ -1911,6 +1937,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       theme: 'striped',
       startY: marginTop + cellHeight + 25, // Adjust the vertical position below the image and heading
       margin: { left: marginLeft },
+      padding: { top: 1, bottom: 1, left: 1 },
       styles: { fontSize: 7 },
       didDrawCell: function (data: { cell: { text: any; x: number; y: number; width: any; height: any; }; }) {
         doc.rect(data.cell.x, data.cell.y, data.cell.width, data.cell.height);
@@ -1986,7 +2013,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
 
     const columns1 = [' ', ' ', { content: 'Day : ' + this.previousWeekWeeklyStartDate != '' && this.previousWeekWeeklyEndDate != '' ? this.datePipe.transform(this.previousWeekWeeklyStartDate, 'dd-MM-yyyy') + ' To ' + this.datePipe.transform(this.previousWeekWeeklyEndDate, 'dd-MM-yyyy') : this.formatteddate, colSpan: 4 }, { content: this.previousWeekWeeklyEndDate != '' ? 'Period:01-03-2024 To ' + this.datePipe.transform(this.previousWeekWeeklyEndDate, 'dd-MM-yyyy') : 'Period:01-03-2024 To ' + this.formatteddate, colSpan: 4 }]
     const columns1forexcel = [' ', ' ', { content: 'Day : ' + this.previousWeekWeeklyStartDate != '' && this.previousWeekWeeklyEndDate != '' ? this.datePipe.transform(this.previousWeekWeeklyStartDate, 'dd-MM-yyyy') + ' To ' + this.datePipe.transform(this.previousWeekWeeklyEndDate, 'dd-MM-yyyy') : this.formatteddate, colSpan: 4 }, '', '', '', '', { content: this.previousWeekWeeklyEndDate != '' ? 'Period:01-03-2024 To ' + this.datePipe.transform(this.previousWeekWeeklyEndDate, 'dd-MM-yyyy') : 'Period:01-03-2024 To ' + this.formatteddate, colSpan: 4 }, '', '']
-    const columns = ['S.No', 'MET.SUBDIVISION/UT/STATE/DISTRICT', 'DAILY', 'NORMAL', 'DEPARTURE', 'CAT', 'DAILY', 'NORMAL', 'DEPARTURE', 'CAT'];
+    const columns = ['S.No', 'MET.SUBDIVISION/UT/STATE/DISTRICT', 'ACTUAL(mm)', 'NORMAL(mm)', '%DEP.', 'CAT.', 'ACTUAL(mm)', 'NORMAL(mm)', '%DEP.', 'CAT.'];
     const rows: any[][] = [];
     let previousregionName: string;
     let regionIndex = 0;
@@ -2037,7 +2064,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
             styles: { fillColor: '#dbb5f7' },
           },
           {
-            content: regiondepindistFormatted,
+            content: regiondepindistFormatted + "%",
             styles: { fillColor: '#dbb5f7' },
           },
           {
@@ -2053,7 +2080,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
             styles: { fillColor: '#dbb5f7' },
           },
           {
-            content: regioncumdepindistFormatted,
+            content: regioncumdepindistFormatted + "%",
             styles: { fillColor: '#dbb5f7' },
           },
           {
@@ -2067,14 +2094,14 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
           item.subdivname,
           (Math.round(item.dailyrainfall * 10) / 10).toFixed(1),
           (Math.round(item.normalrainfall * 10) / 10).toFixed(1),
-          (Math.round(item.dailydeparturerainfall * 10) / 10).toFixed(1),
+          (Math.round(item.dailydeparturerainfall * 10) / 10).toFixed(1) + "%",
           {
             content: this.getCatForRainfall(item.dailydeparturerainfall),
             styles: { fillColor: this.getColorForRainfall(item.dailydeparturerainfall) },
           },
           (Math.round(item.dailyrainfallcum * 10) / 10).toFixed(1),
           (Math.round(item.cummnormal * 10) / 10).toFixed(1),
-          (Math.round(item.cumdeparture * 10) / 10).toFixed(1),
+          (Math.round(item.cumdeparture * 10) / 10).toFixed(1) + "%",
           {
             content: this.getCatForRainfall(item.cumdeparture),
             styles: { fillColor: this.getColorForRainfall(item.cumdeparture) },
@@ -2088,14 +2115,14 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
           item.subdivname,
           (Math.round(item.dailyrainfall * 10) / 10).toFixed(1),
           (Math.round(item.normalrainfall * 10) / 10).toFixed(1),
-          (Math.round(item.dailydeparturerainfall * 10) / 10).toFixed(1),
+          (Math.round(item.dailydeparturerainfall * 10) / 10).toFixed(1) + "%",
           {
             content: this.getCatForRainfall(item.dailydeparturerainfall),
             styles: { fillColor: this.getColorForRainfall(item.dailydeparturerainfall) },
           },
           (Math.round(item.dailyrainfallcum * 10) / 10).toFixed(1),
           (Math.round(item.cummnormal * 10) / 10).toFixed(1),
-          (Math.round(item.cumdeparture * 10) / 10).toFixed(1),
+          (Math.round(item.cumdeparture * 10) / 10).toFixed(1) + "%",
           {
             content: this.getCatForRainfall(item.cumdeparture),
             styles: { fillColor: this.getColorForRainfall(item.cumdeparture) },
@@ -2122,7 +2149,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
           content: item.normalrainfall.toFixed(2),
           styles: { fillColor: '#85ff86' },
         },
-        item.dailydeparturerainfall.toFixed(2),
+        item.dailydeparturerainfall.toFixed(2) + "%",
         {
           content: this.getCatForRainfall(item.dailydeparturerainfall),
           styles: { fillColor: this.getColorForRainfall(item.dailydeparturerainfall) }, // Background color
@@ -2135,7 +2162,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
           content: item.cummnormal.toFixed(2),
           styles: { fillColor: '#85ff86' },
         },
-        item.cumdeparture.toFixed(2),
+        item.cumdeparture.toFixed(2) + "%",
         {
           content: this.getCatForRainfall(item.cumdeparture),
           styles: { fillColor: this.getColorForRainfall(item.cumdeparture) }, // Background color
@@ -2175,6 +2202,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       theme: 'striped',
       startY: marginTop + cellHeight + 25, // Adjust the vertical position below the image and heading
       margin: { left: marginLeft },
+      padding: { top: 1, bottom: 1, left: 1 },
       styles: { fontSize: 7 },
       didDrawCell: function (data: { cell: { text: any; x: number; y: number; width: any; height: any; }; }) {
         doc.rect(data.cell.x, data.cell.y, data.cell.width, data.cell.height);
@@ -2249,21 +2277,21 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
 
     const columns1 = [' ', ' ', { content: 'Day : ' + this.formatteddate, colSpan: 4 }, { content: 'Period:01-03-2024 To ' + this.formatteddate, colSpan: 4 }];
     const columns1forexcel = [' ', ' ', { content: 'Day : ' + this.previousWeekWeeklyStartDate != '' && this.previousWeekWeeklyEndDate != '' ? this.datePipe.transform(this.previousWeekWeeklyStartDate, 'dd-MM-yyyy') + ' To ' + this.datePipe.transform(this.previousWeekWeeklyEndDate, 'dd-MM-yyyy') : this.formatteddate, colSpan: 4 }, '', '', '', '', { content: this.previousWeekWeeklyEndDate != '' ? 'Period:01-03-2024 To ' + this.datePipe.transform(this.previousWeekWeeklyEndDate, 'dd-MM-yyyy') : 'Period:01-03-2024 To ' + this.formatteddate, colSpan: 4 }, '', '']
-    const columns = ['S.No', 'REGION', 'DAILY', 'NORMAL', 'DEPARTURE', 'CAT', 'DAILY', 'NORMAL', 'DEPARTURE', 'CAT'];
+    const columns = ['S.No', 'REGION', 'ACTUAL(mm)', 'NORMAL(mm)', '%DEP.', 'CAT.', 'ACTUAL(mm)', 'NORMAL(mm)', '%DEP.', 'CAT.'];
 
     const rows = data.map((item, index) => [
       index + 1, // Serial number
       item.RegionName,
       (Math.round(item.dailyrainfall * 10) / 10).toFixed(1),
       (Math.round(item.normalrainfall * 10) / 10).toFixed(1),
-      (Math.round(item.dailydeparturerainfall * 10) / 10).toFixed(1),
+      (Math.round(item.dailydeparturerainfall * 10) / 10).toFixed(1) + "%",
       {
         content: this.getCatForRainfall(item.dailydeparturerainfall),
         styles: { fillColor: this.getColorForRainfall(item.dailydeparturerainfall) }, // Background color
       },
       (Math.round(item.dailyrainfallcum * 10) / 10).toFixed(1),
       (Math.round(item.cummnormal * 10) / 10).toFixed(1),
-      (Math.round(item.cumdeparture * 10) / 10).toFixed(1),
+      (Math.round(item.cumdeparture * 10) / 10).toFixed(1) + "%",
       {
         content: this.getCatForRainfall(item.cumdeparture),
         styles: { fillColor: this.getColorForRainfall(item.cumdeparture) }, // Background color
@@ -2372,21 +2400,21 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     const data = this.countryfetchedDatadepcum;
     const doc = new jsPDF() as any;
     const columns1 = [' ', ' ', { content: 'Day : ' + this.formatteddate, colSpan: 4 }, { content: 'Period:01-03-2024 To ' + this.formatteddate, colSpan: 4 }];
-    const columns1forexcel = [' ', ' ', { content: 'Day : ' + this.previousWeekWeeklyStartDate != '' && this.previousWeekWeeklyEndDate != '' ? this.datePipe.transform(this.previousWeekWeeklyStartDate, 'dd-MM-yyyy') + ' To ' + this.datePipe.transform(this.previousWeekWeeklyEndDate, 'dd-MM-yyyy') : this.formatteddate, colSpan: 4 }, '', '', '', '', { content: this.previousWeekWeeklyEndDate != '' ? 'Period:01-03-2024 To ' + this.datePipe.transform(this.previousWeekWeeklyEndDate, 'dd-MM-yyyy') : 'Period:01-03-2024 To ' + this.formatteddate, colSpan: 4 }, '', '']
-    const columns = ['S.No', 'COUNTRY AS WHOLE', 'DAILY', 'NORMAL', 'DEPARTURE', 'CAT', 'DAILY', 'NORMAL', 'DEPARTURE', 'CAT'];
+    const columns = ['S.No', 'COUNTRY AS WHOLE', 'ACTUAL(mm)', 'NORMAL(mm)', '%DEP.', 'CAT.', 'ACTUAL(mm)', 'NORMAL(mm)', '%DEP.', 'CAT.'];
+
     const rows = data.map((item, index) => [
       index + 1, // Serial number
       'COUNTRY',
       (Math.round(item.dailyrainfall * 10) / 10).toFixed(1),
       (Math.round(item.normalrainfall * 10) / 10).toFixed(1),
-      (Math.round(item.dailydeparturerainfall * 10) / 10).toFixed(1),
+      (Math.round(item.dailydeparturerainfall * 10) / 10).toFixed(1) + "%",
       {
         content: this.getCatForRainfall(item.dailydeparturerainfall),
         styles: { fillColor: this.getColorForRainfall(item.dailydeparturerainfall) }, // Background color
       },
       (Math.round(item.dailyrainfallcum * 10) / 10).toFixed(1),
       (Math.round(item.cummnormal * 10) / 10).toFixed(1),
-      (Math.round(item.cumdeparture * 10) / 10).toFixed(1),
+      (Math.round(item.cumdeparture * 10) / 10).toFixed(1) + "%",
       {
         content: this.getCatForRainfall(item.cumdeparture),
         styles: { fillColor: this.getColorForRainfall(item.cumdeparture) }, // Background color
@@ -2458,26 +2486,6 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       },
     });
     const filename = `countrydeparture_data_${this.today.toISOString()}.pdf`;
-    var newArr = rows.map((subArr) => {
-      return subArr.map((item:any) => {
-        if (typeof item === 'object' && item.hasOwnProperty('content')) {
-          return item.content;
-        }
-        return item;
-      });
-    });
-
-    console.log(newArr);
-
-    var newcolumns1 = columns1forexcel.map((item) => {
-      if (typeof item === 'object' && item.hasOwnProperty('content')) {
-        return item.content;
-      }
-      return item;
-    });
-
-    this.exportAsExcelFile(newArr, `countrydeparture_data_${this.today.toISOString()}`, columns, newcolumns1);
-
     doc.save(filename);
     let base64pdf = doc.output('datauristring')
     this.indexedDBService.addData({ filename: filename, base64pdf: base64pdf });
@@ -3101,7 +3109,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
           const textElement = document.createElement('div');
           textElement.innerHTML = `
           <div>
-          <div style="color: #000000;font-weight: bold; text-wrap: nowrap;font-size: 10px;">${dailyrainfall}(${rainfall}%)</div>
+          <div style="color: #000000;font-weight: bold; text-wrap: nowrap;font-size: 10px;">${dailyrainfall}(${Math.round(rainfall)}%)</div>
           <div style="color: #000000;font-weight: bold; text-wrap: nowrap; font-size: 10px;">${id1}</div>
           <div style="color: #000000;font-weight: bold;text-wrap: nowrap; font-size: 10px;">${normalrainfall}</div>
           </div>`;
@@ -3158,7 +3166,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
           textElement.id = 'countrydiv';
           textElement.innerHTML = `
           <div style="padding: 5px; font-family: Arial, sans-serif; font-weight: bolder;">
-          <div style="color: #000000;font-weight: bold; font-size: 15px;">${dailyrainfall}(${rainfall}%)</div>
+          <div style="color: #000000;font-weight: bold; font-size: 15px;">${dailyrainfall}(${Math.round(rainfall)}%)</div>
           <div style="color: #000000;font-weight: bold; font-size: 15px;">${id1}</div>
           <div style="color: #000000;font-weight: bold; font-size: 15px;">${normalrainfall}</div>
           </div>`;
@@ -3730,7 +3738,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
           const textElement = document.createElement('div');
           textElement.innerHTML = `
           <div>
-          <div style="color: #000000;font-weight: bold; text-wrap: nowrap;font-size: 10px;">${dailyrainfall}(${rainfall}%)</div>
+          <div style="color: #000000;font-weight: bold; text-wrap: nowrap;font-size: 10px;">${dailyrainfall}(${Math.round(rainfall)}%)</div>
           <div style="color: #000000;font-weight: bold; text-wrap: nowrap; font-size: 10px;">${id1}</div>
           <div style="color: #000000;font-weight: bold;text-wrap: nowrap; font-size: 10px;">${normalrainfall}</div>
           </div>`;
@@ -3788,7 +3796,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
           textElement.id = 'countrydiv';
           textElement.innerHTML = `
           <div style="padding: 5px; font-family: Arial, sans-serif; font-weight: bolder;">
-          <div style="color: #000000;font-weight: bold; font-size: 15px;">${dailyrainfall}(${rainfall}%)</div>
+          <div style="color: #000000;font-weight: bold; font-size: 15px;">${dailyrainfall}(${Math.round(rainfall)}%)</div>
           <div style="color: #000000;font-weight: bold; font-size: 15px;">${id1}</div>
           <div style="color: #000000;font-weight: bold; font-size: 15px;">${normalrainfall}</div>
           </div>`;
@@ -4028,10 +4036,11 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       });
   }
   downloadMappdf(): void {
+    let dat = this.today.toISOString()
     htmlToImage.toJpeg(document.getElementById('map') as HTMLElement, { quality: 0.95, filter: this.filter })
       .then((dataUrl) => {
         this.convertImageToPdf(dataUrl);
-        this.indexedDBService.addData({ filename: 'District_dep.jpeg', base64pdf: dataUrl });
+        this.indexedDBService.addData({ filename: `District_dep_${dat}.jpeg`, base64pdf: dataUrl });
       });
   }
 
@@ -4046,7 +4055,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       });
 
       pdf.addImage(dataUrl, 'JPEG', 0, 0, img.width, img.height);
-      pdf.save(`District_dep_${dat}.jpeg`);
+      pdf.save(`District_dep_${dat}.pdf`);
     };
 
     img.src = dataUrl;
@@ -4063,10 +4072,11 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       });
   }
   downloadMappdf1(): void {
+    let dat = this.today.toISOString()
     htmlToImage.toJpeg(document.getElementById('map1') as HTMLElement, { quality: 0.95, filter: this.filter })
       .then((dataUrl) => {
         this.convertImageToPdf1(dataUrl);
-        this.indexedDBService.addData({ filename: 'state_dep.jpeg', base64pdf: dataUrl });
+        this.indexedDBService.addData({ filename: `state_dep_${dat}.jpeg`, base64pdf: dataUrl });
       });
   }
   convertImageToPdf1(dataUrl: string): void {
@@ -4080,7 +4090,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       });
 
       pdf.addImage(dataUrl, 'JPEG', 0, 0, img.width, img.height);
-      pdf.save(`state_dep_${dat}.jpeg`);
+      pdf.save(`state_dep_${dat}.pdf`);
     };
 
     img.src = dataUrl;
@@ -4097,10 +4107,11 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       });
   }
   downloadMappdf2(): void {
+    let dat = this.today.toISOString()
     htmlToImage.toJpeg(document.getElementById('map2') as HTMLElement, { quality: 0.95, filter: this.filter })
       .then((dataUrl) => {
         this.convertImageToPdf2(dataUrl);
-        this.indexedDBService.addData({ filename: 'subdiv_dep.jpeg', base64pdf: dataUrl });
+        this.indexedDBService.addData({ filename: `subdiv_dep_${dat}.jpeg`, base64pdf: dataUrl });
       });
   }
 
@@ -4114,7 +4125,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
         format: [img.width, img.height] // Set PDF size to match image size
       });
       pdf.addImage(dataUrl, 'JPEG', 0, 0, img.width, img.height);
-      pdf.save(`sub-division_dep_${dat}.jpeg`);
+      pdf.save(`sub-division_dep_${dat}.pdf`);
     };
     img.src = dataUrl;
   }
@@ -4130,10 +4141,11 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       });
   }
   downloadMappdf3(): void {
+    let dat = this.today.toISOString()
     htmlToImage.toJpeg(document.getElementById('map3') as HTMLElement, { quality: 0.95, filter: this.filter })
       .then((dataUrl) => {
         this.convertImageToPdf3(dataUrl);
-        this.indexedDBService.addData({ filename: 'region_dep.jpeg', base64pdf: dataUrl });
+        this.indexedDBService.addData({ filename: `region_dep_${dat}.jpeg`, base64pdf: dataUrl });
       });
   }
 
@@ -4147,7 +4159,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
         format: [img.width, img.height] // Set PDF size to match image size
       });
       pdf.addImage(dataUrl, 'JPEG', 0, 0, img.width, img.height);
-      pdf.save(`region_dep_${dat}.jpeg`);
+      pdf.save(`region_dep_${dat}.pdf`);
     };
     img.src = dataUrl;
   }
@@ -4163,10 +4175,11 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       });
   }
   downloadMappdf4(): void {
+    let dat = this.today.toISOString()
     htmlToImage.toJpeg(document.getElementById('map4') as HTMLElement, { quality: 0.95, filter: this.filter })
       .then((dataUrl) => {
         this.convertImageToPdf4(dataUrl);
-        this.indexedDBService.addData({ filename: 'country_dep.jpeg', base64pdf: dataUrl });
+        this.indexedDBService.addData({ filename: `country_dep_${dat}.jpeg`, base64pdf: dataUrl });
       });
   }
 
