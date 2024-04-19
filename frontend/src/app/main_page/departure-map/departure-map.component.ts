@@ -1627,6 +1627,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       startY: marginTop + cellHeight + 25,
       margin: { left: marginLeft },
       styles: { fontSize: 7 },
+      headStyles: { halign: 'center' },
       didDrawCell: function (data: { cell: { text: any; x: number; y: number; width: any; height: any; }; }) {
         doc.rect(data.cell.x, data.cell.y, data.cell.width, data.cell.height);
         doc.setDrawColor(0);
@@ -1745,7 +1746,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     const columns1 = [' ', ' ', { content: 'Day : ' + this.previousWeekWeeklyStartDate != '' && this.previousWeekWeeklyEndDate != '' ? this.datePipe.transform(this.previousWeekWeeklyStartDate, 'dd-MM-yyyy') + ' To ' + this.datePipe.transform(this.previousWeekWeeklyEndDate, 'dd-MM-yyyy') : this.formatteddate, colSpan: 4 }, { content: this.previousWeekWeeklyEndDate != '' ? 'Period:01-03-2024 To ' + this.datePipe.transform(this.previousWeekWeeklyEndDate, 'dd-MM-yyyy') : 'Period:01-03-2024 To ' + this.formatteddate, colSpan: 4 }]
     const columns1forexcel = [' ', ' ', { content: 'Day : ' + this.previousWeekWeeklyStartDate != '' && this.previousWeekWeeklyEndDate != '' ? this.datePipe.transform(this.previousWeekWeeklyStartDate, 'dd-MM-yyyy') + ' To ' + this.datePipe.transform(this.previousWeekWeeklyEndDate, 'dd-MM-yyyy') : this.formatteddate, colSpan: 4 }, '', '', '', '', { content: this.previousWeekWeeklyEndDate != '' ? 'Period:01-03-2024 To ' + this.datePipe.transform(this.previousWeekWeeklyEndDate, 'dd-MM-yyyy') : 'Period:01-03-2024 To ' + this.formatteddate, colSpan: 4 }, '', '']
     const columns = ['S.No', 'MET.SUBDIVISION/UT/STATE/DISTRICT', 'ACTUAL(mm)', 'NORMAL(mm)', '%DEP.', 'CAT.', 'ACTUAL(mm)', 'NORMAL(mm)', '%DEP.', 'CAT.'];
-    const rows = [];
+    const rows: any[][] = [];
     let previousregionName: string;
     let regionIndex = 0;
     let regiondailyindist: number;
@@ -1903,7 +1904,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       ]);
     });
 
-    rows.unshift(columns);
+    // rows.unshift(columns);
     const tableWidth = 180;
     const cellWidth = 36;
     const cellHeight = 8;
@@ -1939,6 +1940,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       margin: { left: marginLeft },
       padding: { top: 1, bottom: 1, left: 1 },
       styles: { fontSize: 7 },
+      headStyles: { halign: 'center' },
       didDrawCell: function (data: { cell: { text: any; x: number; y: number; width: any; height: any; }; }) {
         doc.rect(data.cell.x, data.cell.y, data.cell.width, data.cell.height);
         doc.setDrawColor(0);
@@ -2204,6 +2206,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       margin: { left: marginLeft },
       padding: { top: 1, bottom: 1, left: 1 },
       styles: { fontSize: 7 },
+      headStyles: { halign: 'center' },
       didDrawCell: function (data: { cell: { text: any; x: number; y: number; width: any; height: any; }; }) {
         doc.rect(data.cell.x, data.cell.y, data.cell.width, data.cell.height);
         doc.setDrawColor(0);
@@ -2330,6 +2333,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       startY: marginTop + cellHeight + 25, // Adjust the vertical position below the image and heading
       margin: { left: marginLeft },
       styles: { fontSize: 7 },
+      headStyles: { halign: 'center' },
       didDrawCell: function (data: { cell: { text: any; x: number; y: number; width: any; height: any; }; }) {
         doc.rect(data.cell.x, data.cell.y, data.cell.width, data.cell.height);
         doc.setDrawColor(0);
@@ -2451,6 +2455,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       startY: marginTop + cellHeight + 25, // Adjust the vertical position below the image and heading
       margin: { left: marginLeft },
       styles: { fontSize: 7 },
+      headStyles: { halign: 'center' },
       didDrawCell: function (data: { cell: { text: any; x: number; y: number; width: any; height: any; }; }) {
         doc.rect(data.cell.x, data.cell.y, data.cell.width, data.cell.height);
         doc.setDrawColor(0);
