@@ -424,8 +424,23 @@ export class DataentryComponent {
     }
   }
 
+  sampleFile(){
+    let data:any[] = [];
+    this.filteredStations.forEach(x => {
+      let station:any = {
+        stationname: x.stationname,
+        rmc_mc: x.rmc_mc,
+        stationid: x.stationid
+      }
+      station[this.dateCalculation()] = x[this.dateCalculation()];
+      data.push(station);
+    })
+    return data;
+  }
+
   downloadRainfallSampleFile(){
-    window.open('/assets/rainfall_sample_file.xlsx', '_blank');
+    this.exportAsExcelFile(this.sampleFile(), 'export-to-excel');
+    // window.open('/assets/rainfall_sample_file.xlsx', '_blank');
   }
 
   downloadStationSampleFile(){
@@ -433,7 +448,8 @@ export class DataentryComponent {
   }
 
   exportAsXLSX(): void {
-    this.exportAsExcelFile(this.filteredStations, 'export-to-excel');
+    this.exportAsExcelFile(this.sampleFile(), 'export-to-excel');
+    // this.exportAsExcelFile(this.filteredStations, 'export-to-excel');
   }
 
   exportAsExcelFile(json: any[], excelFileName: string): void {
