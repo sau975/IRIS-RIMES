@@ -37,12 +37,17 @@ export class StationStatisticsComponent implements OnInit, OnDestroy {
     this.showCompareData = !this.showCompareData;
   }
   @ViewChild('timeMenuTrigger') trigger: MatMenuTrigger | undefined;
+  selectedRegions: string[] = [];
+  selectedStates: string[] = [];
+  selectedMcs: string[] = [];
+  tempfilteredStations: any[] = [];
+  regionList: any[] = [];
+  filteredMcs: any[] = [];
+  filteredStates: any[] = [];
   selectedRegion: string = '';
   selectedState: string = '';
   selectedDistrict: string = '';
   selectedStation: string = '';
-  regionList:any[]=[];
-  filteredStates:any[]=[];
   filteredDistricts:any[]=[];
   filteredStations:any[]=[];
   totalstations: number = 0;
@@ -323,15 +328,25 @@ export class StationStatisticsComponent implements OnInit, OnDestroy {
   }
 
   onChangeRegion(checkedValues:any){
-    let tempStates = this.existingstationdata.filter(item => {
+    this.selectedRegions = checkedValues;
+    let tempMcs = this.existingstationdata.filter(item => {
       return checkedValues.some((value:any) => {
         return item.region == value;
       });
     });
+    let tempfilteredMcs = Array.from(new Set(tempMcs.map(a => a.rmc_mc)));
+    this.filteredMcs = tempfilteredMcs.map(a => { return {name: a}});
+  }
+
+  onChangeMc(checkedValues:any){
+    this.selectedMcs = checkedValues;
+    let tempStates = this.existingstationdata.filter(item => {
+      return checkedValues.some((value:any) => {
+        return item.rmc_mc == value;
+      });
+    });
     let tempfilteredStates = Array.from(new Set(tempStates.map(a => a.state)));
     this.filteredStates = tempfilteredStates.map(a => { return {name: a}});
-    this.selectedState = ''
-    this.selectedDistrict = ''
   }
 
   onChangeState(checkedValues:any){
@@ -887,6 +902,37 @@ export class StationStatisticsComponent implements OnInit, OnDestroy {
     this.toggleBottomNav();
     this.loadGeoJSON();
     this.updateChart(this.stationWeatherParameters[0]);
+    this.showMarkerOnMap();
+  }
+
+  showMarkerOnMap(){
+    // Create a custom icon
+    var customIconred = L.icon({
+      iconUrl: '../../assets/images/red-marker.png',
+      iconSize: [25, 41], // size of the icon
+      iconAnchor: [12, 41] // point of the icon which will correspond to marker's location
+    });
+
+    var customIconyellow = L.icon({
+      iconUrl: '../../assets/images/yellow-marker.png',
+      iconSize: [25, 41], // size of the icon
+      iconAnchor: [12, 41] // point of the icon which will correspond to marker's location
+    });
+
+    var customIconblue = L.icon({
+      iconUrl: '../../assets/images/blue-marker.png',
+      iconSize: [25, 41], // size of the icon
+      iconAnchor: [12, 41] // point of the icon which will correspond to marker's location
+    });
+
+    var marker = L.marker([28.7041, 77.1025], {icon: customIconred}).addTo(this.stationObservationMap);
+    var markerjj = L.marker([25.7041, 77.1025], {icon: customIconred}).addTo(this.stationObservationMap);
+
+    var marker = L.marker([20.7041, 77.1025], {icon: customIconyellow}).addTo(this.stationObservationMap);
+    var markerjj = L.marker([18.7041, 77.1025], {icon: customIconyellow}).addTo(this.stationObservationMap);
+
+    var marker = L.marker([20.7041, 85.1025], {icon: customIconblue}).addTo(this.stationObservationMap);
+    var markerjj = L.marker([18.7041, 80.1025], {icon: customIconblue}).addTo(this.stationObservationMap);
   }
 
   closePopup() {

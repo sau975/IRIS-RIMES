@@ -16,6 +16,9 @@ export class LastFiveYearDataComponent {
   filteredStations: any[] = [];
   rainFallInMM: number = 0;
   existingstationdata: any[] = [];
+  selectedMcs: string[] = [];
+  filteredMcs: any[] = [];
+
   mcdata = [
     {id:101, name: "mc1"},
     {id:101, name: "mc1"},
@@ -49,9 +52,20 @@ export class LastFiveYearDataComponent {
 
   onChangeRegion(checkedValues:any){
     this.selectedRegions = checkedValues;
-    let tempStates = this.existingstationdata.filter(item => {
+    let tempMcs = this.existingstationdata.filter(item => {
       return checkedValues.some((value:any) => {
         return item.region == value;
+      });
+    });
+    let tempfilteredMcs = Array.from(new Set(tempMcs.map(a => a.rmc_mc)));
+    this.filteredMcs = tempfilteredMcs.map(a => { return {name: a}});
+  }
+
+  onChangeMc(checkedValues:any){
+    this.selectedMcs = checkedValues;
+    let tempStates = this.existingstationdata.filter(item => {
+      return checkedValues.some((value:any) => {
+        return item.rmc_mc == value;
       });
     });
     let tempfilteredStates = Array.from(new Set(tempStates.map(a => a.state)));

@@ -48,8 +48,7 @@
       (shareCheckedList)="onChangeRegion($event)">
     </app-multi-select-dropdown>
 
-    <app-multi-select-dropdown [list]="mcdata" [type]="'MC'" (shareCheckedList)="shareCheckedList($event)"
-      (shareIndividualCheckedList)="shareIndividualCheckedList($event)">
+    <app-multi-select-dropdown [list]="filteredMcs" [type]="'MC'" (shareCheckedList)="onChangeMc($event)">
     </app-multi-select-dropdown>
 
     <app-multi-select-dropdown [list]="filteredStates" [type]="'State'"

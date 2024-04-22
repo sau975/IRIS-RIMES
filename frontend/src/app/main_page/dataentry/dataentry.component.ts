@@ -14,8 +14,10 @@ export class DataentryComponent {
   @ViewChild('rainfallFileInput') rainfallFileInput!: ElementRef;
   selectedRegions: string[] = [];
   selectedStates: string[] = [];
+  selectedMcs: string[] = [];
   tempfilteredStations: any[] = [];
   regionList: any[] = [];
+  filteredMcs: any[] = [];
   filteredStates: any[] = [];
   filteredDistricts: any[] = [];
   filteredStations: any[] = [];
@@ -97,9 +99,20 @@ export class DataentryComponent {
 
   onChangeRegion(checkedValues:any){
     this.selectedRegions = checkedValues;
-    let tempStates = this.existingstationdata.filter(item => {
+    let tempMcs = this.existingstationdata.filter(item => {
       return checkedValues.some((value:any) => {
         return item.region == value;
+      });
+    });
+    let tempfilteredMcs = Array.from(new Set(tempMcs.map(a => a.rmc_mc)));
+    this.filteredMcs = tempfilteredMcs.map(a => { return {name: a}});
+  }
+
+  onChangeMc(checkedValues:any){
+    this.selectedMcs = checkedValues;
+    let tempStates = this.existingstationdata.filter(item => {
+      return checkedValues.some((value:any) => {
+        return item.rmc_mc == value;
       });
     });
     let tempfilteredStates = Array.from(new Set(tempStates.map(a => a.state)));

@@ -13,9 +13,11 @@ export class YearlyStationStatisticsComponent {
   selectedRegions: string[] = [];
   selectedStates: string[] = [];
   tempfilteredStations: any[] = [];
+  selectedMcs: string[] = [];
+  regionList: any[] = [];
+  filteredMcs: any[] = [];
+  filteredStates: any[] = [];
   todayDate: string;
-  regionList:any[]=[];
-  filteredStates:any[]=[];
   filteredDistricts:any[]=[];
   filteredStations:any[]=[];
   existingstationdata: any[] = [];
@@ -101,9 +103,20 @@ export class YearlyStationStatisticsComponent {
 
   onChangeRegion(checkedValues:any){
     this.selectedRegions = checkedValues;
-    let tempStates = this.existingstationdata.filter(item => {
+    let tempMcs = this.existingstationdata.filter(item => {
       return checkedValues.some((value:any) => {
         return item.region == value;
+      });
+    });
+    let tempfilteredMcs = Array.from(new Set(tempMcs.map(a => a.rmc_mc)));
+    this.filteredMcs = tempfilteredMcs.map(a => { return {name: a}});
+  }
+
+  onChangeMc(checkedValues:any){
+    this.selectedMcs = checkedValues;
+    let tempStates = this.existingstationdata.filter(item => {
+      return checkedValues.some((value:any) => {
+        return item.rmc_mc == value;
       });
     });
     let tempfilteredStates = Array.from(new Set(tempStates.map(a => a.state)));

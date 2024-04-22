@@ -172,8 +172,8 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
   }
 
   dateCalculation() {
-    // var todayDate = new Date();
-    // this.today.setDate(todayDate.getDate() - 1);
+    var todayDate = new Date();
+    this.today.setDate(todayDate.getDate() - 3);
 
     const yesterday = new Date(this.today);
     yesterday.setDate(this.today.getDate() - 1);
@@ -1824,20 +1824,22 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
         rows.push([
           regionIndex,
           item.statename,
-          item.dailyrainfall !== null && item.dailyrainfall !== undefined && !Number.isNaN(item.dailyrainfall) ? (Math.round(item.dailyrainfall * 10) / 10).toFixed(1) : 'NA',
+          item.dailyrainfall !== null && item.dailyrainfall !== undefined && !Number.isNaN(item.dailyrainfall) ? (Math.round(item.dailyrainfall * 10) / 10).toFixed(1) : ' ',
           item.normalrainfall !== null && item.normalrainfall !== undefined && !Number.isNaN(item.normalrainfall) ? (Math.round(item.normalrainfall * 10) / 10).toFixed(1) : 'NA',
           (item.dailyrainfall !== null && item.dailyrainfall !== undefined && !Number.isNaN(item.dailyrainfall) ? item.dailyrainfall.toFixed(1) : ' ') == ' ' ? ' ' : (item.dailydeparturerainfall !== null && item.dailydeparturerainfall !== undefined && !Number.isNaN(item.dailydeparturerainfall) ? Math.round(item.dailydeparturerainfall) + "%" : 'NA'),
           {
-            content: this.getCatForRainfall(item.dailydeparturerainfall, item.dailyrainfall !== null && item.dailyrainfall !== undefined && !Number.isNaN(item.dailyrainfall) ? (Math.round(item.dailydeparturerainfall * 10) / 10).toFixed(1) : ' '),
-            styles: { fillColor: this.getColorForRainfall(item.dailydeparturerainfall, item.dailyrainfall !== null && item.dailyrainfall !== undefined && !Number.isNaN(item.dailyrainfall) ? item.dailyrainfall.toFixed(1) : ' ') }, // Background color
+            content: this.getCatForRainfall(Math.round(item.dailydeparturerainfall), item.dailyrainfall !== null && item.dailyrainfall !== undefined && !Number.isNaN(item.dailyrainfall) ? item.dailyrainfall.toFixed(1) : ' '),
+            styles: { fillColor: this.getColorForRainfall(Math.round(item.dailydeparturerainfall), item.dailyrainfall !== null && item.dailyrainfall !== undefined && !Number.isNaN(item.dailyrainfall) ? item.dailyrainfall.toFixed(1) : ' ') }, // Background color
+
+            // content: this.getCatForRainfall(item.dailydeparturerainfall, item.dailyrainfall !== null && item.dailyrainfall !== undefined && !Number.isNaN(item.dailyrainfall) ? (Math.round(item.dailydeparturerainfall * 10) / 10).toFixed(1) : ' '),
+            // styles: { fillColor: this.getColorForRainfall(item.dailydeparturerainfall, item.dailyrainfall !== null && item.dailyrainfall !== undefined && !Number.isNaN(item.dailyrainfall) ? item.dailyrainfall.toFixed(1) : ' ') }, // Background color
           },
           (Math.round(item.dailyrainfallcum * 10) / 10).toFixed(1),
           (Math.round(item.cummnormal * 10) / 10).toFixed(1),
           (Math.round(item.cumdeparture * 10) / 10).toFixed(1) + "%",
           {
-            content: this.getCatForRainfall(
-              Math.round(item.cumdeparture * 10) / 10),
-            styles: { fillColor: this.getColorForRainfall(item.cumdeparture) },
+            content: this.getCatForRainfall(!Number.isNaN(item.cumdeparture) ? Math.round(item.cumdeparture) : -100, !Number.isNaN(item.dailyrainfall) ? 'notnan' : ' '),
+            styles: { fillColor: this.getColorForRainfall(!Number.isNaN(item.cumdeparture) ? Math.round(item.cumdeparture) : -100, !Number.isNaN(item.dailyrainfall) ? 'notnan' : ' ') }, // Background color
           },
         ]);
       }
@@ -1846,20 +1848,19 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
         rows.push([
           regionIndex,
           item.statename,
-          item.dailyrainfall !== null && item.dailyrainfall !== undefined && !Number.isNaN(item.dailyrainfall) ? (Math.round(item.dailyrainfall * 10) / 10).toFixed(1) : 'NA',
+          item.dailyrainfall !== null && item.dailyrainfall !== undefined && !Number.isNaN(item.dailyrainfall) ? (Math.round(item.dailyrainfall * 10) / 10).toFixed(1) : ' ',
           item.normalrainfall !== null && item.normalrainfall !== undefined && !Number.isNaN(item.normalrainfall) ? (Math.round(item.normalrainfall * 10) / 10).toFixed(1) : 'NA',
           (item.dailyrainfall !== null && item.dailyrainfall !== undefined && !Number.isNaN(item.dailyrainfall) ? item.dailyrainfall.toFixed(1) : ' ') == ' ' ? ' ' : (item.dailydeparturerainfall !== null && item.dailydeparturerainfall !== undefined && !Number.isNaN(item.dailydeparturerainfall) ? Math.round(item.dailydeparturerainfall) + "%" : 'NA'),
           {
-            content: this.getCatForRainfall(item.dailydeparturerainfall, item.dailyrainfall !== null && item.dailyrainfall !== undefined && !Number.isNaN(item.dailyrainfall) ? (Math.round(item.dailydeparturerainfall * 10) / 10).toFixed(1) : ' '),
-            styles: { fillColor: this.getColorForRainfall(item.dailydeparturerainfall, item.dailyrainfall !== null && item.dailyrainfall !== undefined && !Number.isNaN(item.dailyrainfall) ? item.dailyrainfall.toFixed(1) : ' ') }, // Background color
+            content: this.getCatForRainfall(Math.round(item.dailydeparturerainfall), item.dailyrainfall !== null && item.dailyrainfall !== undefined && !Number.isNaN(item.dailyrainfall) ? item.dailyrainfall.toFixed(1) : ' '),
+            styles: { fillColor: this.getColorForRainfall(Math.round(item.dailydeparturerainfall), item.dailyrainfall !== null && item.dailyrainfall !== undefined && !Number.isNaN(item.dailyrainfall) ? item.dailyrainfall.toFixed(1) : ' ') }, // Background color
           },
           (Math.round(item.dailyrainfallcum * 10) / 10).toFixed(1),
           (Math.round(item.cummnormal * 10) / 10).toFixed(1),
           (Math.round(item.cumdeparture * 10) / 10).toFixed(1) + "%",
           {
-            content: this.getCatForRainfall(
-              Math.round(item.cumdeparture * 10) / 10),
-            styles: { fillColor: this.getColorForRainfall(item.cumdeparture) },
+            content: this.getCatForRainfall(!Number.isNaN(item.cumdeparture) ? Math.round(item.cumdeparture) : -100, !Number.isNaN(item.dailyrainfall) ? 'notnan' : ' '),
+            styles: { fillColor: this.getColorForRainfall(!Number.isNaN(item.cumdeparture) ? Math.round(item.cumdeparture) : -100, !Number.isNaN(item.dailyrainfall) ? 'notnan' : ' ') }, // Background color
           },
         ]);
       }
@@ -2098,15 +2099,15 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
           (Math.round(item.normalrainfall * 10) / 10).toFixed(1),
           (Math.round(item.dailydeparturerainfall * 10) / 10).toFixed(1) + "%",
           {
-            content: this.getCatForRainfall(item.dailydeparturerainfall),
-            styles: { fillColor: this.getColorForRainfall(item.dailydeparturerainfall) },
+            content: this.getCatForRainfall(Math.round(item.dailydeparturerainfall), item.dailyrainfall !== null && item.dailyrainfall !== undefined && !Number.isNaN(item.dailyrainfall) ? item.dailyrainfall.toFixed(1) : ' '),
+            styles: { fillColor: this.getColorForRainfall(Math.round(item.dailydeparturerainfall), item.dailyrainfall !== null && item.dailyrainfall !== undefined && !Number.isNaN(item.dailyrainfall) ? item.dailyrainfall.toFixed(1) : ' ') }, // Background color
           },
           (Math.round(item.dailyrainfallcum * 10) / 10).toFixed(1),
           (Math.round(item.cummnormal * 10) / 10).toFixed(1),
           (Math.round(item.cumdeparture * 10) / 10).toFixed(1) + "%",
           {
-            content: this.getCatForRainfall(item.cumdeparture),
-            styles: { fillColor: this.getColorForRainfall(item.cumdeparture) },
+            content: this.getCatForRainfall(!Number.isNaN(item.cumdeparture) ? Math.round(item.cumdeparture) : -100, !Number.isNaN(item.dailyrainfall) ? 'notnan' : ' '),
+            styles: { fillColor: this.getColorForRainfall(!Number.isNaN(item.cumdeparture) ? Math.round(item.cumdeparture) : -100, !Number.isNaN(item.dailyrainfall) ? 'notnan' : ' ') }, // Background color
           },
         ]);
       }
@@ -2119,15 +2120,15 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
           (Math.round(item.normalrainfall * 10) / 10).toFixed(1),
           (Math.round(item.dailydeparturerainfall * 10) / 10).toFixed(1) + "%",
           {
-            content: this.getCatForRainfall(item.dailydeparturerainfall),
-            styles: { fillColor: this.getColorForRainfall(item.dailydeparturerainfall) },
+            content: this.getCatForRainfall(Math.round(item.dailydeparturerainfall), item.dailyrainfall !== null && item.dailyrainfall !== undefined && !Number.isNaN(item.dailyrainfall) ? item.dailyrainfall.toFixed(1) : ' '),
+            styles: { fillColor: this.getColorForRainfall(Math.round(item.dailydeparturerainfall), item.dailyrainfall !== null && item.dailyrainfall !== undefined && !Number.isNaN(item.dailyrainfall) ? item.dailyrainfall.toFixed(1) : ' ') }, // Background color
           },
           (Math.round(item.dailyrainfallcum * 10) / 10).toFixed(1),
           (Math.round(item.cummnormal * 10) / 10).toFixed(1),
           (Math.round(item.cumdeparture * 10) / 10).toFixed(1) + "%",
           {
-            content: this.getCatForRainfall(item.cumdeparture),
-            styles: { fillColor: this.getColorForRainfall(item.cumdeparture) },
+            content: this.getCatForRainfall(!Number.isNaN(item.cumdeparture) ? Math.round(item.cumdeparture) : -100, !Number.isNaN(item.dailyrainfall) ? 'notnan' : ' '),
+            styles: { fillColor: this.getColorForRainfall(!Number.isNaN(item.cumdeparture) ? Math.round(item.cumdeparture) : -100, !Number.isNaN(item.dailyrainfall) ? 'notnan' : ' ') }, // Background color
           },
         ]);
       }

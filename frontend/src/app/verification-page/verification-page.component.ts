@@ -9,9 +9,11 @@ import { DataService } from '../data.service';
 export class VerificationPageComponent {
   selectedRegions: string[] = [];
   selectedStates: string[] = [];
+  selectedMcs: string[] = [];
   tempfilteredStations: any[] = [];
-  regionList:any[]=[];
-  filteredStates:any[]=[];
+  regionList: any[] = [];
+  filteredMcs: any[] = [];
+  filteredStates: any[] = [];
   filteredDistricts:any[]=[];
   filteredStations:any[]=[];
   selectedDate: Date = new Date();
@@ -56,9 +58,20 @@ export class VerificationPageComponent {
 
     onChangeRegion(checkedValues:any){
       this.selectedRegions = checkedValues;
-      let tempStates = this.existingstationdata.filter(item => {
+      let tempMcs = this.existingstationdata.filter(item => {
         return checkedValues.some((value:any) => {
           return item.region == value;
+        });
+      });
+      let tempfilteredMcs = Array.from(new Set(tempMcs.map(a => a.rmc_mc)));
+      this.filteredMcs = tempfilteredMcs.map(a => { return {name: a}});
+    }
+
+    onChangeMc(checkedValues:any){
+      this.selectedMcs = checkedValues;
+      let tempStates = this.existingstationdata.filter(item => {
+        return checkedValues.some((value:any) => {
+          return item.rmc_mc == value;
         });
       });
       let tempfilteredStates = Array.from(new Set(tempStates.map(a => a.state)));
@@ -167,7 +180,7 @@ export class VerificationPageComponent {
       })
     }
     this.filteredStations.map(x => {
-      return x.isverified = JSON.parse(x['isverified_' + this.dateCalculation()]);
+      return x.isverified = JSON.parse(JSON.stringify(x['isverified_' + this.dateCalculation()]));
     })
     if(this.status){
       this.filteredStations = this.filteredStations.filter(s =>  s.isverified.status == this.status);
