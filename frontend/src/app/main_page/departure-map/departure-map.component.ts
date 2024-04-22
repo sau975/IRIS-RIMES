@@ -172,8 +172,8 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
   }
 
   dateCalculation() {
-    var todayDate = new Date();
-    this.today.setDate(todayDate.getDate() - 3);
+    // var todayDate = new Date();
+    // this.today.setDate(todayDate.getDate() - 3);
 
     const yesterday = new Date(this.today);
     yesterday.setDate(this.today.getDate() - 1);
