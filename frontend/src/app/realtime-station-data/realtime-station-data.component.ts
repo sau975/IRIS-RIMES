@@ -16,6 +16,9 @@ export class RealtimeStationDataComponent {
   filteredStations: any[] = [];
   rainFallInMM: number = 0;
   existingstationdata: any[] = [];
+  selectedYear: string = '';
+  selectedMcs: string[] = [];
+  filteredMcs: any[] = [];
   mcdata = [
     {id:101, name: "mc1"},
     {id:101, name: "mc1"},
@@ -31,11 +34,21 @@ export class RealtimeStationDataComponent {
   constructor(private dataService: DataService) {}
 
   onChangeRegion(checkedValues:any){
-    this.clearDropdown = true;
     this.selectedRegions = checkedValues;
-    let tempStates = this.existingstationdata.filter(item => {
+    let tempMcs = this.existingstationdata.filter(item => {
       return checkedValues.some((value:any) => {
         return item.region == value;
+      });
+    });
+    let tempfilteredMcs = Array.from(new Set(tempMcs.map(a => a.rmc_mc)));
+    this.filteredMcs = tempfilteredMcs.map(a => { return {name: a}});
+  }
+
+  onChangeMc(checkedValues:any){
+    this.selectedMcs = checkedValues;
+    let tempStates = this.existingstationdata.filter(item => {
+      return checkedValues.some((value:any) => {
+        return item.rmc_mc == value;
       });
     });
     let tempfilteredStates = Array.from(new Set(tempStates.map(a => a.state)));
@@ -99,6 +112,13 @@ export class RealtimeStationDataComponent {
       this.filteredStations = this.existingstationdata.filter(item => {
         return this.selectedStates.some((value:any) => {
           return item.state == value;
+        });
+      })
+    }
+    else if(this.selectedMcs && this.selectedMcs.length > 0){
+      this.filteredStations = this.existingstationdata.filter(item => {
+        return this.selectedMcs.some((value:any) => {
+          return item.rmc_mc == value;
         });
       })
     }

@@ -179,6 +179,13 @@ export class YearlyStationStatisticsComponent {
         });
       })
     }
+    else if(this.selectedMcs && this.selectedMcs.length > 0){
+      this.filteredStations = this.existingstationdata.filter(item => {
+        return this.selectedMcs.some((value:any) => {
+          return item.rmc_mc == value;
+        });
+      })
+    }
     else if(this.selectedRegions && this.selectedRegions.length > 0){
       this.filteredStations = this.existingstationdata.filter(item => {
         return this.selectedRegions.some((value:any) => {
