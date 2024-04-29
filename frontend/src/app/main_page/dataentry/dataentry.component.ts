@@ -69,10 +69,21 @@ export class DataentryComponent {
   };
   minDate: string = '';
   loggedInUserObject: any;
+  emailGroups:any[]=[];
+  emails:any[]=[];
 
   ngOnInit(): void {
     this.fetchDataFromBackend();
+    this.dataService.getEmailGroup().subscribe(res => {
+      this.emailGroups = res;
+      this.emailGroups.forEach(x => {
+        JSON.parse(x.emails).forEach((j:any) => {
+          this.emails.push(j);
+        })
+      })
+    })
   }
+
   constructor(
     private dataService: DataService,
   ) {
@@ -212,6 +223,11 @@ export class DataentryComponent {
     this.dataService.addColumn({date:this.dateCalculation()}).subscribe(res => {
       console.log("Column Created Successfully");
     })
+    if(this.filteredStations.length > 0){
+      setTimeout(() => {
+        this.sendEmail();
+      }, 1000);
+    }
   }
 
   editStation(station: any) {
@@ -474,6 +490,84 @@ export class DataentryComponent {
       type: EXCEL_TYPE
     });
     FileSaver.saveAs(data, fileName + '_export_' + new Date().getTime() + EXCEL_EXTENSION);
+  }
+
+
+  generateTextFormat(data:any): string {
+    let text = '';
+    for (let entry of data) {
+      text += `${entry['station']}: ${entry['rainfall']}mm\n`;
+    }
+    return text;
+  }
+
+  groupByMc(mc:any) {
+    const groups:any = {};
+    mc.forEach((station:any) => {
+      const rmc_mc:any = station.rmc_mc;
+      if (!groups[rmc_mc]) {
+        groups[rmc_mc] = [];
+      }
+      groups[rmc_mc].push(station);
+    });
+    const result = [];
+    for (const rmc_mc in groups) {
+      if(rmc_mc == this.selectedMcs[0]){
+        result.push({ rmc_mc: rmc_mc, mc: groups[rmc_mc] });
+      }
+    }
+    return result;
+  }
+
+  sendEmail(){
+    // if (confirm("Do want to send email") == true) {
+      // let emails = ["saurav97531@gmail.com", "tarakesh@rimes.int"];
+      let emails = ["saurav97531@gmail.com"];
+
+      let resdata = this.groupByMc(this.existingstationdata);
+      let emaildata:any[]=[];
+      resdata.forEach(stn => {
+        stn.mc.forEach((s:any) => {
+          if(s[this.dateCalculation()] == -999.9){
+            emaildata.push({station: s.station, rainfall: s[this.dateCalculation()]});
+          }
+        })
+      })
+
+      emails.forEach(email => {
+        let data = {
+          to: email,
+          subject: `Rainfall data not received - ${new Date().toDateString()}`,
+          text: `Hello,\n\n Rainfall data not received for these stations:-\n\n ${this.generateTextFormat(emaildata)}`
+        }
+        this.dataService.sendEmail(data).subscribe(res => {
+          console.log("Email Sent Successfully");
+        })
+      })
+    // }
+  }
+
+  scheduleFunction() {
+    // Get current time
+    var now = new Date();
+    // Set desired time (in this case, 11:00 AM)
+    var desiredTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 12, 0, 0, 0);
+    var delay = desiredTime.getTime() - now.getTime();
+
+    if (delay < 0) {
+        // If it's already past the desired time, schedule it for tomorrow
+        desiredTime.setDate(desiredTime.getDate() + 1);
+        delay = desiredTime.getTime() - now.getTime();
+    }
+
+    setTimeout(() => {
+      let autoEmailOnOff = JSON.parse(localStorage.getItem('autoEmail') as any);
+      if(autoEmailOnOff == true){
+        this.sendEmail();
+      }
+      // Reschedule function for the next day
+      this.scheduleFunction();
+    }, delay);
   }
 }
 

@@ -458,19 +458,50 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
 
   date() {
     // let currentEndDay = this.previousWeekWeeklyEndDate ? new Date(this.previousWeekWeeklyEndDate).getDate() : this.today.getDate();
-    let currentEndDay = this.today.getDate();
-    // let startMonth = this.previousWeekWeeklyEndDate ? this.months[new Date(this.previousWeekWeeklyEndDate).getMonth()] : this.months[this.today.getMonth()];
-    let startMonth = "Mar";
-    let startDay = 1;
-    let endDay = currentEndDay.toString().length == 1 ? 0 + currentEndDay : currentEndDay;
+    // let currentEndDay = this.today.getDate();
+    // // let startMonth = this.previousWeekWeeklyEndDate ? this.months[new Date(this.previousWeekWeeklyEndDate).getMonth()] : this.months[this.today.getMonth()];
+    // let startMonth = "Mar";
+    // let startDay = 1;
+    // let endDay = currentEndDay.toString().length == 1 ? 0 + currentEndDay : currentEndDay;
+    // // Get the current date
+    // var currentDate:any = this.today;
+    // var marchFirst:any = new Date(currentDate.getFullYear(), 2, 1); // Note: Months are zero-based in JavaScript, so March is represented by 2
+    // var differenceInMilliseconds:any = currentDate - marchFirst;
+    // var daysSinceMarch1st = Math.floor(differenceInMilliseconds / (1000 * 60 * 60 * 24));
+
+    // console.log("Number of days since March 1st:", daysSinceMarch1st);
+
+    // for (let day = startDay; day <= daysSinceMarch1st; day++) {
+    //   const year = this.today.getFullYear();
+    //   const selectedYear = String(year).slice(-2);
+    //   const currentDateStrdaily = `${day.toString().padStart(2, '0')}_${startMonth}_${selectedYear}`;
+    //   allDates.push(currentDateStrdaily);
+    // }
+    // console.log(allDates, "------------------====")
+
+
     let allDates = [];
-    for (let day = startDay; day <= endDay; day++) {
-      const year = this.today.getFullYear();
-      const selectedYear = String(year).slice(-2);
-      const currentDateStrdaily = `${day.toString().padStart(2, '0')}_${startMonth}_${selectedYear}`;
-      allDates.push(currentDateStrdaily);
+
+    var startDate = new Date(new Date().getFullYear(), 2, 1); // March is represented by index 2
+    var endDate = new Date(new Date().getFullYear(), this.today.getMonth(), this.today.getDate()); // April is represented by index 3
+
+    // Loop through the dates from March 1st to April 24th and format each date
+    for (var currentDate = startDate; currentDate <= endDate; currentDate.setDate(currentDate.getDate() + 1)) {
+      allDates.push(this.formatDate(currentDate));
     }
     return allDates;
+  }
+
+  formatDate(date:any) {
+    // Get the year, month, and day from the date object
+    var year = date.getFullYear().toString().slice(2); // Extract last two digits of the year
+    var month = date.toLocaleString('default', { month: 'short' }); // Get the abbreviated month name
+    var day = date.getDate().toString().padStart(2, '0'); // Ensure day is two digits with leading zero if necessary
+
+    // Concatenate the formatted date components in the desired format
+    var formattedDate = day + '_' + month + '_' + year;
+
+    return formattedDate;
   }
 
   processFetchedData(): void {
