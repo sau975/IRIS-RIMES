@@ -16,7 +16,8 @@ export class AppComponent implements OnInit {
   constructor(
     private dataService: DataService
   ){
-    // this.scheduleFunction();
+    // this.CreateColumn();
+    this.scheduleFunction();
     // this.dataService.existingstationdata().subscribe(res => {
     //   let resdata = this.groupByMc(res);
     //   let emaildata:any[]=[];
@@ -53,18 +54,18 @@ export class AppComponent implements OnInit {
   //   return result;
   // }
 
-  // dateCalculation() {
-  //   const months = [
-  //     'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-  //     'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
-  //   ];
-  //   let newDate = new Date();
-  //   let dd = String(newDate.getDate());
-  //   const year = newDate.getFullYear();
-  //   const currmonth = months[newDate.getMonth()];
-  //   const selectedYear = String(year).slice(-2);
-  //   return `${dd.padStart(2, '0')}_${currmonth}_${selectedYear}`;
-  // }
+  dateCalculation() {
+    const months = [
+      'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+      'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+    ];
+    let newDate = new Date();
+    let dd = String(newDate.getDate());
+    const year = newDate.getFullYear();
+    const currmonth = months[newDate.getMonth()];
+    const selectedYear = String(year).slice(-2);
+    return `${dd.padStart(2, '0')}_${currmonth}_${selectedYear}`;
+  }
 
   ngOnInit(): void {
     // this.dataService.getEmailGroup().subscribe(res => {
@@ -98,26 +99,32 @@ export class AppComponent implements OnInit {
   //   // }
   // }
 
-  // scheduleFunction() {
-  //   // Get current time
-  //   var now = new Date();
-  //   // Set desired time (in this case, 11:00 AM)
-  //   var desiredTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 12, 0, 0, 0);
-  //   var delay = desiredTime.getTime() - now.getTime();
+  CreateColumn(){
+    this.dataService.addColumn({date:this.dateCalculation()}).subscribe(res => {
+      console.log("Column Created Successfully");
+    })
+    this.dataService.addColumnForDailyData({date:this.dateCalculation()}).subscribe(res => {
+      console.log("Column Created Successfully");
+    })
+  }
 
-  //   if (delay < 0) {
-  //       // If it's already past the desired time, schedule it for tomorrow
-  //       desiredTime.setDate(desiredTime.getDate() + 1);
-  //       delay = desiredTime.getTime() - now.getTime();
-  //   }
+  scheduleFunction() {
+    // Get current time
+    var now = new Date();
+    // Set desired time (in this case, 11:00 AM)
+    var desiredTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 11, 0, 0, 0);
+    var delay = desiredTime.getTime() - now.getTime();
 
-  //   setTimeout(() => {
-  //     let autoEmailOnOff = JSON.parse(localStorage.getItem('autoEmail') as any);
-  //     if(autoEmailOnOff == true){
-  //       this.sendEmail();
-  //     }
-  //     // Reschedule function for the next day
-  //     this.scheduleFunction();
-  //   }, delay);
-  // }
+    if (delay < 0) {
+        // If it's already past the desired time, schedule it for tomorrow
+        desiredTime.setDate(desiredTime.getDate() + 1);
+        delay = desiredTime.getTime() - now.getTime();
+    }
+
+    setTimeout(() => {
+      this.CreateColumn();
+      // Reschedule function for the next day
+      this.scheduleFunction();
+    }, delay);
+  }
 }

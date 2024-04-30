@@ -187,7 +187,7 @@ export class VerificationPageComponent {
       })
     }
     this.filteredStations.map(x => {
-      return x.isverified = JSON.parse(JSON.stringify(x['isverified_' + this.dateCalculation()]));
+      return x.isverified = JSON.parse(x['isverified_' + this.dateCalculation()]);
     })
     if(this.status){
       this.filteredStations = this.filteredStations.filter(s =>  s.isverified.status == this.status);

@@ -200,7 +200,7 @@ app.put("/addcolumn", (req, res) => {
   const data = req.body.data;
   try {
     let temp = {
-      status: 'verified',
+      status: 'notverified',
       verifiedDateTime: ''
     }
     client.query('BEGIN');
@@ -219,7 +219,7 @@ app.put("/addcolumnfordailydata", (req, res) => {
   const data = req.body.data;
   try {
     client.query('BEGIN');
-    const queryText = `ALTER TABLE stationdatadaily ADD COLUMN IF NOT EXISTS "${data.date}" double precision DEFAULT 0`;
+    const queryText = `ALTER TABLE stationdatadaily ADD COLUMN IF NOT EXISTS "${data.date}" double precision DEFAULT -999.9`;
     client.query(queryText);
     client.query('COMMIT');
     res.status(200).json({ message: `Column Created successfully`});

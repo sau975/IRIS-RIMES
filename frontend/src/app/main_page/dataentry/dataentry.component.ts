@@ -218,16 +218,13 @@ export class DataentryComponent {
       })
     }
     this.filteredStations.map(x => {
-          return x.RainFall = x[this.dateCalculation()];
+      return x.RainFall = x[this.dateCalculation()];
     })
-    this.dataService.addColumn({date:this.dateCalculation()}).subscribe(res => {
-      console.log("Column Created Successfully");
-    })
-    if(this.filteredStations.length > 0){
-      setTimeout(() => {
-        this.sendEmail();
-      }, 1000);
-    }
+    // if(this.filteredStations.length > 0){
+    //   setTimeout(() => {
+    //     this.sendEmail();
+    //   }, 1000);
+    // }
   }
 
   editStation(station: any) {
