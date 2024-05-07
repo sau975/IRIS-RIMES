@@ -20,6 +20,7 @@ export class DailyWeeklySubdivisionDepartureMapComponent implements OnInit, Afte
   @Input() previousWeekWeeklyEndDate: string = '';
   selectedDate: Date = new Date();
   selectedWeek: string = '';
+  selectedYear: string = '';
   isDaily: boolean = false;
   private initialZoom = 5;
   private map2: L.Map = {} as L.Map;
@@ -110,8 +111,8 @@ export class DailyWeeklySubdivisionDepartureMapComponent implements OnInit, Afte
   }
   weeklyDeparture(){
     var splitedDate = this.selectedWeek.split('&');
-    this.previousWeekWeeklyStartDate = splitedDate[0];
-    this.previousWeekWeeklyEndDate = splitedDate[1];
+    this.previousWeekWeeklyStartDate = this.selectedYear + splitedDate[0];
+    this.previousWeekWeeklyEndDate = this.selectedYear + splitedDate[1];
     this.weeklyDatesCalculation();
     this.fetchDataFromBackend();
   }
@@ -1285,7 +1286,7 @@ export class DailyWeeklySubdivisionDepartureMapComponent implements OnInit, Afte
     }
 
   }
-  
+
 
   filter = (node: HTMLElement) => {
     const exclusionClasses = ['download', 'downloadpdf', 'leaflet-control-zoom', 'leaflet-control-fullscreen', 'leaflet-control-zoomin'];
