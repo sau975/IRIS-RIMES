@@ -213,7 +213,7 @@ export class YearlyStationStatisticsComponent {
     const imgX = pageWidth - imgWidth - imgMargin;
     const imgData150 = '/assets/images/IMD150(BGR).png';
     doc.addImage(imgData150, 'PNG', imgX, marginTop, 15, 20);
-    const imgData = '/assets/images/IMDlogo_Ipart.png';
+    const imgData = '/assets/images/IMDlogo_Ipart-iris.png';
     doc.addImage(imgData, 'PNG', marginLeft, marginTop, 15, 20);
     doc.setFontSize(12);
     doc.setTextColor(0, 0, 0); // Set font color to black

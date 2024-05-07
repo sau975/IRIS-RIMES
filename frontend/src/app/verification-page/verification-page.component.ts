@@ -150,6 +150,7 @@ export class VerificationPageComponent {
         this.regionList = regionList.map(x => {
           return {name: x}
         })
+        this.filteredStations = value.filter((x:any) => x[this.dateCalculation()] >= 0);
         this.filterByDate();
       },
       error: err => console.error('Error fetching data:', err)
@@ -186,6 +187,10 @@ export class VerificationPageComponent {
         });
       })
     }
+    this.filteredStations.map(x => {
+      return x.RainFall = x[this.dateCalculation()];
+    })
+    this.filteredStations = this.filteredStations.filter((x:any) => x[this.dateCalculation()] >= 0);
     this.filteredStations.map(x => {
       return x.isverified = JSON.parse(x['isverified_' + this.dateCalculation()]);
     })

@@ -1284,7 +1284,7 @@ export class DailyWeeklyDistrictDepartureMapComponent implements OnInit, AfterVi
       startY: marginTop,
       margin: { left: marginLeft },
     };
-    const imgData = '/assets/images/IMDlogo_Ipart.png'; // Replace with the actual image path
+    const imgData = '/assets/images/IMDlogo_Ipart-iris.png'; // Replace with the actual image path
     doc.addImage(imgData, 'PNG', marginLeft, marginTop, 15, 20); // Adjust image dimensions as needed
     doc.setFontSize(12);
     doc.setTextColor(0, 0, 0); // Set font color to black

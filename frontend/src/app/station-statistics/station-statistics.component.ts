@@ -310,7 +310,7 @@ export class StationStatisticsComponent implements OnInit, OnDestroy {
     this.initStationObservationMap();
     this.getCurrentDate();
     this.fetchDataFromBackend();
-    this.loadGeoJSON();
+    // this.loadGeoJSON();
   }
 
   getCurrentDate() {
@@ -422,14 +422,23 @@ export class StationStatisticsComponent implements OnInit, OnDestroy {
   private initStationObservationMap(): void {
     this.stationObservationMap = L.map('map_observations', {
       center: [24, 76.9629],
-      zoom: 4,
+      zoom: 6,
       zoomControl: false,
       minZoom: 5,
     });
 
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap contributors'
+    }).addTo(this.stationObservationMap);
+
+    // L.marker([24, 76.9629]).addTo(this.stationObservationMap)
+    //   .bindPopup('A pretty CSS3 popup.<br> Easily customizable.')
+    //   .openPopup();
+
     L.control
       .zoom({ position: 'bottomright' })
       .addTo(this.stationObservationMap);
+
   }
 
   sourceChanged(sourceId: number) {
@@ -596,7 +605,29 @@ export class StationStatisticsComponent implements OnInit, OnDestroy {
     this.dataService.existingstationdata().subscribe({
       next: value => {
         this.existingstationdata = value;
-        console.log(this.existingstationdata, "oooooooooooo")
+        value.forEach((location:any) => {
+          var markerCoords:any = [location.lat, location.lng];
+          var markerOptions = {
+              radius: 10, // Adjust the size of the marker here
+              color: 'black', // Change the color of the marker here
+              fillColor: this.getColorForRainfall1(location[this.dateCalculation()]), // Change the fill color of the marker here
+              fillOpacity: 2.0 // Adjust the opacity of the fill color
+          };
+
+          // Create the circle marker and add it to the map
+          var marker = L.circleMarker(markerCoords, markerOptions).addTo(this.stationObservationMap);
+          // const marker = L.marker([location.lat, location.lng]).addTo(this.stationObservationMap)
+          marker.bindPopup(location.station + '   ' + (location[this.dateCalculation()] != undefined ? location[this.dateCalculation()] : "-999.9"));
+          // Show popup on marker hover
+          marker.on('mouseover', function (e) {
+            marker.openPopup();
+          });
+
+          // Hide popup when mouse leaves marker
+          marker.on('mouseout', function (e) {
+            marker.closePopup();
+          });
+        });
 
         let maxNumber = this.existingstationdata[0][this.dateCalculation()];
         for (let i = 1; i < this.existingstationdata.length; i++) {
@@ -899,40 +930,11 @@ export class StationStatisticsComponent implements OnInit, OnDestroy {
     //     : this.current_Date.time,
     // };
     this.toggleBottomNav();
-    this.loadGeoJSON();
+    // this.loadGeoJSON();
     this.updateChart(this.stationWeatherParameters[0]);
-    this.showMarkerOnMap();
+    // this.showMarkerOnMap();
   }
 
-  showMarkerOnMap(){
-    // Create a custom icon
-    var customIconred = L.icon({
-      iconUrl: '../../assets/images/red-marker.png',
-      iconSize: [25, 41], // size of the icon
-      iconAnchor: [12, 41] // point of the icon which will correspond to marker's location
-    });
-
-    var customIconyellow = L.icon({
-      iconUrl: '../../assets/images/yellow-marker.png',
-      iconSize: [25, 41], // size of the icon
-      iconAnchor: [12, 41] // point of the icon which will correspond to marker's location
-    });
-
-    var customIconblue = L.icon({
-      iconUrl: '../../assets/images/blue-marker.png',
-      iconSize: [25, 41], // size of the icon
-      iconAnchor: [12, 41] // point of the icon which will correspond to marker's location
-    });
-
-    var marker = L.marker([28.7041, 77.1025], {icon: customIconred}).addTo(this.stationObservationMap);
-    var markerjj = L.marker([25.7041, 77.1025], {icon: customIconred}).addTo(this.stationObservationMap);
-
-    var marker = L.marker([20.7041, 77.1025], {icon: customIconyellow}).addTo(this.stationObservationMap);
-    var markerjj = L.marker([18.7041, 77.1025], {icon: customIconyellow}).addTo(this.stationObservationMap);
-
-    var marker = L.marker([20.7041, 85.1025], {icon: customIconblue}).addTo(this.stationObservationMap);
-    var markerjj = L.marker([18.7041, 80.1025], {icon: customIconblue}).addTo(this.stationObservationMap);
-  }
 
   closePopup() {
     this.isBottomNavOpen = false;
