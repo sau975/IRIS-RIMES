@@ -67,6 +67,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { RealtimeStationDataComponent } from './realtime-station-data/realtime-station-data.component';
 import { LogInfoContainerComponent } from './log-info-container/log-info-container.component';
 import { LogInfoForReportsComponent } from './log-info-for-reports/log-info-for-reports.component';
+import { StateWiseComponent } from './state-wise/state-wise.component';
 
 @NgModule({
   declarations: [
@@ -110,7 +111,8 @@ import { LogInfoForReportsComponent } from './log-info-for-reports/log-info-for-
     EmailDisseminationComponent,
     RealtimeStationDataComponent,
     LogInfoContainerComponent,
-    LogInfoForReportsComponent
+    LogInfoForReportsComponent,
+    StateWiseComponent
   ],
   imports: [
     PdfViewerModule,

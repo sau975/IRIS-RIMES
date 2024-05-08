@@ -38,6 +38,7 @@ import { YearlyStationStatisticsComponent } from './yearly-station-statistics/ye
 import { EmailDisseminationComponent } from './email-dissemination/email-dissemination.component';
 import { RealtimeStationDataComponent } from './realtime-station-data/realtime-station-data.component';
 import { LogInfoContainerComponent } from './log-info-container/log-info-container.component';
+import { StateWiseComponent } from './state-wise/state-wise.component';
 
 
 const routes: Routes = [
@@ -69,6 +70,7 @@ const routes: Routes = [
   { path: 'yearly-station-statistics', component: YearlyStationStatisticsComponent, canActivate: [AuthGuard] },
   { path: 'email-dissemination', component: EmailDisseminationComponent, canActivate: [AuthGuard] },
   { path: 'realtime-station-data', component: RealtimeStationDataComponent, canActivate: [AuthGuard] },
+  { path: 'state-wise-district-rainfall', component: StateWiseComponent, canActivate: [AuthGuard] },
   { path: 'log-info', component: LogInfoContainerComponent, canActivate: [AuthGuard], children:
     [
       { path: 'station-log', component: DeletedStationLogComponent },
