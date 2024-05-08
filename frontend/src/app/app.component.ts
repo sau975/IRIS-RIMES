@@ -60,7 +60,7 @@ export class AppComponent implements OnInit {
       'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
     ];
     let newDate = new Date();
-    let dd = String(newDate.getDate());
+    let dd = String(newDate.getDate()-1);
     const year = newDate.getFullYear();
     const currmonth = months[newDate.getMonth()];
     const selectedYear = String(year).slice(-2);
@@ -123,8 +123,49 @@ export class AppComponent implements OnInit {
 
     setTimeout(() => {
       this.CreateColumn();
+      this.clearIndexDB();
       // Reschedule function for the next day
       this.scheduleFunction();
     }, delay);
+  }
+
+
+  clearIndexDB(){
+    // Open a connection to the IndexedDB database
+    var indexedDB = window.indexedDB;
+    var request = indexedDB.open('myDatabase', 1);
+
+    // Handle database opening success
+    request.onsuccess = function(event:any) {
+        var db = event.target.result;
+
+        // Start a transaction on the object store
+        var transaction = db.transaction(["myObjectStore"], "readwrite");
+        var objectStore = transaction.objectStore("myObjectStore");
+
+        // Open a cursor to iterate through all items in the object store
+        var cursorRequest = objectStore.openCursor();
+
+        cursorRequest.onsuccess = function(event:any) {
+            var cursor = event.target.result;
+            if (cursor) {
+                // Delete the current item
+                objectStore.delete(cursor.primaryKey);
+                cursor.continue();
+            } else {
+                console.log("All items deleted from object store");
+            }
+        };
+
+        cursorRequest.onerror = function(event:any) {
+            console.log("Error deleting items from object store");
+        };
+    };
+
+    // Handle errors
+    request.onerror = function(event) {
+        console.log("Error opening database");
+    };
+
   }
 }

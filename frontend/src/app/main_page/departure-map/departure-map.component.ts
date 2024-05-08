@@ -173,7 +173,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
 
   dateCalculation() {
     // var todayDate = new Date();
-    // this.today.setDate(todayDate.getDate() - 3);
+    // this.today.setDate(todayDate.getDate() - 1);
 
     const yesterday = new Date(this.today);
     yesterday.setDate(this.today.getDate() - 1);
@@ -522,6 +522,13 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
         }
       }
       districtcumnormal = item[this.currentDateNormal]
+      // districtcumnormal = 0
+      // if(this.currentDateNormal === 'May1'){
+      //   districtcumnormal = item[this.currentDateNormal] - item[this.currentDateNormaly]
+      // }
+      // if(this.currentDateNormal.startsWith('May') && this.currentDateNormal !== 'May1' ){
+      //   districtcumnormal = districtcumnormal + (item[this.currentDateNormal] - item[this.currentDateNormaly])
+      // }
       this.districtnormals.push({
         districtID: item.district_code,
         normalrainfall: normal1,
@@ -1642,7 +1649,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     const imgX = pageWidth - imgWidth - imgMargin;
     const imgData150 = '/assets/images/IMD150(BGR).png';
     doc.addImage(imgData150, 'PNG', imgX, marginTop, 15, 20);
-    const imgData = '/assets/images/IMDlogo_Ipart.png';
+    const imgData = '/assets/images/IMDlogo_Ipart-iris.png';
     doc.addImage(imgData, 'PNG', marginLeft, marginTop, 15, 20);
     doc.setFontSize(12);
     doc.setTextColor(0, 0, 0); // Set font color to black
@@ -1867,7 +1874,8 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
           },
           (Math.round(item.dailyrainfallcum * 10) / 10).toFixed(1),
           (Math.round(item.cummnormal * 10) / 10).toFixed(1),
-          (Math.round(item.cumdeparture * 10) / 10).toFixed(1) + "%",
+          !Number.isNaN(item.dailyrainfall) ? item.cumdeparture !== null && item.cumdeparture !== undefined && !Number.isNaN(item.cumdeparture) ? Math.round(item.cumdeparture) + "%" : '-100%' : ' ',
+          // (Math.round(item.cumdeparture * 10) / 10).toFixed(1) + "%",
           {
             content: this.getCatForRainfall(!Number.isNaN(item.cumdeparture) ? Math.round(item.cumdeparture) : -100, !Number.isNaN(item.dailyrainfall) ? 'notnan' : ' '),
             styles: { fillColor: this.getColorForRainfall(!Number.isNaN(item.cumdeparture) ? Math.round(item.cumdeparture) : -100, !Number.isNaN(item.dailyrainfall) ? 'notnan' : ' ') }, // Background color
@@ -1888,7 +1896,8 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
           },
           (Math.round(item.dailyrainfallcum * 10) / 10).toFixed(1),
           (Math.round(item.cummnormal * 10) / 10).toFixed(1),
-          (Math.round(item.cumdeparture * 10) / 10).toFixed(1) + "%",
+          !Number.isNaN(item.dailyrainfall) ? item.cumdeparture !== null && item.cumdeparture !== undefined && !Number.isNaN(item.cumdeparture) ? Math.round(item.cumdeparture) + "%" : '-100%' : ' ',
+          // (Math.round(item.cumdeparture * 10) / 10).toFixed(1) + "%",
           {
             content: this.getCatForRainfall(!Number.isNaN(item.cumdeparture) ? Math.round(item.cumdeparture) : -100, !Number.isNaN(item.dailyrainfall) ? 'notnan' : ' '),
             styles: { fillColor: this.getColorForRainfall(!Number.isNaN(item.cumdeparture) ? Math.round(item.cumdeparture) : -100, !Number.isNaN(item.dailyrainfall) ? 'notnan' : ' ') }, // Background color
@@ -1904,7 +1913,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
           styles: { fillColor: '#85ff86' },
         },
         {
-          content: 'COUNTRY',
+          content: 'COUNTRY : INDIA',
           styles: { fillColor: '#85ff86' },
         },
         {
@@ -1955,7 +1964,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     const imgX = pageWidth - imgWidth - imgMargin;
     const imgData150 = '/assets/images/IMD150(BGR).png';
     doc.addImage(imgData150, 'PNG', imgX, marginTop, 15, 20);
-    const imgData = '/assets/images/IMDlogo_Ipart.png';
+    const imgData = '/assets/images/IMDlogo_Ipart-iris.png';
     doc.addImage(imgData, 'PNG', marginLeft, marginTop, 15, 20);
     doc.setFontSize(12);
     doc.setTextColor(0, 0, 0); // Set font color to black
@@ -2128,14 +2137,16 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
           item.subdivname,
           (Math.round(item.dailyrainfall * 10) / 10).toFixed(1),
           (Math.round(item.normalrainfall * 10) / 10).toFixed(1),
-          (Math.round(item.dailydeparturerainfall * 10) / 10).toFixed(1) + "%",
+          (item.dailyrainfall !== null && item.dailyrainfall !== undefined && !Number.isNaN(item.dailyrainfall) ? item.dailyrainfall.toFixed(1) : ' ') == ' ' ? ' ' : (item.dailydeparturerainfall !== null && item.dailydeparturerainfall !== undefined && !Number.isNaN(item.dailydeparturerainfall) ? Math.round(item.dailydeparturerainfall) + "%" : 'NA'),
+          // (Math.round(item.dailydeparturerainfall * 10) / 10).toFixed(1) + "%",
           {
             content: this.getCatForRainfall(Math.round(item.dailydeparturerainfall), item.dailyrainfall !== null && item.dailyrainfall !== undefined && !Number.isNaN(item.dailyrainfall) ? item.dailyrainfall.toFixed(1) : ' '),
             styles: { fillColor: this.getColorForRainfall(Math.round(item.dailydeparturerainfall), item.dailyrainfall !== null && item.dailyrainfall !== undefined && !Number.isNaN(item.dailyrainfall) ? item.dailyrainfall.toFixed(1) : ' ') }, // Background color
           },
           (Math.round(item.dailyrainfallcum * 10) / 10).toFixed(1),
           (Math.round(item.cummnormal * 10) / 10).toFixed(1),
-          (Math.round(item.cumdeparture * 10) / 10).toFixed(1) + "%",
+          !Number.isNaN(item.dailyrainfall) ? item.cumdeparture !== null && item.cumdeparture !== undefined && !Number.isNaN(item.cumdeparture) ? Math.round(item.cumdeparture) + "%" : '-100%' : ' ',
+          // (Math.round(item.cumdeparture * 10) / 10).toFixed(1) + "%",
           {
             content: this.getCatForRainfall(!Number.isNaN(item.cumdeparture) ? Math.round(item.cumdeparture) : -100, !Number.isNaN(item.dailyrainfall) ? 'notnan' : ' '),
             styles: { fillColor: this.getColorForRainfall(!Number.isNaN(item.cumdeparture) ? Math.round(item.cumdeparture) : -100, !Number.isNaN(item.dailyrainfall) ? 'notnan' : ' ') }, // Background color
@@ -2149,14 +2160,16 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
           item.subdivname,
           (Math.round(item.dailyrainfall * 10) / 10).toFixed(1),
           (Math.round(item.normalrainfall * 10) / 10).toFixed(1),
-          (Math.round(item.dailydeparturerainfall * 10) / 10).toFixed(1) + "%",
+          (item.dailyrainfall !== null && item.dailyrainfall !== undefined && !Number.isNaN(item.dailyrainfall) ? item.dailyrainfall.toFixed(1) : ' ') == ' ' ? ' ' : (item.dailydeparturerainfall !== null && item.dailydeparturerainfall !== undefined && !Number.isNaN(item.dailydeparturerainfall) ? Math.round(item.dailydeparturerainfall) + "%" : 'NA'),
+          // (Math.round(item.dailydeparturerainfall * 10) / 10).toFixed(1) + "%",
           {
             content: this.getCatForRainfall(Math.round(item.dailydeparturerainfall), item.dailyrainfall !== null && item.dailyrainfall !== undefined && !Number.isNaN(item.dailyrainfall) ? item.dailyrainfall.toFixed(1) : ' '),
             styles: { fillColor: this.getColorForRainfall(Math.round(item.dailydeparturerainfall), item.dailyrainfall !== null && item.dailyrainfall !== undefined && !Number.isNaN(item.dailyrainfall) ? item.dailyrainfall.toFixed(1) : ' ') }, // Background color
           },
           (Math.round(item.dailyrainfallcum * 10) / 10).toFixed(1),
           (Math.round(item.cummnormal * 10) / 10).toFixed(1),
-          (Math.round(item.cumdeparture * 10) / 10).toFixed(1) + "%",
+          !Number.isNaN(item.dailyrainfall) ? item.cumdeparture !== null && item.cumdeparture !== undefined && !Number.isNaN(item.cumdeparture) ? Math.round(item.cumdeparture) + "%" : '-100%' : ' ',
+          // (Math.round(item.cumdeparture * 10) / 10).toFixed(1) + "%",
           {
             content: this.getCatForRainfall(!Number.isNaN(item.cumdeparture) ? Math.round(item.cumdeparture) : -100, !Number.isNaN(item.dailyrainfall) ? 'notnan' : ' '),
             styles: { fillColor: this.getColorForRainfall(!Number.isNaN(item.cumdeparture) ? Math.round(item.cumdeparture) : -100, !Number.isNaN(item.dailyrainfall) ? 'notnan' : ' ') }, // Background color
@@ -2172,7 +2185,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
           styles: { fillColor: '#85ff86' },
         },
         {
-          content: 'COUNTRY',
+          content: 'COUNTRY : INDIA',
           styles: { fillColor: '#85ff86' },
         },
         {
@@ -2221,7 +2234,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     const imgX = pageWidth - imgWidth - imgMargin;
     const imgData150 = '/assets/images/IMD150(BGR).png';
     doc.addImage(imgData150, 'PNG', imgX, marginTop, 15, 20);
-    const imgData = '/assets/images/IMDlogo_Ipart.png';
+    const imgData = '/assets/images/IMDlogo_Ipart-iris.png';
     doc.addImage(imgData, 'PNG', marginLeft, marginTop, 15, 20);
     doc.setFontSize(12);
     doc.setTextColor(0, 0, 0); // Set font color to black
@@ -2319,14 +2332,16 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       item.RegionName,
       (Math.round(item.dailyrainfall * 10) / 10).toFixed(1),
       (Math.round(item.normalrainfall * 10) / 10).toFixed(1),
-      (Math.round(item.dailydeparturerainfall * 10) / 10).toFixed(1) + "%",
+      (item.dailyrainfall !== null && item.dailyrainfall !== undefined && !Number.isNaN(item.dailyrainfall) ? item.dailyrainfall.toFixed(1) : ' ') == ' ' ? ' ' : (item.dailydeparturerainfall !== null && item.dailydeparturerainfall !== undefined && !Number.isNaN(item.dailydeparturerainfall) ? Math.round(item.dailydeparturerainfall) + "%" : 'NA'),
+      // (Math.round(item.dailydeparturerainfall * 10) / 10).toFixed(1) + "%",
       {
         content: this.getCatForRainfall(item.dailydeparturerainfall),
         styles: { fillColor: this.getColorForRainfall(item.dailydeparturerainfall) }, // Background color
       },
       (Math.round(item.dailyrainfallcum * 10) / 10).toFixed(1),
       (Math.round(item.cummnormal * 10) / 10).toFixed(1),
-      (Math.round(item.cumdeparture * 10) / 10).toFixed(1) + "%",
+      !Number.isNaN(item.dailyrainfall) ? item.cumdeparture !== null && item.cumdeparture !== undefined && !Number.isNaN(item.cumdeparture) ? Math.round(item.cumdeparture) + "%" : '-100%' : ' ',
+      // (Math.round(item.cumdeparture * 10) / 10).toFixed(1) + "%",
       {
         content: this.getCatForRainfall(item.cumdeparture),
         styles: { fillColor: this.getColorForRainfall(item.cumdeparture) }, // Background color
@@ -2349,7 +2364,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     const imgX = pageWidth - imgWidth - imgMargin;
     const imgData150 = '/assets/images/IMD150(BGR).png';
     doc.addImage(imgData150, 'PNG', imgX, marginTop, 15, 20);
-    const imgData = '/assets/images/IMDlogo_Ipart.png';
+    const imgData = '/assets/images/IMDlogo_Ipart-iris.png';
     doc.addImage(imgData, 'PNG', marginLeft, marginTop, 15, 20);
     doc.setFontSize(12);
     doc.setTextColor(0, 0, 0); // Set font color to black
@@ -2440,17 +2455,19 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
 
     const rows = data.map((item, index) => [
       index + 1, // Serial number
-      'COUNTRY',
+      'COUNTRY : INDIA',
       (Math.round(item.dailyrainfall * 10) / 10).toFixed(1),
       (Math.round(item.normalrainfall * 10) / 10).toFixed(1),
-      (Math.round(item.dailydeparturerainfall * 10) / 10).toFixed(1) + "%",
+      (item.dailyrainfall !== null && item.dailyrainfall !== undefined && !Number.isNaN(item.dailyrainfall) ? item.dailyrainfall.toFixed(1) : ' ') == ' ' ? ' ' : (item.dailydeparturerainfall !== null && item.dailydeparturerainfall !== undefined && !Number.isNaN(item.dailydeparturerainfall) ? Math.round(item.dailydeparturerainfall) + "%" : 'NA'),
+      // (Math.round(item.dailydeparturerainfall * 10) / 10).toFixed(1) + "%",
       {
         content: this.getCatForRainfall(item.dailydeparturerainfall),
         styles: { fillColor: this.getColorForRainfall(item.dailydeparturerainfall) }, // Background color
       },
       (Math.round(item.dailyrainfallcum * 10) / 10).toFixed(1),
       (Math.round(item.cummnormal * 10) / 10).toFixed(1),
-      (Math.round(item.cumdeparture * 10) / 10).toFixed(1) + "%",
+      !Number.isNaN(item.dailyrainfall) ? item.cumdeparture !== null && item.cumdeparture !== undefined && !Number.isNaN(item.cumdeparture) ? Math.round(item.cumdeparture) + "%" : '-100%' : ' ',
+      // (Math.round(item.cumdeparture * 10) / 10).toFixed(1) + "%",
       {
         content: this.getCatForRainfall(item.cumdeparture),
         styles: { fillColor: this.getColorForRainfall(item.cumdeparture) }, // Background color
@@ -2472,7 +2489,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     const imgX = pageWidth - imgWidth - imgMargin;
     const imgData150 = '/assets/images/IMD150(BGR).png';
     doc.addImage(imgData150, 'PNG', imgX, marginTop, 15, 20);
-    const imgData = '/assets/images/IMDlogo_Ipart.png';
+    const imgData = '/assets/images/IMDlogo_Ipart-iris.png';
     doc.addImage(imgData, 'PNG', marginLeft, marginTop, 15, 20);
     doc.setFontSize(12);
     doc.setTextColor(0, 0, 0); // Set font color to black

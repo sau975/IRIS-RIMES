@@ -21,6 +21,7 @@ export class DailyWeeklyDistrictDepartureMapComponent implements OnInit, AfterVi
   @Input() previousWeekWeeklyEndDate: string = '';
   selectedDate: Date = new Date();
   selectedWeek: string = '';
+  selectedYear: string = '';
   isDaily: boolean = false;
   private initialZoom = 5;
   private map: L.Map = {} as L.Map;
@@ -105,8 +106,8 @@ export class DailyWeeklyDistrictDepartureMapComponent implements OnInit, AfterVi
   }
   weeklyDeparture(){
     var splitedDate = this.selectedWeek.split('&');
-    this.previousWeekWeeklyStartDate = splitedDate[0];
-    this.previousWeekWeeklyEndDate = splitedDate[1];
+    this.previousWeekWeeklyStartDate = this.selectedYear + splitedDate[0];
+    this.previousWeekWeeklyEndDate = this.selectedYear + splitedDate[1];
     this.weeklyDatesCalculation();
     this.fetchDataFromBackend();
   }
@@ -1284,7 +1285,7 @@ export class DailyWeeklyDistrictDepartureMapComponent implements OnInit, AfterVi
       startY: marginTop,
       margin: { left: marginLeft },
     };
-    const imgData = '/assets/images/IMDlogo_Ipart.png'; // Replace with the actual image path
+    const imgData = '/assets/images/IMDlogo_Ipart-iris.png'; // Replace with the actual image path
     doc.addImage(imgData, 'PNG', marginLeft, marginTop, 15, 20); // Adjust image dimensions as needed
     doc.setFontSize(12);
     doc.setTextColor(0, 0, 0); // Set font color to black

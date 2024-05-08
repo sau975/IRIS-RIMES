@@ -1,21 +1,31 @@
 <div>
   <button class="download" routerLink="../front-page/departure">Back</button>
   <div *ngIf="isDaily == false" class="row" style="margin-left: 400px;">
-    <div class="col-3">
+    <div class="col-2">
       <label>Select Week</label>
       <select class="form-control" [(ngModel)]="selectedWeek">
-        <option value="2024-02-15T00:00:00.999Z&2024-02-21T00:00:00.999Z">21 Mar 2024 - 27 Mar 2024</option>
-        <option value="2024-02-15T00:00:00.999Z&2024-02-21T00:00:00.999Z">14 Mar 2024 - 20 Mar 2024</option>
-        <option value="2024-02-15T00:00:00.999Z&2024-02-21T00:00:00.999Z">07 Mar 2024 - 13 Mar 2024</option>
-        <option value="2024-02-15T00:00:00.999Z&2024-02-21T00:00:00.999Z">29 Feb 2024 - 06 Mar 2024</option>
-        <option value="2024-02-15T00:00:00.999Z&2024-02-21T00:00:00.999Z">22 Feb 2024 - 28 Feb 2024</option>
-        <option value="2024-02-15T00:00:00.999Z&2024-02-21T00:00:00.999Z">15 Feb 2024 - 21 Feb 2024</option>
-        <option value="2024-02-08T00:00:00.999Z&2024-02-14T00:00:00.999Z">08 Feb 2024 - 14 Feb 2024</option>
-        <option value="2024-02-01T00:00:00.999Z&2024-02-07T00:00:00.999Z">01 Feb 2024 - 07 Feb 2024</option>
-        <option value="2024-01-25T00:00:00.999Z&2024-01-31T00:00:00.999Z">25 Jan 2024 - 31 Jan 2024</option>
-        <option value="2024-01-18T00:00:00.999Z&2024-01-24T00:00:00.999Z">18 Jan 2024 - 24 Jan 2024</option>
-        <option value="2024-01-11T00:00:00.999Z&2024-01-17T00:00:00.999Z">11 Jan 2024 - 17 Jan 2024</option>
-        <option value="2024-01-04T00:00:00.999Z&2024-01-10T00:00:00.999Z">04 Jan 2024 - 10 Jan 2024</option>
+        <option value="06-13T00:00:00.999Z&06-19T00:00:00.999Z">13 June - 19 June</option>
+        <option value="06-06T00:00:00.999Z&06-12T00:00:00.999Z">06 June - 12 June</option>
+        <option value="06-030T00:00:00.999Z&06-05T00:00:00.999Z">30 June - 05 June</option>
+        <option value="05-23T00:00:00.999Z&05-29T00:00:00.999Z">23 May - 29 May</option>
+        <option value="05-16T00:00:00.999Z&05-22T00:00:00.999Z">16 May - 22 May</option>
+        <option value="05-09T00:00:00.999Z&05-15T00:00:00.999Z">09 May - 15 May</option>
+        <option value="05-02T00:00:00.999Z&05-08T00:00:00.999Z">02 May - 08 May</option>
+        <option value="04-25T00:00:00.999Z&05-01T00:00:00.999Z">25 April - 01 May</option>
+      </select>
+    </div>
+    <div class="col-1">
+      <label>Select Year</label>
+      <select class="form-control" [(ngModel)]="selectedYear">
+        <option value="2025-">2025</option>
+        <option value="2024-">2024</option>
+        <option value="2023-">2023</option>
+        <option value="2022-">2022</option>
+        <option value="2021-">2021</option>
+        <option value="2020-">2020</option>
+        <option value="2019-">2019</option>
+        <option value="2018-">2018</option>
+        <option value="2017-">2017</option>
       </select>
     </div>
     <div class="col-3 mt-4">
@@ -119,7 +129,7 @@
                       </button>
                     </td>
                   </tr>
-       
+
                 </tbody>
               </table>
               <div class="datacont">

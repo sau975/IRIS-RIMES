@@ -20,6 +20,7 @@ export class DailyWeeklyStateDepartureMapComponent implements OnInit, AfterViewI
   @Input() previousWeekWeeklyEndDate: string = '';
   selectedDate: Date = new Date();
   selectedWeek: string = '';
+  selectedYear: string = '';
   isDaily: boolean = false;
   private initialZoom = 5;
   private map1: L.Map = {} as L.Map;
@@ -108,8 +109,8 @@ export class DailyWeeklyStateDepartureMapComponent implements OnInit, AfterViewI
   }
   weeklyDeparture(){
     var splitedDate = this.selectedWeek.split('&');
-    this.previousWeekWeeklyStartDate = splitedDate[0];
-    this.previousWeekWeeklyEndDate = splitedDate[1];
+    this.previousWeekWeeklyStartDate = this.selectedYear + splitedDate[0];
+    this.previousWeekWeeklyEndDate = this.selectedYear + splitedDate[1];
     this.weeklyDatesCalculation();
     this.fetchDataFromBackend();
   }
@@ -867,7 +868,7 @@ export class DailyWeeklyStateDepartureMapComponent implements OnInit, AfterViewI
 
 
   private updateLegendDetailsPositionsubdiv(fullscreen: boolean): void {
-    const legendDetailsElement = document.querySelector('.legenddetails') as HTMLElement; 
+    const legendDetailsElement = document.querySelector('.legenddetails') as HTMLElement;
     if (legendDetailsElement) {
       if (fullscreen) {
         legendDetailsElement.style.right = '50px';
