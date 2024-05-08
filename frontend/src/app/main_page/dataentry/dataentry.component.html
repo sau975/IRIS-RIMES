@@ -167,7 +167,7 @@
             <td style="border: 1px solid black">{{ station.stationname }}</td>
             <td style="border: 1px solid black">{{ station.stationid }}</td>
             <td style="border: 1px solid black">
-              <input type="number" id="rainfall" #rainFallElementRef name="rainfall" (input)="station.RainFall = ''" [(ngModel)]="station.RainFall"
+              <input type="text" id="rainfall" #rainFallElementRef name="rainfall" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1').replace(/(\.\d{1}).+/g, '$1');" (input)="station.RainFall = ''" [(ngModel)]="station.RainFall"
                 required style="border: none;" step="0.1" (input)="showMessage(rainFallElementRef)">
             </td>
 
@@ -248,9 +248,9 @@
               <input type="radio" id="old" name="Old" value="old" [(ngModel)]="data.newOrOld">
                 <label for="old">OLD</label><br>
             </td>
-            <td style="border: 1px solid black"><input type="number" name="lat" required
+            <td style="border: 1px solid black"><input type="number" name="lat" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1').replace(/(\.\d{4}).+/g, '$1');" required
                 style="border: none; width: 50px" [(ngModel)]="data.lat"></td>
-            <td style="border: 1px solid black"><input type="number" name="lng" required
+            <td style="border: 1px solid black"><input type="number" name="lng" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1').replace(/(\.\d{4}).+/g, '$1');" required
                 style="border: none; width: 50px" [(ngModel)]="data.lng"></td>
             <td style="border: 1px solid black"><input type="date" name="activationDate" style="border: none;"
                 [ngModel]="data.activationDate | date:'yyyy-MM-dd'" (ngModelChange)="data.activationDate = $event"></td>
@@ -302,9 +302,9 @@
               <input type="radio" id="old" name="Old" value="old" [(ngModel)]="editData.newOrOld">
                 <label for="old">OLD</label><br>
             </td>
-            <td style="border: 1px solid black"><input type="number" name="lat" required
+            <td style="border: 1px solid black"><input type="number" name="lat" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1').replace(/(\.\d{4}).+/g, '$1');" required
                 style="border: none; width: 50px" [(ngModel)]="editData.lat"></td>
-            <td style="border: 1px solid black"><input type="number" name="lng" required
+            <td style="border: 1px solid black"><input type="number" name="lng" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1').replace(/(\.\d{4}).+/g, '$1');" required
                 style="border: none; width: 50px" [(ngModel)]="editData.lng"></td>
             <td style="border: 1px solid black"><input type="date" name="activationDate" style="border: none;"
                 [ngModel]="editData.activationDate | date:'yyyy-MM-dd'"

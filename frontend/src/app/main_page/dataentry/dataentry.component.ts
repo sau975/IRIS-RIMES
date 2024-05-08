@@ -335,7 +335,7 @@ export class DataentryComponent {
     }
     if (Number(elementRef.value) > 100) {
       elementRef.style.background = 'red'
-      alert("Rainfall is greater than 400mm")
+      alert("Rainfall is greater than 100mm")
     } else {
       elementRef.style.background = ''
     }
