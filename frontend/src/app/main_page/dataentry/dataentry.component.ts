@@ -333,9 +333,9 @@ export class DataentryComponent {
       elementRef.style.background = 'red';
       // alert("Please enter a valid number with only one decimal place");
     }
-    if (Number(elementRef.value) > 400) {
+    if (Number(elementRef.value) > 100) {
       elementRef.style.background = 'red'
-      alert("Rainfall is greater than 400mm")
+      alert("Rainfall is greater than 100mm")
     } else {
       elementRef.style.background = ''
     }

@@ -58,6 +58,7 @@ const routes: Routes = [
   { path: 'normal-state-map', component: NormalStateMapComponent, canActivate: [AuthGuard] },
   { path: 'normal-subdivision-map', component: NormalSubdivisionMapComponent, canActivate: [AuthGuard] },
   { path: 'normal-homogenous-map', component: NormalHomogenousMapComponent, canActivate: [AuthGuard] },
+  { path: 'state-dist-rainfall', component: StatewiseDistRainfallComponent, canActivate: [AuthGuard] },
   { path: 'underprogress', component: UnderprogressComponent , canActivate: [AuthGuard] },
   { path: 'QpfverificationReports2020', component: QpfverificationReports2020Component , canActivate: [AuthGuard] },
   { path: 'QpfverificationReports2021', component: QpfverificationReports2021Component , canActivate: [AuthGuard] },

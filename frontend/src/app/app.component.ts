@@ -10,50 +10,10 @@ import { DataService } from './data.service';
 export class AppComponent implements OnInit {
   title = 'CRIS';
   loadedFeature = 'Departure';
-  // emailGroups:any[]=[];
-  // emails:any[]=[];
 
-  constructor(
-    private dataService: DataService
-  ){
-    // this.CreateColumn();
+  constructor(private dataService: DataService){
     this.scheduleFunction();
-    // this.dataService.existingstationdata().subscribe(res => {
-    //   let resdata = this.groupByMc(res);
-    //   let emaildata:any[]=[];
-    //   resdata.forEach(stn => {
-    //     stn.mc.forEach((s:any) => {
-    //       emaildata.push({station: s.station, rainfall: s[this.dateCalculation()]});
-    //     })
-    //   })
-    //   console.log(this.generateTextFormat(emaildata));
-    // })
   }
-
-  // generateTextFormat(data:any): string {
-  //   let text = '';
-  //   for (let entry of data) {
-  //     text += `${entry['station']}: ${entry['rainfall']}mm\n`;
-  //   }
-  //   return text;
-  // }
-
-  // groupByMc(mc:any) {
-  //   const groups:any = {};
-  //   mc.forEach((station:any) => {
-  //     const rmc_mc:any = station.rmc_mc;
-  //     if (!groups[rmc_mc]) {
-  //       groups[rmc_mc] = [];
-  //     }
-  //     groups[rmc_mc].push(station);
-  //   });
-  //   const result = [];
-  //   for (const rmc_mc in groups) {
-  //     result.push({ rmc_mc: rmc_mc, mc: groups[rmc_mc] });
-  //   }
-  //   return result;
-  // }
-
   dateCalculation() {
     const months = [
       'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
@@ -68,14 +28,6 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // this.dataService.getEmailGroup().subscribe(res => {
-    //   this.emailGroups = res;
-    //   this.emailGroups.forEach(x => {
-    //     JSON.parse(x.emails).forEach((j:any) => {
-    //       this.emails.push(j);
-    //     })
-    //   })
-    // })
   }
 
   onNavigate(feature:string){

@@ -21,6 +21,7 @@ export class DailyWeeklyDistrictDepartureMapComponent implements OnInit, AfterVi
   @Input() previousWeekWeeklyEndDate: string = '';
   selectedDate: Date = new Date();
   selectedWeek: string = '';
+  selectedYear: string = '';
   isDaily: boolean = false;
   private initialZoom = 5;
   private map: L.Map = {} as L.Map;
@@ -105,8 +106,8 @@ export class DailyWeeklyDistrictDepartureMapComponent implements OnInit, AfterVi
   }
   weeklyDeparture(){
     var splitedDate = this.selectedWeek.split('&');
-    this.previousWeekWeeklyStartDate = splitedDate[0];
-    this.previousWeekWeeklyEndDate = splitedDate[1];
+    this.previousWeekWeeklyStartDate = this.selectedYear + splitedDate[0];
+    this.previousWeekWeeklyEndDate = this.selectedYear + splitedDate[1];
     this.weeklyDatesCalculation();
     this.fetchDataFromBackend();
   }
