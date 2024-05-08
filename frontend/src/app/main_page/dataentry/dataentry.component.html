@@ -129,7 +129,8 @@
         </div>
         <div class="col-2">
           <button (click)="uploadFile()" class="btn btn-success">Upload Stations</button> <br>
-          <a href="javascript:void(0)" (click)="downloadStationSampleFile()">Sample File</a>
+          <a href="javascript:void(0)" (click)="downloadStationInstructionFile()">Instruction</a>
+          <a href="javascript:void(0)" style="margin-left: 10px;" (click)="downloadStationSampleFile()">Sample File</a>
         </div>
         <div class="mb-3 col-2">
           <input [disabled]="loggedInUserObject.data[0].mcorhq == 'mc'" class="form-control" type="file"

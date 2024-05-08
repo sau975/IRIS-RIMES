@@ -467,6 +467,10 @@ export class DataentryComponent {
     window.open('/assets/station_sample_file.csv', '_blank');
   }
 
+  downloadStationInstructionFile(){
+    window.open('/assets/Instruction for adding new station.docx', '_blank');
+  }
+
   exportAsXLSX(): void {
     this.exportAsExcelFile(this.sampleFile(), 'export-to-excel');
     // this.exportAsExcelFile(this.filteredStations, 'export-to-excel');
