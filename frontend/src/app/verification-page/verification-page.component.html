@@ -43,20 +43,32 @@
     </tbody>
   </table>
   <div class="navbar">
-    <app-multi-select-dropdown [list]="regionList" [type]="'Region'"
-      (shareCheckedList)="onChangeRegion($event)">
-    </app-multi-select-dropdown>
-
-    <app-multi-select-dropdown [list]="filteredMcs" [type]="'MC'" (shareCheckedList)="onChangeMc($event)">
-    </app-multi-select-dropdown>
-
-    <app-multi-select-dropdown [list]="filteredStates" [type]="'State'"
-      (shareCheckedList)="onChangeState($event)">
-    </app-multi-select-dropdown>
-
-    <app-multi-select-dropdown [list]="filteredDistricts" [type]="'District'"
-      (shareCheckedList)="onChangeDistrict($event)">
-    </app-multi-select-dropdown>
+    <div class="col-2">
+      <p-multiSelect [options]="regionList" [(ngModel)]="selectedRegions" (onChange)="onChangeRegion()" (onSelectAllChange)="onChangeRegion()" optionLabel="name" placeholder="Select Regions" />
+      <!-- <app-multi-select-dropdown [list]="regionList" [type]="'Region'" (shareCheckedList)="onChangeRegion($event)">
+      </app-multi-select-dropdown> -->
+    </div>
+    <div class="col-2">
+      <p-multiSelect [options]="filteredMcs" [(ngModel)]="selectedMcs" (onChange)="onChangeMc()" (onSelectAllChange)="onChangeMc()" optionLabel="name" placeholder="Select MCs" />
+      <!-- <app-multi-select-dropdown [list]="filteredMcs" [type]="'MC'" (shareCheckedList)="onChangeMc($event)">
+      </app-multi-select-dropdown> -->
+    </div>
+    <div class="col-2">
+      <p-multiSelect [options]="filteredRMcs" [(ngModel)]="selectedRMcs" (onChange)="onChangeRMc()" (onSelectAllChange)="onChangeRMc()" optionLabel="name" placeholder="Select RMCs" />
+      <!-- <app-multi-select-dropdown [list]="filteredMcs" [type]="'MC'" (shareCheckedList)="onChangeMc($event)">
+      </app-multi-select-dropdown> -->
+    </div>
+    <div class="col-2">
+      <p-multiSelect [options]="filteredStates" [(ngModel)]="selectedStates" (onChange)="onChangeState()" (onSelectAllChange)="onChangeState()" optionLabel="name" placeholder="Select States" />
+      <!-- <app-multi-select-dropdown [list]="filteredStates" [type]="'State'" (shareCheckedList)="onChangeState($event)">
+      </app-multi-select-dropdown> -->
+    </div>
+    <div class="col-2">
+      <p-multiSelect [options]="filteredDistricts" [(ngModel)]="selectedDistricts" (onChange)="onChangeDistrict()" (onSelectAllChange)="onChangeDistrict()" optionLabel="name" placeholder="Select Districts" />
+      <!-- <app-multi-select-dropdown [list]="filteredDistricts" [type]="'District'"
+        (shareCheckedList)="onChangeDistrict($event)">
+      </app-multi-select-dropdown> -->
+    </div>
 
     <div class="col-1">
       <!-- <label for="district">Select Date :</label> -->
