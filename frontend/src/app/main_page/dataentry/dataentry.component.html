@@ -86,8 +86,9 @@
   </div> -->
   <div class="navbar">
     <div class="col-2">
-      <app-multi-select-dropdown [list]="regionList" [type]="'Region'" (shareCheckedList)="onChangeRegion($event)">
-      </app-multi-select-dropdown>
+      <p-multiSelect [options]="regionList" [(ngModel)]="selectedRegions" (onChange)="onChangeRegion()" (onSelectAllChange)="onSelectAllChange($event)" optionLabel="name" placeholder="Select Cities" />
+      <!-- <app-multi-select-dropdown [list]="regionList" [type]="'Region'" (shareCheckedList)="onChangeRegion($event)">
+      </app-multi-select-dropdown> -->
     </div>
     <div class="col-2">
       <app-multi-select-dropdown [list]="filteredMcs" [type]="'MC'" (shareCheckedList)="onChangeMc($event)">

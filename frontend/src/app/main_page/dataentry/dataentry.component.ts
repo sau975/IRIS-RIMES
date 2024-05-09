@@ -108,11 +108,14 @@ export class DataentryComponent {
     this.clearRainfallFileInput();
   }
 
-  onChangeRegion(checkedValues:any){
-    this.selectedRegions = checkedValues;
+  onSelectAllChange(ev:any){
+console.log(ev, "[[[[[[[[[[[")
+  }
+  onChangeRegion(){
+    console.log(this.selectedRegions, "0000000000")
     let tempMcs = this.existingstationdata.filter(item => {
-      return checkedValues.some((value:any) => {
-        return item.region == value;
+      return this.selectedRegions.some((value:any) => {
+        return item.region == value.name;
       });
     });
     let tempfilteredMcs = Array.from(new Set(tempMcs.map(a => a.rmc_mc)));
