@@ -47,7 +47,7 @@ export class DailyStateMapComponent {
     private dataService: DataService,
     private router: Router
     ) {
-    let localDailyDate:any = localStorage.getItem('dailyDate')
+    let localDailyDate : any = localStorage.getItem('dailyDate')
     if(localDailyDate){
       let dailyDate = JSON.parse(localDailyDate);
       this.today.setDate(dailyDate.date)
@@ -100,6 +100,7 @@ export class DailyStateMapComponent {
     this.currentDateDaily = `${this.dd.padStart(2, '0')}_${currmonth}_${selectedYear}`;
     console.log(this.currentDateDaily, "dateeeeee")
   }
+
   fetchDataFromBackend(): void {
     this.dataService.fetchData().subscribe(
       (data) => {
@@ -345,11 +346,13 @@ export class DailyStateMapComponent {
   }
 
   private initMap(): void {
+
     this.map1 = L.map('map1', {
       center: [23, 76.9629],
       zoom: this.initialZoom,
       scrollWheelZoom: false
     });
+
     this.map1.on('fullscreenchange', () => {
       if (this.isFullscreen()) {
         this.map1.setZoom(this.initialZoom);
@@ -368,6 +371,8 @@ export class DailyStateMapComponent {
     });
     this.map1.addControl(fullscreenControl);
   }
+
+  
   private isFullscreen(): boolean {
     return !!(document.fullscreenElement || document.fullscreenElement ||
       document.fullscreenElement || document.fullscreenElement);
@@ -687,6 +692,5 @@ export class DailyStateMapComponent {
         link.click();
       });
   }
-
 }
 

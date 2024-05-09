@@ -72,6 +72,7 @@ import { SendEmailComponent } from './send-email/send-email.component';
 import { AutoEmailSetupComponent } from './auto-email-setup/auto-email-setup.component';
 import { DefinedEmailGroupComponent } from './defined-email-group/defined-email-group.component';
 import { EmailLogComponent } from './email-log/email-log.component';
+import { StatewiseDistRainfallComponent } from './statewise-dist-rainfall/statewise-dist-rainfall.component';
 
 @NgModule({
   declarations: [
@@ -120,6 +121,7 @@ import { EmailLogComponent } from './email-log/email-log.component';
     AutoEmailSetupComponent,
     DefinedEmailGroupComponent,
     EmailLogComponent
+    StatewiseDistRainfallComponent
   ],
   imports: [
     PdfViewerModule,

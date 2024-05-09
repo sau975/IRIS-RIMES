@@ -42,6 +42,7 @@ import { SendEmailComponent } from './send-email/send-email.component';
 import { AutoEmailSetupComponent } from './auto-email-setup/auto-email-setup.component';
 import { DefinedEmailGroupComponent } from './defined-email-group/defined-email-group.component';
 import { EmailLogComponent } from './email-log/email-log.component';
+import { StatewiseDistRainfallComponent } from './statewise-dist-rainfall/statewise-dist-rainfall.component';
 
 
 const routes: Routes = [
@@ -61,6 +62,7 @@ const routes: Routes = [
   { path: 'normal-state-map', component: NormalStateMapComponent, canActivate: [AuthGuard] },
   { path: 'normal-subdivision-map', component: NormalSubdivisionMapComponent, canActivate: [AuthGuard] },
   { path: 'normal-homogenous-map', component: NormalHomogenousMapComponent, canActivate: [AuthGuard] },
+  { path: 'state-dist-rainfall', component: StatewiseDistRainfallComponent, canActivate: [AuthGuard] },
   { path: 'underprogress', component: UnderprogressComponent , canActivate: [AuthGuard] },
   { path: 'QpfverificationReports2020', component: QpfverificationReports2020Component , canActivate: [AuthGuard] },
   { path: 'QpfverificationReports2021', component: QpfverificationReports2021Component , canActivate: [AuthGuard] },
