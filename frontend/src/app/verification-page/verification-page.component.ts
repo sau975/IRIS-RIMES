@@ -10,9 +10,12 @@ export class VerificationPageComponent {
   selectedRegions: string[] = [];
   selectedStates: string[] = [];
   selectedMcs: string[] = [];
+  selectedRMcs: string[] = [];
+  selectedDistricts: string[] = [];
   tempfilteredStations: any[] = [];
   regionList: any[] = [];
   filteredMcs: any[] = [];
+  filteredRMcs: any[] = [];
   filteredStates: any[] = [];
   filteredDistricts:any[]=[];
   filteredStations:any[]=[];
@@ -56,43 +59,61 @@ export class VerificationPageComponent {
     this.todayDate = yyyy + '-' + mm + '-' + dd;
     }
 
-    onChangeRegion(checkedValues:any){
-      this.selectedRegions = checkedValues;
+    onChangeRegion(){
       let tempMcs = this.existingstationdata.filter(item => {
-        return checkedValues.some((value:any) => {
-          return item.region == value;
+        return this.selectedRegions.some((value:any) => {
+          return item.region == value.name;
         });
       });
       let tempfilteredMcs = Array.from(new Set(tempMcs.map(a => a.rmc_mc)));
-      this.filteredMcs = tempfilteredMcs.map(a => { return {name: a}});
+
+      tempfilteredMcs.forEach(m => {
+        if(m.split(" ")[0] == "MC"){
+          this.filteredMcs.push({name: m})
+        }
+      });
+
+      tempfilteredMcs.forEach(m => {
+        if(m.split(" ")[0] == "RMC"){
+          this.filteredRMcs.push({name: m})
+        }
+      });
     }
 
-    onChangeMc(checkedValues:any){
-      this.selectedMcs = checkedValues;
+    onChangeMc(){
       let tempStates = this.existingstationdata.filter(item => {
-        return checkedValues.some((value:any) => {
-          return item.rmc_mc == value;
+        return this.selectedMcs.some((value:any) => {
+          return item.rmc_mc == value.name;
         });
       });
       let tempfilteredStates = Array.from(new Set(tempStates.map(a => a.state)));
       this.filteredStates = tempfilteredStates.map(a => { return {name: a}});
     }
 
-    onChangeState(checkedValues:any){
-      this.selectedStates = checkedValues;
+    onChangeRMc(){
+      let tempStates = this.existingstationdata.filter(item => {
+        return this.selectedRMcs.some((value:any) => {
+          return item.rmc_mc == value.name;
+        });
+      });
+      let tempfilteredStates = Array.from(new Set(tempStates.map(a => a.state)));
+      this.filteredStates = tempfilteredStates.map(a => { return {name: a}});
+    }
+
+    onChangeState(){
       let tempDistricts = this.existingstationdata.filter(item => {
-        return checkedValues.some((value:any) => {
-          return item.state == value;
+        return this.selectedStates.some((value:any) => {
+          return item.state == value.name;
         });
       })
       let tempfilteredDistricts = Array.from(new Set(tempDistricts.map(a => a.district)));
       this.filteredDistricts = tempfilteredDistricts.map(a => { return {name: a}});
     }
 
-    onChangeDistrict(checkedValues:any){
+    onChangeDistrict(){
       let tempStations = this.existingstationdata.filter(item => {
-        return checkedValues.some((value:any) => {
-          return item.district == value;
+        return this.selectedDistricts.some((value:any) => {
+          return item.district == value.name;
         });
       })
       this.tempfilteredStations = Array.from(new Set(tempStations.map(a => a.station)));

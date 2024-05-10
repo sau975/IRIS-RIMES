@@ -38,6 +38,10 @@ import { YearlyStationStatisticsComponent } from './yearly-station-statistics/ye
 import { EmailDisseminationComponent } from './email-dissemination/email-dissemination.component';
 import { RealtimeStationDataComponent } from './realtime-station-data/realtime-station-data.component';
 import { LogInfoContainerComponent } from './log-info-container/log-info-container.component';
+import { SendEmailComponent } from './send-email/send-email.component';
+import { AutoEmailSetupComponent } from './auto-email-setup/auto-email-setup.component';
+import { DefinedEmailGroupComponent } from './defined-email-group/defined-email-group.component';
+import { EmailLogComponent } from './email-log/email-log.component';
 import { StatewiseDistRainfallComponent } from './statewise-dist-rainfall/statewise-dist-rainfall.component';
 
 
@@ -69,8 +73,16 @@ const routes: Routes = [
   { path: 'last-five-year-data', component: LastFiveYearDataComponent, canActivate: [AuthGuard] },
   { path: 'station-statistics', component: StationStatisticsComponent, canActivate: [AuthGuard] },
   { path: 'yearly-station-statistics', component: YearlyStationStatisticsComponent, canActivate: [AuthGuard] },
-  { path: 'email-dissemination', component: EmailDisseminationComponent, canActivate: [AuthGuard] },
   { path: 'realtime-station-data', component: RealtimeStationDataComponent, canActivate: [AuthGuard] },
+  { path: 'email-dissemination', component: EmailDisseminationComponent, canActivate: [AuthGuard], children:
+    [
+      { path: 'send-email', component: SendEmailComponent },
+      { path: 'auto-email', component: AutoEmailSetupComponent },
+      { path: 'defined-email', component: DefinedEmailGroupComponent },
+      { path: 'email-log', component: EmailLogComponent },
+      { path: '', redirectTo: 'send-email', pathMatch: 'full' }
+    ]
+   },
   { path: 'log-info', component: LogInfoContainerComponent, canActivate: [AuthGuard], children:
     [
       { path: 'station-log', component: DeletedStationLogComponent },

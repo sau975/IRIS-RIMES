@@ -159,10 +159,10 @@ export class NavbarComponent implements OnInit {
 
     // Calculate the start date (Thursday) and end date (Wednesday) of the week before the previous week
     const previousStartDate = new Date(startDate);
-    previousStartDate.setDate(startDate.getDate() - 7);
+    previousStartDate.setDate(startDate.getDate());
 
     const previousEndDate = new Date(endDate);
-    previousEndDate.setDate(endDate.getDate() - 7);
+    previousEndDate.setDate(endDate.getDate());
 
     return {
       start: previousStartDate,
