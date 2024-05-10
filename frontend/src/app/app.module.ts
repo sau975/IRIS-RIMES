@@ -120,7 +120,7 @@ import { StatewiseDistRainfallComponent } from './statewise-dist-rainfall/statew
     SendEmailComponent,
     AutoEmailSetupComponent,
     DefinedEmailGroupComponent,
-    EmailLogComponent
+    EmailLogComponent,
     StatewiseDistRainfallComponent
   ],
   imports: [
