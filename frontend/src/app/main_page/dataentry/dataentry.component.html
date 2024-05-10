@@ -42,95 +42,35 @@
       </tr>
     </tbody>
   </table>
-  <!-- <div class="navbar row">
-
-
-
-
-
-    <div class="col-2">
-      <label for="region">Select Region :</label>
-      <select name="region" class="form-control" id="region" [(ngModel)]="selectedRegion" (change)="onChangeRegion()">
-        <option *ngFor="let region of regionList" [value]="region">{{region}}</option>
-      </select>
-    </div>
-    <div class="col-2">
-      <label for="mcs">Select MC :</label>
-      <select name="mcs" class="form-control" id="mcs">
-        <option value="mc1">RMC/MC</option>
-        <option value="mc2">RMC/MC</option>
-        <option value="mc3">RMC/MC</option>
-        <option value="mc4">RMC/MC</option>
-      </select>
-    </div>
-    <div class="col-2">
-      <label for="state">Select State :</label>
-      <select name="state" class="form-control" id="state" [(ngModel)]="selectedState" (change)="onChangeState()">
-        <option *ngFor="let state of filteredStates" [value]="state">{{state}}</option>
-      </select>
-    </div>
-    <div class="col-2">
-      <label for="district">Select District :</label>
-      <select name="district" class="form-control" id="district" [(ngModel)]="selectedDistrict">
-        <option *ngFor="let district of filteredDistricts" [value]="district">{{district}}</option>
-      </select>
-    </div>
-    <div class="col-2">
-      <label for="district">Select Date :</label>
-      <input type="date" class="form-control" [min]="minDate" [ngModel]="selectedDate | date:'yyyy-MM-dd'"
-        (ngModelChange)="onChangeDate($event)">
-    </div>
-    <div class="col-1 mt-3">
-      <button class="btn btn-success" type="button" (click)="filterByDate()">Submit</button>
-    </div>
-  </div> -->
-  <!-- <div class="navbar">
-    <div class="col-2">
-      <app-multi-select-dropdown [list]="regionList" [type]="'Region'" (shareCheckedList)="onChangeRegion($event)">
-      </app-multi-select-dropdown>
-    </div>
-    <div class="col-2">
-      <app-multi-select-dropdown [list]="filteredMcs" [type]="'MC'" (shareCheckedList)="onChangeMc($event)">
-      </app-multi-select-dropdown>
-    </div>
-    <div class="col-2">
-      <app-multi-select-dropdown [list]="filteredStates" [type]="'State'" (shareCheckedList)="onChangeState($event)">
-      </app-multi-select-dropdown>
-    </div>
-    <div class="col-2">
-      <app-multi-select-dropdown [list]="filteredDistricts" [type]="'District'"
-        (shareCheckedList)="onChangeDistrict($event)">
-      </app-multi-select-dropdown>
-    </div>
-
-    <div class="col-2" style="display: flex; flex-direction: row;">
-      <label for="district">Select Date :</label>
-        <input type="date" class="form-control" [min]="minDate" [ngModel]="selectedDate | date:'yyyy-MM-dd'"
-          (ngModelChange)="onChangeDate($event)">
-    </div>
-    <div class="col-2 mt-2">
-      <button class="btn btn-success" type="button" (click)="filterByDate()">Submit</button>
-    </div>
-  </div> -->
+</div>
 
 <div class="mt-3 mb-0 p-3 bg-light rounded">
   <div class="row">
     <div class="col-12 col-md-6 col-lg-2 mb-2">
-      <app-multi-select-dropdown [list]="regionList" [type]="'Region'" (shareCheckedList)="onChangeRegion($event)">
-      </app-multi-select-dropdown>
+      <!-- <app-multi-select-dropdown [list]="regionList" [type]="'Region'" (shareCheckedList)="onChangeRegion($event)">
+      </app-multi-select-dropdown> -->
+      <p-multiSelect [options]="regionList" [(ngModel)]="selectedRegion" (onChange)="onChangeRegion()" (onSelectAllChange)="onChangeRegion()" optionLabel="name" placeholder="Select Regions" />
     </div>
     <div class="col-12 col-md-6 col-lg-2 mb-2">
-      <app-multi-select-dropdown [list]="filteredMcs" [type]="'MC'" (shareCheckedList)="onChangeMc($event)">
-      </app-multi-select-dropdown>
+      <!-- <app-multi-select-dropdown [list]="filteredMcs" [type]="'MC'" (shareCheckedList)="onChangeMc($event)">
+      </app-multi-select-dropdown> -->
+      <p-multiSelect [options]="filteredMcs" [(ngModel)]="selectedMcs" (onChange)="onChangeMc()" (onSelectAllChange)="onChangeMc()" optionLabel="name" placeholder="Select MCs" />
     </div>
     <div class="col-12 col-md-6 col-lg-2 mb-2">
-      <app-multi-select-dropdown [list]="filteredStates" [type]="'State'" (shareCheckedList)="onChangeState($event)">
-      </app-multi-select-dropdown>
+      <!-- <app-multi-select-dropdown [list]="filteredMcs" [type]="'MC'" (shareCheckedList)="onChangeMc($event)">
+      </app-multi-select-dropdown> -->
+      <p-multiSelect [options]="filteredRMcs" [(ngModel)]="selectedRMcs" (onChange)="onChangeRMc()" (onSelectAllChange)="onChangeRMc()" optionLabel="name" placeholder="Select RMCs" />
     </div>
     <div class="col-12 col-md-6 col-lg-2 mb-2">
-      <app-multi-select-dropdown [list]="filteredDistricts" [type]="'District'"
+      <!-- <app-multi-select-dropdown [list]="filteredStates" [type]="'State'" (shareCheckedList)="onChangeState($event)">
+      </app-multi-select-dropdown> -->
+      <p-multiSelect [options]="filteredStates" [(ngModel)]="selectedStates" (onChange)="onChangeState()" (onSelectAllChange)="onChangeState()" optionLabel="name" placeholder="Select States" />
+    </div>
+    <div class="col-12 col-md-6 col-lg-2 mb-2">
+      <!-- <app-multi-select-dropdown [list]="filteredDistricts" [type]="'District'"
         (shareCheckedList)="onChangeDistrict($event)">
-      </app-multi-select-dropdown>
+      </app-multi-select-dropdown> -->
+      <p-multiSelect [options]="filteredDistricts" [(ngModel)]="selectedDistricts" (onChange)="onChangeDistrict()" (onSelectAllChange)="onChangeDistrict()" optionLabel="name" placeholder="Select Districts" />
     </div>
 
     <div class="col-12 col-md-6 col-lg-2 mb-2" style="display: flex; flex-direction: row;">
@@ -158,7 +98,8 @@
         </div>
         <div class="col-md-2 col-sm-6 mb-3">
           <button (click)="uploadFile()" class="btn btn-success">Upload Stations</button> <br>
-          <a href="javascript:void(0)" (click)="downloadStationSampleFile()">Sample File</a>
+          <a href="javascript:void(0)" (click)="downloadStationInstructionFile()">Instruction</a>
+          <a href="javascript:void(0)" style="margin-left: 10px;" (click)="downloadStationSampleFile()">Sample File</a>
         </div>
         <div class="col-md-2 col-sm-6 mb-3">
           <input [disabled]="loggedInUserObject.data[0].mcorhq == 'mc'" class="form-control" type="file"
