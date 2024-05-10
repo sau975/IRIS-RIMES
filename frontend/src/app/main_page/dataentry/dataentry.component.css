@@ -15,14 +15,14 @@ h3{
   font-size: 20px;
   font-weight: 600;
 }
-.navbar{
+/* .navbar{
   margin: 20px 20px 0px 20px;
   height: 90px;
   background-color: white;
   text-align: center;
   padding: 10px;
   border-radius: 20px;
-}
+} */
 body{
   display: flex;
 }
