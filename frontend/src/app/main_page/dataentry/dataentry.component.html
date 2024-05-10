@@ -49,7 +49,7 @@
     <div class="col-12 col-md-6 col-lg-2 mb-2">
       <!-- <app-multi-select-dropdown [list]="regionList" [type]="'Region'" (shareCheckedList)="onChangeRegion($event)">
       </app-multi-select-dropdown> -->
-      <p-multiSelect [options]="regionList" [(ngModel)]="selectedRegion" (onChange)="onChangeRegion()" (onSelectAllChange)="onChangeRegion()" optionLabel="name" placeholder="Select Regions" />
+      <p-multiSelect [options]="regionList" [(ngModel)]="selectedRegions" (onChange)="onChangeRegion()" (onSelectAllChange)="onChangeRegion()" optionLabel="name" placeholder="Select Regions" />
     </div>
     <div class="col-12 col-md-6 col-lg-2 mb-2">
       <!-- <app-multi-select-dropdown [list]="filteredMcs" [type]="'MC'" (shareCheckedList)="onChangeMc($event)">
