@@ -15,12 +15,20 @@ const { Client } = require('pg');
 //   password: "iru@ADMIN123",
 //   database: "iru_imd_db"
 // });
+// const client = new Client( {
+//   host:"localhost",
+//   user: "postgres",
+//   port: 5432,
+//   password: "123456",
+//   database: "IRIS"
+// });
+
 const client = new Client( {
   host:"localhost",
   user: "postgres",
   port: 5432,
-  password: "123456",
-  database: "IRIS"
+  password: "12345",
+  database: "iris"
 });
 
 module.exports = client;
