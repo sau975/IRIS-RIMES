@@ -4352,12 +4352,12 @@ currentSlidingLayer:any;
     });
   }
 
-  slidingList : {id:number,region : string}[] = [
-    {id:0 , region:'INDIA_COUNTRY'},
-    {id:1 , region:'regions/EAST_AND_NORTH_EAST_INDIA'},
-    {id:2 , region:'regions/NORTH_WEST_INDIA'},
-    {id:3 , region:'regions/SOUTH_PENINSULA'},
-    {id:4 , region:'regions/C_India'},
+  slidingList : {id:number,region : string, lat:number, long:number,initZoom:number}[] = [
+    {id:0 , region:'INDIA_COUNTRY',lat:24,long:77,initZoom:4},
+    {id:1 , region:'regions/EAST_AND_NORTH_EAST_INDIA',lat:24,long:87,initZoom:5},
+    {id:2 , region:'regions/NORTH_WEST_INDIA',lat:29,long:77,initZoom:5},
+    {id:3 , region:'regions/SOUTH_PENINSULA',lat:17,long:77,initZoom:5},
+    {id:4 , region:'regions/C_India',lat:22,long:77,initZoom:5},
   ]
 
   slidingFunction(): void {
@@ -4365,6 +4365,7 @@ currentSlidingLayer:any;
     this.intervalId = setInterval(() => {
       const data = this.slidingList.find((d)=>d.id === this.slidingNo )
       this.currentSlide = data?.region || '';
+      this.slidingMap.setView([data?.lat||24,data?.long||77],data?.initZoom||4);
       this.loadSlidingGeoJSON();
       if(this.slidingNo<4){
         this.slidingNo = this.slidingNo + 1

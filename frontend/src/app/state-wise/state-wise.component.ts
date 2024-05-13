@@ -78,7 +78,7 @@ export class StateWiseComponent implements AfterViewInit {
     }
 
   StateList: { name: string, value: string, initZoom : number, lat:number , long:number }[] = [
-    {name : 'ANDAMAN & NICOBAR', value : "ST_ANDAMAN_&_NICOBAR_ISLANDS_(UT)", initZoom:6, lat : 10,long :92.29 },
+    {name : 'ANDAMAN & NICOBAR', value : "ST_ANDAMAN_&_NICOBAR_ISLANDS_(UT)", initZoom:6, lat : 10.941450,long :92.878067 },
      {name : 'ANDHRA PRADESH' , value : "ST_ANDHRA_PRADESH", initZoom:6,  lat :15,long :82},
     {name : 'ARUNACHAL PRADESH' , value : "ST_ARUNACHAL_PRADESH", initZoom:7,lat :28,long :95.3},
     {name :   'ASSAM' , value : "ST_ASSAM", initZoom:7, lat :26,long :93},
@@ -90,31 +90,151 @@ export class StateWiseComponent implements AfterViewInit {
     {name : 'DELHI' , value : "ST_DELHI_(UT)", initZoom:9, lat :28.6,long :77.1},
     {name : 'GOA' , value : "ST_GOA", initZoom:9, lat :15.299326,long :74.12},
     {name : 'GUJARAT' , value : "ST_GUJARAT", initZoom:7, lat :22.2,long :71.12},
-    // {name : 'HARYANA' , value : "ST_HARYANA", initZoom:6, center : [24,76]},
-    // {name : 'HIMACHAL PRADESH' , value : "ST_HIMACHAL_PRADESH", initZoom:6, center : [24,76]},
-    // {name : 'JAMMU AND KASHMIR' , value : "ST_JAMMU_&_KASHMIR_(UT)", initZoom:6, center : [24,76]},
-    // {name : 'JHARKHAND' , value : "ST_JHARKHAND", initZoom:6, center : [24,76]},
-    // {name : 'KARNATAKA' , value : "ST_KARNATAKA", initZoom:6, center : [24,76]},
-    // {name : 'KERALA' , value : "ST_KERALA", initZoom:6, center : [24,76]},
-    // {name : 'LADAKH' , value : "ST_LADAKH_(UT)", initZoom:6, center : [24,76]},
-    // {name :  'LAKSHADWEEP' , value : "ST_LAKSHADWEEP_(UT)", initZoom:6, center : [24,76]},
-    // {name :  'MADHYA PRADESH' , value : "ST_MADHYA_PRADESH", initZoom:6, center : [24,76]},
-    // {name :  'MAHARASHTRA' , value : "ST_MAHARASHTRA", initZoom:6, center : [24,76]},
-    // {name :  'MANIPUR' , value : "ST_MANIPUR", initZoom:6, center : [24,76]},
-    // {name :  'MEGHALAYA' , value : "ST_MEGHALAYA", initZoom:6, center : [24,76]},
-    // {name :  'MIZORAM' , value : "ST_MIZORAM", initZoom:6, center : [24,76]},
-    // {name :  'NAGALAND' , value : "ST_NAGALAND", initZoom:6, center : [24,76]},
-    // {name :  'ODISHA' , value : "ST_ODISHA", initZoom:6, center : [24,76]},
-    // {name :  'PONDICHERRY' , value : "ST_PUDUCHERRY_(UT)", initZoom:6, center : [24,76]},
-    // {name :  'PUNJAB' , value : "ST_PUNJAB", initZoom:6, center : [24,76]},
-    // {name :  'RAJASTHAN' , value : "ST_RAJASTHAN", initZoom:6, center : [24,76]},
-    // {name :  'SIKKIM' , value : "ST_SIKKIM", initZoom:6, center : [24,76]},
-    // {name : 'TAMIL NADU' , value : "ST_TAMILNADU", initZoom:6, center : [24,76]},
-    // {name : 'TELANGANA' , value : "ST_TELANGANA", initZoom:6, center : [24,76]},
-    // {name : 'TRIPURA' , value : "ST_TRIPURA", initZoom:6, center : [24,76]},
-    // {name : 'UTTARAKHAND' , value : "ST_UTTAR_PRADESH", initZoom:6, center : [24,76]},
-    // {name : 'UTTARPRADESH' , value : "ST_UTTARAKHAND", initZoom:6, center : [24,76]},
-    // {name : 'WEST BENGAL' , value : "ST_WEST_BENGAL", initZoom:6, center : [24,76]},
+    {name : 'HARYANA' , value : "ST_HARYANA", initZoom:7, lat :29,long :76},
+    {name : 'HIMACHAL PRADESH' , value : "ST_HIMACHAL_PRADESH", initZoom:7, lat :31.8,long :77.3},
+    {name : 'JAMMU AND KASHMIR' , value : "ST_JAMMU_&_KASHMIR_(UT)", initZoom:7, lat :33.7,long :76.5},
+    {name : 'JHARKHAND' , value : "ST_JHARKHAND", initZoom:7, lat :24,long :86},
+    {name : 'KARNATAKA' , value : "ST_KARNATAKA", initZoom:6, lat :15.3,long :75.7},
+    {
+      name: 'KERALA',
+      value: "ST_KERALA",
+      initZoom: 6,
+      lat: 10.8505,
+      long: 76.2711
+  },
+  {
+      name: 'LADAKH',
+      value: "ST_LADAKH_(UT)",
+      initZoom: 6,
+      lat: 34.1526,
+      long: 77.5771
+  },
+  {
+      name: 'LAKSHADWEEP',
+      value: "ST_LAKSHADWEEP_(UT)",
+      initZoom: 7,
+      lat: 10.328,
+      long: 72.7847
+  },
+  {
+      name: 'MADHYA PRADESH',
+      value: "ST_MADHYA_PRADESH",
+      initZoom: 6,
+      lat: 22.9734,
+      long: 78.6569
+  },
+  {
+      name: 'MAHARASHTRA',
+      value: "ST_MAHARASHTRA",
+      initZoom: 6,
+      lat: 19.7515,
+      long: 75.7139
+  },
+  {
+      name: 'MANIPUR',
+      value: "ST_MANIPUR",
+      initZoom: 7,
+      lat: 24.6637,
+      long: 93.9063
+  },
+  {
+      name: 'MEGHALAYA',
+      value: "ST_MEGHALAYA",
+      initZoom: 7,
+      lat: 25.467,
+      long: 91.3662
+  },
+  {
+      name: 'MIZORAM',
+      value: "ST_MIZORAM",
+      initZoom: 7,
+      lat: 23.1645,
+      long: 92.9376
+  },
+  {
+      name: 'NAGALAND',
+      value: "ST_NAGALAND",
+      initZoom: 7,
+      lat: 26.1584,
+      long: 94.5624
+  },
+  {
+      name: 'ODISHA',
+      value: "ST_ODISHA",
+      initZoom: 6,
+      lat: 20.9517,
+      long: 85.0985
+  },
+  {
+      name: 'PONDICHERRY',
+      value: "ST_PUDUCHERRY_(UT)",
+      initZoom: 7,
+      lat: 11.9416,
+      long: 79.8083
+  },
+  {
+      name: 'PUNJAB',
+      value: "ST_PUNJAB",
+      initZoom: 7,
+      lat: 31.1471,
+      long: 75.3412
+  },
+  {
+      name: 'RAJASTHAN',
+      value: "ST_RAJASTHAN",
+      initZoom: 6,
+      lat: 27.0238,
+      long: 74.2179
+  },
+  {
+      name: 'SIKKIM',
+      value: "ST_SIKKIM",
+      initZoom: 7,
+      lat: 27.533,
+      long: 88.5122
+  },
+  {
+      name: 'TAMIL NADU',
+      value: "ST_TAMILNADU",
+      initZoom: 7,
+      lat: 11.1271,
+      long: 78.6569
+  },
+  {
+      name: 'TELANGANA',
+      value: "ST_TELANGANA",
+      initZoom: 7,
+      lat: 17.1232,
+      long: 79.2088
+  },
+  {
+      name: 'TRIPURA',
+      value: "ST_TRIPURA",
+      initZoom: 7,
+      lat: 23.9408,
+      long: 91.9882
+  },
+  {
+      name: 'UTTARAKHAND',
+      value: "ST_UTTAR_PRADESH",
+      initZoom: 6,
+      lat: 28.0668,
+      long: 79.0193
+  },
+  {
+      name: 'UTTAR PRADESH',
+      value: "ST_UTTARAKHAND",
+      initZoom: 7,
+      lat: 30.8467,
+      long: 80.9462
+  },
+  {
+      name: 'WEST BENGAL',
+      value: "ST_WEST_BENGAL",
+      initZoom: 6,
+      lat: 22.9868,
+      long: 87.855
+  }
 ];
 
 
