@@ -1,5 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
+import { interval, Subscription } from 'rxjs';
+
 import * as L from 'leaflet';
 import 'leaflet.fullscreen';
 import { DataService } from '../../data.service';
@@ -27,11 +29,17 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
   tileCount: number = 1;
   mapTileTypes: string[] = ['District'];
   private initialZoom = 4;
+  intervalId :any;
+  slidingNo = 0;
+  currentSlide = 'INDIA_COUNTRY';
+  isSlider = true;
+
   private map: L.Map = {} as L.Map;
   private map1: L.Map = {} as L.Map;
   private map2: L.Map = {} as L.Map;
   private map3: L.Map = {} as L.Map;
   private map4: L.Map = {} as L.Map;
+  private slidingMap: L.Map = {} as L.Map;
   currentDateNormal: string = '';
   currentDateDaily: string = '';
   currentDateNormaly: string = '';
@@ -72,7 +80,8 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     private dataService: DataService,
     private router: Router,
     private datePipe: DatePipe,
-    private indexedDBService: IndexedDBService
+    private indexedDBService: IndexedDBService,
+
   ) {
     this.dateCalculation();
     this.dataService.fromAndToDate$.subscribe((value) => {
@@ -169,6 +178,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       location.reload();
     });
     this.fetchDataFromBackend();
+    this.slidingFunction();
   }
 
   dateCalculation() {
@@ -988,6 +998,17 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
 
 
   private initMap(): void {
+
+    this.slidingMap = L.map('slidingMap', {
+      center: [24, 76.9629],
+      zoom: this.initialZoom,
+      scrollWheelZoom: false,
+    });
+
+    
+
+
+
     this.map = L.map('map', {
       center: [24, 76.9629],
       zoom: this.initialZoom,
@@ -1704,7 +1725,9 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       },
     });
 
-    const filename = `Districtdeparture_data_${this.today.toISOString()}.pdf`;
+    // DISTRICT_RAINFALL_DISTRIBUTION_COUNTRY_INDIA_cd;
+    // const filename = `Districtdeparture_data_${this.today.toISOString()}.pdf`;
+    const filename = `DISTRICT_RAINFALL_DISTRIBUTION_COUNTRY_INDIA_cd.pdf`;
 
     var newArr = rows.map((subArr) => {
       return subArr.map((item) => {
@@ -1724,7 +1747,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       return item;
     });
 
-    this.exportAsExcelFile(newArr, `Districtdeparture_data_${this.today.toISOString()}`, columns, newcolumns1);
+    this.exportAsExcelFile(newArr, `DISTRICT_RAINFALL_DISTRIBUTION_COUNTRY_INDIA_cd`, columns, newcolumns1);
     doc.save(filename);
     let base64pdf = doc.output('datauristring')
     this.indexedDBService.addData({ filename: filename, base64pdf: base64pdf });
@@ -2021,7 +2044,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
         doc.setDrawColor(0);
       },
     });
-    const filename = `Statedeparture_data_${this.today.toISOString()}.pdf`;
+    const filename = `STATE_RAINFALL_DISTRIBUTION_COUNTRY_INDIA_cd.pdf`;
 
     var newArr = rows.map((subArr) => {
       return subArr.map((item:any) => {
@@ -2041,7 +2064,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       return item;
     });
 
-    this.exportAsExcelFile(newArr, `Statedeparture_data_${this.today.toISOString()}`, columns, newcolumns1);
+    this.exportAsExcelFile(newArr, `STATE_RAINFALL_DISTRIBUTION_COUNTRY_INDIA_cd`, columns, newcolumns1);
 
     doc.save(filename);
     let base64pdf = doc.output('datauristring')
@@ -2293,7 +2316,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
         doc.setDrawColor(0);
       },
     });
-    const filename = `Subdivdeparture_data_${this.today.toISOString()}.pdf`;
+    const filename = `SUBDIVISION_RAINFALL_DISTRIBUTION_COUNTRY_INDIA_cd.pdf`;
     var newArr = rows.map((subArr) => {
       return subArr.map((item:any) => {
         if (typeof item === 'object' && item.hasOwnProperty('content')) {
@@ -2312,7 +2335,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       return item;
     });
 
-    this.exportAsExcelFile(newArr, `Subdivdeparture_data_${this.today.toISOString()}`, columns, newcolumns1);
+    this.exportAsExcelFile(newArr, `SUBDIVISION_RAINFALL_DISTRIBUTION_COUNTRY_INDIA_cd`, columns, newcolumns1);
 
     doc.save(filename);
     let base64pdf = doc.output('datauristring')
@@ -2422,7 +2445,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
         doc.setDrawColor(0);
       },
     });
-    const filename = `Regiondeparture_data_${this.today.toISOString()}.pdf`;
+    const filename = `DISTRIBUTION_REGIONS_INDIA_cd.pdf`;
     var newArr = rows.map((subArr) => {
       return subArr.map((item:any) => {
         if (typeof item === 'object' && item.hasOwnProperty('content')) {
@@ -2441,7 +2464,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       return item;
     });
 
-    this.exportAsExcelFile(newArr, `Regiondeparture_data_${this.today.toISOString()}`, columns, newcolumns1);
+    this.exportAsExcelFile(newArr, `DISTRIBUTION_REGIONS_INDIA_cd`, columns, newcolumns1);
 
     doc.save(filename);
     let base64pdf = doc.output('datauristring')
@@ -2539,7 +2562,8 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
         doc.setDrawColor(0);
       },
     });
-    const filename = `countrydeparture_data_${this.today.toISOString()}.pdf`;
+    // DISTRIBUTION_COUNTRY_INDIA_cd.pdf
+    const filename = `DISTRIBUTION_COUNTRY_INDIA_cd.pdf`;
     doc.save(filename);
     let base64pdf = doc.output('datauristring')
     this.indexedDBService.addData({ filename: filename, base64pdf: base64pdf });
@@ -4084,7 +4108,8 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     htmlToImage.toJpeg(document.getElementById('map') as HTMLElement, { quality: 0.95, filter: this.filter })
       .then(function (dataUrl) {
         var link = document.createElement('a');
-        link.download = `District_dep_${dat}.jpeg`;
+        // link.download = `District_dep_${dat}.jpeg`;
+        link.download = `DISTRICT_RAINFALL_MAP_COUNTRY_INDIA_cd.jpeg`;
         link.href = dataUrl;
         link.click();
       });
@@ -4094,7 +4119,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     htmlToImage.toJpeg(document.getElementById('map') as HTMLElement, { quality: 0.95, filter: this.filter })
       .then((dataUrl) => {
         this.convertImageToPdf(dataUrl);
-        this.indexedDBService.addData({ filename: `District_dep_${dat}.jpeg`, base64pdf: dataUrl });
+        this.indexedDBService.addData({ filename: `DISTRICT_RAINFALL_MAP_COUNTRY_INDIA_cd.jpeg`, base64pdf: dataUrl });
       });
   }
 
@@ -4109,9 +4134,9 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       });
 
       pdf.addImage(dataUrl, 'JPEG', 0, 0, img.width, img.height);
-      pdf.save(`District_dep_${dat}.pdf`);
+      // pdf.save(`District_dep_${dat}.pdf`);
+      pdf.save(`DISTRICT_RAINFALL_DISTRIBUTION_COUNTRY_INDIA_cd.pdf`);
     };
-
     img.src = dataUrl;
   }
 
@@ -4120,17 +4145,19 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     htmlToImage.toJpeg(document.getElementById('map1') as HTMLElement, { quality: 0.95, filter: this.filter })
       .then(function (dataUrl) {
         var link = document.createElement('a');
-        link.download = `state_dep_${dat}.jpeg`;
+        link.download = `STATE_RAINFALL_MAP_COUNTRY_INDIA_cd.jpeg`;
         link.href = dataUrl;
         link.click();
       });
   }
+  //STATE_RAINFALL_DISTRIBUTION_COUNTRY_INDIA_cd
+  // STATE_RAINFALL_MAP_COUNTRY_INDIA_cd
   downloadMappdf1(): void {
     let dat = this.today.toISOString()
     htmlToImage.toJpeg(document.getElementById('map1') as HTMLElement, { quality: 0.95, filter: this.filter })
       .then((dataUrl) => {
         this.convertImageToPdf1(dataUrl);
-        this.indexedDBService.addData({ filename: `state_dep_${dat}.jpeg`, base64pdf: dataUrl });
+        this.indexedDBService.addData({ filename: `STATE_RAINFALL_MAP_COUNTRY_INDIA_cd.jpeg`, base64pdf: dataUrl });
       });
   }
   convertImageToPdf1(dataUrl: string): void {
@@ -4144,7 +4171,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       });
 
       pdf.addImage(dataUrl, 'JPEG', 0, 0, img.width, img.height);
-      pdf.save(`state_dep_${dat}.pdf`);
+      pdf.save(`STATE_RAINFALL_DISTRIBUTION_COUNTRY_INDIA_cd.pdf`);
     };
 
     img.src = dataUrl;
@@ -4155,7 +4182,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     htmlToImage.toJpeg(document.getElementById('map2') as HTMLElement, { quality: 0.95, filter: this.filter })
       .then(function (dataUrl) {
         var link = document.createElement('a');
-        link.download = `sub-division_dep_${dat}.jpeg`;
+        link.download = `SUBDIVISION_RAINFALL_MAP_COUNTRY_INDIA_cd.jpeg`;
         link.href = dataUrl;
         link.click();
       });
@@ -4165,7 +4192,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     htmlToImage.toJpeg(document.getElementById('map2') as HTMLElement, { quality: 0.95, filter: this.filter })
       .then((dataUrl) => {
         this.convertImageToPdf2(dataUrl);
-        this.indexedDBService.addData({ filename: `subdiv_dep_${dat}.jpeg`, base64pdf: dataUrl });
+        this.indexedDBService.addData({ filename: `SUBDIVISION_RAINFALL_MAP_COUNTRY_INDIA_cd.jpeg`, base64pdf: dataUrl });
       });
   }
 
@@ -4179,7 +4206,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
         format: [img.width, img.height] // Set PDF size to match image size
       });
       pdf.addImage(dataUrl, 'JPEG', 0, 0, img.width, img.height);
-      pdf.save(`sub-division_dep_${dat}.pdf`);
+      pdf.save(`SUBDIVISION_RAINFALL_DISTRIBUTION_COUNTRY_INDIA_cd.pdf`);
     };
     img.src = dataUrl;
   }
@@ -4189,7 +4216,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     htmlToImage.toJpeg(document.getElementById('map3') as HTMLElement, { quality: 0.95, filter: this.filter })
       .then(function (dataUrl) {
         var link = document.createElement('a');
-        link.download = `region_dep_${dat}.jpeg`;
+        link.download = `RAINFALL_MAP_REGIONS_INDIA_cd.jpeg`;
         link.href = dataUrl;
         link.click();
       });
@@ -4199,7 +4226,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     htmlToImage.toJpeg(document.getElementById('map3') as HTMLElement, { quality: 0.95, filter: this.filter })
       .then((dataUrl) => {
         this.convertImageToPdf3(dataUrl);
-        this.indexedDBService.addData({ filename: `region_dep_${dat}.jpeg`, base64pdf: dataUrl });
+        this.indexedDBService.addData({ filename: `RAINFALL_MAP_REGIONS_INDIA_cd.jpeg`, base64pdf: dataUrl });
       });
   }
 
@@ -4213,7 +4240,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
         format: [img.width, img.height] // Set PDF size to match image size
       });
       pdf.addImage(dataUrl, 'JPEG', 0, 0, img.width, img.height);
-      pdf.save(`region_dep_${dat}.pdf`);
+      pdf.save(`DISTRIBUTION_REGIONS_INDIA_cd.pdf`);
     };
     img.src = dataUrl;
   }
@@ -4223,7 +4250,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     htmlToImage.toJpeg(document.getElementById('map4') as HTMLElement, { quality: 0.95, filter: this.filter })
       .then(function (dataUrl) {
         var link = document.createElement('a');
-        link.download = `country_dep_${dat}.jpeg`;
+        link.download = `RAINFALL_MAP_COUNTRY_INDIA_cd.jpeg`;
         link.href = dataUrl;
         link.click();
       });
@@ -4233,13 +4260,14 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     htmlToImage.toJpeg(document.getElementById('map4') as HTMLElement, { quality: 0.95, filter: this.filter })
       .then((dataUrl) => {
         this.convertImageToPdf4(dataUrl);
-        this.indexedDBService.addData({ filename: `country_dep_${dat}.jpeg`, base64pdf: dataUrl });
+        // this.indexedDBService.addData({ filename: `country_dep_${dat}.jpeg`, base64pdf: dataUrl });
+        this.indexedDBService.addData({ filename: `RAINFALL_MAP_COUNTRY_INDIA_cd.jpeg`, base64pdf: dataUrl });
       });
   }
 
   convertImageToPdf4(dataUrl: string): void {
     const img = new Image();
-    let dat = this.today.toISOString()
+    // let dat = this.today.toISOString()
     img.onload = function () {
       const pdf = new jsPDF({
         orientation: img.width > img.height ? 'landscape' : 'portrait',
@@ -4247,7 +4275,8 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
         format: [img.width, img.height] // Set PDF size to match image size
       });
       pdf.addImage(dataUrl, 'JPEG', 0, 0, img.width, img.height);
-      pdf.save(`country_dep_${dat}.pdf`);
+      // pdf.save(`country_dep_${dat}.pdf`);
+      pdf.save('DISTRIBUTION_COUNTRY_INDIA_cd.pdf');
     };
     img.src = dataUrl;
   }
@@ -4308,5 +4337,55 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       this.showMapInCenter = dataArray[index];
     }
   }
+
+  toggleSlider(): void {
+    this.isSlider = !this.isSlider
+}
+currentSlidingLayer:any;
+  loadSlidingGeoJSON(): void {
+    if (this.currentSlidingLayer) {
+      this.slidingMap.removeLayer(this.currentSlidingLayer);
+    }
+    this.http.get(`assets/geojson/${this.currentSlide}.json`).subscribe((stateRes: any) => {
+      const newSlidingLayer = L.geoJSON(stateRes, {
+        style: {
+          weight: 1,
+          opacity: 1,
+          color: 'blue',
+          fillOpacity: 0
+        }
+      });
+      newSlidingLayer.addTo(this.slidingMap);
+      this.currentSlidingLayer = newSlidingLayer;
+    });
+  }
+
+  slidingList : {id:number,region : string, lat:number, long:number,initZoom:number}[] = [
+    {id:0 , region:'INDIA_COUNTRY',lat:24,long:77,initZoom:4},
+    {id:1 , region:'regions/EAST_AND_NORTH_EAST_INDIA',lat:24,long:87,initZoom:5},
+    {id:2 , region:'regions/NORTH_WEST_INDIA',lat:29,long:77,initZoom:5},
+    {id:3 , region:'regions/SOUTH_PENINSULA',lat:17,long:77,initZoom:5},
+    {id:4 , region:'regions/C_India',lat:22,long:77,initZoom:5},
+  ]
+
+  slidingFunction(): void {
+
+    this.intervalId = setInterval(() => {
+      const data = this.slidingList.find((d)=>d.id === this.slidingNo )
+      this.currentSlide = data?.region || '';
+      this.slidingMap.setView([data?.lat||24,data?.long||77],data?.initZoom||4);
+      this.loadSlidingGeoJSON();
+      if(this.slidingNo<4){
+        this.slidingNo = this.slidingNo + 1
+      }else{
+        this.slidingNo = 0;
+      }
+      console.log("interval function " +  this.currentSlide);
+    }, 5000); // 5000 milliseconds = 5 seconds
+  }
+
+
+
+
 
 }

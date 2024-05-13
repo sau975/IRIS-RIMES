@@ -42,110 +42,70 @@
       </tr>
     </tbody>
   </table>
-  <!-- <div class="navbar row">
+</div>
 
-
-
-
-
-    <div class="col-2">
-      <label for="region">Select Region :</label>
-      <select name="region" class="form-control" id="region" [(ngModel)]="selectedRegion" (change)="onChangeRegion()">
-        <option *ngFor="let region of regionList" [value]="region">{{region}}</option>
-      </select>
-    </div>
-    <div class="col-2">
-      <label for="mcs">Select MC :</label>
-      <select name="mcs" class="form-control" id="mcs">
-        <option value="mc1">RMC/MC</option>
-        <option value="mc2">RMC/MC</option>
-        <option value="mc3">RMC/MC</option>
-        <option value="mc4">RMC/MC</option>
-      </select>
-    </div>
-    <div class="col-2">
-      <label for="state">Select State :</label>
-      <select name="state" class="form-control" id="state" [(ngModel)]="selectedState" (change)="onChangeState()">
-        <option *ngFor="let state of filteredStates" [value]="state">{{state}}</option>
-      </select>
-    </div>
-    <div class="col-2">
-      <label for="district">Select District :</label>
-      <select name="district" class="form-control" id="district" [(ngModel)]="selectedDistrict">
-        <option *ngFor="let district of filteredDistricts" [value]="district">{{district}}</option>
-      </select>
-    </div>
-    <div class="col-2">
-      <label for="district">Select Date :</label>
-      <input type="date" class="form-control" [min]="minDate" [ngModel]="selectedDate | date:'yyyy-MM-dd'"
-        (ngModelChange)="onChangeDate($event)">
-    </div>
-    <div class="col-1 mt-3">
-      <button class="btn btn-success" type="button" (click)="filterByDate()">Submit</button>
-    </div>
-  </div> -->
-  <div class="navbar">
-    <div class="col-2">
-      <p-multiSelect [options]="regionList" [(ngModel)]="selectedRegions" (onChange)="onChangeRegion()" (onSelectAllChange)="onChangeRegion()" optionLabel="name" placeholder="Select Regions" />
+<div class="mt-3 mb-0 p-3 bg-light rounded">
+  <div class="row">
+    <div class="col-12 col-md-6 col-lg-2 mb-2">
       <!-- <app-multi-select-dropdown [list]="regionList" [type]="'Region'" (shareCheckedList)="onChangeRegion($event)">
       </app-multi-select-dropdown> -->
+      <p-multiSelect [options]="regionList" [(ngModel)]="selectedRegions" (onChange)="onChangeRegion()" (onSelectAllChange)="onChangeRegion()" optionLabel="name" placeholder="Select Regions" />
     </div>
-    <div class="col-2">
+    <div class="col-12 col-md-6 col-lg-2 mb-2">
+      <!-- <app-multi-select-dropdown [list]="filteredMcs" [type]="'MC'" (shareCheckedList)="onChangeMc($event)">
+      </app-multi-select-dropdown> -->
       <p-multiSelect [options]="filteredMcs" [(ngModel)]="selectedMcs" (onChange)="onChangeMc()" (onSelectAllChange)="onChangeMc()" optionLabel="name" placeholder="Select MCs" />
+    </div>
+    <div class="col-12 col-md-6 col-lg-2 mb-2">
       <!-- <app-multi-select-dropdown [list]="filteredMcs" [type]="'MC'" (shareCheckedList)="onChangeMc($event)">
       </app-multi-select-dropdown> -->
-    </div>
-    <div class="col-2">
       <p-multiSelect [options]="filteredRMcs" [(ngModel)]="selectedRMcs" (onChange)="onChangeRMc()" (onSelectAllChange)="onChangeRMc()" optionLabel="name" placeholder="Select RMCs" />
-      <!-- <app-multi-select-dropdown [list]="filteredMcs" [type]="'MC'" (shareCheckedList)="onChangeMc($event)">
-      </app-multi-select-dropdown> -->
     </div>
-    <div class="col-2">
-      <p-multiSelect [options]="filteredStates" [(ngModel)]="selectedStates" (onChange)="onChangeState()" (onSelectAllChange)="onChangeState()" optionLabel="name" placeholder="Select States" />
+    <div class="col-12 col-md-6 col-lg-2 mb-2">
       <!-- <app-multi-select-dropdown [list]="filteredStates" [type]="'State'" (shareCheckedList)="onChangeState($event)">
       </app-multi-select-dropdown> -->
+      <p-multiSelect [options]="filteredStates" [(ngModel)]="selectedStates" (onChange)="onChangeState()" (onSelectAllChange)="onChangeState()" optionLabel="name" placeholder="Select States" />
     </div>
-    <div class="col-2">
-      <p-multiSelect [options]="filteredDistricts" [(ngModel)]="selectedDistricts" (onChange)="onChangeDistrict()" (onSelectAllChange)="onChangeDistrict()" optionLabel="name" placeholder="Select Districts" />
+    <div class="col-12 col-md-6 col-lg-2 mb-2">
       <!-- <app-multi-select-dropdown [list]="filteredDistricts" [type]="'District'"
         (shareCheckedList)="onChangeDistrict($event)">
       </app-multi-select-dropdown> -->
+      <p-multiSelect [options]="filteredDistricts" [(ngModel)]="selectedDistricts" (onChange)="onChangeDistrict()" (onSelectAllChange)="onChangeDistrict()" optionLabel="name" placeholder="Select Districts" />
     </div>
 
-    <div class="col-1" style="display: flex; flex-direction: row;">
-      <!-- <label for="district">Select Date :</label> -->
-        <input type="date" class="form-control" [min]="minDate" [ngModel]="selectedDate | date:'yyyy-MM-dd'"
-          (ngModelChange)="onChangeDate($event)">
+    <div class="col-12 col-md-6 col-lg-2 mb-2" style="display: flex; flex-direction: row;">
+      <input type="date" class="form-control" [min]="minDate" [ngModel]="selectedDate | date:'yyyy-MM-dd'"
+        (ngModelChange)="onChangeDate($event)">
     </div>
-    <div class="col-1 mt-2">
+    <div class="col-12 col-md-6 col-lg-2 mb-2">
       <button class="btn btn-success" type="button" (click)="filterByDate()">Submit</button>
     </div>
   </div>
+</div>
 
-
-
-  <div style="text-align: center; padding-top: 40px">
+<div class="container-fluid">
+  <div style="text-align: center; padding-top: 40px;">
     <div class="dataentry">
       <div class="row">
-        <div class="col-3">
+        <div class="col-md-3 col-sm-6 mb-3">
           <h3>STATIONS DATA</h3>
         </div>
-        <div class="col-1">
+        <div class="col-md-1 col-sm-6 mb-3">
           <button class="btn btn-primary" (click)="exportAsXLSX()">Download</button>
         </div>
-        <div class="mb-3 col-2">
+        <div class="col-md-2 col-sm-6 mb-3">
           <input class="form-control" type="file" #fileInput (change)="onFileSelected($event)">
         </div>
-        <div class="col-2">
+        <div class="col-md-2 col-sm-6 mb-3">
           <button (click)="uploadFile()" class="btn btn-success">Upload Stations</button> <br>
           <a href="javascript:void(0)" (click)="downloadStationInstructionFile()">Instruction</a>
           <a href="javascript:void(0)" style="margin-left: 10px;" (click)="downloadStationSampleFile()">Sample File</a>
         </div>
-        <div class="mb-3 col-2">
+        <div class="col-md-2 col-sm-6 mb-3">
           <input [disabled]="loggedInUserObject.data[0].mcorhq == 'mc'" class="form-control" type="file"
             #rainfallFileInput (change)="onRainfallFileSelected($event)">
         </div>
-        <div class="col-2">
+        <div class="col-md-2 col-sm-6 mb-3">
           <button [disabled]="loggedInUserObject.data[0].mcorhq == 'mc'" (click)="uploadRainFallFile()"
             class="btn btn-success">Upload Rainfall</button> <br>
           <a *ngIf="loggedInUserObject.data[0].mcorhq == 'hq'" href="javascript:void(0)"
@@ -154,7 +114,8 @@
       </div>
       <br />
       <!-- <form> -->
-      <table style=" margin: auto; border-collapse: collapse; width: 90%; border: 1px solid black;">
+      <div class="overflow-x-scroll">
+       <table style=" margin: auto; border-collapse: collapse; width: 90%; border: 1px solid black;">
         <thead>
           <tr>
             <th style="border: 1px solid black">S.NO</th>
@@ -204,6 +165,7 @@
           </tr>
         </tbody>
       </table>
+      </div>
       <button *ngIf="loggedInUserObject.data[0].mcorhq == 'hq'" class="enter" (click)="Addstation()">Add
         Station</button>
       <button type="submit" class="enter" (click)="submit()">Submit</button>
@@ -218,6 +180,7 @@
     <button class="close-btn" (click)="cancelAddStation()">X</button>
     <h2>Add New Station Data</h2>
     <form>
+      <div class="overflow-x-scroll">
       <table style="
           margin: auto;
           border-collapse: collapse;
@@ -237,8 +200,8 @@
             <th style="border: 1px solid black">YEAR OF ACTIVATION</th>
           </tr>
         </thead>
-        <tbody>
-          <tr>
+        <tbody class="container-fluid">
+          <tr class="container">
             <td style="border: 1px solid black"></td>
             <td style="border: 1px solid black"><input id="field1" name="field1" [(ngModel)]="data.stationName" required
                 style="border: none;"></td>
@@ -267,6 +230,7 @@
           </tr>
         </tbody>
       </table>
+     </div>
       <button class="enter" (click)="addData()">Add Station</button>
     </form>
   </div>
