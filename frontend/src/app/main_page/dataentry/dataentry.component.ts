@@ -14,8 +14,13 @@ export class DataentryComponent {
   @ViewChild('rainfallFileInput') rainfallFileInput!: ElementRef;
   selectedRegions: string[] = [];
   selectedStates: string[] = [];
+  selectedMcs: string[] = [];
+  selectedRMcs: string[] = [];
+  selectedDistricts: string[] = [];
   tempfilteredStations: any[] = [];
   regionList: any[] = [];
+  filteredMcs: any[] = [];
+  filteredRMcs: any[] = [];
   filteredStates: any[] = [];
   filteredDistricts: any[] = [];
   filteredStations: any[] = [];
@@ -67,10 +72,21 @@ export class DataentryComponent {
   };
   minDate: string = '';
   loggedInUserObject: any;
+  emailGroups:any[]=[];
+  emails:any[]=[];
 
   ngOnInit(): void {
     this.fetchDataFromBackend();
+    this.dataService.getEmailGroup().subscribe(res => {
+      this.emailGroups = res;
+      this.emailGroups.forEach(x => {
+        JSON.parse(x.emails).forEach((j:any) => {
+          this.emails.push(j);
+        })
+      })
+    })
   }
+
   constructor(
     private dataService: DataService,
   ) {
@@ -95,32 +111,69 @@ export class DataentryComponent {
     this.clearRainfallFileInput();
   }
 
-  onChangeRegion(checkedValues:any){
-    this.selectedRegions = checkedValues;
+  onChangeRegion(){
+    let tempMcs = this.existingstationdata.filter(item => {
+      return this.selectedRegions.some((value:any) => {
+        return item.region == value.name;
+      });
+    });
+    let tempfilteredMcs = Array.from(new Set(tempMcs.map(a => a.rmc_mc)));
+    this.selectedMcs = [];
+    this.selectedRMcs = [];
+    this.selectedStates = [];
+    this.selectedDistricts = [];
+    tempfilteredMcs.forEach(m => {
+      if(m.split(" ")[0] == "MC"){
+        this.filteredMcs.push({name: m})
+      }
+    });
+
+    tempfilteredMcs.forEach(m => {
+      if(m.split(" ")[0] == "RMC"){
+        this.filteredRMcs.push({name: m})
+      }
+    });
+  }
+
+  onChangeMc(){
     let tempStates = this.existingstationdata.filter(item => {
-      return checkedValues.some((value:any) => {
-        return item.region == value;
+      return this.selectedMcs.some((value:any) => {
+        return item.rmc_mc == value.name;
       });
     });
     let tempfilteredStates = Array.from(new Set(tempStates.map(a => a.state)));
+    this.selectedStates = [];
+    this.selectedDistricts = [];
     this.filteredStates = tempfilteredStates.map(a => { return {name: a}});
   }
 
-  onChangeState(checkedValues:any){
-    this.selectedStates = checkedValues;
+  onChangeRMc(){
+    let tempStates = this.existingstationdata.filter(item => {
+      return this.selectedRMcs.some((value:any) => {
+        return item.rmc_mc == value.name;
+      });
+    });
+    let tempfilteredStates = Array.from(new Set(tempStates.map(a => a.state)));
+    this.selectedStates = [];
+    this.selectedDistricts = [];
+    this.filteredStates = tempfilteredStates.map(a => { return {name: a}});
+  }
+
+  onChangeState(){
     let tempDistricts = this.existingstationdata.filter(item => {
-      return checkedValues.some((value:any) => {
-        return item.state == value;
+      return this.selectedStates.some((value:any) => {
+        return item.state == value.name;
       });
     })
     let tempfilteredDistricts = Array.from(new Set(tempDistricts.map(a => a.district)));
+    this.selectedDistricts = [];
     this.filteredDistricts = tempfilteredDistricts.map(a => { return {name: a}});
   }
 
-  onChangeDistrict(checkedValues:any){
+  onChangeDistrict(){
     let tempStations = this.existingstationdata.filter(item => {
-      return checkedValues.some((value:any) => {
-        return item.district == value;
+      return this.selectedDistricts.some((value:any) => {
+        return item.district == value.name;
       });
     })
     this.tempfilteredStations = Array.from(new Set(tempStations.map(a => a.station)));
@@ -175,23 +228,32 @@ export class DataentryComponent {
     else if(this.selectedStates && this.selectedStates.length > 0){
       this.filteredStations = this.existingstationdata.filter(item => {
         return this.selectedStates.some((value:any) => {
-          return item.state == value;
+          return item.state == value.name;
+        });
+      })
+    }
+    else if(this.selectedMcs && this.selectedMcs.length > 0){
+      this.filteredStations = this.existingstationdata.filter(item => {
+        return this.selectedMcs.some((value:any) => {
+          return item.rmc_mc == value.name;
         });
       })
     }
     else if(this.selectedRegions && this.selectedRegions.length > 0){
       this.filteredStations = this.existingstationdata.filter(item => {
         return this.selectedRegions.some((value:any) => {
-          return item.region == value;
+          return item.region == value.name;
         });
       })
     }
     this.filteredStations.map(x => {
-          return x.RainFall = x[this.dateCalculation()];
+      return x.RainFall = x[this.dateCalculation()];
     })
-    this.dataService.addColumn({date:this.dateCalculation()}).subscribe(res => {
-      console.log("Column Created Successfully");
-    })
+    // if(this.filteredStations.length > 0){
+    //   setTimeout(() => {
+    //     this.sendEmail();
+    //   }, 1000);
+    // }
   }
 
   editStation(station: any) {
@@ -300,9 +362,9 @@ export class DataentryComponent {
       elementRef.style.background = 'red';
       // alert("Please enter a valid number with only one decimal place");
     }
-    if (Number(elementRef.value) > 400) {
+    if (Number(elementRef.value) > 100) {
       elementRef.style.background = 'red'
-      alert("Rainfall is greater than 400mm")
+      alert("Rainfall is greater than 100mm")
     } else {
       elementRef.style.background = ''
     }
@@ -411,16 +473,36 @@ export class DataentryComponent {
     }
   }
 
+  sampleFile(){
+    let data:any[] = [];
+    this.filteredStations.forEach(x => {
+      let station:any = {
+        stationname: x.stationname,
+        rmc_mc: x.rmc_mc,
+        stationid: x.stationid
+      }
+      station[this.dateCalculation()] = x[this.dateCalculation()];
+      data.push(station);
+    })
+    return data;
+  }
+
   downloadRainfallSampleFile(){
-    window.open('/assets/rainfall_sample_file.xlsx', '_blank');
+    this.exportAsExcelFile(this.sampleFile(), 'export-to-excel');
+    // window.open('/assets/rainfall_sample_file.xlsx', '_blank');
   }
 
   downloadStationSampleFile(){
     window.open('/assets/station_sample_file.csv', '_blank');
   }
 
+  downloadStationInstructionFile(){
+    window.open('/assets/Instruction for adding new station.docx', '_blank');
+  }
+
   exportAsXLSX(): void {
-    this.exportAsExcelFile(this.filteredStations, 'export-to-excel');
+    this.exportAsExcelFile(this.sampleFile(), 'export-to-excel');
+    // this.exportAsExcelFile(this.filteredStations, 'export-to-excel');
   }
 
   exportAsExcelFile(json: any[], excelFileName: string): void {
@@ -438,6 +520,84 @@ export class DataentryComponent {
       type: EXCEL_TYPE
     });
     FileSaver.saveAs(data, fileName + '_export_' + new Date().getTime() + EXCEL_EXTENSION);
+  }
+
+
+  generateTextFormat(data:any): string {
+    let text = '';
+    for (let entry of data) {
+      text += `${entry['station']}: ${entry['rainfall']}mm\n`;
+    }
+    return text;
+  }
+
+  groupByMc(mc:any) {
+    const groups:any = {};
+    mc.forEach((station:any) => {
+      const rmc_mc:any = station.rmc_mc;
+      if (!groups[rmc_mc]) {
+        groups[rmc_mc] = [];
+      }
+      groups[rmc_mc].push(station);
+    });
+    const result = [];
+    for (const rmc_mc in groups) {
+      if(rmc_mc == this.selectedMcs[0]){
+        result.push({ rmc_mc: rmc_mc, mc: groups[rmc_mc] });
+      }
+    }
+    return result;
+  }
+
+  sendEmail(){
+    // if (confirm("Do want to send email") == true) {
+      // let emails = ["saurav97531@gmail.com", "tarakesh@rimes.int"];
+      let emails = ["saurav97531@gmail.com"];
+
+      let resdata = this.groupByMc(this.existingstationdata);
+      let emaildata:any[]=[];
+      resdata.forEach(stn => {
+        stn.mc.forEach((s:any) => {
+          if(s[this.dateCalculation()] == -999.9){
+            emaildata.push({station: s.station, rainfall: s[this.dateCalculation()]});
+          }
+        })
+      })
+
+      emails.forEach(email => {
+        let data = {
+          to: email,
+          subject: `Rainfall data not received - ${new Date().toDateString()}`,
+          text: `Hello,\n\n Rainfall data not received for these stations:-\n\n ${this.generateTextFormat(emaildata)}`
+        }
+        this.dataService.sendEmail(data).subscribe(res => {
+          console.log("Email Sent Successfully");
+        })
+      })
+    // }
+  }
+
+  scheduleFunction() {
+    // Get current time
+    var now = new Date();
+    // Set desired time (in this case, 11:00 AM)
+    var desiredTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 12, 0, 0, 0);
+    var delay = desiredTime.getTime() - now.getTime();
+
+    if (delay < 0) {
+        // If it's already past the desired time, schedule it for tomorrow
+        desiredTime.setDate(desiredTime.getDate() + 1);
+        delay = desiredTime.getTime() - now.getTime();
+    }
+
+    setTimeout(() => {
+      let autoEmailOnOff = JSON.parse(localStorage.getItem('autoEmail') as any);
+      if(autoEmailOnOff == true){
+        this.sendEmail();
+      }
+      // Reschedule function for the next day
+      this.scheduleFunction();
+    }, delay);
   }
 }
 

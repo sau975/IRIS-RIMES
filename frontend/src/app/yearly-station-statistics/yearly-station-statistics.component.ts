@@ -13,9 +13,11 @@ export class YearlyStationStatisticsComponent {
   selectedRegions: string[] = [];
   selectedStates: string[] = [];
   tempfilteredStations: any[] = [];
+  selectedMcs: string[] = [];
+  regionList: any[] = [];
+  filteredMcs: any[] = [];
+  filteredStates: any[] = [];
   todayDate: string;
-  regionList:any[]=[];
-  filteredStates:any[]=[];
   filteredDistricts:any[]=[];
   filteredStations:any[]=[];
   existingstationdata: any[] = [];
@@ -101,9 +103,20 @@ export class YearlyStationStatisticsComponent {
 
   onChangeRegion(checkedValues:any){
     this.selectedRegions = checkedValues;
-    let tempStates = this.existingstationdata.filter(item => {
+    let tempMcs = this.existingstationdata.filter(item => {
       return checkedValues.some((value:any) => {
         return item.region == value;
+      });
+    });
+    let tempfilteredMcs = Array.from(new Set(tempMcs.map(a => a.rmc_mc)));
+    this.filteredMcs = tempfilteredMcs.map(a => { return {name: a}});
+  }
+
+  onChangeMc(checkedValues:any){
+    this.selectedMcs = checkedValues;
+    let tempStates = this.existingstationdata.filter(item => {
+      return checkedValues.some((value:any) => {
+        return item.rmc_mc == value;
       });
     });
     let tempfilteredStates = Array.from(new Set(tempStates.map(a => a.state)));
@@ -166,6 +179,13 @@ export class YearlyStationStatisticsComponent {
         });
       })
     }
+    else if(this.selectedMcs && this.selectedMcs.length > 0){
+      this.filteredStations = this.existingstationdata.filter(item => {
+        return this.selectedMcs.some((value:any) => {
+          return item.rmc_mc == value;
+        });
+      })
+    }
     else if(this.selectedRegions && this.selectedRegions.length > 0){
       this.filteredStations = this.existingstationdata.filter(item => {
         return this.selectedRegions.some((value:any) => {
@@ -173,6 +193,9 @@ export class YearlyStationStatisticsComponent {
         });
       })
     }
+    this.filteredStations.map(x => {
+      return x.rainFall = x[this.dateCalculation()];
+    })
   }
 
   submit(){
@@ -193,7 +216,7 @@ export class YearlyStationStatisticsComponent {
     const imgX = pageWidth - imgWidth - imgMargin;
     const imgData150 = '/assets/images/IMD150(BGR).png';
     doc.addImage(imgData150, 'PNG', imgX, marginTop, 15, 20);
-    const imgData = '/assets/images/IMDlogo_Ipart.png';
+    const imgData = '/assets/images/IMDlogo_Ipart-iris.png';
     doc.addImage(imgData, 'PNG', marginLeft, marginTop, 15, 20);
     doc.setFontSize(12);
     doc.setTextColor(0, 0, 0); // Set font color to black

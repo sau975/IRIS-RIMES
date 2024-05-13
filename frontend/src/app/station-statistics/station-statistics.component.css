@@ -275,3 +275,19 @@ cursor: pointer;
 .chart-container div{
 width: 650px;
 }
+
+/* leaflet-map.component.css */
+.custom-marker {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  background-color: red; /* Change the color as needed */
+}
+
+.round-marker {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: white; /* Change the color as needed */
+}

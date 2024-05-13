@@ -53,10 +53,26 @@ app.post('/send-email', (req, res) => {
   smtpTransport.sendMail(mailOptions, (error, response) => {
     if (error) {
       console.log(error);
-      res.status(500).send('Error sending email');
+      client.query('INSERT INTO email_log(email, subject, message, datetime, status) VALUES($1, $2, $3, $4, $5)', [mailOptions.to, mailOptions.subject, mailOptions.text, new Date(), false])
+      .then(() => {
+        res.status(200).json({ message: 'Data inserted successfully' });
+      })
+      .catch(error => {
+        console.error('Error inserting data:', error);
+        res.status(500).json({ error: 'Internal server error' });
+      });  
+      // res.status(500).send('Error sending email');
     } else {
       console.log('Email sent: ' + response.message);
-      res.send('Email sent successfully');
+      client.query('INSERT INTO email_log(email, subject, message, datetime, status) VALUES($1, $2, $3, $4, $5)', [mailOptions.to, mailOptions.subject, mailOptions.text, new Date(), true])
+      .then(() => {
+        res.status(200).json({ message: 'Data inserted successfully' });
+      })
+      .catch(error => {
+        console.error('Error inserting data:', error);
+        res.status(500).json({ error: 'Internal server error' });
+      });  
+      // res.send('Email sent successfully');
     }
   });
 });
@@ -95,6 +111,42 @@ app.get("/deletedstationlog", (req, res) => {
       res.send(result.rows);
     }
   );
+});
+
+app.get("/emaillog", (req, res) => {
+  client.query(
+    "SELECT * FROM email_log ORDER BY id ASC",
+    (err, result) => {
+      if (err) {
+        res.send(err);
+      }
+      res.send(result.rows);
+    }
+  );
+});
+
+app.get("/emailgroup", (req, res) => {
+  client.query(
+    "SELECT * FROM email_group ORDER BY id ASC",
+    (err, result) => {
+      if (err) {
+        res.send(err);
+      }
+      res.send(result.rows);
+    }
+  );
+});
+
+app.post('/emailgroup', (req, res) => {
+  const data = req.body; 
+  client.query('INSERT INTO email_group(groupname, emails) VALUES($1, $2)', [data.groupName, data.emails])
+    .then(() => {
+      res.status(200).json({ message: 'Data inserted successfully' });
+    })
+    .catch(error => {
+      console.error('Error inserting data:', error);
+      res.status(500).json({ error: 'Internal server error' });
+    });
 });
 
 app.put("/updateexistingstationdata", (req, res) => {
@@ -148,7 +200,7 @@ app.put("/addcolumn", (req, res) => {
   const data = req.body.data;
   try {
     let temp = {
-      status: 'verified',
+      status: 'notverified',
       verifiedDateTime: ''
     }
     client.query('BEGIN');
@@ -167,7 +219,7 @@ app.put("/addcolumnfordailydata", (req, res) => {
   const data = req.body.data;
   try {
     client.query('BEGIN');
-    const queryText = `ALTER TABLE stationdatadaily ADD COLUMN IF NOT EXISTS "${data.date}" double precision DEFAULT 0`;
+    const queryText = `ALTER TABLE stationdatadaily ADD COLUMN IF NOT EXISTS "${data.date}" double precision DEFAULT -999.9`;
     client.query(queryText);
     client.query('COMMIT');
     res.status(200).json({ message: `Column Created successfully`});

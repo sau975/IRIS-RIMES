@@ -37,12 +37,17 @@ export class StationStatisticsComponent implements OnInit, OnDestroy {
     this.showCompareData = !this.showCompareData;
   }
   @ViewChild('timeMenuTrigger') trigger: MatMenuTrigger | undefined;
+  selectedRegions: string[] = [];
+  selectedStates: string[] = [];
+  selectedMcs: string[] = [];
+  tempfilteredStations: any[] = [];
+  regionList: any[] = [];
+  filteredMcs: any[] = [];
+  filteredStates: any[] = [];
   selectedRegion: string = '';
   selectedState: string = '';
   selectedDistrict: string = '';
   selectedStation: string = '';
-  regionList:any[]=[];
-  filteredStates:any[]=[];
   filteredDistricts:any[]=[];
   filteredStations:any[]=[];
   totalstations: number = 0;
@@ -143,6 +148,9 @@ export class StationStatisticsComponent implements OnInit, OnDestroy {
         { hour: '23', value: 0, unit: 'mm' },
         { hour: '24', value: 0, unit: 'mm' },
       ],
+      // data: [
+      //   { hour: '01', value: 0, unit: 'mm' }
+      // ]
       data: [
         { hour: '01', value: 0, unit: 'mm' },
         { hour: '02', value: 10, unit: 'mm' },
@@ -284,6 +292,7 @@ export class StationStatisticsComponent implements OnInit, OnDestroy {
     {id:101, name: "mc1"},
     {id:101, name: "mc1"}
   ]
+  startNumber:number = 1;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -318,15 +327,25 @@ export class StationStatisticsComponent implements OnInit, OnDestroy {
   }
 
   onChangeRegion(checkedValues:any){
-    let tempStates = this.existingstationdata.filter(item => {
+    this.selectedRegions = checkedValues;
+    let tempMcs = this.existingstationdata.filter(item => {
       return checkedValues.some((value:any) => {
         return item.region == value;
       });
     });
+    let tempfilteredMcs = Array.from(new Set(tempMcs.map(a => a.rmc_mc)));
+    this.filteredMcs = tempfilteredMcs.map(a => { return {name: a}});
+  }
+
+  onChangeMc(checkedValues:any){
+    this.selectedMcs = checkedValues;
+    let tempStates = this.existingstationdata.filter(item => {
+      return checkedValues.some((value:any) => {
+        return item.rmc_mc == value;
+      });
+    });
     let tempfilteredStates = Array.from(new Set(tempStates.map(a => a.state)));
     this.filteredStates = tempfilteredStates.map(a => { return {name: a}});
-    this.selectedState = ''
-    this.selectedDistrict = ''
   }
 
   onChangeState(checkedValues:any){
@@ -371,6 +390,20 @@ export class StationStatisticsComponent implements OnInit, OnDestroy {
     console.log(item);
   }
 
+  showStationDailyData(){
+    this.stationWeatherParameters[0].data = [];
+    this.startNumber = 1;
+    let stationData = this.existingstationdata.find(x => x.station == this.selectedStation);
+    for(let i = 0; i < 30; i++){
+      let date = String(this.startNumber).length > 1 ? this.startNumber : '0' + this.startNumber;
+      let data = {
+        hour: date, value: stationData[date + '_' + 'Apr_24'], unit: 'mm'
+      }
+      this.startNumber = this.startNumber + 1;
+      this.stationWeatherParameters[0].data.push(data);
+    }
+  }
+
   updateMapAttribution(specialText: string) {
     // Get the Leaflet map container
     const mapContainer = this.stationObservationMap.getContainer();
@@ -389,14 +422,23 @@ export class StationStatisticsComponent implements OnInit, OnDestroy {
   private initStationObservationMap(): void {
     this.stationObservationMap = L.map('map_observations', {
       center: [24, 76.9629],
-      zoom: 4,
+      zoom: 6,
       zoomControl: false,
       minZoom: 5,
     });
 
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap contributors'
+    }).addTo(this.stationObservationMap);
+
+    // L.marker([24, 76.9629]).addTo(this.stationObservationMap)
+    //   .bindPopup('A pretty CSS3 popup.<br> Easily customizable.')
+    //   .openPopup();
+
     L.control
       .zoom({ position: 'bottomright' })
       .addTo(this.stationObservationMap);
+
   }
 
   sourceChanged(sourceId: number) {
@@ -563,6 +605,30 @@ export class StationStatisticsComponent implements OnInit, OnDestroy {
     this.dataService.existingstationdata().subscribe({
       next: value => {
         this.existingstationdata = value;
+        value.forEach((location:any) => {
+          var markerCoords:any = [location.lat, location.lng];
+          var markerOptions = {
+              radius: 10, // Adjust the size of the marker here
+              color: 'black', // Change the color of the marker here
+              fillColor: this.getColorForRainfall1(location[this.dateCalculation()]), // Change the fill color of the marker here
+              fillOpacity: 2.0 // Adjust the opacity of the fill color
+          };
+
+          // Create the circle marker and add it to the map
+          var marker = L.circleMarker(markerCoords, markerOptions).addTo(this.stationObservationMap);
+          // const marker = L.marker([location.lat, location.lng]).addTo(this.stationObservationMap)
+          marker.bindPopup(location.station + '   ' + (location[this.dateCalculation()] != undefined ? location[this.dateCalculation()] : "-999.9"));
+          // Show popup on marker hover
+          marker.on('mouseover', function (e) {
+            marker.openPopup();
+          });
+
+          // Hide popup when mouse leaves marker
+          marker.on('mouseout', function (e) {
+            marker.closePopup();
+          });
+        });
+
         let maxNumber = this.existingstationdata[0][this.dateCalculation()];
         for (let i = 1; i < this.existingstationdata.length; i++) {
           if (this.existingstationdata[i][this.dateCalculation()] > maxNumber) {
@@ -660,7 +726,7 @@ export class StationStatisticsComponent implements OnInit, OnDestroy {
   }
   loadGeoJSON(): void {
 
-    this.http.get('assets/geojson/INDIA_DISTRICT.json').subscribe((res: any) => {
+    this.http.get('assets/geojson/INDIA_STATE.json').subscribe((res: any) => {
       L.geoJSON(res, {
         style: (feature: any) => {
           const id2 = feature.properties['district_c'];
@@ -682,11 +748,11 @@ export class StationStatisticsComponent implements OnInit, OnDestroy {
           }
           const color = this.getColorForRainfall1(rainfall);
           return {
-            fillColor: color,
-            weight: 0.5,
-            opacity: 2,
+            // fillColor: color,
+            weight: 1,
+            opacity: 1,
             color: 'black',
-            fillOpacity: 2
+            // fillOpacity: 2
           };
         },
         onEachFeature: (feature: any, layer: any) => {
@@ -864,9 +930,11 @@ export class StationStatisticsComponent implements OnInit, OnDestroy {
     //     : this.current_Date.time,
     // };
     this.toggleBottomNav();
-    this.loadGeoJSON();
+    // this.loadGeoJSON();
     this.updateChart(this.stationWeatherParameters[0]);
+    // this.showMarkerOnMap();
   }
+
 
   closePopup() {
     this.isBottomNavOpen = false;

@@ -16,7 +16,8 @@
                       font-weight: bolder;
                       font-size: 20px;
                     ">
-                    IMD Rainfall Information System (IRIS)</label>
+                    IMD Rainfall Information System <img width="100px" style="margin-left: 10px;"
+                    src="/assets/images/logoimage.png"></label>
                 </td>
               </tr>
               <tr>
@@ -36,15 +37,22 @@
         </td>
         <td>
           <div class="button">
-            <button class="Back" (click)="goBack()">Back</button>
+            <button class="Back" type="button" routerLink="../front-page">Back</button>
           </div>
         </td>
       </tr>
     </tbody>
   </table>
 </div>
-<mat-tab-group>
-  <mat-tab label="Email"> Content 1 </mat-tab>
-  <mat-tab label="Auto Email"> Content 2 </mat-tab>
-  <mat-tab label="Email Group"> Content 3 </mat-tab>
-</mat-tab-group>
+
+<div class="sidebar">
+  <a [ngClass]="{'active': isSelected('send-email')}" (click)="selectMenuItem('send-email')" routerLink="send-email">Send Email</a>
+  <a [ngClass]="{'active': isSelected('auto-email')}" (click)="selectMenuItem('auto-email')" routerLink="auto-email">Auto Email</a>
+  <a [ngClass]="{'active': isSelected('defined-email')}" (click)="selectMenuItem('defined-email')" routerLink="defined-email">Defined Email Group</a>
+  <a [ngClass]="{'active': isSelected('email-log')}" (click)="selectMenuItem('email-log')" routerLink="email-log">Email Log</a>
+</div>
+
+<div class="content">
+  <router-outlet></router-outlet>
+</div>
+

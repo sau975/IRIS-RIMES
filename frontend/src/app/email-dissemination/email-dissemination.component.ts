@@ -1,14 +1,23 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-email-dissemination',
   templateUrl: './email-dissemination.component.html',
   styleUrls: ['./email-dissemination.component.css']
 })
-export class EmailDisseminationComponent {
+export class EmailDisseminationComponent implements OnInit {
+  selectedMenuItem: string = 'send-email'; // To store the selected menu item
 
-  goBack() {
-    window.history.back();
+  constructor(){}
+
+  ngOnInit(): void {}
+
+  selectMenuItem(menuItem: string): void {
+    this.selectedMenuItem = menuItem;
+  }
+
+  isSelected(menuItem: string): boolean {
+    return this.selectedMenuItem === menuItem;
   }
 
 }

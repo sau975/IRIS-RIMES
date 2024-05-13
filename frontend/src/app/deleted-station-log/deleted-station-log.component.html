@@ -55,6 +55,8 @@
           <thead>
             <tr>
               <th style="border: 1px solid black">StationId</th>
+              <th style="border: 1px solid black">Mc</th>
+              <th style="border: 1px solid black">District</th>
               <th style="border: 1px solid black">Station</th>
               <th style="border: 1px solid black">User</th>
               <th style="border: 1px solid black">Date Time</th>
@@ -64,6 +66,8 @@
           <tbody *ngIf="deletedStationLogs && deletedStationLogs.length > 0">
             <tr *ngFor="let delstation of deletedStationLogs; let i = index">
               <td>{{delstation.stationid}}</td>
+              <td>{{delstation.rmcmc}}</td>
+              <td>{{delstation.district}}</td>
               <td>{{delstation.stationname}}</td>
               <td>{{delstation.username}}</td>
               <td>{{delstation.datetime | date: 'dd-MM-yyy hh:mm:ss'}}</td>
