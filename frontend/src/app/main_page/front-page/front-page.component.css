@@ -8,6 +8,20 @@ img{
   background-size: cover;
 }
 
+/* .background-image {
+  padding: 20px;
+}
+
+@media (max-width: 576px) {
+  .background-image {
+    padding: 10px;
+  }
+  .text-center {
+    font-size: 14px;
+  }
+} */
+
+
 .logo {
   margin: 6px 0 0 51px;
 }

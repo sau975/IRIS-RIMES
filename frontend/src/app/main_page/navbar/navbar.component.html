@@ -296,100 +296,6 @@
         <!-- nav -->
 
         <li>
-          <a>WINTER</a>
-          <ul>
-            <li>
-              <a style="background-color: orange;" routerLink="../rainfallgraphs-winter-panindia">PAN INDIA</a>
-            </li>
-            <li>
-              <a style="background-color: orange;" routerLink="../rainfallgraphs-winter-eastandnortheastregion">EAST AND NORT-EAST REGION
-              </a>
-            </li>
-            <li>
-              <a style="background-color: orange;" routerLink="../rainfallgraphs-winter-northwestregion">NORTH-WEST REGION</a>
-            </li>
-            <li>
-              <a style="background-color: orange;" routerLink="../rainfallgraphs-winter-southpeninsularregion">SOUTH PENINSULURA REGION</a>
-            </li>
-            <li>
-              <a style="background-color: orange;" routerLink="../rainfallgraphs-winter-centralindiaregion">CENTRAL INDIA REGION</a>
-            </li>
-            <li>
-              <a style="background-color: orange;" routerLink="../underprogress">BLOCK</a>
-            </li>
-          </ul>
-        </li>
-        <li>
-          <a>PRE-MONSOON</a>
-          <ul>
-            <li>
-              <a style="background-color: orange;" routerLink="../rainfallgraphs-premonsoon-panindia">PAN INDIA</a>
-            </li>
-            <li>
-              <a style="background-color: orange;" routerLink="../rainfallgraphs-premonsoon-eastandnortheastregion">EAST AND NORT-EAST REGION
-              </a>
-            </li>
-            <li>
-              <a style="background-color: orange;" routerLink="../rainfallgraphs-premonsoon-northwestregion">NORTH-WEST REGION</a>
-            </li>
-            <li>
-              <a style="background-color: orange;" routerLink="../rainfallgraphs-premonsoon-southpeninsularregion">SOUTH PENINSULURA REGION</a>
-            </li>
-            <li>
-              <a style="background-color: orange;" routerLink="../rainfallgraphs-premonsoon-centralindiaregion">CENTRAL INDIA REGION</a>
-            </li>
-            <li>
-              <a style="background-color: orange;" routerLink="../underprogress">BLOCK</a>
-            </li>
-          </ul>
-        </li>
-        <li>
-          <a>MONSOON</a>
-          <ul>
-            <li>
-              <a style="background-color: orange;" routerLink="../rainfallgraphs-monsoon-panindia">PAN INDIA</a>
-            </li>
-            <li>
-              <a style="background-color: orange;" routerLink="../rainfallgraphs-monsoon-eastandnortheastregion">EAST AND NORT-EAST REGION
-              </a>
-            </li>
-            <li>
-              <a style="background-color: orange;" routerLink="../rainfallgraphs-monsoon-northwestregion">NORTH-WEST REGION</a>
-            </li>
-            <li>
-              <a style="background-color: orange;" routerLink="../rainfallgraphs-monsoon-southpeninsularregion">SOUTH PENINSULURA REGION</a>
-            </li>
-            <li>
-              <a style="background-color: orange;" routerLink="../rainfallgraphs-monsoon-centralindiaregion">CENTRAL INDIA REGION</a>
-            </li>
-            <li>
-              <a style="background-color: orange;" routerLink="../underprogress">BLOCK</a>
-            </li>
-          </ul>
-        </li>
-        <li>
-          <a>POST-MONSOON</a>
-          <ul>
-            <li>
-              <a style="background-color: orange;" routerLink="../rainfallgraphs-postmonsoon-panindia">PAN INDIA</a>
-            </li>
-            <li>
-              <a style="background-color: orange;" routerLink="../rainfallgraphs-postmonsoon-eastandnortheastregion">EAST AND NORT-EAST REGION
-              </a>
-            </li>
-            <li>
-              <a style="background-color: orange;" routerLink="../rainfallgraphs-postmonsoon-northwestregion">NORTH-WEST REGION</a>
-            </li>
-            <li>
-              <a style="background-color: orange;" routerLink="../rainfallgraphs-postmonsoon-southpeninsularregion">SOUTH PENINSULURA REGION</a>
-            </li>
-            <li>
-              <a style="background-color: orange;" routerLink="../rainfallgraphs-postmonsoon-centralindiaregion">CENTRAL INDIA REGION</a>
-            </li>
-            <li>
-              <a style="background-color: orange;" routerLink="../underprogress">BLOCK</a>
-            </li>
-          </ul>
             <a class="main_nav">RAINFALL GRAPHS</a>
             <ul>
                 <li>
@@ -775,6 +681,9 @@
         <li *ngIf="loggedInUser.data[0].mcorhq == 'hq'">
             <a class="main_nav" routerLink="../verification-page">VERIFICATION</a>
         </li>
+        <li>
+         <a class="main_nav" routerLink="../verification-page-mc">VERIFICATION MC</a>
+       </li>
         <li *ngIf="loggedInUser.data[0].mcorhq == 'hq'">
             <a routerLink="../email-dissemination">DISSEMINATION</a>
         </li>

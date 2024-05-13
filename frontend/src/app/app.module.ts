@@ -73,6 +73,7 @@ import { AutoEmailSetupComponent } from './auto-email-setup/auto-email-setup.com
 import { DefinedEmailGroupComponent } from './defined-email-group/defined-email-group.component';
 import { EmailLogComponent } from './email-log/email-log.component';
 import { StatewiseDistRainfallComponent } from './statewise-dist-rainfall/statewise-dist-rainfall.component';
+import { VerificationPageMcComponent } from './verification-page-mc/verification-page-mc.component';
 import { RainfallgraphsComponent } from './rainfall-graphs/rainfallgraphs/rainfallgraphs.component';
 import { RainfallGraphsWinterPanindiaComponent } from './rainfall-graphs/winter/rainfall-graphs-winter-panindia/rainfall-graphs-winter-panindia.component';
 import { RainfallGraphsWinterNorthwestregionComponent } from './rainfall-graphs/winter/rainfall-graphs-winter-northwestregion/rainfall-graphs-winter-northwestregion.component';
@@ -165,7 +166,8 @@ import { RainfallGraphsPostmonsoonNorthwestregionComponent } from './rainfall-gr
     AutoEmailSetupComponent,
     DefinedEmailGroupComponent,
     EmailLogComponent,
-    StatewiseDistRainfallComponent
+    StatewiseDistRainfallComponent,
+    VerificationPageMcComponent
   ],
   imports: [
     PdfViewerModule,

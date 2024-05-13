@@ -6,3 +6,7 @@
 .p-multiselect {
   width: 250px;
 }
+
+ol, ul {
+    padding-left: 0rem;
+}
