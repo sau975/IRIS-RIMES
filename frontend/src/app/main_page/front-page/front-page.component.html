@@ -1,4 +1,4 @@
-<div class="background-image">
+<!-- <div class="background-image">
   <app-header></app-header>
   <div
     style="
@@ -11,7 +11,7 @@
     iRAINS System is in experimental mode!
   </div>
   <app-navbar></app-navbar>
-  <div class="values">
+  <div class="values container-fluid">
     <div class="row">
       <div class="col-md-5 col-sm-3">
         <label>From Date</label>
@@ -37,6 +37,48 @@
         <button
           type="button"
           class="btn btn-primary mt-4"
+          (click)="setFromAndToDate()"
+        >
+          Submit
+        </button>
+      </div>
+    </div>
+  </div>
+  <router-outlet></router-outlet>
+</div> -->
+
+<div class="background-image">
+  <app-header></app-header>
+  <div class="text-center bg-blend-lighten" style="color: red; font-weight: bolder;">
+    iRAINS System is in experimental mode!
+  </div>
+  <app-navbar></app-navbar>
+  <div class="values container">
+    <div class="row">
+      <div class="col-md-5">
+        <label class="form-label">From Date</label>
+        <input
+          type="date"
+          class="form-control"
+          [(ngModel)]="fromDate"
+          (ngModelChange)="validateDateRange()"
+          placeholder="Select date"
+        />
+      </div>
+      <div class="col-md-5">
+        <label class="form-label">To Date</label>
+        <input
+          type="date"
+          class="form-control"
+          [(ngModel)]="toDate"
+          (ngModelChange)="validateDateRange()"
+          placeholder="Select date"
+        />
+      </div>
+      <div class="col-md-2">
+        <button
+          type="button"
+          class="btn btn-primary mt-md-4 mt-2" 
           (click)="setFromAndToDate()"
         >
           Submit

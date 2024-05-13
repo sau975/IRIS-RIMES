@@ -80,11 +80,17 @@
 			<mat-divider></mat-divider>
 
 			<div class="my-3 d-flex justify-content-center">
-				<button mat-button type="button" class="mx-ato" [class.hidden]="!isSideNavOpen"
+
+				<button mat-button type="button" class="mx-auto" [class.hidden]="!isSideNavOpen"
+					style="background-color:#4050b5; color:white">
+					Submit
+				</button>
+
+				<button mat-button type="button" class="mx-auto px-2" [class.hidden]="!isSideNavOpen"
 					style="background-color:#4050b5; color:white" (click)="showStationData()">
 					Show Station Data
 				</button>
-				<button mat-button type="button" class="mx-ato" [class.hidden]="!isSideNavOpen"
+				<button mat-button type="button" class="mx-auto" [class.hidden]="!isSideNavOpen"
 					style="background-color:#4050b5; color:white; margin:0px 10px 0px 10px;" (click)="compareCharts()">
 					Compare
 				</button>
