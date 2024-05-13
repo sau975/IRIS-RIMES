@@ -45,7 +45,6 @@
   background-color: transparent !important;
 } */
 
-
 .login-side-pic {
   /* background: url(../../../assets/images/amir-borhan-v7-pC1PYRR0-unsplash.jpg); */
   /* background: url(../../../assets/images/rainfall_baground.jpg); */
@@ -53,6 +52,10 @@
   background: url(../../../assets/images/rainfall_baground2.jpg);
   /* background: url(../../../assets/images/back2.jpg); */
   background-size: cover;
+}
+
+.login-body{
+  overflow-x: hidden !important;
 }
 
 .label-text {
@@ -121,7 +124,7 @@
 .side-text-container {
   display: flex;
   flex-flow: column wrap;
-  height: 93vh;
+  /* height: 93vh; */
 
   .footer-container {
     margin-top: auto;

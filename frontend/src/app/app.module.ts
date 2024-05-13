@@ -67,7 +67,12 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { RealtimeStationDataComponent } from './realtime-station-data/realtime-station-data.component';
 import { LogInfoContainerComponent } from './log-info-container/log-info-container.component';
 import { LogInfoForReportsComponent } from './log-info-for-reports/log-info-for-reports.component';
-import { StateWiseComponent } from './state-wise/state-wise.component';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { SendEmailComponent } from './send-email/send-email.component';
+import { AutoEmailSetupComponent } from './auto-email-setup/auto-email-setup.component';
+import { DefinedEmailGroupComponent } from './defined-email-group/defined-email-group.component';
+import { EmailLogComponent } from './email-log/email-log.component';
+import { StatewiseDistRainfallComponent } from './statewise-dist-rainfall/statewise-dist-rainfall.component';
 
 @NgModule({
   declarations: [
@@ -112,7 +117,11 @@ import { StateWiseComponent } from './state-wise/state-wise.component';
     RealtimeStationDataComponent,
     LogInfoContainerComponent,
     LogInfoForReportsComponent,
-    StateWiseComponent
+    SendEmailComponent,
+    AutoEmailSetupComponent,
+    DefinedEmailGroupComponent,
+    EmailLogComponent,
+    StatewiseDistRainfallComponent
   ],
   imports: [
     PdfViewerModule,
@@ -139,7 +148,8 @@ import { StateWiseComponent } from './state-wise/state-wise.component';
     MatDatepickerModule,
     MatNativeDateModule,
     ChartModule,
-    MatTabsModule
+    MatTabsModule,
+    MultiSelectModule
   ],
   providers: [AuthGuard, DatePipe],
   bootstrap: [AppComponent]

@@ -1,0 +1,17 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-6 offset-md-3 center-box">
+      <h5 class="text-center mt-5">Auto Email On/Off</h5>
+      <div>
+        <h5>Set:</h5>
+        <input type="radio" id="on" name="on" [value]="true" [(ngModel)]="autoEmailOnOff">
+          <label for="on">On</label><br>
+        <input type="radio" id="off" name="off" [value]="false" [(ngModel)]="autoEmailOnOff">
+          <label for="off">Off</label><br>
+      </div>
+      <div class="text-center mt-5">
+        <button type="button" class="btn btn-success" (click)="setAutoEmail()">Submit</button>
+      </div>
+    </div>
+  </div>
+</div>
