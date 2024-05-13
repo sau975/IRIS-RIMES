@@ -310,7 +310,7 @@ export class StationStatisticsComponent implements OnInit, OnDestroy {
     this.initStationObservationMap();
     this.getCurrentDate();
     this.fetchDataFromBackend();
-    // this.loadGeoJSON();
+    this.loadGeoJSON();
   }
 
   getCurrentDate() {
@@ -726,7 +726,7 @@ export class StationStatisticsComponent implements OnInit, OnDestroy {
   }
   loadGeoJSON(): void {
 
-    this.http.get('assets/geojson/INDIA_DISTRICT.json').subscribe((res: any) => {
+    this.http.get('assets/geojson/INDIA_STATE.json').subscribe((res: any) => {
       L.geoJSON(res, {
         style: (feature: any) => {
           const id2 = feature.properties['district_c'];
@@ -748,11 +748,11 @@ export class StationStatisticsComponent implements OnInit, OnDestroy {
           }
           const color = this.getColorForRainfall1(rainfall);
           return {
-            fillColor: color,
-            weight: 0.5,
-            opacity: 2,
+            // fillColor: color,
+            weight: 1,
+            opacity: 1,
             color: 'black',
-            fillOpacity: 2
+            // fillOpacity: 2
           };
         },
         onEachFeature: (feature: any, layer: any) => {

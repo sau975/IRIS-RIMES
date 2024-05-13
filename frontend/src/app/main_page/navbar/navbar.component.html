@@ -1,303 +1,300 @@
 <mat-toolbar color="primary" class="custom-toolbar">
-  <button mat-icon-button (click)="toggleNavbar()">
+    <button mat-icon-button (click)="toggleNavbar()">
     <mat-icon>menu</mat-icon>
   </button>
-  <span>iRAINS PRODUCTS</span>
+    <span>iRAINS PRODUCTS</span>
 </mat-toolbar>
 <nav [ngClass]="{'open': isNavbarOpen}" class="top">
-  <ul class="nav">
-    <li>
-      <a class="main_nav">RAINFALL MAP</a>
-      <ul>
+    <ul class="nav">
         <li>
-          <a>DAILY DEPARTURE</a>
-          <ul>
-            <li>
-              <a (click)="goToDailyDepartureMap('State')">STATE RAINFALL MAP</a>
-            </li>
-            <li>
-              <a (click)="goToDailyDepartureMap('SubDivision')">SUBDIVISION RAINFALL MAP
+            <a class="main_nav">RAINFALL MAP</a>
+            <ul>
+                <li>
+                    <a>DAILY DEPARTURE</a>
+                    <ul>
+                        <li>
+                            <a (click)="goToDailyDepartureMap('State')">STATE RAINFALL MAP</a>
+                        </li>
+                        <li>
+                            <a (click)="goToDailyDepartureMap('SubDivision')">SUBDIVISION RAINFALL MAP
               </a>
-            </li>
-            <li>
-              <a>DISTRICT RAINFALL MAP</a>
-              <ul>
-                <li>
-                  <a (click)="goToDailyDepartureMap('District')">PAN INDIA</a>
-                </li>
-                <li>
-                  <a style="background-color: orange;" routerLink="../underprogress">EAST AND NORT-EAST REGION
+                        </li>
+                        <li>
+                            <a>DISTRICT RAINFALL MAP</a>
+                            <ul>
+                                <li>
+                                    <a (click)="goToDailyDepartureMap('District')">PAN INDIA</a>
+                                </li>
+                                <li>
+                                    <a style="background-color: orange;" routerLink="../underprogress">EAST AND NORT-EAST REGION
                   </a>
-                </li>
-                <li>
-                  <a style="background-color: orange;" routerLink="../underprogress">NORTH-WEST REGION</a>
-                </li>
-                <li>
-                  <a style="background-color: orange;" routerLink="../underprogress">SOUTH PENINSULURA REGION</a>
-                </li>
-                <li>
-                  <a style="background-color: orange;" routerLink="../underprogress">CENTRAL INDIA REGION</a>
-                </li>
-              </ul>
-            </li>
-            <li>
-              <a (click)="goToDailyDepartureMap('Homogenous')">HOMOGENOUS RAINFALL MAP
+                                </li>
+                                <li>
+                                    <a style="background-color: orange;" routerLink="../underprogress">NORTH-WEST REGION</a>
+                                </li>
+                                <li>
+                                    <a style="background-color: orange;" routerLink="../underprogress">SOUTH PENINSULURA REGION</a>
+                                </li>
+                                <li>
+                                    <a style="background-color: orange;" routerLink="../underprogress">CENTRAL INDIA REGION</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a (click)="goToDailyDepartureMap('Homogenous')">HOMOGENOUS RAINFALL MAP
               </a>
-            </li>
-            <li>
-              <a (click)="goToDailyDepartureMap('Country')">COUNTRY RAINFALL MAP
+                        </li>
+                        <li>
+                            <a (click)="goToDailyDepartureMap('Country')">COUNTRY RAINFALL MAP
               </a>
-            </li>
-            <li>
-              <a style="background-color: orange;" routerLink="../underprogress">RIVER BASIN</a>
-            </li>
-            <li>
-              <a style="background-color: orange;" routerLink="../underprogress">BLOCK RAINFALL MAP</a>
-            </li>
-          </ul>
-        </li>
+                        </li>
+                        <li>
+                            <a style="background-color: orange;" routerLink="../underprogress">RIVER BASIN</a>
+                        </li>
+                        <li>
+                            <a style="background-color: orange;" routerLink="../underprogress">BLOCK RAINFALL MAP</a>
+                        </li>
+                    </ul>
+                </li>
 
-        <li>
-          <a>WEEKLY DEPARTURE</a>
-          <ul>
-            <li>
-              <a (click)="goToWeeklyMap('State')">STATE RAINFALL MAP</a>
-            </li>
-            <li>
-              <a>SUBDIVISION RAINFALL MAP
-              </a>
-            </li>
-            <li>
-              <a>DISTRICT RAINFALL MAP</a>
-              <ul>
                 <li>
-                  <a (click)="goToWeeklyMap('SubDivision')">PAN INDIA</a>
-                </li>
-                <li>
-                  <a style="background-color: orange;" routerLink="../underprogress">EAST AND NORT-EAST REGION
+                    <a>WEEKLY DEPARTURE</a>
+                    <ul>
+                        <li>
+                            <a (click)="goToWeeklyMap('State')">STATE RAINFALL MAP</a>
+                        </li>
+                        <li>
+                            <a (click)="goToWeeklyMap('SubDivision')">SUBDIVISION RAINFALL MAP
+                        </a>
+                        </li>
+                        <li>
+                            <a>DISTRICT RAINFALL MAP</a>
+                            <ul>
+                                <li>
+                                    <a (click)="goToWeeklyMap('District')">PAN INDIA</a>
+                                </li>
+                                <li>
+                                    <a style="background-color: orange;" routerLink="../underprogress">EAST AND NORT-EAST REGION
                   </a>
-                </li>
-                <li>
-                  <a style="background-color: orange;" routerLink="../underprogress">NORTH-WEST REGION</a>
-                </li>
-                <li>
-                  <a style="background-color: orange;" routerLink="../underprogress">SOUTH PENINSULURA REGION</a>
-                </li>
-                <li>
-                  <a style="background-color: orange;" routerLink="../underprogress">CENTRAL INDIA REGION</a>
-                </li>
-              </ul>
-            </li>
-            <li>
-              <a (click)="goToWeeklyMap('Homogenous')">HOMOGENOUS RAINFALL MAP
+                                </li>
+                                <li>
+                                    <a style="background-color: orange;" routerLink="../underprogress">NORTH-WEST REGION</a>
+                                </li>
+                                <li>
+                                    <a style="background-color: orange;" routerLink="../underprogress">SOUTH PENINSULURA REGION</a>
+                                </li>
+                                <li>
+                                    <a style="background-color: orange;" routerLink="../underprogress">CENTRAL INDIA REGION</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a (click)="goToWeeklyMap('Homogenous')">HOMOGENOUS RAINFALL MAP
               </a>
-            </li>
-            <li>
-              <a (click)="goToWeeklyMap('Country')">COUNTRY RAINFALL MAP
+                        </li>
+                        <li>
+                            <a (click)="goToWeeklyMap('Country')">COUNTRY RAINFALL MAP
               </a>
-            </li>
-            <li>
-              <a style="background-color: orange;" routerLink="../underprogress">RIVER BASIN</a>
-            </li>
-            <li>
-              <a style="background-color: orange;" routerLink="../underprogress">BLOCK RAINFALL MAP</a>
-            </li>
-          </ul>
-        </li>
+                        </li>
+                        <li>
+                            <a style="background-color: orange;" routerLink="../underprogress">RIVER BASIN</a>
+                        </li>
+                        <li>
+                            <a style="background-color: orange;" routerLink="../underprogress">BLOCK RAINFALL MAP</a>
+                        </li>
+                    </ul>
+                </li>
 
-        <li>
-          <a>DAILY</a>
-          <ul>
-            <li>
-              <a (click)="goToDailyMap('State')">STATE RAINFALL MAP</a>
-            </li>
-            <li>
-              <a (click)="goToDailyMap('SubDivision')">SUBDIVISION RAINFALL MAP
+                <li>
+                    <a>DAILY</a>
+                    <ul>
+                        <li>
+                            <a (click)="goToDailyMap('State')">STATE RAINFALL MAP</a>
+                        </li>
+                        <li>
+                            <a (click)="goToDailyMap('SubDivision')">SUBDIVISION RAINFALL MAP
               </a>
-            </li>
-            <li>
-              <a (click)="goToDailyMap('District')">DISTRICT RAINFALL MAP</a>
-            </li>
-            <li>
-              <a (click)="goToDailyMap('Homogenous')">HOMOGENOUS RAINFALL MAP
+                        </li>
+                        <li>
+                            <a (click)="goToDailyMap('District')">DISTRICT RAINFALL MAP</a>
+                        </li>
+                        <li>
+                            <a (click)="goToDailyMap('Homogenous')">HOMOGENOUS RAINFALL MAP
               </a>
-            </li>
-            <li>
-              <a style="background-color: orange;" routerLink="../underprogress">BLOCK RAINFALL MAP</a>
-            </li>
-            <!-- <li >
+                        </li>
+                        <li>
+                            <a style="background-color: orange;" routerLink="../underprogress">BLOCK RAINFALL MAP</a>
+                        </li>
+                        <!-- <li >
               <a style="background-color: orange;"
                 href="https://hydro.imd.gov.in/hydrometweb/(S(05nzwv55w04fmmbbikdv0f55))/PdfPageImage.aspx?imgUrl=PRODUCTS\Rainfall_Maps\Daily\RiverBasin\RIVERBASIN_RAINFALL_MAP_COUNTRY_INDIA_d.JPG&landingpage=landing"
                 >RIVER BASIN</a
               >
             </li> -->
-          </ul>
-        </li>
+                    </ul>
+                </li>
 
-        <li>
-          <a>CUMULATIVE</a>
-          <ul>
-            <li>
-              <a style="background-color: orange;" routerLink="../underprogress">STATE RAINFALL MAP</a>
-            </li>
-            <li>
-              <a style="background-color: orange;" routerLink="../underprogress">SUBDIVISION RAINFALL MAP
+                <li>
+                    <a>CUMULATIVE</a>
+                    <ul>
+                        <li>
+                            <a style="background-color: orange;" routerLink="../underprogress">STATE RAINFALL MAP</a>
+                        </li>
+                        <li>
+                            <a style="background-color: orange;" routerLink="../underprogress">SUBDIVISION RAINFALL MAP
               </a>
-            </li>
-            <li>
-              <a style="background-color: orange;" routerLink="../underprogress">DISTRICT RAINFALL MAP</a>
-              <ul>
-                <li>
-                  <a style="background-color: orange;" routerLink="../underprogress">PAN INDIA</a>
-                </li>
-                <li>
-                  <a style="background-color: orange;" routerLink="../underprogress">EAST AND NORT-EAST REGION
+                        </li>
+                        <li>
+                            <a style="background-color: orange;" routerLink="../underprogress">DISTRICT RAINFALL MAP</a>
+                            <ul>
+                                <li>
+                                    <a style="background-color: orange;" routerLink="../underprogress">PAN INDIA</a>
+                                </li>
+                                <li>
+                                    <a style="background-color: orange;" routerLink="../underprogress">EAST AND NORT-EAST REGION
                   </a>
+                                </li>
+                                <li>
+                                    <a style="background-color: orange;" routerLink="../underprogress">NORTH-WEST REGION</a>
+                                </li>
+                                <li>
+                                    <a style="background-color: orange;" routerLink="../underprogress">SOUTH PENINSULURA REGION</a>
+                                </li>
+                                <li>
+                                    <a style="background-color: orange;" routerLink="../underprogress">CENTRAL INDIA REGION</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a style="background-color: orange;" routerLink="../underprogress">RIVER BASIN</a>
+                        </li>
+                        <li>
+                            <a style="background-color: orange;" routerLink="../underprogress">BLOCK RAINFALL MAP</a>
+                        </li>
+                    </ul>
                 </li>
-                <li>
-                  <a style="background-color: orange;" routerLink="../underprogress">NORTH-WEST REGION</a>
-                </li>
-                <li>
-                  <a style="background-color: orange;" routerLink="../underprogress">SOUTH PENINSULURA REGION</a>
-                </li>
-                <li>
-                  <a style="background-color: orange;" routerLink="../underprogress">CENTRAL INDIA REGION</a>
-                </li>
-              </ul>
-            </li>
-            <li>
-              <a style="background-color: orange;" routerLink="../underprogress">RIVER BASIN</a>
-            </li>
-            <li>
-              <a style="background-color: orange;" routerLink="../underprogress">BLOCK RAINFALL MAP</a>
-            </li>
-          </ul>
-        </li>
 
-        <li>
-          <a>NORMAL RAINFALL MAP</a>
-          <ul>
-            <li>
-              <a>ANNUAL</a>
-              <ul>
                 <li>
-                  <a (click)="goToNormalMap('State')">STATE RAINFALL MAP</a>
-                </li>
-                <li>
-                  <a (click)="goToNormalMap('SubDivision')">SUBDIVISION RAINFALL MAP
+                    <a>NORMAL RAINFALL MAP</a>
+                    <ul>
+                        <li>
+                            <a>ANNUAL</a>
+                            <ul>
+                                <li>
+                                    <a (click)="goToNormalMap('State')">STATE RAINFALL MAP</a>
+                                </li>
+                                <li>
+                                    <a (click)="goToNormalMap('SubDivision')">SUBDIVISION RAINFALL MAP
                   </a>
-                </li>
-                <li>
-                  <a (click)="goToNormalMap('District')">DISTRICT RAINFALL MAP</a>
-                </li>
-                <li>
-                  <a (click)="goToNormalMap('Homogenous')">HOMOGENOUS RAINFALL MAP
+                                </li>
+                                <li>
+                                    <a (click)="goToNormalMap('District')">DISTRICT RAINFALL MAP</a>
+                                </li>
+                                <li>
+                                    <a (click)="goToNormalMap('Homogenous')">HOMOGENOUS RAINFALL MAP
                   </a>
-                </li>
-                <li>
-                  <a style="background-color: orange;" routerLink="../underprogress">RIVER BASIN</a>
-                </li>
-                <li>
-                  <a style="background-color: orange;" routerLink="../underprogress">BLOCK RAINFALL MAP</a>
-                </li>
-              </ul>
-            </li>
-            <li>
-              <a>WINTER</a>
-              <ul>
-                <li>
-                  <a style="background-color: orange;" routerLink="../underprogress">STATE WISE</a>
-                </li>
-                <li>
-                  <a style="background-color: orange;" routerLink="../underprogress">SUBDIVISION WISE
+                                </li>
+                                <li>
+                                    <a style="background-color: orange;" routerLink="../underprogress">RIVER BASIN</a>
+                                </li>
+                                <li>
+                                    <a style="background-color: orange;" routerLink="../underprogress">BLOCK RAINFALL MAP</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a>WINTER</a>
+                            <ul>
+                                <li>
+                                    <a style="background-color: orange;" routerLink="../underprogress">STATE WISE</a>
+                                </li>
+                                <li>
+                                    <a style="background-color: orange;" routerLink="../underprogress">SUBDIVISION WISE
                   </a>
-                </li>
-                <li>
-                  <a style="background-color: orange;" routerLink="../underprogress">RIVER BASIN</a>
-                </li>
-                <li>
-                  <a style="background-color: orange;" routerLink="../underprogress">BLOCK</a>
-                </li>
-              </ul>
-            </li>
-            <li>
-              <a>PRE-MONSOON </a>
-              <ul>
-                <li>
-                  <a style="background-color: orange;" routerLink="../underprogress">STATE WISE</a>
-                </li>
-                <li>
-                  <a style="background-color: orange;" routerLink="../underprogress">SUBDIVISION WISE
+                                </li>
+                                <li>
+                                    <a style="background-color: orange;" routerLink="../underprogress">RIVER BASIN</a>
+                                </li>
+                                <li>
+                                    <a style="background-color: orange;" routerLink="../underprogress">BLOCK</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a>PRE-MONSOON </a>
+                            <ul>
+                                <li>
+                                    <a style="background-color: orange;" routerLink="../underprogress">STATE WISE</a>
+                                </li>
+                                <li>
+                                    <a style="background-color: orange;" routerLink="../underprogress">SUBDIVISION WISE
                   </a>
-                </li>
-                <li>
-                  <a style="background-color: orange;" routerLink="../underprogress">RIVER BASIN</a>
-                </li>
-                <li>
-                  <a style="background-color: orange;" routerLink="../underprogress">BLOCK</a>
-                </li>
-              </ul>
-            </li>
-            <li>
-              <a>MONSOON</a>
-              <ul>
-                <li>
-                  <a style="background-color: orange;" routerLink="../underprogress">STATE WISE</a>
-                </li>
-                <li>
-                  <a style="background-color: orange;" routerLink="../underprogress">SUBDIVISION WISE
+                                </li>
+                                <li>
+                                    <a style="background-color: orange;" routerLink="../underprogress">RIVER BASIN</a>
+                                </li>
+                                <li>
+                                    <a style="background-color: orange;" routerLink="../underprogress">BLOCK</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a>MONSOON</a>
+                            <ul>
+                                <li>
+                                    <a style="background-color: orange;" routerLink="../underprogress">STATE WISE</a>
+                                </li>
+                                <li>
+                                    <a style="background-color: orange;" routerLink="../underprogress">SUBDIVISION WISE
                   </a>
-                </li>
-                <li>
-                  <a style="background-color: orange;" routerLink="../underprogress">RIVER BASIN</a>
-                </li>
-                <li>
-                  <a style="background-color: orange;" routerLink="../underprogress">BLOCK RAINFALL MAP</a>
-                </li>
-              </ul>
-            </li>
-            <li>
-              <a>POST-MONSOON</a>
-              <ul>
-                <li>
-                  <a style="background-color: orange;" routerLink="../underprogress">STATE WISE</a>
-                </li>
-                <li>
-                  <a style="background-color: orange;" routerLink="../underprogress">SUBDIVISION WISE
+                                </li>
+                                <li>
+                                    <a style="background-color: orange;" routerLink="../underprogress">RIVER BASIN</a>
+                                </li>
+                                <li>
+                                    <a style="background-color: orange;" routerLink="../underprogress">BLOCK RAINFALL MAP</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a>POST-MONSOON</a>
+                            <ul>
+                                <li>
+                                    <a style="background-color: orange;" routerLink="../underprogress">STATE WISE</a>
+                                </li>
+                                <li>
+                                    <a style="background-color: orange;" routerLink="../underprogress">SUBDIVISION WISE
                   </a>
-                </li>
-                <li>
-                  <a style="background-color: orange;" routerLink="../underprogress">RIVER BASIN</a>
-                </li>
-                <li>
-                  <a style="background-color: orange;" routerLink="../underprogress">BLOCK RAINFALL MAP</a>
-                </li>
-              </ul>
-            </li>
-          </ul>
+                                </li>
+                                <li>
+                                    <a style="background-color: orange;" routerLink="../underprogress">RIVER BASIN</a>
+                                </li>
+                                <li>
+                                    <a style="background-color: orange;" routerLink="../underprogress">BLOCK RAINFALL MAP</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
 
-        </li>
+                </li>
 
-        <li>
-          <a style="background-color: orange;" routerLink="../state-dist-rainfall">STATE WISE DISTRICT RAINFALL MAP</a>
-        </li>
+                <li>
+                    <a style="background-color: orange;" routerLink="../state-wise-district-rainfall">STATE WISE DISTRICT RAINFALL MAP</a>
+                </li>
 
-        <li>
-          <a style="background-color: orange;" routerLink="../underprogress">REAL TIME/UPDATED PAST RAINFALL MAP</a>
-        </li>
+                <li>
+                    <a style="background-color: orange;" routerLink="../underprogress">REAL TIME/UPDATED PAST RAINFALL MAP</a>
+                </li>
 
-        <li>
-          <a style="background-color: orange;" routerLink="../underprogress">ARG/AWS CUMULATIVE RAINFALL REAL TIME
+                <li>
+                    <a style="background-color: orange;" routerLink="../underprogress">ARG/AWS CUMULATIVE RAINFALL REAL TIME
             STATION</a>
+                </li>
+            </ul>
         </li>
-      </ul>
-    </li>
 
-    <!-- nav -->
+        <!-- nav -->
 
-    <li>
-      <a class="main_nav">RAINFALL GRAPHS</a>
-      <ul>
         <li>
           <a>WINTER</a>
           <ul>
@@ -393,337 +390,433 @@
               <a style="background-color: orange;" routerLink="../underprogress">BLOCK</a>
             </li>
           </ul>
+            <a class="main_nav">RAINFALL GRAPHS</a>
+            <ul>
+                <li>
+                    <a>WINTER</a>
+                    <ul>
+                        <li>
+                            <a style="background-color: orange;" routerLink="../underprogress">PAN INDIA</a>
+                        </li>
+                        <li>
+                            <a style="background-color: orange;" routerLink="../underprogress">EAST AND NORT-EAST REGION
+              </a>
+                        </li>
+                        <li>
+                            <a style="background-color: orange;" routerLink="../underprogress">NORTH-WEST REGION</a>
+                        </li>
+                        <li>
+                            <a style="background-color: orange;" routerLink="../underprogress">SOUTH PENINSULURA REGION</a>
+                        </li>
+                        <li>
+                            <a style="background-color: orange;" routerLink="../underprogress">CENTRAL INDIA REGION</a>
+                        </li>
+                        <li>
+                            <a style="background-color: orange;" routerLink="../underprogress">BLOCK</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a>PRE-MONSOON</a>
+                    <ul>
+                        <li>
+                            <a style="background-color: orange;" routerLink="../underprogress">PAN INDIA</a>
+                        </li>
+                        <li>
+                            <a style="background-color: orange;" routerLink="../underprogress">EAST AND NORT-EAST REGION
+              </a>
+                        </li>
+                        <li>
+                            <a style="background-color: orange;" routerLink="../underprogress">NORTH-WEST REGION</a>
+                        </li>
+                        <li>
+                            <a style="background-color: orange;" routerLink="../underprogress">SOUTH PENINSULURA REGION</a>
+                        </li>
+                        <li>
+                            <a style="background-color: orange;" routerLink="../underprogress">CENTRAL INDIA REGION</a>
+                        </li>
+                        <li>
+                            <a style="background-color: orange;" routerLink="../underprogress">BLOCK</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a>MONSOON</a>
+                    <ul>
+                        <li>
+                            <a style="background-color: orange;" routerLink="../underprogress">PAN INDIA</a>
+                        </li>
+                        <li>
+                            <a style="background-color: orange;" routerLink="../underprogress">EAST AND NORT-EAST REGION
+              </a>
+                        </li>
+                        <li>
+                            <a style="background-color: orange;" routerLink="../underprogress">NORTH-WEST REGION</a>
+                        </li>
+                        <li>
+                            <a style="background-color: orange;" routerLink="../underprogress">SOUTH PENINSULURA REGION</a>
+                        </li>
+                        <li>
+                            <a style="background-color: orange;" routerLink="../underprogress">CENTRAL INDIA REGION</a>
+                        </li>
+                        <li>
+                            <a style="background-color: orange;" routerLink="../underprogress">BLOCK</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a>POST-MONSOON</a>
+                    <ul>
+                        <li>
+                            <a style="background-color: orange;" routerLink="../underprogress">PAN INDIA</a>
+                        </li>
+                        <li>
+                            <a style="background-color: orange;" routerLink="../underprogress">EAST AND NORT-EAST REGION
+              </a>
+                        </li>
+                        <li>
+                            <a style="background-color: orange;" routerLink="../underprogress">NORTH-WEST REGION</a>
+                        </li>
+                        <li>
+                            <a style="background-color: orange;" routerLink="../underprogress">SOUTH PENINSULURA REGION</a>
+                        </li>
+                        <li>
+                            <a style="background-color: orange;" routerLink="../underprogress">CENTRAL INDIA REGION</a>
+                        </li>
+                        <li>
+                            <a style="background-color: orange;" routerLink="../underprogress">BLOCK</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
         </li>
-      </ul>
-    </li>
 
-    <!-- nav -->
+        <!-- nav -->
 
-    <li>
-      <a class="main_nav">NWP RAINFALL PRODUCTS</a>
-      <ul>
         <li>
-          <a style="background-color: orange;" routerLink="../underprogress">QPF-WRF/MME/GFS/NCUM PQPF-GEFS/NEFS</a>
+            <a class="main_nav">NWP RAINFALL PRODUCTS</a>
+            <ul>
+                <li>
+                    <a style="background-color: orange;" routerLink="../underprogress">QPF-WRF/MME/GFS/NCUM PQPF-GEFS/NEFS</a>
+                </li>
+            </ul>
         </li>
-      </ul>
-    </li>
 
-    <!-- nav -->
+        <!-- nav -->
 
-    <li>
-      <a class="main_nav">RAINFALL STATISTICS</a>
-      <ul>
         <li>
-          <a>DAILY & CUMULATIVE</a>
-          <ul>
-            <li>
-              <a (click)="downloadPDF('State')">
+            <a class="main_nav">RAINFALL STATISTICS</a>
+            <ul>
+                <li>
+                    <a>DAILY & CUMULATIVE</a>
+                    <ul>
+                        <li>
+                            <a (click)="downloadPDF('State')">
                 STATE RF DISTRIBUTION</a>
-            </li>
-            <li>
-              <a (click)="downloadPDF('SubDivision')">
+                        </li>
+                        <li>
+                            <a (click)="downloadPDF('SubDivision')">
                 SUBDIVISION RF DISTRIBUTION</a>
-            </li>
-            <li>
-              <a (click)="downloadPDF('District')">
+                        </li>
+                        <li>
+                            <a (click)="downloadPDF('District')">
                 DISTRICT RF DISTRIBUTION</a>
-            </li>
-            <li>
-              <a (click)="downloadPDF('Homogenous')">
+                        </li>
+                        <li>
+                            <a (click)="downloadPDF('Homogenous')">
                 HOMOGENOUS RF DISTRIBUTION</a>
-            </li>
-            <li>
-              <a (click)="downloadPDF('Country')">
+                        </li>
+                        <li>
+                            <a (click)="downloadPDF('Country')">
                 COUNTRY RF DISTRIBUTION</a>
-            </li>
-            <li>
-              <a style="background-color: orange;" routerLink="../underprogress">GATEGORYWISE DISTRIBUTION OF DISTRICTS
+                        </li>
+                        <li>
+                            <a style="background-color: orange;" routerLink="../underprogress">GATEGORYWISE DISTRIBUTION OF DISTRICTS
                 IN STATES</a>
-            </li>
-          </ul>
-        </li>
-        <li>
-          <a>WEEKLY & CUMULATIVE</a>
-          <ul>
-            <li>
-              <a style="background-color: orange;" routerLink="../underprogress">PERFORMANCE SHEET</a>
-            </li>
-            <li>
-              <a (click)="downloadWeeklyPDF('State')">
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a>WEEKLY & CUMULATIVE</a>
+                    <ul>
+                        <li>
+                            <a style="background-color: orange;" routerLink="../underprogress">PERFORMANCE SHEET</a>
+                        </li>
+                        <li>
+                            <a (click)="downloadWeeklyPDF('State')">
                 STATE RF DISTRIBUTION</a>
-            </li>
-            <li>
-              <a (click)="downloadWeeklyPDF('SubDivision')">
+                        </li>
+                        <li>
+                            <a (click)="downloadWeeklyPDF('SubDivision')">
                 SUBDIVISION RF DISTRIBUTION</a>
-            </li>
-            <li>
-              <a (click)="downloadWeeklyPDF('District')">
+                        </li>
+                        <li>
+                            <a (click)="downloadWeeklyPDF('District')">
                 DISTRICT RF DISTRIBUTION</a>
-            </li>
-            <li>
-              <a (click)="downloadWeeklyPDF('Homogenous')">
+                        </li>
+                        <li>
+                            <a (click)="downloadWeeklyPDF('Homogenous')">
                 HOMOGENOUS RF DISTRIBUTION</a>
-            </li>
-            <li>
-              <a (click)="downloadWeeklyPDF('Country')">
+                        </li>
+                        <li>
+                            <a (click)="downloadWeeklyPDF('Country')">
                 COUNTRY RF DISTRIBUTION</a>
-            </li>
-            <li>
-              <a style="background-color: orange;" routerLink="../underprogress">GATEGORYWISE DISTRIBUTION OF DISTRICTS
+                        </li>
+                        <li>
+                            <a style="background-color: orange;" routerLink="../underprogress">GATEGORYWISE DISTRIBUTION OF DISTRICTS
                 IN STATES</a>
-            </li>
-          </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a style="background-color: orange;" routerLink="/last-five-year-data">DISTRICT WISE RAINFALL-LAST 5 YEARS</a>
+                </li>
+            </ul>
         </li>
         <li>
-          <a style="background-color: orange;" routerLink="/last-five-year-data">DISTRICT WISE RAINFALL-LAST 5 YEARS</a>
+            <a class="main_nav">RAINFALL DEPARTURES</a>
+            <ul>
+                <li>
+                    <a>WEEKLY</a>
+                    <ul>
+                        <li>
+                            <a style="background-color: orange;" routerLink="../underprogress">SUBDIVISION</a>
+                        </li>
+                        <li>
+                            <a style="background-color: orange;" routerLink="../underprogress">DISTRICT</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a>CUMULATIVE</a>
+                    <ul>
+                        <li>
+                            <a style="background-color: orange;" routerLink="../underprogress">SUBDIVISION</a>
+                        </li>
+                        <li>
+                            <a style="background-color: orange;" routerLink="../underprogress">DISTRICT</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
         </li>
-      </ul>
-    </li>
-    <li>
-      <a class="main_nav">RAINFALL DEPARTURES</a>
-      <ul>
-        <li>
-          <a>WEEKLY</a>
-          <ul>
-            <li>
-              <a style="background-color: orange;" routerLink="../underprogress">SUBDIVISION</a>
-            </li>
-            <li>
-              <a style="background-color: orange;" routerLink="../underprogress">DISTRICT</a>
-            </li>
-          </ul>
-        </li>
-        <li>
-          <a>CUMULATIVE</a>
-          <ul>
-            <li>
-              <a style="background-color: orange;" routerLink="../underprogress">SUBDIVISION</a>
-            </li>
-            <li>
-              <a style="background-color: orange;" routerLink="../underprogress">DISTRICT</a>
-            </li>
-          </ul>
-        </li>
-      </ul>
-    </li>
 
-    <li>
-      <a class="main_nav">SPATIAL ANALYSIS</a>
-      <ul>
         <li>
-          <a>DAILY</a>
-          <ul>
-            <li>
-              <a style="background-color: orange;" routerLink="../underprogress">DISTRICT</a>
-            </li>
-            <li>
-              <a style="background-color: orange;" routerLink="../underprogress">RIVER BASIN</a>
-            </li>
-            <li>
-              <a style="background-color: orange;" routerLink="../underprogress">BLOCK</a>
-            </li>
-          </ul>
+            <a class="main_nav">SPATIAL ANALYSIS</a>
+            <ul>
+                <li>
+                    <a>DAILY</a>
+                    <ul>
+                        <li>
+                            <a style="background-color: orange;" routerLink="../underprogress">DISTRICT</a>
+                        </li>
+                        <li>
+                            <a style="background-color: orange;" routerLink="../underprogress">RIVER BASIN</a>
+                        </li>
+                        <li>
+                            <a style="background-color: orange;" routerLink="../underprogress">BLOCK</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a>WEEKLY</a>
+                    <ul>
+                        <li>
+                            <a style="background-color: orange;" routerLink="../underprogress">DISTRICT</a>
+                        </li>
+                        <li>
+                            <a style="background-color: orange;" routerLink="../underprogress">RIVER BASIN</a>
+                        </li>
+                        <li>
+                            <a style="background-color: orange;" routerLink="../underprogress">BLOCK</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a>CUMULATIVE</a>
+                    <ul>
+                        <li>
+                            <a style="background-color: orange;" routerLink="../underprogress">DISTRICT</a>
+                        </li>
+                        <li>
+                            <a style="background-color: orange;" routerLink="../underprogress">RIVER BASIN</a>
+                        </li>
+                        <li>
+                            <a style="background-color: orange;" routerLink="../underprogress">BLOCK</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
         </li>
-        <li>
-          <a>WEEKLY</a>
-          <ul>
-            <li>
-              <a style="background-color: orange;" routerLink="../underprogress">DISTRICT</a>
-            </li>
-            <li>
-              <a style="background-color: orange;" routerLink="../underprogress">RIVER BASIN</a>
-            </li>
-            <li>
-              <a style="background-color: orange;" routerLink="../underprogress">BLOCK</a>
-            </li>
-          </ul>
-        </li>
-        <li>
-          <a>CUMULATIVE</a>
-          <ul>
-            <li>
-              <a style="background-color: orange;" routerLink="../underprogress">DISTRICT</a>
-            </li>
-            <li>
-              <a style="background-color: orange;" routerLink="../underprogress">RIVER BASIN</a>
-            </li>
-            <li>
-              <a style="background-color: orange;" routerLink="../underprogress">BLOCK</a>
-            </li>
-          </ul>
-        </li>
-      </ul>
-    </li>
-
-
 
 
 
 
-    <li *ngIf="loggedInUser.data[0].mcorhq == 'hq'">
-      <a class="main_nav" (click)="uploadPopUp()">INFO UPLOAD</a>
-    </li>
-    <li *ngIf="loggedInUser.data[0].mcorhq == 'hq'">
-      <a class="main_nav">QPF VERIFICATION REPORT</a>
-      <ul>
-        <li>
-          <a (click)="openFile('QPF Verification Report 2020.pdf')">QPF VERIFICATION REPORT 2020</a>
+
+
+        <li *ngIf="loggedInUser.data[0].mcorhq == 'hq'">
+            <a class="main_nav" (click)="uploadPopUp()">INFO UPLOAD</a>
         </li>
-        <li>
-          <a (click)="openFile('QPF Verification Report 2021.pdf')">QPF VERIFICATION REPORT 2021</a>
-        </li>
-        <li>
-          <a (click)="openFile('QPF Verification Report 2022.pdf')">QPF VERIFICATION REPORT 2022</a>
-        </li>
-        <li *ngFor="let file of qpfReports;"><a (click)="downloadFile(file.file_data)">{{file.file_name |
+        <li *ngIf="loggedInUser.data[0].mcorhq == 'hq'">
+            <a class="main_nav">QPF VERIFICATION REPORT</a>
+            <ul>
+                <li>
+                    <a (click)="openFile('QPF Verification Report 2020.pdf')">QPF VERIFICATION REPORT 2020</a>
+                </li>
+                <li>
+                    <a (click)="openFile('QPF Verification Report 2021.pdf')">QPF VERIFICATION REPORT 2021</a>
+                </li>
+                <li>
+                    <a (click)="openFile('QPF Verification Report 2022.pdf')">QPF VERIFICATION REPORT 2022</a>
+                </li>
+                <li *ngFor="let file of qpfReports;"><a (click)="downloadFile(file.file_data)">{{file.file_name |
             uppercase}}</a></li>
-      </ul>
-    </li>
+            </ul>
+        </li>
 
-    <li>
-      <a class="main_nav">DESIGN STORM ANALYSIS</a>
-      <ul>
         <li>
-          <a>ATLASES</a>
-          <ul>
-            <li>
-              <a>KRISHNA BASIN PMP ATLAS</a>
-              <ul>
+            <a class="main_nav">DESIGN STORM ANALYSIS</a>
+            <ul>
                 <li>
-                  <a (click)="openFile('Krishna Basin Report Part-I.pdf')">PART-1</a>
+                    <a>ATLASES</a>
+                    <ul>
+                        <li>
+                            <a>KRISHNA BASIN PMP ATLAS</a>
+                            <ul>
+                                <li>
+                                    <a (click)="openFile('Krishna Basin Report Part-I.pdf')">PART-1</a>
+                                </li>
+                                <li>
+                                    <a (click)="openFile('Krishna Basin Report Part-II.pdf')">PART-2</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a>INDUS BASIN PMP ATLAS</a>
+                            <ul>
+                                <li>
+                                    <a (click)="openFile('Indus Basin Reort Part-I.pdf')">PART-1</a>
+                                </li>
+                                <li>
+                                    <a (click)="openFile('Indus Basin Reort Part-II.pdf')">PART-2</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
                 </li>
                 <li>
-                  <a (click)="openFile('Krishna Basin Report Part-II.pdf')">PART-2</a>
+                    <a>REPORTS</a>
+                    <ul>
+                        <li>
+                            <a (click)="openFile('Project Report 2018.pdf')">DESIGN STORMS STUDIES DURING 2018</a>
+                        </li>
+                        <li>
+                            <a (click)="openFile('Project Report 2019.pdf')">DESIGN STORMS STUDIES DURING 2019</a>
+                        </li>
+                        <li>
+                            <a (click)="openFile('Project Report 2020.pdf')">DESIGN STORMS STUDIES DURING 2020</a>
+                        </li>
+                        <li>
+                            <a (click)="openFile('Project Report 2021.pdf')">DESIGN STORMS STUDIES DURING 2021</a>
+                        </li>
+                        <li>
+                            <a (click)="openFile('Project Report 2022.pdf')">DESIGN STORMS STUDIES DURING 2022</a>
+                        </li>
+                        <li *ngFor="let file of designStormReports;"><a (click)="downloadFile(file.file_data)">{{file.file_name}}</a></li>
+                    </ul>
                 </li>
-              </ul>
-            </li>
-            <li>
-              <a>INDUS BASIN PMP ATLAS</a>
-              <ul>
+            </ul>
+        </li>
+        <li *ngIf="loggedInUser.data[0].mcorhq == 'hq'">
+            <a class="main_nav">RAINFALL REPORTS</a>
+            <ul>
                 <li>
-                  <a (click)="openFile('Indus Basin Reort Part-I.pdf')">PART-1</a>
+                    <a (click)="openFile('Rainfall Statistics of India - 2021.pdf')">RAINFALL STATISTICS OF INDIA - 2021</a>
                 </li>
                 <li>
-                  <a (click)="openFile('Indus Basin Reort Part-II.pdf')">PART-2</a>
+                    <a (click)="openFile('Rainfall Statistics of India - 2020.pdf')">RAINFALL STATISTICS OF INDIA - 2020</a>
                 </li>
-              </ul>
-            </li>
-          </ul>
+                <li>
+                    <a (click)="openFile('Rainfall Statistics of India - 2019.pdf')">RAINFALL STATISTICS OF INDIA - 2019</a>
+                </li>
+                <li>
+                    <a (click)="openFile('Rainfall Statistics of India - 2018.pdf')">RAINFALL STATISTICS OF INDIA - 2018</a>
+                </li>
+                <li>
+                    <a (click)="openFile('Rainfall Statistics of India - 2017.pdf')">RAINFALL STATISTICS OF INDIA - 2017</a>
+                </li>
+                <li>
+                    <a (click)="openFile('Rainfall Statistics of India - 2016.pdf')">RAINFALL STATISTICS OF INDIA - 2016</a>
+                </li>
+                <li>
+                    <a (click)="openFile('Rainfall Statistics of India - 2015.pdf')">RAINFALL STATISTICS OF INDIA - 2015</a>
+                </li>
+                <li>
+                    <a (click)="openFile('Rainfall Statistics of India - 2014.pdf')">RAINFALL STATISTICS OF INDIA - 2014</a>
+                </li>
+                <li>
+                    <a (click)="openFile('Rainfall Statistics of India - 2013.pdf')">RAINFALL STATISTICS OF INDIA - 2013</a>
+                </li>
+                <li>
+                    <a (click)="openFile('Rainfall Statistics of India - 2012.pdf')">RAINFALL STATISTICS OF INDIA - 2012</a>
+                </li>
+                <li *ngFor="let file of rainFallReports;"><a (click)="downloadFile(file.file_data)">{{file.file_name}}</a></li>
+            </ul>
         </li>
-        <li>
-          <a>REPORTS</a>
-          <ul>
-            <li>
-              <a (click)="openFile('Project Report 2018.pdf')">DESIGN STORMS STUDIES DURING 2018</a>
-            </li>
-            <li>
-              <a (click)="openFile('Project Report 2019.pdf')">DESIGN STORMS STUDIES DURING 2019</a>
-            </li>
-            <li>
-              <a (click)="openFile('Project Report 2020.pdf')">DESIGN STORMS STUDIES DURING 2020</a>
-            </li>
-            <li>
-              <a (click)="openFile('Project Report 2021.pdf')">DESIGN STORMS STUDIES DURING 2021</a>
-            </li>
-            <li>
-              <a (click)="openFile('Project Report 2022.pdf')">DESIGN STORMS STUDIES DURING 2022</a>
-            </li>
-            <li *ngFor="let file of designStormReports;"><a
-                (click)="downloadFile(file.file_data)">{{file.file_name}}</a></li>
-          </ul>
-        </li>
-      </ul>
-    </li>
-    <li *ngIf="loggedInUser.data[0].mcorhq == 'hq'">
-      <a class="main_nav">RAINFALL REPORTS</a>
-      <ul>
-        <li>
-          <a (click)="openFile('Rainfall Statistics of India - 2021.pdf')">RAINFALL STATISTICS OF INDIA - 2021</a>
-        </li>
-        <li>
-          <a (click)="openFile('Rainfall Statistics of India - 2020.pdf')">RAINFALL STATISTICS OF INDIA - 2020</a>
-        </li>
-        <li>
-          <a (click)="openFile('Rainfall Statistics of India - 2019.pdf')">RAINFALL STATISTICS OF INDIA - 2019</a>
-        </li>
-        <li>
-          <a (click)="openFile('Rainfall Statistics of India - 2018.pdf')">RAINFALL STATISTICS OF INDIA - 2018</a>
-        </li>
-        <li>
-          <a (click)="openFile('Rainfall Statistics of India - 2017.pdf')">RAINFALL STATISTICS OF INDIA - 2017</a>
-        </li>
-        <li>
-          <a (click)="openFile('Rainfall Statistics of India - 2016.pdf')">RAINFALL STATISTICS OF INDIA - 2016</a>
-        </li>
-        <li>
-          <a (click)="openFile('Rainfall Statistics of India - 2015.pdf')">RAINFALL STATISTICS OF INDIA - 2015</a>
-        </li>
-        <li>
-          <a (click)="openFile('Rainfall Statistics of India - 2014.pdf')">RAINFALL STATISTICS OF INDIA - 2014</a>
-        </li>
-        <li>
-          <a (click)="openFile('Rainfall Statistics of India - 2013.pdf')">RAINFALL STATISTICS OF INDIA - 2013</a>
-        </li>
-        <li>
-          <a (click)="openFile('Rainfall Statistics of India - 2012.pdf')">RAINFALL STATISTICS OF INDIA - 2012</a>
-        </li>
-        <li *ngFor="let file of rainFallReports;"><a (click)="downloadFile(file.file_data)">{{file.file_name}}</a></li>
-      </ul>
-    </li>
 
-    <li>
-      <a routerLink="../data-entry" class="main_nav">DATA ENTRY</a>
-    </li>
-    <!-- <li>
+        <li>
+            <a routerLink="../data-entry" class="main_nav">DATA ENTRY</a>
+        </li>
+        <!-- <li>
       <a routerLink="../station-level-data" class="main_nav">STATION LEVEL DATA</a>
     </li> -->
 
 
-    <li *ngIf="loggedInUser.data[0].mcorhq == 'hq'">
-      <a class="main_nav" routerLink="../verification-page">VERIFICATION</a>
-    </li>
-    <li *ngIf="loggedInUser.data[0].mcorhq == 'hq'">
-      <a routerLink="../email-dissemination">DISSEMINATION</a>
-    </li>
-    <li>
-      <a class="main_nav">STATION STATISTICS</a>
-      <ul>
-        <li>
-          <a routerLink="../station-statistics">STATISTICS</a>
+        <li *ngIf="loggedInUser.data[0].mcorhq == 'hq'">
+            <a class="main_nav" routerLink="../verification-page">VERIFICATION</a>
+        </li>
+        <li *ngIf="loggedInUser.data[0].mcorhq == 'hq'">
+            <a routerLink="../email-dissemination">DISSEMINATION</a>
         </li>
         <li>
-          <a routerLink="../realtime-station-data">AWS/ARG/ORG REALTIME STATION DATA</a>
+            <a class="main_nav">STATION STATISTICS</a>
+            <ul>
+                <li>
+                    <a routerLink="../station-statistics">STATISTICS</a>
+                </li>
+                <li>
+                    <a routerLink="../realtime-station-data">AWS/ARG/ORG REALTIME STATION DATA</a>
+                </li>
+            </ul>
         </li>
-      </ul>
-    </li>
-    <li>
-      <a routerLink="../yearly-station-statistics">YEARLY STATION STATISTICS</a>
-    </li>
-    <li *ngIf="loggedInUser.data[0].mcorhq == 'hq'">
-      <a class="main_nav" routerLink="../log-info">LOG INFO</a>
-    </li>
+        <li>
+            <a routerLink="../yearly-station-statistics">YEARLY STATION STATISTICS</a>
+        </li>
+        <li *ngIf="loggedInUser.data[0].mcorhq == 'hq'">
+            <a class="main_nav" routerLink="../log-info">LOG INFO</a>
+        </li>
 
-    <li>
-      <a class="main_nav">ABOUT</a>
-      <ul>
         <li>
-          <a style="background-color: orange;" routerLink="../underprogress">HYDROMET SERVICES</a>
+            <a class="main_nav">ABOUT</a>
+            <ul>
+                <li>
+                    <a style="background-color: orange;" routerLink="../underprogress">HYDROMET SERVICES</a>
+                </li>
+                <li>
+                    <a style="background-color: orange;" routerLink="../underprogress">HELP INDEX</a>
+                </li>
+                <li>
+                    <a style="background-color: orange;" routerLink="../underprogress">SITE MAP</a>
+                </li>
+                <li>
+                    <a style="background-color: orange;" routerLink="../underprogress">CONTACT US</a>
+                </li>
+            </ul>
         </li>
-        <li>
-          <a style="background-color: orange;" routerLink="../underprogress">HELP INDEX</a>
-        </li>
-        <li>
-          <a style="background-color: orange;" routerLink="../underprogress">SITE MAP</a>
-        </li>
-        <li>
-          <a style="background-color: orange;" routerLink="../underprogress">CONTACT US</a>
-        </li>
-      </ul>
-    </li>
 
-  </ul>
+    </ul>
 </nav>
 <div *ngIf="showPopup" class="popup">
-  <button class="close-btn" (click)="cancel()">X</button>
-  <app-upload-file></app-upload-file>
+    <button class="close-btn" (click)="cancel()">X</button>
+    <app-upload-file></app-upload-file>
 </div>

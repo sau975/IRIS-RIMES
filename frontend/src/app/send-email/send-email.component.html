@@ -1,0 +1,43 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-6 offset-md-3 center-box">
+      <h5 class="text-center mt-5">Send Email</h5>
+      <div>
+        <div class="mt-3">
+          <label>Send To</label>
+          <select name="sendTo" class="form-control" id="sendTo" [(ngModel)]="sendTo">
+            <option [value]="''">Select</option>
+            <option [value]="'ManualEMail'">Manual E-mail</option>
+            <option [value]="'UserDefined'">User Defined Group</option>
+          </select>
+        </div>
+        <div class="mt-3" *ngIf="sendTo == 'ManualEMail'">
+          <label>Email</label>
+          <input class="form-control" type="email" [(ngModel)]="to">
+        </div>
+        <div class="mt-3">
+          <label>Subject</label>
+          <input class="form-control" type="text" [(ngModel)]="subject">
+        </div>
+        <div class="mt-3" *ngIf="sendTo == 'UserDefined'">
+          <label>User Group</label>
+          <select name="sendTo" class="form-control" id="sendTo" [(ngModel)]="sendToGroup">
+            <option [value]="''">Select</option>
+            <option [value]="group.emails" *ngFor="let group of emailGroups">{{group.groupname}}</option>
+          </select>
+        </div>
+        <div class="mt-3">
+          <label>Message</label>
+          <textarea class="form-control" id="message" name="message" rows="4" cols="50" [(ngModel)]="message"></textarea>
+        </div>
+        <div class="mt-3">
+          <label>Attachments</label>
+          <input class="form-control" type="file">
+        </div>
+        <div class="text-end mt-5">
+          <button type="button" class="btn btn-success" (click)="send()">Send</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

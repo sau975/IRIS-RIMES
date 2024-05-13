@@ -113,8 +113,8 @@
             <td style="border: 1px solid black">{{item.state}}</td>
             <td style="border: 1px solid black">{{item.district}}</td>
             <td style="border: 1px solid black">{{item.station}}</td>
-            <td style="border: 1px solid black">{{item.date}}</td>
-            <td style="border: 1px solid black">{{item.rainfall}}</td>
+            <td style="border: 1px solid black">{{fromDate}} - {{toDate}}</td>
+            <td style="border: 1px solid black">{{item.rainfall ? item.rainfall : -999.9}}</td>
           </tr>
         </tbody>
       </table>
