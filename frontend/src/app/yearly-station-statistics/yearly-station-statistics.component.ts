@@ -193,6 +193,9 @@ export class YearlyStationStatisticsComponent {
         });
       })
     }
+    this.filteredStations.map(x => {
+      return x.rainFall = x[this.dateCalculation()];
+    })
   }
 
   submit(){
