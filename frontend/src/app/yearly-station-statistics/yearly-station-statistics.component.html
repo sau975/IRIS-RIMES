@@ -16,7 +16,9 @@
                       font-weight: bolder;
                       font-size: 20px;
                     ">
-                    IMD Rainfall Information System (iRAINS)</label>
+                    IMD Rainfall Information System <img width="100px" style="margin-left: 10px;"
+                      src="/assets/images/logoimage.png"></label>
+
                 </td>
               </tr>
               <tr>
@@ -44,15 +46,13 @@
   </table>
 
   <div class="navbar">
-    <app-multi-select-dropdown [list]="regionList" [type]="'Region'"
-      (shareCheckedList)="onChangeRegion($event)">
+    <app-multi-select-dropdown [list]="regionList" [type]="'Region'" (shareCheckedList)="onChangeRegion($event)">
     </app-multi-select-dropdown>
 
     <app-multi-select-dropdown [list]="filteredMcs" [type]="'MC'" (shareCheckedList)="onChangeMc($event)">
     </app-multi-select-dropdown>
 
-    <app-multi-select-dropdown [list]="filteredStates" [type]="'State'"
-      (shareCheckedList)="onChangeState($event)">
+    <app-multi-select-dropdown [list]="filteredStates" [type]="'State'" (shareCheckedList)="onChangeState($event)">
     </app-multi-select-dropdown>
 
     <app-multi-select-dropdown [list]="filteredDistricts" [type]="'District'"
@@ -64,23 +64,13 @@
         <div class="row">
           <div class="col-md-5 col-sm-3">
             <label>From Date</label>
-            <input
-              type="date"
-              class="form-control"
-              [(ngModel)]="fromDate"
-              (ngModelChange)="validateDateRange()"
-              placeholder="Select date"
-            />
+            <input type="date" class="form-control" [(ngModel)]="fromDate" (ngModelChange)="validateDateRange()"
+              placeholder="Select date" />
           </div>
           <div class="col-md-5 col-sm-3">
             <label>To Date</label>
-            <input
-              type="date"
-              class="form-control"
-              [(ngModel)]="toDate"
-              (ngModelChange)="validateDateRange()"
-              placeholder="Select date"
-            />
+            <input type="date" class="form-control" [(ngModel)]="toDate" (ngModelChange)="validateDateRange()"
+              placeholder="Select date" />
           </div>
 
         </div>
@@ -113,8 +103,8 @@
             <td style="border: 1px solid black">{{item.state}}</td>
             <td style="border: 1px solid black">{{item.district}}</td>
             <td style="border: 1px solid black">{{item.station}}</td>
-            <td style="border: 1px solid black">{{fromDate}} - {{toDate}}</td>
-            <td style="border: 1px solid black">{{item.rainfall ? item.rainfall : -999.9}}</td>
+            <td style="border: 1px solid black">{{item.date}}</td>
+            <td style="border: 1px solid black">{{item.rainfall}}</td>
           </tr>
         </tbody>
       </table>
