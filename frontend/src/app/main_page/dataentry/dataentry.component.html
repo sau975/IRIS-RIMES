@@ -78,7 +78,7 @@
       <input type="date" class="form-control" [min]="minDate" [ngModel]="selectedDate | date:'yyyy-MM-dd'"
         (ngModelChange)="onChangeDate($event)">
     </div>
-    <div class="col-12 col-md-6 col-lg-2 mb-2">
+    <div class="col-12 col-md-6 col-lg-2 mb-2 mx-auto pt-4">
       <button class="btn btn-success" type="button" (click)="filterByDate()">Submit</button>
     </div>
   </div>
