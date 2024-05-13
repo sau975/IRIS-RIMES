@@ -35,21 +35,7 @@ export class RainfallgraphsComponent {
 
 
   updatecharts(dummy_data: { normal: number[]; daily: number[]; departure: never[]; }){
-    const generateData = () => {
-      let data = [];
-      let previous = 1;
-      for (let i = 0; i < 9; i++) {
-        let randomFactor = Math.random() * 0.2 + 0.9; // Random factor between 0.9 and 1.1
-        let newValue = previous * randomFactor; // Multiply by random factor to introduce slight fluctuations
-        data.push(newValue);
-        previous = newValue;
-      }
-      return data;
-    };
-  
     // Generate data for the series
-    const normalData = generateData();
-    const dailyData = generateData();
     const titleStyle = {
       color: '#333', 
       fontSize: '15px', 
@@ -57,6 +43,69 @@ export class RainfallgraphsComponent {
       fontFamily: 'Arial, sans-serif', 
     };
 
+    // const dateList: string[] = [
+    //   '01-01-2024',
+    //   '02-01-2024',
+    //   '03-01-2024',
+    //   '04-01-2024',
+    //   '05-01-2024',
+    //   '06-01-2024',
+    //   '07-01-2024',
+    //   '08-01-2024',
+    //   '09-01-2024',
+    //   '10-01-2024',
+    //   '11-01-2024',
+    //   '12-01-2024',
+    //   '13-01-2024',
+    //   '14-01-2024',
+    //   '15-01-2024',
+    //   '16-01-2024',
+    //   '17-01-2024',
+    //   '18-01-2024',
+    //   '19-01-2024',
+    //   '20-01-2024',
+    //   '21-01-2024',
+    //   '22-01-2024',
+    //   '23-01-2024',
+    //   '24-01-2024',
+    //   '25-01-2024',
+    //   '26-01-2024',
+    //   '27-01-2024',
+    //   '28-01-2024'
+    // ];
+    
+
+    const dateList: string[] = [
+      '01-01-2024',
+      '             ',
+      '             ',
+      '             ',
+      '05-01-2024',
+      '             ',
+      '             ',
+      '             ',
+      '             ',
+      '10-01-2024',
+      '             ',
+      '             ',
+      '             ',
+      '             ',
+      '15-01-2024 ',
+      '             ',
+      '             ',
+      '             ',
+      '             ',
+      '20-01-2024',
+      '             ',
+      '             ',
+      '             ',
+      '             ',
+      '25-01-2024',
+      '             ',
+      '             ',
+      '28-01-2024'
+    ];
+    
     this.chart1 = new Chart({
       chart: {
         type: 'column'
@@ -69,7 +118,8 @@ export class RainfallgraphsComponent {
         enabled: false
       },
       xAxis: {
-        categories: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I'],
+        // tickInterval : 5,
+        categories: dateList,
         title : {
           text : `<${Array(50).fill("-").join("")} Period ${Array(50).fill("-").join("")}>`
         }
@@ -81,9 +131,6 @@ export class RainfallgraphsComponent {
           text : `<${Array(15).fill("-").join("")} Rainfall [mm] ${Array(15).fill("-").join("")}>`
         }
       },
-
-
-      
 
       series: [
         {
@@ -121,12 +168,108 @@ export class RainfallgraphsComponent {
       'departure' : AllData[2]
     }
   }
+  getnew(referenceList: any){
+    const l = [];
+    for(let j = 0; j < referenceList.length; j++) {
+      const randomVariation = Math.random() * 2 - 30;
+      const newValue = Math.round(referenceList[j] + randomVariation);
+      l.push(newValue);
+    }
+    return l;
+  }
+
+
+  getanotherdummyData() {
+    const referenceList: number[] = [10,12,14,15,16,17,19,20,25,27,27,28,29,32,35,37,39,40,42,45,49,50,56,57,57,58,60,61];
+
+    for(let i=0; i<referenceList.length; i++){
+      referenceList[i]=referenceList[i]+20
+    }
+
+    // Function to introduce slight variations to a given list of values
+    // function introduceVariations(list: number[]): number[] {
+    //     return list.map((value) => {
+    //         const randomVariation = Math.random() * 2 - 1; // Random value between -1 and 1
+    //         const newValue = Math.round(value + randomVariation); // Round to the nearest integer
+    //         return newValue;
+    //     }).slice(0, 28);
+    // }
+
+    // function getnew(referenceList: number[]){
+    //   const l = [];
+    //   for(let j = 0; j < referenceList.length; j++) {
+    //     const randomVariation = Math.random() * 2 - 1;
+    //     const newValue = Math.round(referenceList[j] + randomVariation);
+    //     l.push(newValue);
+    //   }
+    //   return l;
+    // }
+    let AllData: any[] = [];
+    for(let j = 0; j < 3; j++) {
+        const randomNumbers: number[] = this.getnew(referenceList);
+        // for (let i = 0; i < 10; i++) {
+        //     // randomNumbers.push(...introduceVariations(referenceList));
+        //   randomNumbers.push(this.getnew(referenceList));
+
+        // }
+        AllData.push(randomNumbers);
+    }
+
+    console.log(AllData)
+    return {
+        'normal' : AllData[0],
+        'daily' : AllData[1],
+        'departure' : AllData[2]
+    };
+}
+
+
+  // getanotherdummyData(){
+
+
+    // let AllData:any = []
+    // for(let j = 0; j<3; j++){
+    //   const randomNumbers: number[] = [];
+    //   for (let i = 0; i < 10; i++) {
+    //     const randomNumber = Math.floor(Math.random() * 9) + 1;
+    //     const randomMultipleOfTen = randomNumber * 10;
+    //     randomNumbers.push(randomMultipleOfTen);
+    //   }
+    //   AllData.push(randomNumbers)
+    // }
+    // return {
+    //   'normal' : AllData[0],
+    //   'daily' : AllData[1],
+    //   'departure' : AllData[2]
+    // }
+
+
+
+
+
+
+    // const referenceList: number[] = [10,12,14,15,16,17,19,20,25,27,27,28,29,32,35,37,39,40,42,45,49,50,56,57,57,58,60,61];
+
+    // // Function to introduce slight variations to a given list of values
+    // function introduceVariations(list: number[]): number[] {
+    //     return list.map((value, index) => {
+    //         const randomVariation = Math.random() * 2 - 1; // Random value between -1 and 1
+    //         const newValue = Math.round(value + randomVariation); // Round to the nearest integer
+    //         return newValue;
+    //     });
+    // }
+    
+    // const similarFlowList: number[] = introduceVariations(referenceList);
+    // return similarFlowList;
+  // }
+
 
   initCharts() {
-    this.fromdate = "01-03-2024"
-    this.todate = "01-05-2024"
+    this.fromdate = "01-01-2024"
+    this.todate = "28-02-2024"
 
-    this.dummy_data1 = this.getMyDummyData()
+    // this.dummy_data1 = this.getMyDummyData()
+    this.dummy_data1 = this.getanotherdummyData();
 
     // const titleStyle = {
     //   color: '#333', 
@@ -136,18 +279,20 @@ export class RainfallgraphsComponent {
     // };
 
     if(this.season=='winter'){
+      this.fromdate = '01-01-2024'
+      this.todate = '28-02-2024'
       if(this.regionToDisplay == 'COUNTRY INDIA'){ 
         //panindia
         // this.processData(this.season, this.regionToDisplay)
-        // this.fromdate = '01-01-2024'
-        // this.todate = '28-01-2024'
+
         // this.dummy_data1 = {
-        //   'normal' : [],
+        //   'normal' : [10,12,14,15,16,17,19,20,25, 27,27,28,29, 32,35, 37, 39, 40,42, 42, ],
         //   'daily'  : [],
         // }
         this.updatecharts(this.dummy_data1)
       }
       else if(this.regionToDisplay == 'REGION : EAST AND NORTH EAST INDIA'){
+
         //eastandnortheastregion
         // this.processData(this.season, this.regionToDisplay)
         this.updatecharts(this.dummy_data1)  
@@ -171,6 +316,8 @@ export class RainfallgraphsComponent {
 
 
     else if(this.season=='premonsoon'){
+      this.fromdate = '01-03-2024'
+      this.todate = '30-05-2024'
       if(this.regionToDisplay == 'COUNTRY INDIA'){
         // this.processData(this.season, this.regionToDisplay)
         this.updatecharts(this.dummy_data1)
@@ -196,6 +343,8 @@ export class RainfallgraphsComponent {
 
 
     else if(this.season=='monsoon'){
+      this.fromdate = '01-06-2024'
+      this.todate = '30-10-2024'
       if(this.regionToDisplay == 'COUNTRY INDIA'){
         // this.processData(this.season, this.regionToDisplay)
         this.updatecharts(this.dummy_data1)
@@ -220,6 +369,8 @@ export class RainfallgraphsComponent {
   
 
     else if(this.season=='postmonsoon'){
+      this.fromdate = '01-11-2024'
+      this.todate = '31-12-2024'
       if(this.regionToDisplay == 'COUNTRY INDIA'){
         // this.processData(this.season, this.regionToDisplay)
         this.updatecharts(this.dummy_data1)
