@@ -13,6 +13,7 @@ export class AppComponent implements OnInit {
 
   constructor(private dataService: DataService){
     this.scheduleFunction();
+    // this.CreateColumn();
   }
   dateCalculation() {
     const months = [
@@ -20,7 +21,7 @@ export class AppComponent implements OnInit {
       'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
     ];
     let newDate = new Date();
-    let dd = String(newDate.getDate()-1);
+    let dd = String(newDate.getDate());
     const year = newDate.getFullYear();
     const currmonth = months[newDate.getMonth()];
     const selectedYear = String(year).slice(-2);
