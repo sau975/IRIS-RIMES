@@ -118,7 +118,10 @@ export class DataentryComponent {
       });
     });
     let tempfilteredMcs = Array.from(new Set(tempMcs.map(a => a.rmc_mc)));
-
+    this.selectedMcs = [];
+    this.selectedRMcs = [];
+    this.selectedStates = [];
+    this.selectedDistricts = [];
     tempfilteredMcs.forEach(m => {
       if(m.split(" ")[0] == "MC"){
         this.filteredMcs.push({name: m})
@@ -139,6 +142,8 @@ export class DataentryComponent {
       });
     });
     let tempfilteredStates = Array.from(new Set(tempStates.map(a => a.state)));
+    this.selectedStates = [];
+    this.selectedDistricts = [];
     this.filteredStates = tempfilteredStates.map(a => { return {name: a}});
   }
 
@@ -149,6 +154,8 @@ export class DataentryComponent {
       });
     });
     let tempfilteredStates = Array.from(new Set(tempStates.map(a => a.state)));
+    this.selectedStates = [];
+    this.selectedDistricts = [];
     this.filteredStates = tempfilteredStates.map(a => { return {name: a}});
   }
 
@@ -159,6 +166,7 @@ export class DataentryComponent {
       });
     })
     let tempfilteredDistricts = Array.from(new Set(tempDistricts.map(a => a.district)));
+    this.selectedDistricts = [];
     this.filteredDistricts = tempfilteredDistricts.map(a => { return {name: a}});
   }
 
@@ -220,21 +228,21 @@ export class DataentryComponent {
     else if(this.selectedStates && this.selectedStates.length > 0){
       this.filteredStations = this.existingstationdata.filter(item => {
         return this.selectedStates.some((value:any) => {
-          return item.state == value;
+          return item.state == value.name;
         });
       })
     }
     else if(this.selectedMcs && this.selectedMcs.length > 0){
       this.filteredStations = this.existingstationdata.filter(item => {
         return this.selectedMcs.some((value:any) => {
-          return item.rmc_mc == value;
+          return item.rmc_mc == value.name;
         });
       })
     }
     else if(this.selectedRegions && this.selectedRegions.length > 0){
       this.filteredStations = this.existingstationdata.filter(item => {
         return this.selectedRegions.some((value:any) => {
-          return item.region == value;
+          return item.region == value.name;
         });
       })
     }

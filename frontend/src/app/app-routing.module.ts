@@ -44,9 +44,30 @@ import { AutoEmailSetupComponent } from './auto-email-setup/auto-email-setup.com
 import { DefinedEmailGroupComponent } from './defined-email-group/defined-email-group.component';
 import { EmailLogComponent } from './email-log/email-log.component';
 import { StatewiseDistRainfallComponent } from './statewise-dist-rainfall/statewise-dist-rainfall.component';
+import { RainfallGraphsWinterPanindiaComponent } from './rainfall-graphs/winter/rainfall-graphs-winter-panindia/rainfall-graphs-winter-panindia.component';
+import { RainfallGraphsWinterNorthwestregionComponent } from './rainfall-graphs/winter/rainfall-graphs-winter-northwestregion/rainfall-graphs-winter-northwestregion.component';
+import { RainfallGraphsWinterEastandnortheastregionComponent } from './rainfall-graphs/winter/rainfall-graphs-winter-eastandnortheastregion/rainfall-graphs-winter-eastandnortheastregion.component';
+import { RainfallGraphsWinterSouthpeninsularregionComponent } from './rainfall-graphs/winter/rainfall-graphs-winter-southpeninsularregion/rainfall-graphs-winter-southpeninsularregion.component';
+import { RainfallGraphsWinterCentralindiaregionComponent } from './rainfall-graphs/winter/rainfall-graphs-winter-centralindiaregion/rainfall-graphs-winter-centralindiaregion.component';
+import { RainfallGraphsPremonsoonPanindiaComponent } from './rainfall-graphs/pre-monsoon/rainfall-graphs-premonsoon-panindia/rainfall-graphs-premonsoon-panindia.component';
+import { RainfallGraphsPremonsoonEastandnortheastregionComponent } from './rainfall-graphs/pre-monsoon/rainfall-graphs-premonsoon-eastandnortheastregion/rainfall-graphs-premonsoon-eastandnortheastregion.component';
+import { RainfallGraphsPremonsoonNorthwestregionComponent } from './rainfall-graphs/pre-monsoon/rainfall-graphs-premonsoon-northwestregion/rainfall-graphs-premonsoon-northwestregion.component';
+import { RainfallGraphsPremonsoonSouthpeninsularregionComponent } from './rainfall-graphs/pre-monsoon/rainfall-graphs-premonsoon-southpeninsularregion/rainfall-graphs-premonsoon-southpeninsularregion.component';
+import { RainfallGraphsPremonsoonCentralindiaregionComponent } from './rainfall-graphs/pre-monsoon/rainfall-graphs-premonsoon-centralindiaregion/rainfall-graphs-premonsoon-centralindiaregion.component';
+import { RainfallGraphsMonsoonPanindiaComponent } from './rainfall-graphs/monsoon/rainfall-graphs-monsoon-panindia/rainfall-graphs-monsoon-panindia.component';
+import { RainfallGraphsMonsoonEastandnortheastregionComponent } from './rainfall-graphs/monsoon/rainfall-graphs-monsoon-eastandnortheastregion/rainfall-graphs-monsoon-eastandnortheastregion.component';
+import { RainfallGraphsMonsoonNorthwestregionComponent } from './rainfall-graphs/monsoon/rainfall-graphs-monsoon-northwestregion/rainfall-graphs-monsoon-northwestregion.component';
+import { RainfallGraphsMonsoonSouthpeninsularregionComponent } from './rainfall-graphs/monsoon/rainfall-graphs-monsoon-southpeninsularregion/rainfall-graphs-monsoon-southpeninsularregion.component';
+import { RainfallGraphsMonsoonCentralindiaregionComponent } from './rainfall-graphs/monsoon/rainfall-graphs-monsoon-centralindiaregion/rainfall-graphs-monsoon-centralindiaregion.component';
+import { RainfallGraphsPostmonsoonPanindiaComponent } from './rainfall-graphs/post-monsoon/rainfall-graphs-postmonsoon-panindia/rainfall-graphs-postmonsoon-panindia.component';
+import { RainfallGraphsPostmonsoonEastandnortheastregionComponent } from './rainfall-graphs/post-monsoon/rainfall-graphs-postmonsoon-eastandnortheastregion/rainfall-graphs-postmonsoon-eastandnortheastregion.component';
+import { RainfallGraphsPostmonsoonNorthwestregionComponent } from './rainfall-graphs/post-monsoon/rainfall-graphs-postmonsoon-northwestregion/rainfall-graphs-postmonsoon-northwestregion.component';
+import { RainfallGraphsPostmonsoonSouthpeninsularregionComponent } from './rainfall-graphs/post-monsoon/rainfall-graphs-postmonsoon-southpeninsularregion/rainfall-graphs-postmonsoon-southpeninsularregion.component';
+import { RainfallGraphsPostmonsoonCentralindiaregionComponent } from './rainfall-graphs/post-monsoon/rainfall-graphs-postmonsoon-centralindiaregion/rainfall-graphs-postmonsoon-centralindiaregion.component';
 
 
 const routes: Routes = [
+
   { path: 'login', component: LoginComponent },
   { path: 'data-entry', component: DataentryComponent, canActivate: [AuthGuard] },
   { path: 'station-level-data', component: StationLevelDataComponent, canActivate: [AuthGuard] },
@@ -63,8 +84,33 @@ const routes: Routes = [
   { path: 'normal-state-map', component: NormalStateMapComponent, canActivate: [AuthGuard] },
   { path: 'normal-subdivision-map', component: NormalSubdivisionMapComponent, canActivate: [AuthGuard] },
   { path: 'normal-homogenous-map', component: NormalHomogenousMapComponent, canActivate: [AuthGuard] },
-  { path: 'state-dist-rainfall', component: StatewiseDistRainfallComponent, canActivate: [AuthGuard] },
   { path: 'underprogress', component: UnderprogressComponent , canActivate: [AuthGuard] },
+
+  { path: 'rainfallgraphs-winter-panindia', component: RainfallGraphsWinterPanindiaComponent, canActivate: [AuthGuard]},
+  { path: 'rainfallgraphs-winter-eastandnortheastregion', component: RainfallGraphsWinterEastandnortheastregionComponent, canActivate: [AuthGuard]},
+  { path: 'rainfallgraphs-winter-northwestregion', component: RainfallGraphsWinterNorthwestregionComponent, canActivate: [AuthGuard]},
+  { path: 'rainfallgraphs-winter-southpeninsularregion', component: RainfallGraphsWinterSouthpeninsularregionComponent, canActivate: [AuthGuard]},
+  { path: 'rainfallgraphs-winter-centralindiaregion', component: RainfallGraphsWinterCentralindiaregionComponent, canActivate: [AuthGuard]},
+
+  { path: 'rainfallgraphs-premonsoon-panindia', component: RainfallGraphsPremonsoonPanindiaComponent, canActivate: [AuthGuard]},
+  { path: 'rainfallgraphs-premonsoon-eastandnortheastregion', component: RainfallGraphsPremonsoonEastandnortheastregionComponent, canActivate: [AuthGuard]},
+  { path: 'rainfallgraphs-premonsoon-northwestregion', component: RainfallGraphsPremonsoonNorthwestregionComponent, canActivate: [AuthGuard]},
+  { path: 'rainfallgraphs-premonsoon-southpeninsularregion', component: RainfallGraphsPremonsoonSouthpeninsularregionComponent, canActivate: [AuthGuard]},
+  { path: 'rainfallgraphs-premonsoon-centralindiaregion', component: RainfallGraphsPremonsoonCentralindiaregionComponent, canActivate: [AuthGuard]},
+
+  { path: 'rainfallgraphs-monsoon-panindia', component: RainfallGraphsMonsoonPanindiaComponent, canActivate: [AuthGuard]},
+  { path: 'rainfallgraphs-monsoon-eastandnortheastregion', component: RainfallGraphsMonsoonEastandnortheastregionComponent, canActivate: [AuthGuard]},
+  { path: 'rainfallgraphs-monsoon-northwestregion', component: RainfallGraphsMonsoonNorthwestregionComponent, canActivate: [AuthGuard]},
+  { path: 'rainfallgraphs-monsoon-southpeninsularregion', component: RainfallGraphsMonsoonSouthpeninsularregionComponent, canActivate: [AuthGuard]},
+  { path: 'rainfallgraphs-monsoon-centralindiaregion', component: RainfallGraphsMonsoonCentralindiaregionComponent, canActivate: [AuthGuard]},
+
+  { path: 'rainfallgraphs-postmonsoon-panindia', component: RainfallGraphsPostmonsoonPanindiaComponent, canActivate: [AuthGuard]},
+  { path: 'rainfallgraphs-postmonsoon-eastandnortheastregion', component: RainfallGraphsPostmonsoonEastandnortheastregionComponent, canActivate: [AuthGuard]},
+  { path: 'rainfallgraphs-postmonsoon-northwestregion', component: RainfallGraphsPostmonsoonNorthwestregionComponent, canActivate: [AuthGuard]},
+  { path: 'rainfallgraphs-postmonsoon-southpeninsularregion', component: RainfallGraphsPostmonsoonSouthpeninsularregionComponent, canActivate: [AuthGuard]},
+  { path: 'rainfallgraphs-postmonsoon-centralindiaregion', component: RainfallGraphsPostmonsoonCentralindiaregionComponent, canActivate: [AuthGuard]},
+
+
   { path: 'QpfverificationReports2020', component: QpfverificationReports2020Component , canActivate: [AuthGuard] },
   { path: 'QpfverificationReports2021', component: QpfverificationReports2021Component , canActivate: [AuthGuard] },
   { path: 'QpfverificationReports2022', component: QpfverificationReports2022Component , canActivate: [AuthGuard] },

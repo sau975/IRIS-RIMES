@@ -83,7 +83,7 @@
   </div>
 </div>
 
-<div class="container-fluid">  
+<div class="container-fluid">
   <div style="text-align: center; padding-top: 40px;">
     <div class="dataentry">
       <div class="row">
@@ -114,7 +114,7 @@
       </div>
       <br />
       <!-- <form> -->
-      <div class="overflow-x-scroll">  
+      <div class="overflow-x-scroll">
        <table style=" margin: auto; border-collapse: collapse; width: 90%; border: 1px solid black;">
         <thead>
           <tr>
@@ -131,15 +131,15 @@
             <th style="border: 1px solid black">YEAR OF ACTIVATION</th>
             <th style="border: 1px solid black">ACTION</th>
           </tr>
-        </thead> 
+        </thead>
         <tbody *ngIf="filteredStations && filteredStations.length > 0">
           <tr *ngFor="let station of filteredStations; let i = index">
             <td style="border: 1px solid black">{{ i + 1 }}</td>
             <td style="border: 1px solid black">{{ station.stationname }}</td>
             <td style="border: 1px solid black">{{ station.stationid }}</td>
             <td style="border: 1px solid black">
-              <input type="text" id="rainfall" #rainFallElementRef name="rainfall" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1').replace(/(\.\d{1}).+/g, '$1');" (input)="station.RainFall = ''" [(ngModel)]="station.RainFall"
-                required style="border: none;" step="0.1" (input)="showMessage(rainFallElementRef)" class="text-center">
+              <input type="text" id="rainfall" #rainFallElementRef name="rainfall" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1').replace(/(\.\d{1}).+/g, '$1');" [(ngModel)]="station.RainFall"
+                required style="border: none;" step="0.1" (input)="showMessage(rainFallElementRef)">
             </td>
 
             <!-- <td style="border: 1px solid black"><input type="date" [(ngModel)]="todayDate" id="date" name="date"

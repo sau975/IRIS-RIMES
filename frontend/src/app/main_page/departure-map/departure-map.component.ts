@@ -1,5 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
+import { interval, Subscription } from 'rxjs';
+
 import * as L from 'leaflet';
 import 'leaflet.fullscreen';
 import { DataService } from '../../data.service';
@@ -27,11 +29,17 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
   tileCount: number = 1;
   mapTileTypes: string[] = ['District'];
   private initialZoom = 4;
+  intervalId :any;
+  slidingNo = 0;
+  currentSlide = 'INDIA_COUNTRY';
+  isSlider = true;
+
   private map: L.Map = {} as L.Map;
   private map1: L.Map = {} as L.Map;
   private map2: L.Map = {} as L.Map;
   private map3: L.Map = {} as L.Map;
   private map4: L.Map = {} as L.Map;
+  private slidingMap: L.Map = {} as L.Map;
   currentDateNormal: string = '';
   currentDateDaily: string = '';
   currentDateNormaly: string = '';
@@ -72,7 +80,8 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     private dataService: DataService,
     private router: Router,
     private datePipe: DatePipe,
-    private indexedDBService: IndexedDBService
+    private indexedDBService: IndexedDBService,
+
   ) {
     this.dateCalculation();
     this.dataService.fromAndToDate$.subscribe((value) => {
@@ -169,6 +178,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       location.reload();
     });
     this.fetchDataFromBackend();
+    this.slidingFunction();
   }
 
   dateCalculation() {
@@ -988,6 +998,17 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
 
 
   private initMap(): void {
+
+    this.slidingMap = L.map('slidingMap', {
+      center: [24, 76.9629],
+      zoom: this.initialZoom,
+      scrollWheelZoom: false,
+    });
+
+    
+
+
+
     this.map = L.map('map', {
       center: [24, 76.9629],
       zoom: this.initialZoom,
@@ -4316,5 +4337,55 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       this.showMapInCenter = dataArray[index];
     }
   }
+
+  toggleSlider(): void {
+    this.isSlider = !this.isSlider
+}
+currentSlidingLayer:any;
+  loadSlidingGeoJSON(): void {
+    if (this.currentSlidingLayer) {
+      this.slidingMap.removeLayer(this.currentSlidingLayer);
+    }
+    this.http.get(`assets/geojson/${this.currentSlide}.json`).subscribe((stateRes: any) => {
+      const newSlidingLayer = L.geoJSON(stateRes, {
+        style: {
+          weight: 1,
+          opacity: 1,
+          color: 'blue',
+          fillOpacity: 0
+        }
+      });
+      newSlidingLayer.addTo(this.slidingMap);
+      this.currentSlidingLayer = newSlidingLayer;
+    });
+  }
+
+  slidingList : {id:number,region : string, lat:number, long:number,initZoom:number}[] = [
+    {id:0 , region:'INDIA_COUNTRY',lat:24,long:77,initZoom:4},
+    {id:1 , region:'regions/EAST_AND_NORTH_EAST_INDIA',lat:24,long:87,initZoom:5},
+    {id:2 , region:'regions/NORTH_WEST_INDIA',lat:29,long:77,initZoom:5},
+    {id:3 , region:'regions/SOUTH_PENINSULA',lat:17,long:77,initZoom:5},
+    {id:4 , region:'regions/C_India',lat:22,long:77,initZoom:5},
+  ]
+
+  slidingFunction(): void {
+
+    this.intervalId = setInterval(() => {
+      const data = this.slidingList.find((d)=>d.id === this.slidingNo )
+      this.currentSlide = data?.region || '';
+      this.slidingMap.setView([data?.lat||24,data?.long||77],data?.initZoom||4);
+      this.loadSlidingGeoJSON();
+      if(this.slidingNo<4){
+        this.slidingNo = this.slidingNo + 1
+      }else{
+        this.slidingNo = 0;
+      }
+      console.log("interval function " +  this.currentSlide);
+    }, 5000); // 5000 milliseconds = 5 seconds
+  }
+
+
+
+
 
 }

@@ -1,0 +1,113 @@
+<div class="background-effect" style="text-align: center">
+    <app-header></app-header>
+    <h2 class="text-center text-primary mt-2">STATE WISE RAINFALL MAP</h2>
+    <div class="row mt-4">
+        <div class="col-sm-4"></div>
+        <div class="col-sm-4">
+            <select class="form-control" (change)="onChangeState($event)">
+        <option selected>Select State</option>
+        <option *ngFor="let state of StateList" [value]="state.value">
+          {{ state.name }}
+        </option>
+      </select>
+        </div>
+    </div>
+    <div style="text-align: center; padding-top: 40px; margin: auto; width: 50%">
+        <div class="stateWise">
+            <div id="map" style="
+          width: 100%;
+          height: 70vh;
+          border-style: solid;
+          border-color: black;
+          border-width: 2px;
+          text-align: center;
+          margin: 10px;
+          box-shadow: 10px 15px 10px 2px rgba(0, 0, 0, 0.8);
+        ">
+                <table style="width: 100%">
+                    <tbody>
+                        <tr>
+                            <td style="width: 10%; text-align: center;">
+                                <img class="logo" src="/assets/images/IMDlogo_Ipart-iris.png" alt="" style="width: 100%; margin-left: 60px;" />
+                            </td>
+                            <td style="text-align: center; width: 85%">
+                                <table style="width: 100%">
+                                    <tbody>
+                                        <tr>
+                                            <td>
+
+                                                <div class="row ms-4">
+                                                    <div class="col-sm-12">
+                                                        <h6 class="text-center  text-dark" style="font-weight: bolder;">INDIA METEOROLOGICAL DEPARTMENT</h6>
+                                                    </div>
+
+                                                    <div class="col-sm-12 ">
+                                                        <h6 class=" text-dark">DISTRICT RAINFALL DEPARTURE MAP - {{selectedStateName}}</h6>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                            <td>
+                                <img style="margin: 15px 0 0 7px; width: 50px; height: 50px" src="../../assets/images/—Pngtree—compass_6028609.png" alt="" />
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="leaflet-bottom leaflet-left">
+                    <table class="info_legend leaflet-control" style="width: 98%; height: 30px; margin-bottom: 20px">
+                        <tbody>
+                            <tr align="center">
+                                <td width="5px"></td>
+                                <td style="background-color: #0096ff; width: 10px"></td>
+                                <td style="font-size: 10px; color: black; font-weight: 800">
+                                    Large Excess [60% or more]
+                                </td>
+                                <td width="5px"></td>
+                                <td style="background-color: #32c0f8; width: 10px"></td>
+                                <td style="font-size: 10px; color: black; font-weight: 800">
+                                    Excess [20% to 59%]
+                                </td>
+                                <td width="5px"></td>
+                                <td style="background-color: #00cd5b; width: 10px"></td>
+                                <td style="font-size: 10px; color: black; font-weight: 800">
+                                    Normal [-19% to 19%]
+                                </td>
+
+                                <td width="5px"></td>
+                                <td style="background-color: #ff2700; width: 10px"></td>
+                                <td style="font-size: 10px; color: black; font-weight: 800">
+                                    Deficient [-59% to -20%]
+                                </td>
+
+                                <td width="5px"></td>
+                                <td style="background-color: #ffff20; width: 10px"></td>
+                                <td style="font-size: 10px; color: black; font-weight: 800">
+                                    Large Deficient [-99% to -60%]
+                                </td>
+                                <td width="5px"></td>
+                                <td style="background-color: #ffffff; width: 10px"></td>
+                                <td style="font-size: 10px; color: black; font-weight: 800">
+                                    No Rain [-100%]
+                                </td>
+                                <td style="background-color: #c0c0c0; width: 10px"></td>
+                                <td style="font-size: 10px; color: black; font-weight: 800">
+                                    No Data
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

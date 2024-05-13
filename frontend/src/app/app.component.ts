@@ -13,6 +13,7 @@ export class AppComponent implements OnInit {
 
   constructor(private dataService: DataService){
     this.scheduleFunction();
+    // this.CreateColumn();
   }
   dateCalculation() {
     const months = [
