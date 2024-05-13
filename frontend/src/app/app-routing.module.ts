@@ -31,6 +31,7 @@ import { QpfverificationReports2022Component } from './qpfverification_reports/q
 import { UploadFileComponent } from './upload-file/upload-file.component';
 import { AboutComponent } from './about/about.component';
 import { VerificationPageComponent } from './verification-page/verification-page.component';
+import { VerificationPageMcComponent } from './verification-page-mc/verification-page-mc.component';
 import { DeletedStationLogComponent } from './deleted-station-log/deleted-station-log.component';
 import { LastFiveYearDataComponent } from './last-five-year-data/last-five-year-data.component';
 import { StationStatisticsComponent } from './station-statistics/station-statistics.component';
@@ -70,6 +71,7 @@ const routes: Routes = [
   { path: 'upload-file', component: UploadFileComponent, canActivate: [AuthGuard] },
   { path: 'about', component: AboutComponent, canActivate: [AuthGuard] },
   { path: 'verification-page', component: VerificationPageComponent, canActivate: [AuthGuard] },
+  { path: 'verification-page-mc', component: VerificationPageMcComponent, canActivate: [AuthGuard] },
   { path: 'last-five-year-data', component: LastFiveYearDataComponent, canActivate: [AuthGuard] },
   { path: 'station-statistics', component: StationStatisticsComponent, canActivate: [AuthGuard] },
   { path: 'yearly-station-statistics', component: YearlyStationStatisticsComponent, canActivate: [AuthGuard] },
