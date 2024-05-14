@@ -43,6 +43,7 @@ import { SendEmailComponent } from './send-email/send-email.component';
 import { AutoEmailSetupComponent } from './auto-email-setup/auto-email-setup.component';
 import { DefinedEmailGroupComponent } from './defined-email-group/defined-email-group.component';
 import { EmailLogComponent } from './email-log/email-log.component';
+import { StateWiseComponent } from './state-wise/state-wise.component';
 import { StatewiseDistRainfallComponent } from './statewise-dist-rainfall/statewise-dist-rainfall.component';
 import { RainfallGraphsWinterPanindiaComponent } from './rainfall-graphs/winter/rainfall-graphs-winter-panindia/rainfall-graphs-winter-panindia.component';
 import { RainfallGraphsWinterNorthwestregionComponent } from './rainfall-graphs/winter/rainfall-graphs-winter-northwestregion/rainfall-graphs-winter-northwestregion.component';
@@ -109,6 +110,7 @@ const routes: Routes = [
   { path: 'rainfallgraphs-postmonsoon-northwestregion', component: RainfallGraphsPostmonsoonNorthwestregionComponent, canActivate: [AuthGuard]},
   { path: 'rainfallgraphs-postmonsoon-southpeninsularregion', component: RainfallGraphsPostmonsoonSouthpeninsularregionComponent, canActivate: [AuthGuard]},
   { path: 'rainfallgraphs-postmonsoon-centralindiaregion', component: RainfallGraphsPostmonsoonCentralindiaregionComponent, canActivate: [AuthGuard]},
+  { path: 'state-wise-district-rainfall', component: StateWiseComponent, canActivate: [AuthGuard]},
 
 
   { path: 'QpfverificationReports2020', component: QpfverificationReports2020Component , canActivate: [AuthGuard] },

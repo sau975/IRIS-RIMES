@@ -28,7 +28,7 @@ export class FrontPageComponent implements OnInit {
   currentSlide = 'INDIA_COUNTRY';
   currentSlideName:String= "";
   isSlider = true;
-  private slidingMap: L.Map = {} as L.Map;
+   slidingMap: L.Map = {} as L.Map;
 
   // allDaysInMonth:any[]=[];
 
@@ -42,7 +42,11 @@ export class FrontPageComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // this.slidingFunction();
+    this.slidingFunction();
+   }
+
+   ngAfterViewInit(): void {
+    this.initMap();
    }
 
   setFromAndToDate() {
@@ -96,11 +100,11 @@ currentSlidingLayer:any;
   }
 
   slidingList : {id:number,region : string, lat:number, long:number,initZoom:number,name:String}[] = [
-    {id:0 , region:'INDIA_COUNTRY',lat:24,long:77,initZoom:4, name:""},
-    {id:1 , region:'regions/EAST_AND_NORTH_EAST_INDIA',lat:24,long:87,initZoom:5, name:"EAST AND NORTH EAST INDIA"},
-    {id:2 , region:'regions/NORTH_WEST_INDIA',lat:29,long:77,initZoom:5, name:"NORTH WEST INDIA"},
-    {id:3 , region:'regions/SOUTH_PENINSULA',lat:17,long:77,initZoom:5, name:"SOUTH PENINSULA"},
-    {id:4 , region:'regions/C_India',lat:22,long:77,initZoom:5, name:"CENTERAL INDIA"},
+    {id:0 , region:'INDIA_COUNTRY',lat:24,long:77,initZoom:5, name:""},
+    {id:1 , region:'regions/EAST_AND_NORTH_EAST_INDIA',lat:24,long:87,initZoom:6, name:"EAST AND NORTH EAST INDIA"},
+    {id:2 , region:'regions/NORTH_WEST_INDIA',lat:30,long:77,initZoom:6, name:"NORTH WEST INDIA"},
+    {id:3 , region:'regions/SOUTH_PENINSULA',lat:15,long:77,initZoom:6, name:"SOUTH PENINSULA"},
+    {id:4 , region:'regions/C_India',lat:22,long:77,initZoom:6, name:"CENTERAL INDIA"},
   ]
 
   slidingFunction(): void {
