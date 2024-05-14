@@ -70,12 +70,14 @@ export class VerificationPageComponent {
       this.selectedRMcs = [];
       this.selectedStates = [];
       this.selectedDistricts = [];
+      this.filteredMcs = [];
       tempfilteredMcs.forEach(m => {
         if(m.split(" ")[0] == "MC"){
           this.filteredMcs.push({name: m})
         }
       });
 
+      this.filteredRMcs = [];
       tempfilteredMcs.forEach(m => {
         if(m.split(" ")[0] == "RMC"){
           this.filteredRMcs.push({name: m})
@@ -221,13 +223,13 @@ export class VerificationPageComponent {
     })
     this.filteredStations = this.filteredStations.filter((x:any) => x[this.dateCalculation()] >= 0);
     this.filteredStations.map(x => {
-      return x.isverified = JSON.parse(x['isverified_' + this.dateCalculation()]);
+      return x.isverified = x['isverified_' + this.dateCalculation()];
     })
     if(this.status){
-      this.filteredStations = this.filteredStations.filter(s =>  s.isverified.status == this.status);
+      this.filteredStations = this.filteredStations.filter(s =>  s.isverified != 'null');
     }
     if(this.filteredStations.length > 0){
-      let isverified = this.filteredStations.every(station => station && station.isverified.status == "verified");
+      let isverified = this.filteredStations.every(station => station && station.isverified != 'null');
       if(isverified){
         this.showVerifiedDateAndMessage();
       }

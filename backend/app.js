@@ -199,12 +199,8 @@ app.get("/existingstationdata", (req, res) => {
 app.put("/addcolumn", (req, res) => {
   const data = req.body.data;
   try {
-    let temp = {
-      status: 'notverified',
-      verifiedDateTime: ''
-    }
     client.query('BEGIN');
-    const queryText = `ALTER TABLE existingstationdata ADD COLUMN IF NOT EXISTS "${'isverified_'+data.date}" character varying DEFAULT '${JSON.stringify(temp)}'`;
+    const queryText = `ALTER TABLE existingstationdata ADD COLUMN IF NOT EXISTS "${'isverified_'+data.date}" character varying DEFAULT null`;
     client.query(queryText);
     client.query('COMMIT');
     res.status(200).json({ message: `Column Created successfully`});
