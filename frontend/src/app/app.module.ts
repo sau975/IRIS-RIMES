@@ -141,6 +141,7 @@ import { VerificationPageHQComponent } from './verification-page-hq/verification
     RealtimeStationDataComponent,
     LogInfoContainerComponent,
     LogInfoForReportsComponent,
+    StateWiseComponent,
     StatewiseDistRainfallComponent,
     RainfallgraphsComponent,
     RainfallGraphsWinterPanindiaComponent,
