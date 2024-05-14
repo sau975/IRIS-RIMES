@@ -223,13 +223,13 @@ export class VerificationPageComponent {
     })
     this.filteredStations = this.filteredStations.filter((x:any) => x[this.dateCalculation()] >= 0);
     this.filteredStations.map(x => {
-      return x.isverified = JSON.parse(x['isverified_' + this.dateCalculation()]);
+      return x.isverified = x['isverified_' + this.dateCalculation()];
     })
     if(this.status){
-      this.filteredStations = this.filteredStations.filter(s =>  s.isverified.status == this.status);
+      this.filteredStations = this.filteredStations.filter(s =>  s.isverified != 'null');
     }
     if(this.filteredStations.length > 0){
-      let isverified = this.filteredStations.every(station => station && station.isverified.status == "verified");
+      let isverified = this.filteredStations.every(station => station && station.isverified != 'null');
       if(isverified){
         this.showVerifiedDateAndMessage();
       }
