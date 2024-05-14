@@ -242,7 +242,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       concatMap(fetchedData7 => {
         this.fetchedData7 = fetchedData7;
         this.processFetchedDatacountrynormal();
-        this.loadGeoJSON();
+        // this.loadGeoJSON();
         return EMPTY; // or any observable to complete the chain
       })
     ).subscribe(
@@ -3839,62 +3839,59 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       });
       geoJsonLayer.addTo(this.map3);
 
-
-
-
     });
-    this.http.get('assets/geojson/INDIA_COUNTRY.json').subscribe((res: any) => {
-      const geoJsonLayer = L.geoJSON(res, {
-        style: (feature: any) => {
-          const id2 = feature.properties['ID'];
-          const matchedData = this.findMatchingDataregion(id2);
-          const rainfall = matchedData ? matchedData.dailydeparturerainfall : -100;
-          const actual = matchedData && matchedData.dailyrainfall == null ? ' ' : "notnull";
-          const color = this.getColorForRainfall(rainfall, actual);
-          return {
-            fillColor: color,
-            weight: 0.5,
-            opacity: 2,
-            color: 'black',
-            fillOpacity: 2
-          };
-        },
-        onEachFeature: (feature: any, layer: any) => {
-          var elementToBeRemoved: any = document.getElementById('countrydiv')/* your reference to the element */;
-          if (elementToBeRemoved) {
-            elementToBeRemoved.remove();
-          }
-          const id1 = feature.properties['country'];
-          const id2 = feature.properties['ID'];
-          const matchedData = this.findMatchingDatacountry(id2);
-          const rainfall = matchedData ? matchedData.dailydeparturerainfall.toFixed(2) : '-100.00';
-          const dailyrainfall = matchedData ? matchedData.dailyrainfall.toFixed(2) : '0.00';
-          const normalrainfall = matchedData ? matchedData.normalrainfall.toFixed(2) : '0.00';
-          const textElement = document.createElement('div');
-          textElement.id = 'countrydiv';
-          textElement.innerHTML = `
-          <div style="padding: 5px; font-family: Arial, sans-serif; font-weight: bolder;">
-          <div style="color: #000000;font-weight: bold; font-size: 15px;">${dailyrainfall}(${Math.round(rainfall)}%)</div>
-          <div style="color: #000000;font-weight: bold; font-size: 15px;">${id1}</div>
-          <div style="color: #000000;font-weight: bold; font-size: 15px;">${normalrainfall}</div>
-          </div>`;
+    // this.http.get('assets/geojson/INDIA_COUNTRY.json').subscribe((res: any) => {
+    //   const geoJsonLayer = L.geoJSON(res, {
+    //     style: (feature: any) => {
+    //       const id2 = feature.properties['ID'];
+    //       const matchedData = this.findMatchingDataregion(id2);
+    //       const rainfall = matchedData ? matchedData.dailydeparturerainfall : -100;
+    //       const actual = matchedData && matchedData.dailyrainfall == null ? ' ' : "notnull";
+    //       const color = this.getColorForRainfall(rainfall, actual);
+    //       return {
+    //         fillColor: color,
+    //         weight: 0.5,
+    //         opacity: 2,
+    //         color: 'black',
+    //         fillOpacity: 2
+    //       };
+    //     },
+    //     onEachFeature: (feature: any, layer: any) => {
+    //       var elementToBeRemoved: any = document.getElementById('countrydiv')/* your reference to the element */;
+    //       if (elementToBeRemoved) {
+    //         elementToBeRemoved.remove();
+    //       }
+    //       const id1 = feature.properties['country'];
+    //       const id2 = feature.properties['ID'];
+    //       const matchedData = this.findMatchingDatacountry(id2);
+    //       const rainfall = matchedData ? matchedData.dailydeparturerainfall.toFixed(2) : '-100.00';
+    //       const dailyrainfall = matchedData ? matchedData.dailyrainfall.toFixed(2) : '0.00';
+    //       const normalrainfall = matchedData ? matchedData.normalrainfall.toFixed(2) : '0.00';
+    //       const textElement = document.createElement('div');
+    //       textElement.id = 'countrydiv';
+    //       textElement.innerHTML = `
+    //       <div style="padding: 5px; font-family: Arial, sans-serif; font-weight: bolder;">
+    //       <div style="color: #000000;font-weight: bold; font-size: 15px;">${dailyrainfall}(${Math.round(rainfall)}%)</div>
+    //       <div style="color: #000000;font-weight: bold; font-size: 15px;">${id1}</div>
+    //       <div style="color: #000000;font-weight: bold; font-size: 15px;">${normalrainfall}</div>
+    //       </div>`;
 
-          const bounds = layer.getBounds();
-          const center = bounds.getCenter();
+    //       const bounds = layer.getBounds();
+    //       const center = bounds.getCenter();
 
-          textElement.style.position = 'absolute';
-          textElement.style.left = `${this.map4.latLngToLayerPoint(center).x - 95}px`;
-          textElement.style.top = `${this.map4.latLngToLayerPoint(center).y - 45}px`;
+    //       textElement.style.position = 'absolute';
+    //       textElement.style.left = `${this.map4.latLngToLayerPoint(center).x - 95}px`;
+    //       textElement.style.top = `${this.map4.latLngToLayerPoint(center).y - 45}px`;
 
-          textElement.style.zIndex = '1000';
+    //       textElement.style.zIndex = '1000';
 
-          this.map4.getPanes().overlayPane.appendChild(textElement);
+    //       this.map4.getPanes().overlayPane.appendChild(textElement);
 
-        }
+    //     }
 
-      });
-      geoJsonLayer.addTo(this.map4);
-    });
+    //   });
+    //   geoJsonLayer.addTo(this.map4);
+    // });
   }
 
   getColorForRainfall1(rainfall: any): string {
