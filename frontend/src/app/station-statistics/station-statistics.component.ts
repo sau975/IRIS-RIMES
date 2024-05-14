@@ -422,7 +422,7 @@ export class StationStatisticsComponent implements OnInit, OnDestroy {
   private initStationObservationMap(): void {
     this.stationObservationMap = L.map('map_observations', {
       center: [24, 76.9629],
-      zoom: 6,
+      zoom: 5,
       zoomControl: false,
       minZoom: 5,
     });
