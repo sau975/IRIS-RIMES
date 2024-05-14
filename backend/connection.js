@@ -8,10 +8,7 @@ const { Client } = require('pg');
 //   database: "IRIS"
 // });
 
-<<
-<< << < HEAD
-    ===
-    === =
+
     // const client = new Client( {
     //   host:"localhost",
     //   user: "postgres",
@@ -27,27 +24,22 @@ const { Client } = require('pg');
     //   database: "IRIS"
     // });
 
-    >>>
-    >>> > refs / remotes / origin / main
-const client = new Client({
-    host: "localhost",
-    user: "postgres",
-    port: 5432,
-    <<
-    << << < HEAD
-    password: "iru@ADMIN123",
-    database: "iru_imd_db" ===
-        === =
-        password: "12345",
-    database: "iris" >>>
-        >>> > refs / remotes / origin / main
-});
-// const client = new Client( {
-//   host:"localhost",
-//   user: "postgres",
-//   port: 5432,
-//   password: "123456",
-//   database: "IRIS"
+
+// const client = new Client({
+//     host: "localhost",
+//     user: "postgres",
+//     port: 5432,
+//     password: "iru@ADMIN123",
+//     database: "iru_imd_db" ,
+//     password: "12345",
+//     database: "iris"
 // });
+const client = new Client( {
+  host:"localhost",
+  user: "postgres",
+  port: 5432,
+  password: "123456",
+  database: "IRIS"
+});
 
 module.exports = client;

@@ -11,9 +11,10 @@ import * as htmlToImage from 'html-to-image';
 import { NavigationEnd, Router } from '@angular/router';
 import { EMPTY, concatMap, filter } from 'rxjs';
 import { DatePipe } from '@angular/common';
-import { IndexedDBService } from 'src/app/indexed-db.service';
+// import { IndexedDBService } from 'src/app/indexed-db.service';
 import * as XLSX from 'xlsx';
 import * as FileSaver from 'file-saver';
+import { IndexedDBService } from '../../indexed-db.service';
 
 @Component({
   selector: 'app-departure-map',
@@ -417,9 +418,9 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       const octValues = this.date();
       if (!districtSumCount[districtId]) {
         districtSumCount[districtId] = {};
-        octValues.forEach(oct => districtSumCount[districtId][oct] = { sum: 0, count: 0 });
+        octValues.forEach((oct:any) => districtSumCount[districtId][oct] = { sum: 0, count: 0 });
       }
-      octValues.forEach(oct => {
+      octValues.forEach((oct:any) => {
         if (entry[oct] != undefined) {
           districtSumCount[districtId][oct].sum += entry[oct] == -999.9 ? 0 : entry[oct];
           entry[oct] == -999.9 ? districtSumCount[districtId][oct].count + 0 : districtSumCount[districtId][oct].count++;
@@ -432,7 +433,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     for (const districtId in districtSumCount) {
       districtAverage[districtId] = {};
       const octValues = this.date();
-      octValues.forEach(oct => {
+      octValues.forEach((oct:any) => {
         districtAverage[districtId][oct] = districtSumCount[districtId][oct].sum == 0 ? 0 : districtSumCount[districtId][oct].sum / districtSumCount[districtId][oct].count;
       });
     }
@@ -452,7 +453,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
         totalByDistrict[districtId] = { total: 0 };
       }
 
-      octValues.forEach(oct => {
+      octValues.forEach((oct:any) => {
         totalByDistrict[districtId][oct] = (totalByDistrict[districtId][oct] || 0) + entry[oct];
         totalByDistrict[districtId].total += entry[oct];
       });
@@ -490,7 +491,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     // console.log(allDates, "------------------====")
 
 
-    let allDates = [];
+    let allDates:any = [];
 
     var startDate = new Date(new Date().getFullYear(), 2, 1); // March is represented by index 2
     var endDate = new Date(new Date().getFullYear(), this.today.getMonth(), this.today.getDate()); // April is represented by index 3

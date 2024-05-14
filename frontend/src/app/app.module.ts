@@ -142,7 +142,6 @@ import { StateWiseComponent } from './state-wise/state-wise.component';
     RealtimeStationDataComponent,
     LogInfoContainerComponent,
     LogInfoForReportsComponent,
-    StateWiseComponent,
     StatewiseDistRainfallComponent,
     RainfallgraphsComponent,
     RainfallGraphsWinterPanindiaComponent,
@@ -171,7 +170,8 @@ import { StateWiseComponent } from './state-wise/state-wise.component';
     EmailLogComponent,
     StatewiseDistRainfallComponent,
     VerificationPageMcComponent,
-    VerificationPageHQComponent
+    VerificationPageHQComponent,
+    StateWiseComponent
   ],
   imports: [
     PdfViewerModule,
