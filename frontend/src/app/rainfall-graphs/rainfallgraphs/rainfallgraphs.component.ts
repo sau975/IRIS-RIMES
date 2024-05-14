@@ -4,8 +4,9 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Chart, ChartModule } from 'angular-highcharts';
 import { Router } from 'express';
 import { EMPTY, concatMap } from 'rxjs';
-import { DataService } from 'src/app/data.service';
-import { IndexedDBService } from 'src/app/indexed-db.service';
+import { DataService } from '../../data.service';
+// import { DataService } from 'src/app/data.service';
+// import { IndexedDBService } from 'src/app/indexed-db.service';
 
 @Component({
   selector: 'app-rainfallgraphs',
@@ -126,6 +127,8 @@ export class RainfallgraphsComponent {
       },
 
       yAxis: {
+        tickInterval : 20,
+
         // categories: ['0', '20', '40', '60', '100'],
         title : {
           text : `<${Array(15).fill("-").join("")} Rainfall [mm] ${Array(15).fill("-").join("")}>`
@@ -151,23 +154,6 @@ export class RainfallgraphsComponent {
   }
 
 
-  getMyDummyData(){
-    let AllData:any = []
-    for(let j = 0; j<3; j++){
-      const randomNumbers: number[] = [];
-      for (let i = 0; i < 10; i++) {
-        const randomNumber = Math.floor(Math.random() * 9) + 1;
-        const randomMultipleOfTen = randomNumber * 10;
-        randomNumbers.push(randomMultipleOfTen);
-      }
-      AllData.push(randomNumbers)
-    }
-    return {
-      'normal' : AllData[0],
-      'daily' : AllData[1],
-      'departure' : AllData[2]
-    }
-  }
   getnew(referenceList: any){
     const l = [];
     for(let j = 0; j < referenceList.length; j++) {
@@ -180,7 +166,7 @@ export class RainfallgraphsComponent {
 
 
   getanotherdummyData() {
-    const referenceList: number[] = [10,12,14,15,16,17,19,20,25,27,27,28,29,32,35,37,39,40,42,45,49,50,56,57,57,58,60,61];
+    const referenceList: number[] = [10,12,14,15,16,17,19,20,25,27,27,28,29,32,35,37,39,40,42,45,49,50,56,57,57,58,60,61, 70, 72, 76, 80, 88, 91, 92, 95, 100];
 
     for(let i=0; i<referenceList.length; i++){
       referenceList[i]=referenceList[i]+20
