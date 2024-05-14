@@ -30,16 +30,16 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
   mapTileTypes: string[] = ['District'];
   private initialZoom = 4;
   intervalId :any;
-  slidingNo = 0;
-  currentSlide = 'INDIA_COUNTRY';
-  isSlider = true;
+  // slidingNo = 0;
+  // currentSlide = 'INDIA_COUNTRY';
+  // isSlider = true;
 
   private map: L.Map = {} as L.Map;
   private map1: L.Map = {} as L.Map;
   private map2: L.Map = {} as L.Map;
   private map3: L.Map = {} as L.Map;
   private map4: L.Map = {} as L.Map;
-  private slidingMap: L.Map = {} as L.Map;
+  // private slidingMap: L.Map = {} as L.Map;
   currentDateNormal: string = '';
   currentDateDaily: string = '';
   currentDateNormaly: string = '';
@@ -178,7 +178,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       location.reload();
     });
     this.fetchDataFromBackend();
-    this.slidingFunction();
+    // this.slidingFunction();
   }
 
   dateCalculation() {
@@ -242,7 +242,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       concatMap(fetchedData7 => {
         this.fetchedData7 = fetchedData7;
         this.processFetchedDatacountrynormal();
-        this.loadGeoJSON();
+        // this.loadGeoJSON();
         return EMPTY; // or any observable to complete the chain
       })
     ).subscribe(
@@ -999,11 +999,11 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
 
   private initMap(): void {
 
-    this.slidingMap = L.map('slidingMap', {
-      center: [24, 76.9629],
-      zoom: this.initialZoom,
-      scrollWheelZoom: false,
-    });
+    // this.slidingMap = L.map('slidingMap', {
+    //   center: [24, 76.9629],
+    //   zoom: this.initialZoom,
+    //   scrollWheelZoom: false,
+    // });
 
     
 
@@ -3839,62 +3839,59 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       });
       geoJsonLayer.addTo(this.map3);
 
-
-
-
     });
-    this.http.get('assets/geojson/INDIA_COUNTRY.json').subscribe((res: any) => {
-      const geoJsonLayer = L.geoJSON(res, {
-        style: (feature: any) => {
-          const id2 = feature.properties['ID'];
-          const matchedData = this.findMatchingDataregion(id2);
-          const rainfall = matchedData ? matchedData.dailydeparturerainfall : -100;
-          const actual = matchedData && matchedData.dailyrainfall == null ? ' ' : "notnull";
-          const color = this.getColorForRainfall(rainfall, actual);
-          return {
-            fillColor: color,
-            weight: 0.5,
-            opacity: 2,
-            color: 'black',
-            fillOpacity: 2
-          };
-        },
-        onEachFeature: (feature: any, layer: any) => {
-          var elementToBeRemoved: any = document.getElementById('countrydiv')/* your reference to the element */;
-          if (elementToBeRemoved) {
-            elementToBeRemoved.remove();
-          }
-          const id1 = feature.properties['country'];
-          const id2 = feature.properties['ID'];
-          const matchedData = this.findMatchingDatacountry(id2);
-          const rainfall = matchedData ? matchedData.dailydeparturerainfall.toFixed(2) : '-100.00';
-          const dailyrainfall = matchedData ? matchedData.dailyrainfall.toFixed(2) : '0.00';
-          const normalrainfall = matchedData ? matchedData.normalrainfall.toFixed(2) : '0.00';
-          const textElement = document.createElement('div');
-          textElement.id = 'countrydiv';
-          textElement.innerHTML = `
-          <div style="padding: 5px; font-family: Arial, sans-serif; font-weight: bolder;">
-          <div style="color: #000000;font-weight: bold; font-size: 15px;">${dailyrainfall}(${Math.round(rainfall)}%)</div>
-          <div style="color: #000000;font-weight: bold; font-size: 15px;">${id1}</div>
-          <div style="color: #000000;font-weight: bold; font-size: 15px;">${normalrainfall}</div>
-          </div>`;
+    // this.http.get('assets/geojson/INDIA_COUNTRY.json').subscribe((res: any) => {
+    //   const geoJsonLayer = L.geoJSON(res, {
+    //     style: (feature: any) => {
+    //       const id2 = feature.properties['ID'];
+    //       const matchedData = this.findMatchingDataregion(id2);
+    //       const rainfall = matchedData ? matchedData.dailydeparturerainfall : -100;
+    //       const actual = matchedData && matchedData.dailyrainfall == null ? ' ' : "notnull";
+    //       const color = this.getColorForRainfall(rainfall, actual);
+    //       return {
+    //         fillColor: color,
+    //         weight: 0.5,
+    //         opacity: 2,
+    //         color: 'black',
+    //         fillOpacity: 2
+    //       };
+    //     },
+    //     onEachFeature: (feature: any, layer: any) => {
+    //       var elementToBeRemoved: any = document.getElementById('countrydiv')/* your reference to the element */;
+    //       if (elementToBeRemoved) {
+    //         elementToBeRemoved.remove();
+    //       }
+    //       const id1 = feature.properties['country'];
+    //       const id2 = feature.properties['ID'];
+    //       const matchedData = this.findMatchingDatacountry(id2);
+    //       const rainfall = matchedData ? matchedData.dailydeparturerainfall.toFixed(2) : '-100.00';
+    //       const dailyrainfall = matchedData ? matchedData.dailyrainfall.toFixed(2) : '0.00';
+    //       const normalrainfall = matchedData ? matchedData.normalrainfall.toFixed(2) : '0.00';
+    //       const textElement = document.createElement('div');
+    //       textElement.id = 'countrydiv';
+    //       textElement.innerHTML = `
+    //       <div style="padding: 5px; font-family: Arial, sans-serif; font-weight: bolder;">
+    //       <div style="color: #000000;font-weight: bold; font-size: 15px;">${dailyrainfall}(${Math.round(rainfall)}%)</div>
+    //       <div style="color: #000000;font-weight: bold; font-size: 15px;">${id1}</div>
+    //       <div style="color: #000000;font-weight: bold; font-size: 15px;">${normalrainfall}</div>
+    //       </div>`;
 
-          const bounds = layer.getBounds();
-          const center = bounds.getCenter();
+    //       const bounds = layer.getBounds();
+    //       const center = bounds.getCenter();
 
-          textElement.style.position = 'absolute';
-          textElement.style.left = `${this.map4.latLngToLayerPoint(center).x - 95}px`;
-          textElement.style.top = `${this.map4.latLngToLayerPoint(center).y - 45}px`;
+    //       textElement.style.position = 'absolute';
+    //       textElement.style.left = `${this.map4.latLngToLayerPoint(center).x - 95}px`;
+    //       textElement.style.top = `${this.map4.latLngToLayerPoint(center).y - 45}px`;
 
-          textElement.style.zIndex = '1000';
+    //       textElement.style.zIndex = '1000';
 
-          this.map4.getPanes().overlayPane.appendChild(textElement);
+    //       this.map4.getPanes().overlayPane.appendChild(textElement);
 
-        }
+    //     }
 
-      });
-      geoJsonLayer.addTo(this.map4);
-    });
+    //   });
+    //   geoJsonLayer.addTo(this.map4);
+    // });
   }
 
   getColorForRainfall1(rainfall: any): string {
@@ -4338,51 +4335,51 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     }
   }
 
-  toggleSlider(): void {
-    this.isSlider = !this.isSlider
-}
-currentSlidingLayer:any;
-  loadSlidingGeoJSON(): void {
-    if (this.currentSlidingLayer) {
-      this.slidingMap.removeLayer(this.currentSlidingLayer);
-    }
-    this.http.get(`assets/geojson/${this.currentSlide}.json`).subscribe((stateRes: any) => {
-      const newSlidingLayer = L.geoJSON(stateRes, {
-        style: {
-          weight: 1,
-          opacity: 1,
-          color: 'blue',
-          fillOpacity: 0
-        }
-      });
-      newSlidingLayer.addTo(this.slidingMap);
-      this.currentSlidingLayer = newSlidingLayer;
-    });
-  }
+//   toggleSlider(): void {
+//     this.isSlider = !this.isSlider
+// }
+// currentSlidingLayer:any;
+//   loadSlidingGeoJSON(): void {
+//     if (this.currentSlidingLayer) {
+//       this.slidingMap.removeLayer(this.currentSlidingLayer);
+//     }
+//     this.http.get(`assets/geojson/${this.currentSlide}.json`).subscribe((stateRes: any) => {
+//       const newSlidingLayer = L.geoJSON(stateRes, {
+//         style: {
+//           weight: 1,
+//           opacity: 1,
+//           color: 'blue',
+//           fillOpacity: 0
+//         }
+//       });
+//       newSlidingLayer.addTo(this.slidingMap);
+//       this.currentSlidingLayer = newSlidingLayer;
+//     });
+//   }
 
-  slidingList : {id:number,region : string, lat:number, long:number,initZoom:number}[] = [
-    {id:0 , region:'INDIA_COUNTRY',lat:24,long:77,initZoom:4},
-    {id:1 , region:'regions/EAST_AND_NORTH_EAST_INDIA',lat:24,long:87,initZoom:5},
-    {id:2 , region:'regions/NORTH_WEST_INDIA',lat:29,long:77,initZoom:5},
-    {id:3 , region:'regions/SOUTH_PENINSULA',lat:17,long:77,initZoom:5},
-    {id:4 , region:'regions/C_India',lat:22,long:77,initZoom:5},
-  ]
+//   slidingList : {id:number,region : string, lat:number, long:number,initZoom:number}[] = [
+//     {id:0 , region:'INDIA_COUNTRY',lat:24,long:77,initZoom:4},
+//     {id:1 , region:'regions/EAST_AND_NORTH_EAST_INDIA',lat:24,long:87,initZoom:5},
+//     {id:2 , region:'regions/NORTH_WEST_INDIA',lat:29,long:77,initZoom:5},
+//     {id:3 , region:'regions/SOUTH_PENINSULA',lat:17,long:77,initZoom:5},
+//     {id:4 , region:'regions/C_India',lat:22,long:77,initZoom:5},
+//   ]
 
-  slidingFunction(): void {
+//   slidingFunction(): void {
 
-    this.intervalId = setInterval(() => {
-      const data = this.slidingList.find((d)=>d.id === this.slidingNo )
-      this.currentSlide = data?.region || '';
-      this.slidingMap.setView([data?.lat||24,data?.long||77],data?.initZoom||4);
-      this.loadSlidingGeoJSON();
-      if(this.slidingNo<4){
-        this.slidingNo = this.slidingNo + 1
-      }else{
-        this.slidingNo = 0;
-      }
-      console.log("interval function " +  this.currentSlide);
-    }, 5000); // 5000 milliseconds = 5 seconds
-  }
+//     this.intervalId = setInterval(() => {
+//       const data = this.slidingList.find((d)=>d.id === this.slidingNo )
+//       this.currentSlide = data?.region || '';
+//       this.slidingMap.setView([data?.lat||24,data?.long||77],data?.initZoom||4);
+//       this.loadSlidingGeoJSON();
+//       if(this.slidingNo<4){
+//         this.slidingNo = this.slidingNo + 1
+//       }else{
+//         this.slidingNo = 0;
+//       }
+//       console.log("interval function " +  this.currentSlide);
+//     }, 5000); // 5000 milliseconds = 5 seconds
+//   }
 
 
 
