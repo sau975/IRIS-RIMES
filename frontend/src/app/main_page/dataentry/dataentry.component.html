@@ -78,7 +78,7 @@
       <input type="date" class="form-control" [min]="minDate" [ngModel]="selectedDate | date:'yyyy-MM-dd'"
         (ngModelChange)="onChangeDate($event)">
     </div>
-    <div class="col-12 col-md-6 col-lg-2 mb-2">
+    <div class="col-12 col-md-6 col-lg-2 mb-2 mx-auto pt-4">
       <button class="btn btn-success" type="button" (click)="filterByDate()">Submit</button>
     </div>
   </div>
@@ -139,7 +139,7 @@
             <td style="border: 1px solid black">{{ station.stationname }}</td>
             <td style="border: 1px solid black">{{ station.stationid }}</td>
             <td style="border: 1px solid black">
-              <input type="text" id="rainfall" #rainFallElementRef name="rainfall" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1').replace(/(\.\d{1}).+/g, '$1');" [(ngModel)]="station.RainFall"
+              <input type="text" id="rainfall" #rainFallElementRef name="rainfall" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1').replace(/(\.\d{1}).+/g, '$1');" (click)="station.RainFall = ''" [(ngModel)]="station.RainFall"
                 required style="border: none;" step="0.1" (input)="showMessage(rainFallElementRef)">
             </td>
 

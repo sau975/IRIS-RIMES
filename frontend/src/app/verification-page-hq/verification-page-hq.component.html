@@ -1,0 +1,185 @@
+<p>verification-page-hq works!</p>
+<div class="background-effect">
+  <table style="width: 100%; background: linear-gradient(to top, #09203f 0%, #537895 100%);">
+    <tbody>
+      <tr>
+        <td style="width: 8%; padding: 10px 0px 17px 25px;" align="left">
+        </td>
+        <td style="text-align: center; padding: 20px; width: 90%">
+          <table style="width: 100%">
+            <tbody>
+              <tr>
+                <td>
+                  <label style="
+                      color: white;
+                      vertical-align: middle;
+                      font-family: Arial;
+                      font-weight: bolder;
+                      font-size: 20px;
+                    ">
+                    IMD Rainfall Information System (iRAINS)</label>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <label style="
+                      color: white;
+                      vertical-align: middle;
+                      font-family: Arial;
+                      font-weight: bolder;
+                      font-size: 18px;
+                    ">
+                    Hydromet Division</label>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </td>
+        <td>
+          <div class="button">
+            <button class="Back" (click)="goBack()">Back</button>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="navbar">
+    <div class="col-2">
+      <p-multiSelect [options]="regionList" [(ngModel)]="selectedRegions" (onChange)="onChangeRegion()" (onSelectAllChange)="onChangeRegion()" optionLabel="name" placeholder="Select Regions" />
+      <!-- <app-multi-select-dropdown [list]="regionList" [type]="'Region'" (shareCheckedList)="onChangeRegion($event)">
+      </app-multi-select-dropdown> -->
+    </div>
+    <div class="col-2">
+      <p-multiSelect [options]="filteredMcs" [(ngModel)]="selectedMcs" (onChange)="onChangeMc()" (onSelectAllChange)="onChangeMc()" optionLabel="name" placeholder="Select MCs" />
+      <!-- <app-multi-select-dropdown [list]="filteredMcs" [type]="'MC'" (shareCheckedList)="onChangeMc($event)">
+      </app-multi-select-dropdown> -->
+    </div>
+    <div class="col-2">
+      <p-multiSelect [options]="filteredRMcs" [(ngModel)]="selectedRMcs" (onChange)="onChangeRMc()" (onSelectAllChange)="onChangeRMc()" optionLabel="name" placeholder="Select RMCs" />
+      <!-- <app-multi-select-dropdown [list]="filteredMcs" [type]="'MC'" (shareCheckedList)="onChangeMc($event)">
+      </app-multi-select-dropdown> -->
+    </div>
+    <div class="col-2">
+      <p-multiSelect [options]="filteredStates" [(ngModel)]="selectedStates" (onChange)="onChangeState()" (onSelectAllChange)="onChangeState()" optionLabel="name" placeholder="Select States" />
+      <!-- <app-multi-select-dropdown [list]="filteredStates" [type]="'State'" (shareCheckedList)="onChangeState($event)">
+      </app-multi-select-dropdown> -->
+    </div>
+    <div class="col-2">
+      <p-multiSelect [options]="filteredDistricts" [(ngModel)]="selectedDistricts" (onChange)="onChangeDistrict()" (onSelectAllChange)="onChangeDistrict()" optionLabel="name" placeholder="Select Districts" />
+      <!-- <app-multi-select-dropdown [list]="filteredDistricts" [type]="'District'"
+        (shareCheckedList)="onChangeDistrict($event)">
+      </app-multi-select-dropdown> -->
+    </div>
+
+    <div class="col-1">
+      <!-- <label for="district">Select Date :</label> -->
+      <input type="date" class="form-control" [ngModel] ="selectedDate | date:'yyyy-MM-dd'" (ngModelChange)="selectedDate = $event">
+    </div>
+
+    <div class="col-1 mt-2">
+      <button class="btn btn-success" type="button" (click)="filterByDate()">Submit</button>
+    </div>
+  </div>
+  <!-- <div class="navbar row">
+    <div class="col-2">
+    <label for="region">Select Region :</label>
+    <select name="region" class="form-control" id="region" [(ngModel)]="selectedRegion" (change)="onChangeRegion()">
+      <option *ngFor="let region of regionList" [value]="region">{{region}}</option>
+    </select>
+  </div>
+  <div class="col-2">
+    <label for="mcs">Select MC :</label>
+    <select name="mcs" class="form-control" id="mcs">
+      <option value="mc1">RMC/MC</option>
+      <option value="mc2">RMC/MC</option>
+      <option value="mc3">RMC/MC</option>
+      <option value="mc4">RMC/MC</option>
+    </select>
+  </div>
+  <div class="col-2">
+    <label for="state">Select State :</label>
+    <select name="state" class="form-control" id="state" [(ngModel)]="selectedState" (change)="onChangeState()">
+      <option *ngFor="let state of filteredStates" [value]="state">{{state}}</option>
+    </select>
+  </div>
+  <div class="col-2">
+    <label for="district">Select District :</label>
+    <select name="district" class="form-control" id="district" [(ngModel)]="selectedDistrict">
+      <option *ngFor="let district of filteredDistricts" [value]="district">{{district}}</option>
+    </select>
+  </div>
+  <div class="col-2">
+    <label for="status">Select Status :</label>
+    <select name="status" class="form-control" id="status" [(ngModel)]="status">
+      <option [value]="'verified'">Verified</option>
+      <option [value]="'notverified'">Not Verified</option>
+    </select>
+  </div>
+  <div class="col-1">
+    <label for="district">Select Date :</label>
+    <input type="date" class="form-control" [ngModel] ="selectedDate | date:'yyyy-MM-dd'" (ngModelChange)="selectedDate = $event">
+  </div>
+    <div class="col-1 mt-3">
+      <button class="btn btn-success" type="button" (click)="filterByDate()">Submit</button>
+    </div>
+  </div> -->
+
+  <div style="text-align: center; padding-top: 40px">
+    <div class="dataentry">
+      <div class="row">
+        <div class="col-12">
+          <h3>STATIONS DATA</h3>
+        </div>
+      </div>
+      <br />
+      <!-- <form> -->
+        <table style=" margin: auto; border-collapse: collapse; width: 90%; border: 1px solid black;">
+          <thead>
+            <tr>
+              <th style="border: 1px solid black">S.NO</th>
+              <th style="border: 1px solid black">STATION NAME</th>
+              <th style="border: 1px solid black">STATION ID</th>
+              <th style="border: 1px solid black">RAINFALL</th>
+              <th style="border: 1px solid black">Status</th>
+              <th style="border: 1px solid black">Verified Date Time</th>
+              <th style="border: 1px solid black">Email</th>
+              <th style="border: 1px solid black">TYPE</th>
+              <th style="border: 1px solid black">NEW/OLD</th>
+              <th style="border: 1px solid black">LAT° N</th>
+              <th style="border: 1px solid black">LNG° E</th>
+              <th style="border: 1px solid black">YEAR OF ACTIVATION</th>
+            </tr>
+          </thead>
+          <tbody *ngIf="filteredStations && filteredStations.length > 0">
+            <tr *ngFor="let station of filteredStations; let i = index">
+              <td style="border: 1px solid black">{{ i + 1 }}</td>
+              <td style="border: 1px solid black">{{ station.stationname }}</td>
+              <td style="border: 1px solid black">{{ station.stationid }}</td>
+              <td style="border: 1px solid black">
+                <input type="number" id="rainfall" #rainFallElementRef name="rainfall" [(ngModel)]="station.RainFall" required style="border: none;"
+                  step="0.1" (input)="showMessage(rainFallElementRef)">
+              </td>
+              <td style="border: 1px solid black"><button [ngClass]="{'selectedOptionolor': station.isverified.status === 'verified'}">Verified</button><button [ngClass]="{'selectedOptionolor': station.isverified.status === 'notverified'}">Not Verified</button></td>
+              <td style="border: 1px solid black">{{station.isverified.verifiedDateTime | date: 'dd-MM-YYY hh:mm:ss'}}</td>
+              <td style="border: 1px solid black"><button (click)="sendEmail()">Email</button></td>
+              <td style="border: 1px solid black"><button value="AWS" [ngClass]="{'selectedOptionolor': station.stationtype === 'aws'}">AWS</button><button
+                  value="ORG" [ngClass]="{'selectedOptionolor': station.stationtype === 'org'}">ORG</button><button value="ARG" [ngClass]="{'selectedOptionolor': station.stationtype === 'arg'}">ARG</button></td>
+              <td style="border: 1px solid black"><button [ngClass]="{'selectedOptionolor': station.neworold === 'old'}">OLD</button><button [ngClass]="{'selectedOptionolor': station.neworold === 'new'}">NEW</button></td>
+              <!-- <td style="border: 1px solid black"><input type="number" disabled required style="border: none; width: 50px" [(ngModel)]="station.lat"></td>
+              <td style="border: 1px solid black"><input type="number" disabled required style="border: none; width: 50px" [(ngModel)]="station.lng"></td> -->
+              <td style="border: 1px solid black">{{station.lat}}</td>
+              <td style="border: 1px solid black">{{station.lng}}</td>
+              <td style="border: 1px solid black">{{station.activationdate | date: 'dd-MM-yyyy'}}</td>
+            </tr>
+          </tbody>
+        </table>
+        <button type="submit" class="enter" (click)="submit()">Update</button>
+        <button type="submit" class="enter" (click)="Verify()">Verify</button>
+      <!-- </form> -->
+      <div *ngIf="verifiedMessage">
+        <br>
+        <p style="color: green; font-weight: bold;">{{ verifiedMessage }}</p>
+      </div>
+    </div>
+  </div>
+</div>

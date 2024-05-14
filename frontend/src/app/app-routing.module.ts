@@ -65,6 +65,7 @@ import { RainfallGraphsPostmonsoonEastandnortheastregionComponent } from './rain
 import { RainfallGraphsPostmonsoonNorthwestregionComponent } from './rainfall-graphs/post-monsoon/rainfall-graphs-postmonsoon-northwestregion/rainfall-graphs-postmonsoon-northwestregion.component';
 import { RainfallGraphsPostmonsoonSouthpeninsularregionComponent } from './rainfall-graphs/post-monsoon/rainfall-graphs-postmonsoon-southpeninsularregion/rainfall-graphs-postmonsoon-southpeninsularregion.component';
 import { RainfallGraphsPostmonsoonCentralindiaregionComponent } from './rainfall-graphs/post-monsoon/rainfall-graphs-postmonsoon-centralindiaregion/rainfall-graphs-postmonsoon-centralindiaregion.component';
+import { VerificationPageHQComponent } from './verification-page-hq/verification-page-hq.component';
 
 
 const routes: Routes = [
@@ -120,6 +121,7 @@ const routes: Routes = [
   { path: 'about', component: AboutComponent, canActivate: [AuthGuard] },
   { path: 'verification-page', component: VerificationPageComponent, canActivate: [AuthGuard] },
   { path: 'verification-page-mc', component: VerificationPageMcComponent, canActivate: [AuthGuard] },
+  { path: 'verification-page-hq', component: VerificationPageHQComponent, canActivate: [AuthGuard] },
   { path: 'last-five-year-data', component: LastFiveYearDataComponent, canActivate: [AuthGuard] },
   { path: 'station-statistics', component: StationStatisticsComponent, canActivate: [AuthGuard] },
   { path: 'yearly-station-statistics', component: YearlyStationStatisticsComponent, canActivate: [AuthGuard] },
