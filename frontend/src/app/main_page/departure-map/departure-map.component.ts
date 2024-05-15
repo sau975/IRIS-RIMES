@@ -11,10 +11,9 @@ import * as htmlToImage from 'html-to-image';
 import { NavigationEnd, Router } from '@angular/router';
 import { EMPTY, concatMap, filter } from 'rxjs';
 import { DatePipe } from '@angular/common';
-// import { IndexedDBService } from 'src/app/indexed-db.service';
+import { IndexedDBService } from 'src/app/indexed-db.service';
 import * as XLSX from 'xlsx';
 import * as FileSaver from 'file-saver';
-import { IndexedDBService } from '../../indexed-db.service';
 
 @Component({
   selector: 'app-departure-map',
@@ -31,16 +30,13 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
   mapTileTypes: string[] = ['District'];
   private initialZoom = 4;
   intervalId :any;
-  // slidingNo = 0;
-  // currentSlide = 'INDIA_COUNTRY';
-  // isSlider = true;
+
 
   private map: L.Map = {} as L.Map;
   private map1: L.Map = {} as L.Map;
   private map2: L.Map = {} as L.Map;
   private map3: L.Map = {} as L.Map;
   private map4: L.Map = {} as L.Map;
-  // private slidingMap: L.Map = {} as L.Map;
   currentDateNormal: string = '';
   currentDateDaily: string = '';
   currentDateNormaly: string = '';
@@ -179,7 +175,6 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       location.reload();
     });
     this.fetchDataFromBackend();
-    // this.slidingFunction();
   }
 
   dateCalculation() {
@@ -243,7 +238,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       concatMap(fetchedData7 => {
         this.fetchedData7 = fetchedData7;
         this.processFetchedDatacountrynormal();
-        // this.loadGeoJSON();
+        this.loadGeoJSON();
         return EMPTY; // or any observable to complete the chain
       })
     ).subscribe(
@@ -418,9 +413,9 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       const octValues = this.date();
       if (!districtSumCount[districtId]) {
         districtSumCount[districtId] = {};
-        octValues.forEach((oct:any) => districtSumCount[districtId][oct] = { sum: 0, count: 0 });
+        octValues.forEach(oct => districtSumCount[districtId][oct] = { sum: 0, count: 0 });
       }
-      octValues.forEach((oct:any) => {
+      octValues.forEach(oct => {
         if (entry[oct] != undefined) {
           districtSumCount[districtId][oct].sum += entry[oct] == -999.9 ? 0 : entry[oct];
           entry[oct] == -999.9 ? districtSumCount[districtId][oct].count + 0 : districtSumCount[districtId][oct].count++;
@@ -433,7 +428,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     for (const districtId in districtSumCount) {
       districtAverage[districtId] = {};
       const octValues = this.date();
-      octValues.forEach((oct:any) => {
+      octValues.forEach(oct => {
         districtAverage[districtId][oct] = districtSumCount[districtId][oct].sum == 0 ? 0 : districtSumCount[districtId][oct].sum / districtSumCount[districtId][oct].count;
       });
     }
@@ -453,7 +448,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
         totalByDistrict[districtId] = { total: 0 };
       }
 
-      octValues.forEach((oct:any) => {
+      octValues.forEach(oct => {
         totalByDistrict[districtId][oct] = (totalByDistrict[districtId][oct] || 0) + entry[oct];
         totalByDistrict[districtId].total += entry[oct];
       });
@@ -491,7 +486,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     // console.log(allDates, "------------------====")
 
 
-    let allDates:any = [];
+    let allDates = [];
 
     var startDate = new Date(new Date().getFullYear(), 2, 1); // March is represented by index 2
     var endDate = new Date(new Date().getFullYear(), this.today.getMonth(), this.today.getDate()); // April is represented by index 3
@@ -999,17 +994,6 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
 
 
   private initMap(): void {
-
-    // this.slidingMap = L.map('slidingMap', {
-    //   center: [24, 76.9629],
-    //   zoom: this.initialZoom,
-    //   scrollWheelZoom: false,
-    // });
-
-    
-
-
-
     this.map = L.map('map', {
       center: [24, 76.9629],
       zoom: this.initialZoom,
@@ -4335,55 +4319,6 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       this.showMapInCenter = dataArray[index];
     }
   }
-
-//   toggleSlider(): void {
-//     this.isSlider = !this.isSlider
-// }
-// currentSlidingLayer:any;
-//   loadSlidingGeoJSON(): void {
-//     if (this.currentSlidingLayer) {
-//       this.slidingMap.removeLayer(this.currentSlidingLayer);
-//     }
-//     this.http.get(`assets/geojson/${this.currentSlide}.json`).subscribe((stateRes: any) => {
-//       const newSlidingLayer = L.geoJSON(stateRes, {
-//         style: {
-//           weight: 1,
-//           opacity: 1,
-//           color: 'blue',
-//           fillOpacity: 0
-//         }
-//       });
-//       newSlidingLayer.addTo(this.slidingMap);
-//       this.currentSlidingLayer = newSlidingLayer;
-//     });
-//   }
-
-//   slidingList : {id:number,region : string, lat:number, long:number,initZoom:number}[] = [
-//     {id:0 , region:'INDIA_COUNTRY',lat:24,long:77,initZoom:4},
-//     {id:1 , region:'regions/EAST_AND_NORTH_EAST_INDIA',lat:24,long:87,initZoom:5},
-//     {id:2 , region:'regions/NORTH_WEST_INDIA',lat:29,long:77,initZoom:5},
-//     {id:3 , region:'regions/SOUTH_PENINSULA',lat:17,long:77,initZoom:5},
-//     {id:4 , region:'regions/C_India',lat:22,long:77,initZoom:5},
-//   ]
-
-//   slidingFunction(): void {
-
-//     this.intervalId = setInterval(() => {
-//       const data = this.slidingList.find((d)=>d.id === this.slidingNo )
-//       this.currentSlide = data?.region || '';
-//       this.slidingMap.setView([data?.lat||24,data?.long||77],data?.initZoom||4);
-//       this.loadSlidingGeoJSON();
-//       if(this.slidingNo<4){
-//         this.slidingNo = this.slidingNo + 1
-//       }else{
-//         this.slidingNo = 0;
-//       }
-//       console.log("interval function " +  this.currentSlide);
-//     }, 5000); // 5000 milliseconds = 5 seconds
-//   }
-
-
-
 
 
 }

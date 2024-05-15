@@ -42,7 +42,7 @@ export class FrontPageComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.slidingFunction();
+    // this.slidingFunction();
    }
 
    ngAfterViewInit(): void {
@@ -76,7 +76,7 @@ export class FrontPageComponent implements OnInit {
     });
   }
 
-  
+
   toggleSlider(): void {
     this.isSlider = !this.isSlider
 }
