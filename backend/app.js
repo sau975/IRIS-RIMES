@@ -232,12 +232,8 @@ app.put("/verifiedrainfall", (req, res) => {
     // Begin a transaction
     client.query('BEGIN');
     // Loop through each object and insert into the database
-    let temp = {
-      status: 'verified',
-      verifiedDateTime: data.verifiedDateTime
-    }
     for (const element of data.verifiedstationdata) {
-      const queryText = `UPDATE existingstationdata SET "${'isverified_'+data.date}" = '${JSON.stringify(temp)}' WHERE stationid = ${element.station_id}`;
+      const queryText = `UPDATE existingstationdata SET "${'isverified_'+data.date}" = '${data.verifiedDateTime}' WHERE stationid = ${element.station_id}`;
       // Execute the query
       client.query(queryText);
     }
