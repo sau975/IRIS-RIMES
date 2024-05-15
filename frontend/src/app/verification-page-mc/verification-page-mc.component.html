@@ -159,7 +159,7 @@
                   step="0.1" (input)="showMessage(rainFallElementRef)">
               </td>
               <td style="border: 1px solid black"><button [ngClass]="{'selectedOptionolor': station.isverified != 'null'}">Verified</button><button [ngClass]="{'selectedOptionolor': station.isverified == 'null'}">Not Verified</button></td>
-              <td style="border: 1px solid black">{{station.isverified | date: 'dd-MM-YYY hh:mm:ss'}}</td>
+              <td style="border: 1px solid black">{{station.isverified != 'null' ? (station.isverified | date: 'dd-MM-YYY hh:mm:ss') : ' '}}</td>
               <td style="border: 1px solid black"><button (click)="sendEmail()">Email</button></td>
               <td style="border: 1px solid black"><button value="AWS" [ngClass]="{'selectedOptionolor': station.stationtype === 'aws'}">AWS</button><button
                   value="ORG" [ngClass]="{'selectedOptionolor': station.stationtype === 'org'}">ORG</button><button value="ARG" [ngClass]="{'selectedOptionolor': station.stationtype === 'arg'}">ARG</button></td>
