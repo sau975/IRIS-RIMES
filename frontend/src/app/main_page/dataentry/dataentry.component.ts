@@ -122,12 +122,14 @@ export class DataentryComponent {
     this.selectedRMcs = [];
     this.selectedStates = [];
     this.selectedDistricts = [];
+    this.filteredMcs = [];
     tempfilteredMcs.forEach(m => {
       if(m.split(" ")[0] == "MC"){
         this.filteredMcs.push({name: m})
       }
     });
 
+    this.filteredRMcs = [];
     tempfilteredMcs.forEach(m => {
       if(m.split(" ")[0] == "RMC"){
         this.filteredRMcs.push({name: m})

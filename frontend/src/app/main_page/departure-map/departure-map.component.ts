@@ -32,6 +32,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
   intervalId :any;
   
 
+
   private map: L.Map = {} as L.Map;
   private map1: L.Map = {} as L.Map;
   private map2: L.Map = {} as L.Map;
@@ -239,7 +240,6 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       concatMap(fetchedData7 => {
         this.fetchedData7 = fetchedData7;
         this.processFetchedDatacountrynormal();
-
         return EMPTY; // or any observable to complete the chain
       })
     ).subscribe(

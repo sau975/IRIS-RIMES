@@ -47,6 +47,18 @@ export class VerificationPageMcComponent {
 
   ngOnInit(): void {
     this.fetchDataFromBackend();
+    const loginedMC = localStorage.getItem('isAuthorised');
+    const MCData = JSON.parse(loginedMC ?? '{}');
+    const loginedMCName = MCData.data[0].name;
+    // console.log('Mc data', MCData)
+    //  console.log('loginMCName', loginedMCName)
+    // console.log('loginedMCData', loginedMCData)
+
+        if(loginedMCName.split(" ")[0] == "MC"){
+          this.filteredMcs.push({name: loginedMCName})
+        } else {
+          this.filteredRMcs.push({name: loginedMCName})
+        }
   }
   constructor(
     private dataService: DataService,
@@ -76,23 +88,28 @@ export class VerificationPageMcComponent {
       });
     }
 
-    onChangeMc(){
-      let tempStates = this.existingstationdata.filter(item => {
+  onChangeMc() {
+    console.log(this.existingstationdata)
+      console.log(this.selectedMcs);
+
+    let tempStates = this.existingstationdata.filter(item => {
         return this.selectedMcs.some((value:any) => {
-          return item.rmc_mc == value.name;
+          return item.rmc_mc.toLowerCase() == value.name.toLowerCase();
         });
       });
       console.log(tempStates);
-      let tempfilteredStates = Array.from(new Set(tempStates.map(a => a.state)));
-      this.filteredStates = tempfilteredStates.map(a => { return {name: a}});
+    let tempfilteredStates = Array.from(new Set(tempStates.map(a => a.state)));
+    this.filteredStates = tempfilteredStates.map(a => { return { name: a } });
+    
     }
 
     onChangeRMc(){
       let tempStates = this.existingstationdata.filter(item => {
         return this.selectedRMcs.some((value:any) => {
-          return item.rmc_mc == value.name;
+          return item.rmc_mc.toLowerCase() == value.name.toLowerCase();
         });
       });
+      console.log('RMC change', tempStates)
       let tempfilteredStates = Array.from(new Set(tempStates.map(a => a.state)));
       this.filteredStates = tempfilteredStates.map(a => { return {name: a}});
     }
@@ -170,7 +187,7 @@ export class VerificationPageMcComponent {
         })
         this.filteredStations = value.filter((x:any) => x[this.dateCalculation()] >= 0);
         this.filterByDate();
-        this.onChangeRegion();
+        // this.onChangeRegion();
 
       },
       error: err => console.error('Error fetching data:', err)
@@ -212,13 +229,13 @@ export class VerificationPageMcComponent {
     })
     this.filteredStations = this.filteredStations.filter((x:any) => x[this.dateCalculation()] >= 0);
     this.filteredStations.map(x => {
-      return x.isverified = JSON.parse(x['isverified_' + this.dateCalculation()]);
+      return x.isverified = x['isverified_' + this.dateCalculation()];
     })
     if(this.status){
-      this.filteredStations = this.filteredStations.filter(s =>  s.isverified.status == this.status);
+      this.filteredStations = this.filteredStations.filter(s =>  s.isverified != 'null');
     }
     if(this.filteredStations.length > 0){
-      let isverified = this.filteredStations.every(station => station && station.isverified.status == "verified");
+      let isverified = this.filteredStations.every(station => station && station.isverified != 'null');
       if(isverified){
         this.showVerifiedDateAndMessage();
       }
