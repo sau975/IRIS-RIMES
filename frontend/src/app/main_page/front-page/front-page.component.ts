@@ -27,7 +27,7 @@ export class FrontPageComponent implements OnInit {
   slidingNo = 0;
   currentSlide = 'INDIA_COUNTRY';
   currentSlideName:String= "";
-  isSlider = true;
+  isSlider = false;
    slidingMap: L.Map = {} as L.Map;
 
   // allDaysInMonth:any[]=[];

@@ -30,6 +30,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
   mapTileTypes: string[] = ['District'];
   private initialZoom = 4;
   intervalId :any;
+  
 
 
   private map: L.Map = {} as L.Map;
@@ -205,6 +206,7 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
     // console.log(this.currentDateDaily, "dateeeeee")
   }
   fetchDataFromBackend(): void {
+    this.loadGeoJSON();
     this.dataService.fetchMasterFile().pipe(
       concatMap(masterData => {
         this.fetchedMasterData = masterData;
@@ -238,7 +240,6 @@ export class DepartureMapComponent implements OnInit, AfterViewInit {
       concatMap(fetchedData7 => {
         this.fetchedData7 = fetchedData7;
         this.processFetchedDatacountrynormal();
-        this.loadGeoJSON();
         return EMPTY; // or any observable to complete the chain
       })
     ).subscribe(
