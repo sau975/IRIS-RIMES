@@ -35,15 +35,15 @@ const smtpTransport = nodemailer.createTransport({
   port: 587,
   secure: false, // true for 465, false for other ports
   auth: {
-    user: 'saurav@rimes.int',
-    pass: 'sxcjuiwivyptrxkp'
+    user: 'manu@rimes.int',
+    pass: 'fxblwzworftdxbfb'
   }
 });
 
 app.post('/send-email', (req, res) => {
   const { to, subject, text, attachments } = req.body;
   const mailOptions = {
-    from: 'saurav@rimes.int',
+    from: 'manu@rimes.int',
     to: to,
     subject: subject,
     text: text,
@@ -52,13 +52,13 @@ app.post('/send-email', (req, res) => {
   console.log("Sending Email");
   smtpTransport.sendMail(mailOptions, (error, response) => {
     if (error) {
-      console.log(error);
+      // console.log(error);
       client.query('INSERT INTO email_log(email, subject, message, datetime, status) VALUES($1, $2, $3, $4, $5)', [mailOptions.to, mailOptions.subject, mailOptions.text, new Date(), false])
       .then(() => {
         res.status(200).json({ message: 'Data inserted successfully' });
       })
       .catch(error => {
-        console.error('Error inserting data:', error);
+        // console.error('Error inserting data:', error);
         res.status(500).json({ error: 'Internal server error' });
       });  
       // res.status(500).send('Error sending email');
@@ -465,6 +465,58 @@ app.post('/uploadrainfalldata', upload.single('file'), async (req, res) => {
     client.query('ROLLBACK');
     res.status(500).json({ error: 'Internal server error' });
     console.error('Error inserting data:', error);
+  }
+});
+
+// update the email group here
+app.put('/email-dissemination/defined-email/:id', async (req, res) => {
+  const { id } = req.params;
+  const { groupName, emails } = req.body;
+  console.log(id, groupName, emails, 'backend')
+    client
+    .query(`UPDATE email_group SET "groupname" = $1, "emails"=$2  WHERE id = $3`, [groupName,emails,id])
+    .then(() => {
+      res.status(200).json({ message: `Data updated successfully`});
+    })
+    .catch((error) => {
+      console.error('Error updating data:', error);
+      res.status(500).json({ error: 'Internal server error' });
+    });
+});
+
+// delete the email group 
+app.delete("/email-dissemination/defined-email", (req, res) => {
+  const data = req.body.data; 
+  // console.log(data)
+  client
+    .query('DELETE FROM email_group WHERE id = $1', [data])
+    .then(() => {
+      res.status(200).json({ message: `Row with email grp id ${data} deleted successfully` });
+    })
+    .catch((error) => {
+      console.error('Error deleting data:', error);
+      res.status(500).json({ error: 'Internal server error' });
+    });
+});
+
+// fetch Email Log data according to the selected Date
+app.get('/email-dissemination/email-log', async (req, res) => {
+  const { date } = req.query;
+  console.log(date, 'backend')
+  if (!date) {
+    return res.status(400).json({ error: 'Date is required' });
+  }
+
+  try {
+    // Adjusted query to cast the timestamp to date for comparison
+   const result = await client.query(
+    'SELECT * FROM email_log WHERE DATE_TRUNC(\'day\', datetime) = $1::date',
+    [date]
+);
+    res.json(result.rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: err.message });
   }
 });
 

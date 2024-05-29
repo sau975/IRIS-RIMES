@@ -160,5 +160,19 @@ export class DataService {
     return this.http.get(url);
   }
 
+  // this API to update the data of defined email group
+  upddateDataEmailgroup(id: number, data: any): Observable<any>{
+    return this.http.put<any>(`${this.baseUrl}/email-dissemination/defined-email/${id}`, data);
+  }
+ 
+  // this API for to delete the group of email
+  deleteEntry(id: number): Observable<any>{
+    const url = `${this.baseUrl}/email-dissemination/defined-email`;
+    return this.http.delete<any>(url, { body: { data: id } });
+  }
+  // filtered Email log
+   getEmailLogs(date: string): Observable<any[]> {
+      return this.http.get<any[]>(`${this.baseUrl}/email-dissemination/email-log?date=${date}`);
+  }
 }
 

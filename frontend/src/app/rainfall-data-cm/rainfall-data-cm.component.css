@@ -1,0 +1,67 @@
+.background-effect {
+  background-color: #a2c5b6;
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 100%;
+  min-height: 100vh;
+  height: auto;
+}
+
+body{
+  display: flex;
+}
+
+/* #region:hover, #mcs:hover, #state:hover, #district:hover{
+  color: #002467;
+  font-weight: 600;
+  background-color: white;
+  border-color: #002467;
+  border-width: 2px;
+  box-shadow: none;
+} */
+
+
+.Back{
+  background-color: #002467;
+  padding: 10px;
+  margin: 6px;
+  width: 120px;
+  font-size: 15px;
+  font-weight: 600;
+  border-radius: 20px;
+  color: white;
+  top: 2px;
+  box-shadow: 5px 5px 10px 2px rgba(0,0,0,.8);
+}
+.Back:hover{
+  color: #002467;
+  font-weight: 600;
+  background-color: white;
+  border-color: #002467;
+  border-width: 2px;
+  box-shadow: none;
+}
+.button{
+  text-align: center;
+}
+h2 {
+    margin-top: 0;
+}
+
+th {
+  padding: 10px;
+}
+
+.significantRainfall-table {
+
+  text-align: center;
+  background-color: white;
+  margin: 0px 15px;
+  border-color: black;
+  border-width: 2px;
+  border-style: solid;
+  padding: 20px 0px;
+  border-radius: 20px;
+}
+
+

@@ -259,6 +259,7 @@ export class DataentryComponent {
   }
 
   editStation(station: any) {
+    console.log(station, 'dataentry');
     this.showEditPopup = true;
     this.editData.stationname = station.stationname,
       this.editData.stationid = station.stationid,

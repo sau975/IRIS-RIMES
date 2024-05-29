@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { DataService } from '../data.service';
 
 @Component({
@@ -18,7 +18,12 @@ export class SendEmailComponent implements OnInit {
   groupName:string = '';
   email:string = '';
   emails:any[]=[];
-  emailGroups:any[]=[];
+  emailGroups: any[] = [];
+  attachments: any[] = [];
+  selectedFile: File | null = null;
+  selectedSection: string = 'Select Section';
+  @ViewChild('fileInput') fileInput!: ElementRef;
+
 
   constructor(
     private dataService: DataService
@@ -72,23 +77,61 @@ export class SendEmailComponent implements OnInit {
     }
   }
 
-  send(){
-    let allToEmails:any[]=[];
-    if(this.sendToGroup){
-      allToEmails = JSON.parse(this.sendToGroup);
-    }else{
-      allToEmails.push(this.to);
+send() {
+  let allToEmails: any[] = [];
+  if (this.sendToGroup) {
+    allToEmails = JSON.parse(this.sendToGroup);
+  } else {
+    allToEmails.push(this.to);
+  }
+
+  // Retrieve the base64 string file from localStorage
+  let fileBase64 = localStorage.getItem("base64Stringfile");
+  let filename = localStorage.getItem("filename");
+
+  allToEmails.forEach(email => {
+    let data = {
+      to: email,
+      subject: this.subject,
+      text: this.message,
+      attachments: [{
+        filename: filename,
+        content: fileBase64,
+        encoding: 'base64'
+      }]
+    };
+
+    this.dataService.sendEmail(data).subscribe(res => {
+      console.log("Email sent to:", email);
+    });
+  });
+}
+
+ onFileSelected(event: any) {
+  this.selectedFile = event.target.files[0];
+  if (this.selectedFile) {
+    var maxSize = 1024 * 1024; // 1 MB
+    if (this.selectedFile.size > maxSize) {
+      alert('File size exceeds the allowed limit. Please choose a smaller file.');
+      this.clearFileInput();
+      return;
     }
-    allToEmails.forEach(email =>{
-      let data = {
-        to: email,
-        subject: this.subject,
-        text: this.message
-      }
-      this.dataService.sendEmail(data).subscribe(res => {
-        // alert("Email Sent");
-      })
-    })
+    const reader = new FileReader();
+    reader.onload = (event: any) => {
+      const dataUri = event.target.result;
+      // Store the base64 string and filename in localStorage
+      localStorage.setItem("base64Stringfile", dataUri.split(',')[1]); // Split to remove the Data URI prefix
+       localStorage.setItem("filename", this.selectedFile?.name ?? 'unknown');
+    };
+    reader.readAsDataURL(this.selectedFile); // Use readAsDataURL to get the base64 string
+  }
+}
+
+  clearFileInput(): void {
+    // Reset the value of the file input element
+    if (this.fileInput) {
+      this.fileInput.nativeElement.value = '';
+    }
   }
 
 }

@@ -97,7 +97,7 @@ import { RainfallGraphsPostmonsoonSouthpeninsularregionComponent } from './rainf
 import { RainfallGraphsPostmonsoonNorthwestregionComponent } from './rainfall-graphs/post-monsoon/rainfall-graphs-postmonsoon-northwestregion/rainfall-graphs-postmonsoon-northwestregion.component';
 import { VerificationPageHQComponent } from './verification-page-hq/verification-page-hq.component';
 import { StateWiseComponent } from './state-wise/state-wise.component';
-
+import { RainfallDataCmComponent } from './rainfall-data-cm/rainfall-data-cm.component';
 
 @NgModule({
   declarations: [
@@ -171,7 +171,8 @@ import { StateWiseComponent } from './state-wise/state-wise.component';
     StatewiseDistRainfallComponent,
     VerificationPageMcComponent,
     VerificationPageHQComponent,
-    StateWiseComponent
+    StateWiseComponent,
+    RainfallDataCmComponent
   ],
   imports: [
     PdfViewerModule,

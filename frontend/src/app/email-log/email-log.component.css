@@ -1,0 +1,18 @@
+.whole-body-email{
+    background-color: #a2c5b6;
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 100%;
+     min-height: 100vh;
+}
+
+.emaillog-table {
+  text-align: center;
+  background-color: white;
+  margin: 0px 15px;
+  border-color: black;
+  border-width: 2px;
+  border-style: solid;
+  padding: 20px 0px;
+  border-radius: 20px;
+}

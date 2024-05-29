@@ -22,3 +22,42 @@
   background: transparent;
 }
 
+.email-group{
+    background-color: #a2c5b6;
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 100%;
+    min-height: 100vh;
+}
+
+.emaillog-table{
+      background-color: #a2c5b6;
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 100%;
+    min-height: 100vh;
+}
+
+.defined-email-table{
+  text-align: center;
+  background-color: white;
+  margin: 0px 15px;
+  border-color: black;
+  border-width: 2px;
+  border-style: solid;
+  padding: 20px 0px;
+  border-radius: 20px;
+}
+
+.edit{
+  background-color: #007ccd;
+  margin: 3px;
+  color: black;
+  font-weight: 400;
+}
+.delete{
+  background-color: red;
+  margin: 3px;
+  color: black;
+  font-weight: 400;
+}

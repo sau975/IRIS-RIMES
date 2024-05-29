@@ -32,7 +32,7 @@
         </div>
         <div class="mt-3">
           <label>Attachments</label>
-          <input class="form-control" type="file">
+              <input class="form-control" #fileInput type="file" (change)="onFileSelected($event)">
         </div>
         <div class="text-end mt-5">
           <button type="button" class="btn btn-success" (click)="send()">Send</button>

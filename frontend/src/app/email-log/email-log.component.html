@@ -1,50 +1,62 @@
-<div class="justify-content-between">
-  <div class="">
-    
-<div class="">
-  <h5 class="text-center mt-5">Auto Email On/Off</h5>
-  <div class="text-center">
-    <h5>Set:</h5>
-    <div class="row justify-content-center">
-      <div class="col-auto">
-        <div class="form-check form-check-inline">
-          <input class="form-check-input" type="radio" id="on" name="on" [value]="true" [(ngModel)]="autoEmailOnOff">
-          <label class="form-check-label" for="on">On</label>
+<div class="whole-body-email overflow-x-hidden">
+<div class="row">
+    <!-- First Column -->
+    <div class="col-6 col-md-8 col-lg-12 pt-3">
+      <div class="d-flex align-items-center justify-content-end px-3 mb-3">
+        <h5 class="text-center  text-white rounded p-2">Auto Email On/Off Set:</h5>
+        <div class="me-3 px-2">
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" id="on" name="on" [value]="true" [(ngModel)]="autoEmailOnOff">
+            <label class="form-check-label" for="on">On</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" id="off" name="off" [value]="false" [(ngModel)]="autoEmailOnOff">
+            <label class="form-check-label" for="off">Off</label>
+          </div>
         </div>
-      </div>
-      <div class="col-auto">
-        <div class="form-check form-check-inline">
-          <input class="form-check-input" type="radio" id="off" name="off" [value]="false" [(ngModel)]="autoEmailOnOff">
-          <label class="form-check-label" for="off">Off</label>
-        </div>
+        <button type="button" class="btn btn-success" (click)="setAutoEmail()">Submit</button>
       </div>
     </div>
-  </div>
-  <div class="text-center mt-5">
-    <button type="button" class="btn btn-success" (click)="setAutoEmail()">Submit</button>
-  </div>
-</div>
 
+    <!-- Date Picker -->
+    <div class="col-6 col-md-8 col-lg-12 pt-3">
+      <div class="d-flex align-items-center justify-content-end px-3 mb-3">
+        <mat-form-field appearance="fill">
+          <mat-label>Select Date</mat-label>
+          <input matInput [matDatepicker]="picker" [(ngModel)]="selectedDate">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+        <button type="button" class="btn btn-primary ms-2" (click)="fetchEmailLogs()">Filter</button>
+      </div>
+    </div>
 
-    <div class="">
-      <h5 class="text-center mt-5">Email Log</h5>
-      <div>
-        <table class="table">
-          <tr>
-            <th>To</th>
-            <th>Subject</th>
-            <th>Message</th>
-            <th>Date Time</th>
-            <th>Status</th>
-          </tr>
-          <tr *ngFor="let item of emailLogs">
-            <td>{{item.email}}</td>
-            <td>{{item.subject}}</td>
-            <td>{{item.message}}</td>
-            <td>{{item.datetime | date: 'dd-MM-yyyy hh:mm:ss'}}</td>
-            <td>{{item.status == false ? 'Failed' : 'Sent'}}</td>
-          </tr>
-        </table>
+    <!-- Second Column -->
+    <div class="col-6 col-md-8 col-lg-12">
+      <div class="emaillog-table overflow-x-auto px-3">
+      <h5 class="text-center p-2">Email Log</h5>
+        <div>
+          <table class="table table-bordered border-dark rounded-3">
+            <thead class="">
+              <tr>
+                <th>To</th>
+                <th>Subject</th>
+                <th>Message</th>
+                <th>Date & Time</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of emailLogs">
+                <td>{{item.email}}</td>
+                <td>{{item.subject}}</td>
+                <td>{{item.message}}</td>
+                <td>{{item.datetime | date: 'dd-MM-yyyy hh:mm:ss'}}</td>
+                <td>{{item.status == false ? 'Failed' : 'Sent'}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </div>

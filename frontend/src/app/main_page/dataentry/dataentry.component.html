@@ -160,6 +160,7 @@
             <td style="border: 1px solid black">{{station.lng}}</td>
             <td style="border: 1px solid black">{{station.activationdate | date: 'dd-MM-yyyy'}}</td>
             <td style="border: 1px solid black">
+               {{ station }}
               <button class="edit" (click)="editStation(station)">Edit</button>
               <button class="delete" (click)="deleteStationdata(i)">Delete</button>
             </td>

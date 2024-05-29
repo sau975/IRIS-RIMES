@@ -1,0 +1,153 @@
+<div class="background-effect">
+  <table style="width: 100%; background: linear-gradient(to top, #09203f 0%, #537895 100%);">
+    <tbody>
+      <tr>
+        <td style="width: 8%; padding: 10px 0px 17px 25px;" align="left"></td>
+        <td style="text-align: center; padding: 20px; width: 90%">
+          <table style="width: 100%">
+            <tbody>
+              <tr>
+                <td>
+                  <label style="
+                      color: white;
+                      vertical-align: middle;
+                      font-family: Arial;
+                      font-weight: bolder;
+                      font-size: 20px;
+                    ">
+                    IMD Rainfall Information System (iRAINS)</label>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <label style="
+                      color: white;
+                      vertical-align: middle;
+                      font-family: Arial;
+                      font-weight: bolder;
+                      font-size: 18px;
+                    ">
+                    Hydromet Division</label>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </td>
+        <td>
+          <div class="button">
+            <button class="Back" (click)="goBack()">Back</button>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+
+  <div class="container pt-5">
+    <div class="row justify-content-center">
+      <div class="col-md-5">
+        <div class="row">
+          <div class="col">
+            <label class="form-label"><b>Select Date</b></label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <input type="date" class="form-control" [(ngModel)]="filterDate" name="date" placeholder="Select date" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Range of rainfall -->
+      <div class="col-md-5">
+        <div class="row">
+          <div class="col">
+            <label class="form-label"><b>Enter Rainfall Range in CM</b></label>
+          </div>
+        </div>
+        <div class="row w-75">
+          <div class="col">
+            <input type="number" class="form-control" [(ngModel)]="filterRainfall" name="rainfall" />
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-2 align-self-center">
+        <button type="button" class="btn btn-primary mt-md-4 mt-2" (click)="filterData()">Submit</button>
+      </div>
+    </div>
+  </div>
+
+    <div class="col-6 col-md-8 col-lg-12 mt-5">
+      <div class="significantRainfall-table overflow-x-auto px-3">
+      <h5 class="text-center p-2">Significant Rainfall Data</h5>
+      <div class="col-md-1 col-sm-6 mb-3">
+          <button class="btn btn-primary" [disabled]="filteredItems.length === 0" (click)="exportAsXLSX()">Download</button>
+      </div>
+        <div>
+          <table class="table table-bordered border-dark rounded-3">
+            <thead class="">
+              <tr>
+                <th>Metsubdivision</th>
+                <th>Station Name</th>
+                <th>District Name</th>
+                <th>Rainfall (mm)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of filteredItems">
+                <td>{{item.metsubdivision}}</td>
+                <td>{{item.stationname}}</td>
+                <td>{{item.district}}</td>
+                <td>{{item.rainFall }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  <!-- <div class="container-fluid">
+    <div style="text-align: center; padding-top: 40px;">
+      <div class="dataentry">
+        <div class="row text-center justify-content-center">
+          <div class="col-md-3 col-sm-6 mb-3">
+            <h3>SIGNIFICANT RAINFALL DATA</h3>
+          </div>
+          <div class="col-md-1 col-sm-6 mb-3">
+            <button class="btn btn-primary" (click)="exportAsXLSX()">Download</button>
+          </div>
+        </div>
+        <br />
+        
+
+        <div class="overflow-x-scroll">
+          <table style=" margin: auto; border-collapse: collapse; width: 90%; border: 1px solid black;">
+            <thead>
+              <tr>
+                <th style="border: 1px solid black">S.NO</th>
+                <th style="border: 1px solid black">MET SUBDIVISION</th>
+                <th style="border: 1px solid black">STATION NAME</th>
+                <th style="border: 1px solid black">DISTRICT</th>
+                <th style="border: 1px solid black">RAINFALL (cm)</th>
+              </tr>
+            </thead>
+            <tbody *ngIf="filteredStations && filteredStations.length > 0">
+              <tr *ngFor="let station of filteredStations; let i = index">
+                <td style="border: 1px solid black">{{ i + 1 }}</td>
+                <td style="border: 1px solid black">{{ station.stationname }}</td>
+                <td style="border: 1px solid black">{{ station.stationid }}</td>
+                <td style="border: 1px solid black">
+                  <input type="text" id="rainfall" #rainFallElementRef name="rainfall" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1').replace(/(\.\d{1}).+/g, '$1');" (click)="station.RainFall = ''" [(ngModel)]="station.RainFall"
+                    required style="border: none;" step="0.1" (input)="showMessage(rainFallElementRef)">
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+    </div>
+
+  </div> -->
+</div>

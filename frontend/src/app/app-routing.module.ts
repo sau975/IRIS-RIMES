@@ -66,7 +66,7 @@ import { RainfallGraphsPostmonsoonNorthwestregionComponent } from './rainfall-gr
 import { RainfallGraphsPostmonsoonSouthpeninsularregionComponent } from './rainfall-graphs/post-monsoon/rainfall-graphs-postmonsoon-southpeninsularregion/rainfall-graphs-postmonsoon-southpeninsularregion.component';
 import { RainfallGraphsPostmonsoonCentralindiaregionComponent } from './rainfall-graphs/post-monsoon/rainfall-graphs-postmonsoon-centralindiaregion/rainfall-graphs-postmonsoon-centralindiaregion.component';
 import { VerificationPageHQComponent } from './verification-page-hq/verification-page-hq.component';
-
+import { RainfallDataCmComponent } from './rainfall-data-cm/rainfall-data-cm.component';
 
 const routes: Routes = [
 
@@ -123,6 +123,7 @@ const routes: Routes = [
   { path: 'verification-page-mc', component: VerificationPageMcComponent, canActivate: [AuthGuard] },
   { path: 'verification-page-hq', component: VerificationPageHQComponent, canActivate: [AuthGuard] },
   { path: 'last-five-year-data', component: LastFiveYearDataComponent, canActivate: [AuthGuard] },
+  {path: 'rainfall-data-cm', component: RainfallDataCmComponent, canActivate: [AuthGuard]},
   { path: 'station-statistics', component: StationStatisticsComponent, canActivate: [AuthGuard] },
   { path: 'yearly-station-statistics', component: YearlyStationStatisticsComponent, canActivate: [AuthGuard] },
   { path: 'realtime-station-data', component: RealtimeStationDataComponent, canActivate: [AuthGuard] },

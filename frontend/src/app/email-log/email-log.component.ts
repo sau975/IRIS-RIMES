@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DataService } from '../data.service';
+import { HttpClient, HttpParams } from '@angular/common/http';
 
 @Component({
   selector: 'app-email-log',
@@ -18,10 +19,11 @@ export class EmailLogComponent implements OnInit {
   groupName:string = '';
   email:string = '';
   emails:any[]=[];
-  emailGroups:any[]=[];
+  emailGroups: any[] = [];
+  selectedDate!: Date;
 
   constructor(
-    private dataService: DataService
+    private dataService: DataService, private http: HttpClient
   ){
     this.autoEmailOnOff = JSON.parse(localStorage.getItem('autoEmail') as any);
   }
@@ -49,6 +51,26 @@ export class EmailLogComponent implements OnInit {
 
   open(){
     this.showPopup = true;
+  }
+
+
+  fetchEmailLogs() {
+    if (!this.selectedDate) {
+      return;
+    }
+    const formattedDate = this.formatDate(this.selectedDate);
+    console.log(formattedDate)
+    this.dataService.getEmailLogs(formattedDate).subscribe(logs => {
+      this.emailLogs = logs;
+      console.log(this.emailLogs);
+    });
+  }
+
+  private formatDate(date: Date): string {
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+    return `${year}-${month < 10 ? '0' + month : month}-${day < 10 ? '0' + day : day}`;
   }
 
   createEmailGroup(){
